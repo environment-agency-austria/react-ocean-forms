@@ -158,10 +158,7 @@ describe('<Form />', () => {
     });
   });
 
-  const createMockListener = () => ({
-    notify: jest.fn(),
-    scrollIntoView: jest.fn(),
-  });
+  const createMockListener = () => jest.fn();
 
   const mockListeners = [
     { id: 'listener1', state: createMockListener() },
@@ -176,10 +173,9 @@ describe('<Form />', () => {
     beforeEach(refreshContext);
     afterEach(() => {
       mockListeners.forEach(({ state }) => {
-        state.notify.mockReset();
-        state.scrollIntoView.mockReset();
-        onFieldValueChangedHandler.mockReset();
+        state.mockReset();
       });
+      onFieldValueChangedHandler.mockReset();
     });
 
     afterAll(() => {
@@ -199,8 +195,9 @@ describe('<Form />', () => {
       const eventArgs = { foo: 'bar' };
 
       formContext.notifyFieldEvent(unitFieldName, eventName, eventArgs);
-      mockListeners.forEach(item => expect(item.state.notify).toHaveBeenLastCalledWith(
+      mockListeners.forEach(item => expect(item.state).toHaveBeenLastCalledWith(
         unitFieldName,
+        eventName,
         {
           label: unitFieldState.label,
           ...eventArgs,
@@ -208,20 +205,17 @@ describe('<Form />', () => {
       ));
     });
 
-    it('should not pass other notifications to the listeners', () => {
-      const eventName = 'blur';
-      const eventArgs = { foo: 'bar' };
-
-      formContext.notifyFieldEvent(unitFieldName, eventName, eventArgs);
-      mockListeners.forEach(item => expect(item.state.notify).not.toHaveBeenCalled());
-    });
-
-    it('should call the onFieldValueChanged prop', () => {
+    it('should call the onFieldValueChanged prop and the listeners', () => {
       const eventName = 'change';
       const eventArgs = 'myNewValue';
 
       formContext.notifyFieldEvent(unitFieldName, eventName, eventArgs);
       expect(onFieldValueChangedHandler).toHaveBeenCalledWith(unitFieldName, eventArgs);
+      mockListeners.forEach(item => expect(item.state).toHaveBeenLastCalledWith(
+        unitFieldName,
+        eventName,
+        eventArgs,
+      ));
     });
 
     it('should work without the onFieldValueChanged prop', () => {
@@ -302,9 +296,16 @@ describe('<Form />', () => {
         });
       });
 
-      it('should scroll to the first validation summary', () => {
-        expect(mockListeners[0].state.scrollIntoView).toHaveBeenCalled();
-        mockListeners[0].state.scrollIntoView.mockReset();
+      it('should trigger a submit-invalid event', () => {
+        mockListeners.forEach(item => expect(item.state).toHaveBeenLastCalledWith(
+          '_form',
+          'submit-invalid',
+          undefined,
+        ));
+
+        mockListeners.forEach(({ state }) => {
+          state.mockReset();
+        });
       });
 
       it('should not call the onSubmit prop', () => {
@@ -325,9 +326,16 @@ describe('<Form />', () => {
         expect(() => formElement.simulate('submit', mockEvent())).not.toThrowError();
       });
 
-      it('should scroll to the first validation summary', () => {
-        expect(mockListeners[0].state.scrollIntoView).toHaveBeenCalled();
-        mockListeners[0].state.scrollIntoView.mockReset();
+      it('should trigger a submit-invalid event', () => {
+        mockListeners.forEach(item => expect(item.state).toHaveBeenLastCalledWith(
+          '_form',
+          'submit-invalid',
+          undefined,
+        ));
+
+        mockListeners.forEach(({ state }) => {
+          state.mockReset();
+        });
       });
 
       it('should not call the onSubmit prop', () => {
@@ -335,21 +343,7 @@ describe('<Form />', () => {
         onSubmitHandler.mockReset();
       });
 
-      it('should not scroll if disableFocusSummaryOnError is set', () => {
-        wrapper.setProps({
-          disableFocusSummaryOnError: true,
-        });
-
-        const formElement = wrapper.find('form');
-        expect(() => formElement.simulate('submit', mockEvent())).not.toThrowError();
-        expect(mockListeners[0].state.scrollIntoView).not.toHaveBeenCalled();
-      });
-
       it('should not crash if there are no listeners', () => {
-        wrapper.setProps({
-          disableFocusSummaryOnError: false,
-        });
-
         const formContext = getContext();
 
         mockListeners.forEach((item) => {
@@ -358,7 +352,6 @@ describe('<Form />', () => {
 
         const formElement = wrapper.find('form');
         expect(() => formElement.simulate('submit', mockEvent())).not.toThrowError();
-        expect(mockListeners[0].state.scrollIntoView).not.toHaveBeenCalled();
       });
     });
   });

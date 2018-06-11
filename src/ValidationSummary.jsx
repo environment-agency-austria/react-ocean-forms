@@ -27,13 +27,7 @@ class ValidationSummary extends React.Component {
     this.scrollIntoView = this.scrollIntoView.bind(this);
 
     const { context: { registerListener }, id } = props;
-    registerListener(
-      id,
-      {
-        notify: this.notify,
-        scrollIntoView: this.scrollIntoView,
-      },
-    );
+    registerListener(id, this.notify);
 
     this.state = {
       fields: {},
@@ -50,19 +44,24 @@ class ValidationSummary extends React.Component {
   /**
    * Gets called when a validation state changes
    * @param {string} name Field name
+   * @param {string} event Event name
    * @param {object} state Field state
    */
-  notify(name, state) {
-    this.setState(oldState => ({
-      fields: {
-        ...oldState.fields,
-        [name]: state,
-      },
-    }));
+  notify(name, event, state) {
+    if (event === 'validation') {
+      this.setState(oldState => ({
+        fields: {
+          ...oldState.fields,
+          [name]: state,
+        },
+      }));
+    } else if (event === 'submit-invalid') {
+      this.scrollIntoView();
+    }
   }
 
   scrollIntoView() {
-    if (this.headerRef.current) {
+    if (this.headerRef.current && !this.props.disableFocusOnSubmit) {
       this.headerRef.current.scrollIntoView({ block: 'start', behavior: 'smooth' });
     }
   }
@@ -190,6 +189,7 @@ ValidationSummary.defaultProps = {
   title: 'ojs_form_validationSummaryHeader',
   renderFieldError: null,
   render: null,
+  disableFocusOnSubmit: false,
 };
 
 ValidationSummary.propTypes = {
@@ -198,6 +198,7 @@ ValidationSummary.propTypes = {
   renderFieldError: PropTypes.func,
   render: PropTypes.func,
   context: formContextShape.isRequired,
+  disableFocusOnSubmit: PropTypes.bool,
 };
 
 export const BaseValidationSummary = ValidationSummary;

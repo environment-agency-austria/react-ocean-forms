@@ -24,7 +24,6 @@ ShallowWrapper {
     asyncValidateOnChange={false}
     asyncValidationWait={400}
     defaultValues={Object {}}
-    disableFocusSummaryOnError={false}
     disabled={false}
     formatString={null}
     onFieldValueChanged={[MockFunction]}

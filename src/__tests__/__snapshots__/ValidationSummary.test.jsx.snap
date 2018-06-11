@@ -47,10 +47,7 @@ ShallowWrapper {
           "calls": Array [
             Array [
               "unitSummary",
-              Object {
-                "notify": [Function],
-                "scrollIntoView": [Function],
-              },
+              [Function],
             ],
           ],
           "results": Array [
@@ -158,6 +155,7 @@ ShallowWrapper {
         "unregisterListener": [MockFunction],
       }
     }
+    disableFocusOnSubmit={false}
     id="unitSummary"
     render={null}
     renderFieldError={null}
@@ -457,10 +455,7 @@ ShallowWrapper {
           "calls": Array [
             Array [
               "unitSummary",
-              Object {
-                "notify": [Function],
-                "scrollIntoView": [Function],
-              },
+              [Function],
             ],
           ],
           "results": Array [
@@ -546,6 +541,7 @@ ShallowWrapper {
         "unregisterListener": [MockFunction],
       }
     }
+    disableFocusOnSubmit={false}
     id="unitSummary"
     render={null}
     renderFieldError={null}
@@ -845,10 +841,7 @@ ShallowWrapper {
           "calls": Array [
             Array [
               "unitSummary",
-              Object {
-                "notify": [Function],
-                "scrollIntoView": [Function],
-              },
+              [Function],
             ],
           ],
           "results": Array [
@@ -863,6 +856,7 @@ ShallowWrapper {
         "unregisterListener": [MockFunction],
       }
     }
+    disableFocusOnSubmit={false}
     id="unitSummary"
     render={null}
     renderFieldError={null}

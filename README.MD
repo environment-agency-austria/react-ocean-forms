@@ -64,9 +64,6 @@ Configures the wait time before the async validators will be called. Per default
 ***defaultValues*** (Object, optional)
 Contains the default values of the form. Those values will be put into the according fields when the form initializes. The name prop of the field will be used to get the default value from the according proprety of the defaultValues object.
 
-***disableFocusSummaryOnError*** (Boolean, optional, default: false)
-If set to true the form will stop automatically scrolling to the validation summary when the user clicks on a submit button and the form is invalid.
-
 ***disabled*** (Boolean, optional, default: false)
 If set to true the form will disable all fields and buttons.
 
@@ -223,6 +220,8 @@ Displays a clickable list of errors from the current form. When an error is clic
 Id of this input. Will be used as the unique identifier of the div. **Must be unique form wide!**
 ***title*** (String, optional)
 Message that will be used as the title, wrapped in a `h4`.
+***disableFocusOnSubmit*** (Boolean, optional, default: false)
+If set to true the validation summary will stop automatically scrolling to itself when the user clicks on a submit button and the form is invalid.
 ***renderFieldError*** (Function, optional)
 Optional function that can be used to customize the output of each error.
 * *id* (String): Unique id

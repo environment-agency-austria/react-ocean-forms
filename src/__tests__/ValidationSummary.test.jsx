@@ -6,8 +6,8 @@ import { createMockFormContext } from '../test-utils/enzymeFormContext';
 import { BaseValidationSummary } from '../ValidationSummary';
 
 describe('<ValidationSummary />', () => {
-  let listenerState = null;
-  const registerCallback = (name, state) => { listenerState = state; };
+  let listenerCallback = null;
+  const registerCallback = (name, state) => { listenerCallback = state; };
   const formContext = createMockFormContext(registerCallback);
 
   const summaryId = 'unitSummary';
@@ -27,10 +27,7 @@ describe('<ValidationSummary />', () => {
   it('should register itself in the form context', () => {
     expect(formContext.registerListener).toHaveBeenCalledWith(
       summaryId,
-      {
-        notify: expect.any(Function),
-        scrollIntoView: expect.any(Function),
-      },
+      expect.any(Function),
     );
   });
 
@@ -42,8 +39,9 @@ describe('<ValidationSummary />', () => {
   };
 
   it('should call the render props correctly', () => {
-    listenerState.notify(
+    listenerCallback(
       errorFieldName,
+      'validation',
       {
         label: errorFieldLabel,
         valid: false,
@@ -75,8 +73,9 @@ describe('<ValidationSummary />', () => {
   });
 
   it('should ignore valid fields', () => {
-    listenerState.notify(
+    listenerCallback(
       'validField',
+      'validation',
       {
         label: errorFieldLabel,
         valid: true,
@@ -107,7 +106,7 @@ describe('<ValidationSummary />', () => {
 
   it('should scroll into view when called by the context', () => {
     // TODO: Can someone test this?
-    listenerState.scrollIntoView();
+    listenerCallback('_form', 'submit-invalid');
   });
 
   it('should unregister on unmount', () => {

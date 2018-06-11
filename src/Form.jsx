@@ -36,8 +36,8 @@ class Form extends React.Component {
         unregisterField: this.unregisterField,
         notifyFieldEvent: this.notifyFieldEvent,
 
-        registerListener: (name, listener) => { this.validationListeners[name] = listener; },
-        unregisterListener: (name) => { delete this.validationListeners[name]; },
+        registerListener: (name, callback) => { this.eventListeners[name] = callback; },
+        unregisterListener: (name) => { delete this.eventListeners[name]; },
 
         getFieldState: this.getFieldState,
         getValues: this.getValues,
@@ -48,7 +48,7 @@ class Form extends React.Component {
     };
 
     this.fields = {};
-    this.validationListeners = {};
+    this.eventListeners = {};
   }
 
   /**
@@ -141,18 +141,21 @@ class Form extends React.Component {
 
     if (event === 'validation') {
       const { [name]: { label } } = this.fields;
-      this.notifyListeners(name, { ...args, label });
+      this.notifyListeners(name, event, { ...args, label });
+    } else {
+      this.notifyListeners(name, event, args);
     }
   }
 
   /**
-   * Notifies the validation listeners about a validation change
+   * Notifies the event listeners about an event
    * @param {string} name Field name
+   * @param {string} event Event name
    * @param {object} args Event args
    */
-  notifyListeners(name, args) {
-    const listeners = Object.entries(this.validationListeners);
-    listeners.forEach(([, state]) => state.notify(name, args));
+  notifyListeners(name, event, args) {
+    const listeners = Object.entries(this.eventListeners);
+    listeners.forEach(([, callback]) => callback(name, event, args));
   }
 
   /**
@@ -180,7 +183,7 @@ class Form extends React.Component {
     // Check if all fields are valid
     const allValid = validationStates.every(state => state.valid === true);
     if (allValid === false) {
-      this.scrollToValidationSummary();
+      this.notifyFieldEvent('_form', 'submit-invalid');
       this.updateBusyState(false);
       return;
     }
@@ -188,7 +191,7 @@ class Form extends React.Component {
     // Call the form wide validation
     const formValid = this.triggerFormValidation();
     if (formValid === false) {
-      this.scrollToValidationSummary();
+      this.notifyFieldEvent('_form', 'submit-invalid');
       this.updateBusyState(false);
       return;
     }
@@ -207,18 +210,6 @@ class Form extends React.Component {
         busy,
       },
     }));
-  }
-
-  /**
-   * Scrolls to the first validation summary
-   */
-  scrollToValidationSummary() {
-    if (this.props.disableFocusSummaryOnError) return;
-
-    const listeners = Object.entries(this.validationListeners);
-    if (listeners.length === 0) return;
-
-    listeners[0][1].scrollIntoView();
   }
 
   /**
@@ -315,7 +306,7 @@ class Form extends React.Component {
    * @param {string} name Field name
    */
   unregisterField(name) {
-    this.notifyListeners(name, {
+    this.notifyListeners(name, 'validation', {
       label: this.fields[name].label,
       valid: true,
     });
@@ -345,7 +336,6 @@ Form.defaultProps = {
   defaultValues: {},
   asyncValidateOnChange: false,
   asyncValidationWait: 400,
-  disableFocusSummaryOnError: false,
   formatString: null,
   onSubmit: null,
   onValidate: null,
@@ -364,7 +354,6 @@ Form.propTypes = {
   ]).isRequired,
   asyncValidateOnChange: PropTypes.bool,
   asyncValidationWait: PropTypes.number,
-  disableFocusSummaryOnError: PropTypes.bool,
   formatString: PropTypes.func,
   onSubmit: PropTypes.func,
   onValidate: PropTypes.func,
