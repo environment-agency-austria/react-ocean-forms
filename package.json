@@ -1,0 +1,92 @@
+{
+  "name": "react-ocean-forms",
+  "version": "1.0.3",
+  "description": "Forms components for react based on the context api.",
+  "main": "build/index.js",
+  "private": false,
+  "eslint.packageManager": "yarn",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "start": "webpack --watch --mode development",
+    "build": "webpack -p",
+    "lint": "eslint src/**"
+  },
+  "jest": {
+    "setupFiles": [
+      "<rootDir>/config/jest/enzyme.js"
+    ],
+    "testMatch": [
+      "<rootDir>/src/**/__tests__/**/*.{js,jsx,mjs}",
+      "<rootDir>/src/**/?(*.)(spec|test).{js,jsx,mjs}"
+    ],
+    "collectCoverageFrom": [
+      "<rootDir>/src/**/*.{js,jsx,mjs}"
+    ],
+    "testEnvironment": "jsdom",
+    "testURL": "http://localhost",
+    "transform": {
+      "^.+\\.(js|jsx|mjs)$": "<rootDir>/node_modules/babel-jest"
+    },
+    "moduleNameMapper": {
+      "^~(.*)$": "<rootDir>/src$1"
+    },
+    "moduleFileExtensions": [
+      "web.js",
+      "mjs",
+      "js",
+      "json",
+      "web.jsx",
+      "jsx",
+      "node"
+    ]
+  },
+  "peerDependencies": {
+    "react": "^16.4.0"
+  },
+  "dependencies": {
+    "prop-types": "^15.6.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-jest": "^23.0.1",
+    "babel-loader": "^7.1.2",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-react-app": "^3.1.0",
+    "babel-runtime": "^6.26.0",
+    "case-sensitive-paths-webpack-plugin": "^2.1.2",
+    "clean-webpack-plugin": "^0.1.19",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jest": "^21.15.1",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.6.1",
+    "jest": "^23.1.0",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
+    "webpack": "^4.12.0",
+    "webpack-cli": "^3.0.3",
+    "webpack-dev-server": "^3.1.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/environment-agency-austria/react-ocean-forms.git"
+  },
+  "keywords": [
+    "react",
+    "reactjs",
+    "forms",
+    "form",
+    "validation",
+    "react-form",
+    "react-forms",
+    "react-input",
+    "context"
+  ],
+  "author": "Denis Masinovic <denis.masinovic@umweltbundesamt.at>",
+  "license": "MIT"
+}

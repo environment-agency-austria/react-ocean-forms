@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./"
+  },
+  "exclude": [
+    "node_modules",
+    "build",
+    "coverage",
+    "node",
+    "target",
+    "**/node_modules/*"
+  ]
+}
