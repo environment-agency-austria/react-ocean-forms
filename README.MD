@@ -131,6 +131,14 @@ If set to true the form will trigger asynchronous validation on this field whene
 ***asyncValidationWait*** (Integer, optional, default: form default)
 Configures the wait time before the async validators will be called. Per default the form will call the async validators only 400ms after the **last** value change.
 
+### Events
+***onChange*** (value)
+Triggered on field value change.
+* *value* (any): Contains the current field value.
+
+***onBlur*** ()
+Triggered on field blur.
+
 ### Specialized properties
 Depending on the input component that is used with the Field, the Field will accept a range of specialized properties to configure the behaviour of the component. Those properties are described at the according documentation of the input component.
 

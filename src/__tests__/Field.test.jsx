@@ -16,6 +16,9 @@ describe('<Field />', () => {
   const formContext = createMockFormContext(registerCallback);
   const validation = createMockValidation();
 
+  const onChangeHandler = jest.fn();
+  const onBlurHandler = jest.fn();
+
   const setup = props => shallow((
     <BaseField
       name={fieldName}
@@ -24,6 +27,8 @@ describe('<Field />', () => {
       component={TestComponent}
       context={formContext}
       validation={validation}
+      onChange={onChangeHandler}
+      onBlur={onBlurHandler}
       {...props}
     />
   ));
@@ -103,6 +108,18 @@ describe('<Field />', () => {
         changeValue,
       );
     });
+
+    it('should call the onChange handler', () => {
+      expect(onChangeHandler).toHaveBeenLastCalledWith(changeValue);
+    });
+
+    it('should not crash without an onChange handler', () => {
+      wrapper.setProps({ onChange: undefined });
+      expect(() => triggerChange()).not.toThrowError();
+
+      wrapper.setProps({ onChange: onChangeHandler });
+      onChangeHandler.mockReset();
+    });
   });
 
   describe('onBlur event handling', () => {
@@ -137,6 +154,18 @@ describe('<Field />', () => {
       );
     });
 
+    it('should call the onBlur handler', () => {
+      expect(onBlurHandler).toHaveBeenCalled();
+    });
+
+    it('should not crash without an onBlur handler', () => {
+      wrapper.setProps({ onBlur: undefined });
+      expect(() => triggerBlur()).not.toThrowError();
+
+      wrapper.setProps({ onBlur: onBlurHandler });
+      onBlurHandler.mockReset();
+    });
+
     it('should not validate if the state is not dirty', () => {
       resetMocks();
       wrapper.setState({ dirty: false });
@@ -159,14 +188,20 @@ describe('<Field />', () => {
       expect(validation.validate).toHaveBeenLastCalledWith(changeValue, validateArgs);
     });
 
-    it('should correctly reset to its defaultValue', () => {
-      fieldState.reset();
-      wrapper.update();
+    describe('reset', () => {
+      it('should correctly reset to its defaultValue', () => {
+        fieldState.reset();
+        wrapper.update();
 
-      const inputElement = wrapper.find('TestComponent');
-      expect(inputElement.prop('field').value).toBe('');
+        const inputElement = wrapper.find('TestComponent');
+        expect(inputElement.prop('field').value).toBe('');
 
-      expect(validation.reset).toHaveBeenCalled();
+        expect(validation.reset).toHaveBeenCalled();
+      });
+
+      it('should call the onChange handler', () => {
+        expect(onChangeHandler).toHaveBeenLastCalledWith('');
+      });
     });
   });
 

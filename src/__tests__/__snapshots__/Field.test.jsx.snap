@@ -47,6 +47,8 @@ ShallowWrapper {
     fullName="unitField"
     label="Unit field"
     name="unitField"
+    onBlur={[MockFunction]}
+    onChange={[MockFunction]}
     validation={
       Object {
         "error": null,

@@ -111,12 +111,15 @@ class Field extends React.Component {
     const { defaultValue } = this.state;
     const { validation: { reset } } = this.props;
 
+    const value = defaultValue || '';
     this.setState({
       touched: false,
       dirty: false,
-      value: defaultValue || '',
+      value,
     });
     reset();
+
+    this.callOnChange(value);
   }
 
   /**
@@ -154,6 +157,7 @@ class Field extends React.Component {
     );
 
     context.notifyFieldEvent(fullName, 'change', value);
+    this.callOnChange(value);
   }
 
   /**
@@ -162,13 +166,27 @@ class Field extends React.Component {
    * the field state accordingly.
    */
   handleFieldBlurred() {
-    const { fullName, validation: { validate }, context } = this.props;
+    const {
+      fullName,
+      validation: { validate },
+      context,
+      onBlur,
+    } = this.props;
     const { value, dirty } = this.state;
 
     const asyncValidateOnChange = this.getAsyncValidateOnChangeSetting();
 
     if (dirty && !asyncValidateOnChange) validate(value);
     context.notifyFieldEvent(fullName, 'blur');
+    if (onBlur) onBlur();
+  }
+
+  /**
+   * Calls the onChange callback if existing
+   * @param {any} value Field value
+   */
+  callOnChange(value) {
+    if (this.props.onChange) this.props.onChange(value);
   }
 
   render() {
@@ -184,6 +202,8 @@ class Field extends React.Component {
         error,
         isValidating,
       },
+      onChange,
+      onBlur,
       ...attributes
     } = this.props;
 
@@ -222,6 +242,8 @@ class Field extends React.Component {
 
 Field.defaultProps = {
   asyncValidateOnChange: null,
+  onChange: null,
+  onBlur: null,
 };
 
 Field.propTypes = {
@@ -235,6 +257,8 @@ Field.propTypes = {
   context: formContextShape.isRequired,
   validation: validationShape.isRequired,
   asyncValidateOnChange: PropTypes.bool,
+  onChange: PropTypes.func,
+  onBlur: PropTypes.func,
 };
 
 export const BaseField = Field;
