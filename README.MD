@@ -62,6 +62,9 @@ If set to true the form will trigger asynchronous validation on Fields whenever 
 ***asyncValidationWait*** (Integer, optional, default: 400)
 Configures the wait time before the async validators will be called. Per default the form will call the async validators only 400ms after the **last** value change. Can be overriden per field.
 
+***className*** (String, optional, default: undefined)
+Sets the className of the html form.
+
 ***defaultValues*** (Object, optional)
 Contains the default values of the form. Those values will be put into the according fields when the form initializes. The name prop of the field will be used to get the default value from the according proprety of the defaultValues object.
 

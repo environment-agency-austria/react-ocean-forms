@@ -320,11 +320,12 @@ class Form extends React.Component {
   render() {
     const {
       children,
+      className,
     } = this.props;
 
     return (
       <FormContext.Provider value={this.state.context}>
-        <form onSubmit={this.handleSubmit} onReset={this.handleReset}>
+        <form className={className} onSubmit={this.handleSubmit} onReset={this.handleReset}>
           {children}
         </form>
       </FormContext.Provider>
@@ -342,6 +343,7 @@ Form.defaultProps = {
   onReset: null,
   onFieldValueChanged: null,
   disabled: false,
+  className: undefined,
 };
 
 // The react rules don't understand getDerivedStateFromProps yet...
@@ -360,6 +362,7 @@ Form.propTypes = {
   onReset: PropTypes.func,
   onFieldValueChanged: PropTypes.func,
   disabled: PropTypes.bool,
+  className: PropTypes.string,
 };
 /* eslint-enable react/no-unused-prop-types */
 

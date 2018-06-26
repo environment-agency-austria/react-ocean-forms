@@ -81,6 +81,7 @@ ShallowWrapper {
         "children": <div>
           unitChild
         </div>,
+        "className": undefined,
         "onReset": [Function],
         "onSubmit": [Function],
       },
@@ -155,6 +156,7 @@ ShallowWrapper {
           "children": <div>
             unitChild
           </div>,
+          "className": undefined,
           "onReset": [Function],
           "onSubmit": [Function],
         },

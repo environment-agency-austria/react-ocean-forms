@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
   - context.registerListener now needs a callback function as second parameter
   - the listener callback will be called with fieldName, eventName and eventArgs (added eventName)
 - Added onChange and onBlur callback to Field
+- Added className to Form, which will be mapped to the html form
 
 ## [1.0.3] # 2018-06-11
 - Initial release of the current code base
