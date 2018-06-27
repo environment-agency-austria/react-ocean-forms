@@ -64,6 +64,7 @@ class Form extends React.Component {
       asyncValidationWait,
       formatString,
       disabled,
+      plaintext,
     } = nextProps;
     const {
       context: oldContext,
@@ -80,6 +81,7 @@ class Form extends React.Component {
         asyncValidationWait,
         defaultValues,
         disabled,
+        plaintext,
       },
       validationContext: {
         ...oldValidationContext,
@@ -321,11 +323,15 @@ class Form extends React.Component {
     const {
       children,
       className,
+      plaintext,
     } = this.props;
+
+    let formClass = className || '';
+    if (plaintext) formClass = `${formClass} plaintext`;
 
     return (
       <FormContext.Provider value={this.state.context}>
-        <form className={className} onSubmit={this.handleSubmit} onReset={this.handleReset}>
+        <form className={formClass} onSubmit={this.handleSubmit} onReset={this.handleReset}>
           {children}
         </form>
       </FormContext.Provider>
@@ -344,6 +350,7 @@ Form.defaultProps = {
   onFieldValueChanged: null,
   disabled: false,
   className: undefined,
+  plaintext: false,
 };
 
 // The react rules don't understand getDerivedStateFromProps yet...
@@ -363,6 +370,7 @@ Form.propTypes = {
   onFieldValueChanged: PropTypes.func,
   disabled: PropTypes.bool,
   className: PropTypes.string,
+  plaintext: PropTypes.bool,
 };
 /* eslint-enable react/no-unused-prop-types */
 

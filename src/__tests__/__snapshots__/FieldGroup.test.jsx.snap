@@ -17,6 +17,7 @@ ShallowWrapper {
         "getFieldState": [MockFunction],
         "getValues": [MockFunction],
         "notifyFieldEvent": [MockFunction],
+        "plaintext": false,
         "registerField": [MockFunction] {
           "calls": Array [
             Array [
@@ -101,6 +102,7 @@ ShallowWrapper {
         "getFieldState": [MockFunction],
         "getValues": [MockFunction],
         "notifyFieldEvent": [Function],
+        "plaintext": false,
         "registerField": [MockFunction] {
           "calls": Array [
             Array [
@@ -164,6 +166,7 @@ ShallowWrapper {
           "getFieldState": [MockFunction],
           "getValues": [MockFunction],
           "notifyFieldEvent": [Function],
+          "plaintext": false,
           "registerField": [MockFunction] {
             "calls": Array [
               Array [

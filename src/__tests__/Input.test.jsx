@@ -10,6 +10,7 @@ describe('<Input />', () => {
     isValidating: false,
     touched: false,
     stringFormatter: jest.fn(),
+    plaintext: false,
   };
   const field = {
     id: 'unitInput',
@@ -31,6 +32,12 @@ describe('<Input />', () => {
   ));
 
   it('should render without crashing', () => {
+    const wrapper = setup();
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should only display the value if plaintext is set', () => {
+    meta.plaintext = true;
     const wrapper = setup();
     expect(wrapper).toMatchSnapshot();
   });

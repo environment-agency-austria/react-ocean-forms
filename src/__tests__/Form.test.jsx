@@ -55,6 +55,7 @@ describe('<Form />', () => {
       ['asyncValidateOnChange', true, 'asyncValidateOnChange'],
       ['asyncValidationWait', 800, 'asyncValidationWait'],
       ['defaultValues', { foo: 'bar' }, 'defaultValues'],
+      ['plaintext', true, 'plaintext'],
     ];
 
     test.each(cases)('case %s', (prop, value, contextProp) => {

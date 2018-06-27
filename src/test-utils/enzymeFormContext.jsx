@@ -27,6 +27,7 @@ export const createMockFormContext = registerCallback => ({
 
   busy: false,
   disabled: false,
+  plaintext: false,
 
   asyncValidateOnChange: false,
   asyncValidationWait: 400,

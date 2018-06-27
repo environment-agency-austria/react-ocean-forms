@@ -30,6 +30,7 @@ ShallowWrapper {
     onReset={[MockFunction]}
     onSubmit={[MockFunction]}
     onValidate={[MockFunction]}
+    plaintext={false}
   >
     <div>
       unitChild
@@ -48,6 +49,7 @@ ShallowWrapper {
     "nodeType": "function",
     "props": Object {
       "children": <form
+        className=""
         onReset={[Function]}
         onSubmit={[Function]}
       >
@@ -65,6 +67,7 @@ ShallowWrapper {
         "getFieldState": [Function],
         "getValues": [Function],
         "notifyFieldEvent": [Function],
+        "plaintext": false,
         "registerField": [Function],
         "registerListener": [Function],
         "stringFormatter": [Function],
@@ -81,7 +84,7 @@ ShallowWrapper {
         "children": <div>
           unitChild
         </div>,
-        "className": undefined,
+        "className": "",
         "onReset": [Function],
         "onSubmit": [Function],
       },
@@ -123,6 +126,7 @@ ShallowWrapper {
       "nodeType": "function",
       "props": Object {
         "children": <form
+          className=""
           onReset={[Function]}
           onSubmit={[Function]}
         >
@@ -140,6 +144,7 @@ ShallowWrapper {
           "getFieldState": [Function],
           "getValues": [Function],
           "notifyFieldEvent": [Function],
+          "plaintext": false,
           "registerField": [Function],
           "registerListener": [Function],
           "stringFormatter": [Function],
@@ -156,7 +161,7 @@ ShallowWrapper {
           "children": <div>
             unitChild
           </div>,
-          "className": undefined,
+          "className": "",
           "onReset": [Function],
           "onSubmit": [Function],
         },

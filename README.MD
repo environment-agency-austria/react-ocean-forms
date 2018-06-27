@@ -76,6 +76,9 @@ If set every text output will be put through this function. Per default an inter
 * *id* (String): Id of the message
 * *params* (Object): Optional parameters that should be replaced in the message
 
+***plaintext*** (Boolean, default: false)
+If set to true, all the fields will display only text instead of an input element. This is useful to re-use Fields in a check page.
+
 ### Events
 ***onSubmit*** (values)
 Triggered when the form has been validated successfully and is ready to be submitted.

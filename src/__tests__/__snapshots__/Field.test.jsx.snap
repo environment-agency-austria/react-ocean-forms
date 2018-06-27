@@ -18,6 +18,7 @@ ShallowWrapper {
         "getFieldState": [MockFunction],
         "getValues": [MockFunction],
         "notifyFieldEvent": [MockFunction],
+        "plaintext": false,
         "registerField": [MockFunction] {
           "calls": Array [
             Array [
@@ -85,6 +86,7 @@ ShallowWrapper {
       "meta": Object {
         "error": null,
         "isValidating": false,
+        "plaintext": false,
         "stringFormatter": [MockFunction],
         "touched": false,
         "valid": true,
@@ -114,6 +116,7 @@ ShallowWrapper {
         "meta": Object {
           "error": null,
           "isValidating": false,
+          "plaintext": false,
           "stringFormatter": [MockFunction],
           "touched": false,
           "valid": true,

@@ -53,6 +53,7 @@ export const formContextShape = PropTypes.shape({
   defaultValues: PropTypes.objectOf(fieldValueShape),
   busy: PropTypes.bool.isRequired,
   disabled: PropTypes.bool.isRequired,
+  plaintext: PropTypes.bool.isRequired,
 });
 
 /**
@@ -64,6 +65,7 @@ export const fieldMetaShape = PropTypes.shape({
   isValidating: PropTypes.bool,
   touched: PropTypes.bool,
   stringFormatter: PropTypes.func.isRequired,
+  plaintext: PropTypes.bool.isRequired,
 });
 
 /**

@@ -195,6 +195,7 @@ class Field extends React.Component {
       context: {
         disabled,
         stringFormatter,
+        plaintext,
       },
       fullName,
       validation: {
@@ -228,6 +229,7 @@ class Field extends React.Component {
       isValidating,
       touched,
       stringFormatter,
+      plaintext,
     };
 
     return (

@@ -11,6 +11,7 @@ describe('<FieldLine />', () => {
     isValidating: false,
     touched: false,
     stringFormatter: jest.fn(),
+    plaintext: false,
   };
   const field = {
     id: 'unitInput',

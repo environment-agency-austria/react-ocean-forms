@@ -1,5 +1,117 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Input /> should only display the value if plaintext is set 1`] = `
+ShallowWrapper {
+  "length": 1,
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Input
+    field={
+      Object {
+        "disabled": false,
+        "id": "unitInput",
+        "name": "unitInput",
+        "onBlur": [MockFunction],
+        "onChange": [MockFunction],
+        "value": "",
+      }
+    }
+    id="unitInput"
+    label="unitLabel"
+    meta={
+      Object {
+        "error": null,
+        "isValidating": false,
+        "plaintext": true,
+        "stringFormatter": [MockFunction],
+        "touched": false,
+        "valid": true,
+      }
+    }
+    type="text"
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "function",
+    "props": Object {
+      "children": "",
+      "field": Object {
+        "disabled": false,
+        "id": "unitInput",
+        "name": "unitInput",
+        "onBlur": [MockFunction],
+        "onChange": [MockFunction],
+        "value": "",
+      },
+      "id": "unitInput",
+      "info": undefined,
+      "label": "unitLabel",
+      "meta": Object {
+        "error": null,
+        "isValidating": false,
+        "plaintext": true,
+        "stringFormatter": [MockFunction],
+        "touched": false,
+        "valid": true,
+      },
+      "type": "text",
+      "validators": undefined,
+    },
+    "ref": null,
+    "rendered": "",
+    "type": [Function],
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "function",
+      "props": Object {
+        "children": "",
+        "field": Object {
+          "disabled": false,
+          "id": "unitInput",
+          "name": "unitInput",
+          "onBlur": [MockFunction],
+          "onChange": [MockFunction],
+          "value": "",
+        },
+        "id": "unitInput",
+        "info": undefined,
+        "label": "unitLabel",
+        "meta": Object {
+          "error": null,
+          "isValidating": false,
+          "plaintext": true,
+          "stringFormatter": [MockFunction],
+          "touched": false,
+          "valid": true,
+        },
+        "type": "text",
+        "validators": undefined,
+      },
+      "ref": null,
+      "rendered": "",
+      "type": [Function],
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
+}
+`;
+
 exports[`<Input /> should render without crashing 1`] = `
 ShallowWrapper {
   "length": 1,
@@ -21,6 +133,7 @@ ShallowWrapper {
       Object {
         "error": null,
         "isValidating": false,
+        "plaintext": false,
         "stringFormatter": [MockFunction],
         "touched": false,
         "valid": true,
@@ -63,6 +176,7 @@ ShallowWrapper {
       "meta": Object {
         "error": null,
         "isValidating": false,
+        "plaintext": false,
         "stringFormatter": [MockFunction],
         "touched": false,
         "valid": true,
@@ -119,6 +233,7 @@ ShallowWrapper {
         "meta": Object {
           "error": null,
           "isValidating": false,
+          "plaintext": false,
           "stringFormatter": [MockFunction],
           "touched": false,
           "valid": true,

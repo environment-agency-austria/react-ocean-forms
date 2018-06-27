@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
   - the listener callback will be called with fieldName, eventName and eventArgs (added eventName)
 - Added onChange and onBlur callback to Field
 - Added className to Form, which will be mapped to the html form
+- Added plaintext mode to Form, which only displays the plaintext value
 
 ## [1.0.3] # 2018-06-11
 - Initial release of the current code base

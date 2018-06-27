@@ -21,6 +21,7 @@ ShallowWrapper {
       Object {
         "error": null,
         "isValidating": false,
+        "plaintext": false,
         "stringFormatter": [MockFunction] {
           "calls": Array [
             Array [
@@ -408,6 +409,7 @@ ShallowWrapper {
       Object {
         "error": null,
         "isValidating": false,
+        "plaintext": false,
         "stringFormatter": [MockFunction] {
           "calls": Array [
             Array [
@@ -746,6 +748,7 @@ ShallowWrapper {
       Object {
         "error": null,
         "isValidating": false,
+        "plaintext": false,
         "stringFormatter": [MockFunction] {
           "calls": Array [
             Array [

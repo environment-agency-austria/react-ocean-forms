@@ -20,11 +20,12 @@ function Input(props) {
   const {
     field,
     type,
+    meta,
   } = props;
 
   return (
     <FieldLine {...props}>
-      <input type={type} {...field} />
+      {meta.plaintext ? field.value : <input type={type} {...field} />}
     </FieldLine>
   );
 }

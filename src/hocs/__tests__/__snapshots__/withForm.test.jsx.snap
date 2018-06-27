@@ -16,6 +16,7 @@ ShallowWrapper {
         "getFieldState": [MockFunction],
         "getValues": [MockFunction],
         "notifyFieldEvent": [MockFunction],
+        "plaintext": false,
         "registerField": [MockFunction],
         "registerListener": [MockFunction],
         "stringFormatter": [MockFunction],
