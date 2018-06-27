@@ -1,6 +1,6 @@
 {
   "name": "react-ocean-forms",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Forms components for react based on the context api.",
   "main": "build/index.js",
   "private": false,
