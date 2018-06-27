@@ -146,6 +146,13 @@ Triggered on field value change.
 ***onBlur*** ()
 Triggered on field blur.
 
+### Lifecycle hooks
+***getDisplayValue*** (value, { disabled, plaintext })
+Called, when the field is loading it's value from the forms default values. Must return the value to display.
+
+***getSubmitValue*** (value, { disabled, plaintext })
+Called, when the field is submitting it's value to the form. Must return the value to submit.
+
 ### Specialized properties
 Depending on the input component that is used with the Field, the Field will accept a range of specialized properties to configure the behaviour of the component. Those properties are described at the according documentation of the input component.
 

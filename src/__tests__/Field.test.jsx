@@ -19,6 +19,9 @@ describe('<Field />', () => {
   const onChangeHandler = jest.fn();
   const onBlurHandler = jest.fn();
 
+  const getDisplayValue = jest.fn().mockImplementation(value => value);
+  const getSubmitValue = jest.fn().mockImplementation(value => value);
+
   const setup = props => shallow((
     <BaseField
       name={fieldName}
@@ -29,6 +32,8 @@ describe('<Field />', () => {
       validation={validation}
       onChange={onChangeHandler}
       onBlur={onBlurHandler}
+      getDisplayValue={getDisplayValue}
+      getSubmitValue={getSubmitValue}
       {...props}
     />
   ));
@@ -36,6 +41,13 @@ describe('<Field />', () => {
 
   it('should render without error', () => {
     expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should call the getDisplayValue function', () => {
+    expect(getDisplayValue).toHaveBeenLastCalledWith(
+      '',
+      { disabled: false, plaintext: false },
+    );
   });
 
   it('should register itself in the form context', () => {
@@ -68,6 +80,13 @@ describe('<Field />', () => {
     it('should remember the changed value', () => {
       triggerChange();
       expect(wrapper.find('TestComponent').prop('field').value).toBe(changeValue);
+    });
+
+    it('should call the getSubmitValue function', () => {
+      expect(getSubmitValue).toHaveBeenLastCalledWith(
+        changeValue,
+        { disabled: false, plaintext: false },
+      );
     });
 
     it('should call the validate function', () => {
@@ -143,6 +162,13 @@ describe('<Field />', () => {
       resetMocks();
     });
 
+    it('should call the getSubmitValue function', () => {
+      expect(getSubmitValue).toHaveBeenLastCalledWith(
+        changeValue,
+        { disabled: false, plaintext: false },
+      );
+    });
+
     it('should call the validate function', () => {
       expect(validation.validate).toHaveBeenLastCalledWith(changeValue);
     });
@@ -203,6 +229,48 @@ describe('<Field />', () => {
         expect(onChangeHandler).toHaveBeenLastCalledWith('');
       });
     });
+  });
+
+  describe('value callbacks', () => {
+    const get42 = jest.fn().mockImplementation(() => 42);
+    const get84 = jest.fn().mockImplementation(() => 84);
+
+    beforeAll(() => {
+      formContext.defaultValues = { [fieldName]: 33 };
+      wrapper.setProps({
+        getDisplayValue: get42,
+        getSubmitValue: get84,
+        context: formContext,
+      });
+      wrapper.update();
+    });
+
+    afterAll(() => {
+      wrapper.setProps({ getDisplayValue, getSubmitValue });
+    });
+
+    it('should display 42 as value', () => {
+      expect(wrapper).toMatchSnapshot();
+    });
+
+    it('should return 84 as value', () => {
+      const fieldValue = wrapper.instance().getValue();
+      expect(get84).toHaveBeenLastCalledWith(42, { disabled: false, plaintext: false });
+      expect(fieldValue).toBe(84);
+    });
+  });
+
+  it('should work without value callbacks', () => {
+    wrapper.setProps({
+      getDisplayValue: undefined,
+      getSubmitValue: undefined,
+    });
+    wrapper.update();
+
+    expect(() => {
+      wrapper.instance().getValue();
+    }).not.toThrowError();
+    expect(wrapper).toMatchSnapshot();
   });
 
   it('should set its value to the defaultValue', () => {

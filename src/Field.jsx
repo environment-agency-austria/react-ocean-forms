@@ -34,6 +34,7 @@ class Field extends React.Component {
       validation: {
         update: updateValidation,
       },
+      getDisplayValue,
     } = props;
 
     context.registerField(
@@ -51,7 +52,10 @@ class Field extends React.Component {
     this.state = {
       touched: false,
       dirty: false,
-      value: '',
+      value: getDisplayValue(
+        '',
+        Field.getValueMeta(context),
+      ),
     };
   }
 
@@ -60,15 +64,25 @@ class Field extends React.Component {
    * been detected
    */
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { fullName, context: { defaultValues: newDefaultValues } } = nextProps;
+    const {
+      fullName,
+      context,
+      context: {
+        defaultValues: newDefaultValues,
+      },
+      getDisplayValue,
+    } = nextProps;
     const newDefaultValue = getDeepValue(fullName, newDefaultValues);
 
     const { defaultValue: oldDefaultValue } = prevState;
 
     if (newDefaultValue !== oldDefaultValue) {
       return ({
-        value: newDefaultValue || '',
         defaultValue: newDefaultValue,
+        value: getDisplayValue(
+          newDefaultValue || '',
+          Field.getValueMeta(context),
+        ),
       });
     }
 
@@ -83,11 +97,27 @@ class Field extends React.Component {
   }
 
   /**
+   * Returns a meta object for the value lifecycle hooks
+   * @param {FormContext} context Form context
+   */
+  static getValueMeta(context) {
+    return {
+      disabled: context.disabled,
+      plaintext: context.plaintext,
+    };
+  }
+
+  /**
    * Returns the current field value
    */
   getValue() {
     const { value } = this.state;
-    return value;
+    const { getSubmitValue, context } = this.props;
+
+    return getSubmitValue(
+      value,
+      Field.getValueMeta(context),
+    );
   }
 
   /**
@@ -109,17 +139,26 @@ class Field extends React.Component {
    */
   reset() {
     const { defaultValue } = this.state;
-    const { validation: { reset } } = this.props;
+    const {
+      validation,
+      getDisplayValue,
+      onChange,
+      context,
+    } = this.props;
 
-    const value = defaultValue || '';
+    const value = getDisplayValue(
+      defaultValue || '',
+      Field.getValueMeta(context),
+    );
+
     this.setState({
       touched: false,
       dirty: false,
       value,
     });
-    reset();
 
-    this.callOnChange(value);
+    validation.reset();
+    onChange(value);
   }
 
   /**
@@ -128,9 +167,15 @@ class Field extends React.Component {
    */
   async validate(args) {
     const { value } = this.state;
-    const { validation: { validate } } = this.props;
+    const { validation: { validate }, getSubmitValue, context } = this.props;
 
-    return validate(value, args);
+    return validate(
+      getSubmitValue(
+        value,
+        Field.getValueMeta(context),
+      ),
+      args,
+    );
   }
 
   /**
@@ -141,7 +186,13 @@ class Field extends React.Component {
    */
   handleFieldChanged(event) {
     const { value } = event.target;
-    const { fullName, context, validation: { validate } } = this.props;
+    const {
+      fullName,
+      context,
+      validation: { validate },
+      getSubmitValue,
+      onChange,
+    } = this.props;
 
     this.setState({
       dirty: true,
@@ -150,14 +201,18 @@ class Field extends React.Component {
     });
 
     const asyncValidateOnChange = this.getAsyncValidateOnChangeSetting();
+    const submitValue = getSubmitValue(
+      value,
+      Field.getValueMeta(context),
+    );
 
     validate(
-      value,
+      submitValue,
       { checkAsync: asyncValidateOnChange },
     );
 
-    context.notifyFieldEvent(fullName, 'change', value);
-    this.callOnChange(value);
+    context.notifyFieldEvent(fullName, 'change', submitValue);
+    onChange(submitValue);
   }
 
   /**
@@ -171,22 +226,19 @@ class Field extends React.Component {
       validation: { validate },
       context,
       onBlur,
+      getSubmitValue,
     } = this.props;
     const { value, dirty } = this.state;
 
     const asyncValidateOnChange = this.getAsyncValidateOnChangeSetting();
+    const submitValue = getSubmitValue(
+      value,
+      Field.getValueMeta(context),
+    );
 
-    if (dirty && !asyncValidateOnChange) validate(value);
+    if (dirty && !asyncValidateOnChange) validate(submitValue);
     context.notifyFieldEvent(fullName, 'blur');
-    if (onBlur) onBlur();
-  }
-
-  /**
-   * Calls the onChange callback if existing
-   * @param {any} value Field value
-   */
-  callOnChange(value) {
-    if (this.props.onChange) this.props.onChange(value);
+    onBlur();
   }
 
   render() {
@@ -244,8 +296,10 @@ class Field extends React.Component {
 
 Field.defaultProps = {
   asyncValidateOnChange: null,
-  onChange: null,
-  onBlur: null,
+  onChange: () => {},
+  onBlur: () => {},
+  getDisplayValue: value => (value),
+  getSubmitValue: value => (value),
 };
 
 Field.propTypes = {
@@ -261,6 +315,8 @@ Field.propTypes = {
   asyncValidateOnChange: PropTypes.bool,
   onChange: PropTypes.func,
   onBlur: PropTypes.func,
+  getDisplayValue: PropTypes.func,
+  getSubmitValue: PropTypes.func,
 };
 
 export const BaseField = Field;
