@@ -1,4 +1,7 @@
-# react-ocean-forms
+# react-ocean-forms 
+[![npm](https://img.shields.io/npm/v/react-ocean-forms.svg)](https://www.npmjs.com/package/react-ocean-forms)
+[![GitHub license](https://img.shields.io/github/license/environment-agency-austria/react-ocean-forms.svg)](https://github.com/environment-agency-austria/react-ocean-forms/blob/master/LICENSE)
+
 Flexible and lightweight framework for rendering and validating forms with React.
 
 ## Features
