@@ -106,12 +106,7 @@ class Field extends React.Component {
       });
     }
 
-    return {
-      contextMeta: {
-        disabled: newDisabled,
-        plaintext: newPlaintext,
-      },
-    };
+    return null;
   }
 
   /**
