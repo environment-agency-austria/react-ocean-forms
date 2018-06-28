@@ -2,6 +2,7 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+- Fixed a bug where getDisplayValue wasn't called when the form plaintext or disabled state changed
 
 ## [1.1.0] # 2018-06-27
 - Changed listener logic of the form context to make it usable in more use cases:

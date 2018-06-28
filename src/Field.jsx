@@ -56,12 +56,17 @@ class Field extends React.Component {
         '',
         Field.getValueMeta(context),
       ),
+      contextMeta: {
+        disabled: false,
+        plaintext: false,
+      },
     };
   }
 
   /**
    * Updates the default value if a change has
    * been detected
+   * TODO: This can't be the best way to handle this?!
    */
   static getDerivedStateFromProps(nextProps, prevState) {
     const {
@@ -69,24 +74,44 @@ class Field extends React.Component {
       context,
       context: {
         defaultValues: newDefaultValues,
+        disabled: newDisabled,
+        plaintext: newPlaintext,
       },
       getDisplayValue,
     } = nextProps;
     const newDefaultValue = getDeepValue(fullName, newDefaultValues);
 
-    const { defaultValue: oldDefaultValue } = prevState;
+    const {
+      defaultValue: oldDefaultValue,
+      contextMeta: {
+        disabled: oldDisabled,
+        plaintext: oldPlaintext,
+      },
+    } = prevState;
 
-    if (newDefaultValue !== oldDefaultValue) {
+    if (newDefaultValue !== oldDefaultValue
+      || newDisabled !== oldDisabled
+      || newPlaintext !== oldPlaintext
+    ) {
       return ({
         defaultValue: newDefaultValue,
         value: getDisplayValue(
           newDefaultValue || '',
           Field.getValueMeta(context),
         ),
+        contextMeta: {
+          disabled: newDisabled,
+          plaintext: newPlaintext,
+        },
       });
     }
 
-    return null;
+    return {
+      contextMeta: {
+        disabled: newDisabled,
+        plaintext: newPlaintext,
+      },
+    };
   }
 
   /**

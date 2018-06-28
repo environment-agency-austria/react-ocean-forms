@@ -232,31 +232,65 @@ describe('<Field />', () => {
   });
 
   describe('value callbacks', () => {
-    const get42 = jest.fn().mockImplementation(() => 42);
-    const get84 = jest.fn().mockImplementation(() => 84);
+    const MOCK_DISPLAY_VALUE = 42;
+    const MOCK_SUBMIT_VALUE = 84;
+    const MOCK_DEFAULT_VALUE = 33;
+
+    const getMockDisplayValue = jest.fn().mockImplementation(() => MOCK_DISPLAY_VALUE);
+    const getMockSubmitValue = jest.fn().mockImplementation(() => MOCK_SUBMIT_VALUE);
 
     beforeAll(() => {
-      formContext.defaultValues = { [fieldName]: 33 };
+      formContext.defaultValues = { [fieldName]: MOCK_DEFAULT_VALUE };
       wrapper.setProps({
-        getDisplayValue: get42,
-        getSubmitValue: get84,
+        getDisplayValue: getMockDisplayValue,
+        getSubmitValue: getMockSubmitValue,
         context: formContext,
       });
       wrapper.update();
     });
 
     afterAll(() => {
-      wrapper.setProps({ getDisplayValue, getSubmitValue });
+      formContext.disabled = false;
+      formContext.plaintext = false;
+      wrapper.setProps({ getDisplayValue, getSubmitValue, context: formContext });
     });
 
-    it('should display 42 as value', () => {
+    it(`should display ${MOCK_DISPLAY_VALUE} as value`, () => {
       expect(wrapper).toMatchSnapshot();
     });
 
-    it('should return 84 as value', () => {
+    it(`should return ${MOCK_SUBMIT_VALUE} as value`, () => {
       const fieldValue = wrapper.instance().getValue();
-      expect(get84).toHaveBeenLastCalledWith(42, { disabled: false, plaintext: false });
-      expect(fieldValue).toBe(84);
+      expect(getMockSubmitValue).toHaveBeenLastCalledWith(
+        MOCK_DISPLAY_VALUE,
+        {
+          disabled: false,
+          plaintext: false,
+        },
+      );
+      expect(fieldValue).toBe(MOCK_SUBMIT_VALUE);
+    });
+
+    it('should call getDisplayValue whenever the form disabled state changes', () => {
+      getMockDisplayValue.mockReset();
+      formContext.disabled = true;
+      wrapper.setProps({ context: formContext });
+
+      expect(getMockDisplayValue).toHaveBeenCalledWith(
+        MOCK_DEFAULT_VALUE,
+        { disabled: true, plaintext: false },
+      );
+    });
+
+    it('should call getDisplayValue whenever the form plaintext state changes', () => {
+      getMockDisplayValue.mockReset();
+      formContext.plaintext = true;
+      wrapper.setProps({ context: formContext });
+
+      expect(getMockDisplayValue).toHaveBeenCalledWith(
+        MOCK_DEFAULT_VALUE,
+        { disabled: true, plaintext: true },
+      );
     });
   });
 
