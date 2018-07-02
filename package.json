@@ -1,6 +1,6 @@
 {
   "name": "react-ocean-forms",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Forms components for react based on the context api.",
   "main": "build/index.js",
   "private": false,
@@ -18,8 +18,8 @@
       "<rootDir>/config/jest/enzyme.js"
     ],
     "testMatch": [
-       "**/__tests__/**/*.js?(x)",
-       "**/?(*.)+(spec|test).js?(x)"
+      "**/__tests__/**/*.js?(x)",
+      "**/?(*.)+(spec|test).js?(x)"
     ],
     "collectCoverageFrom": [
       "<rootDir>/src/**/*.{js,jsx,mjs}"
