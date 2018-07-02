@@ -2,6 +2,8 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+## [1.1.1] # 2018-07-02
 - Fixed a bug where getDisplayValue wasn't called when the form plaintext or disabled state changed
 
 ## [1.1.0] # 2018-06-27
