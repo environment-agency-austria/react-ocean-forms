@@ -30,9 +30,9 @@ export function baseWithValidation(WrappedComponent) {
       this.updateValidationState = this.updateValidationState.bind(this);
 
       const { name, context } = props;
-      const fullName = context.fieldPrefix ?
-        context.fieldPrefix.concat('.', name) :
-        name;
+      const fullName = context.fieldPrefix
+        ? context.fieldPrefix.concat('.', name)
+        : name;
 
       this.state = {
         fullName,
@@ -182,8 +182,10 @@ export function baseWithValidation(WrappedComponent) {
       }
 
       // Get the correct wait setting
-      const asyncValidationWait = this.props.asyncValidationWait === null ?
-        formContext.asyncValidationWait : this.props.asyncValidationWait;
+      const { asyncValidationWait: propAsyncValidationWait } = this.props;
+      const asyncValidationWait = propAsyncValidationWait === null
+        ? formContext.asyncValidationWait
+        : propAsyncValidationWait;
 
       validationState.asyncTimeout = setTimeout(performAsyncValidation, asyncValidationWait);
 

@@ -61,7 +61,8 @@ class FieldGroup extends React.Component {
    * Unregisters the field from the form
    */
   componentWillUnmount() {
-    this.props.context.unregisterField(this.props.fullName);
+    const { context, fullName } = this.props;
+    context.unregisterField(fullName);
   }
 
   /**
@@ -147,6 +148,7 @@ class FieldGroup extends React.Component {
         valid,
         error,
       },
+      render: renderProp,
     } = this.props;
 
     const groupState = {
@@ -163,7 +165,7 @@ class FieldGroup extends React.Component {
 
     return (
       <FormContext.Provider value={subContext}>
-        {this.props.render(groupState)}
+        {renderProp(groupState)}
       </FormContext.Provider>
     );
   }

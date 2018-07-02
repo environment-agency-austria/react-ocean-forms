@@ -252,9 +252,10 @@ class Form extends React.Component {
    * if provided.
    */
   callOnSubmit() {
-    if (this.props.onSubmit !== null) {
+    const { onSubmit } = this.props;
+    if (onSubmit !== null) {
       const values = this.getValues();
-      this.props.onSubmit(values);
+      onSubmit(values);
       this.updateBusyState(false);
     }
   }
@@ -271,8 +272,9 @@ class Form extends React.Component {
     const fields = Object.entries(this.fields);
     fields.forEach(([, state]) => state.reset());
 
-    if (this.props.onReset !== null) {
-      this.props.onReset();
+    const { onReset } = this.props;
+    if (onReset !== null) {
+      onReset();
     }
   }
 
@@ -291,11 +293,11 @@ class Form extends React.Component {
     }
 
     if (
-      typeof fieldState.label !== 'string' ||
-      typeof fieldState.validate !== 'function' ||
-      typeof fieldState.updateValidation !== 'function' ||
-      typeof fieldState.reset !== 'function' ||
-      typeof fieldState.getValue !== 'function'
+      typeof fieldState.label !== 'string'
+      || typeof fieldState.validate !== 'function'
+      || typeof fieldState.updateValidation !== 'function'
+      || typeof fieldState.reset !== 'function'
+      || typeof fieldState.getValue !== 'function'
     ) {
       throw new Error('[Form] registerField: invalid field state given');
     }
@@ -326,11 +328,13 @@ class Form extends React.Component {
       plaintext,
     } = this.props;
 
+    const { context } = this.state;
+
     let formClass = className || '';
     if (plaintext) formClass = `${formClass} plaintext`;
 
     return (
-      <FormContext.Provider value={this.state.context}>
+      <FormContext.Provider value={context}>
         <form className={formClass} onSubmit={this.handleSubmit} onReset={this.handleReset}>
           {children}
         </form>

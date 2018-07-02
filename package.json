@@ -18,8 +18,8 @@
       "<rootDir>/config/jest/enzyme.js"
     ],
     "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.{js,jsx,mjs}",
-      "<rootDir>/src/**/?(*.)(spec|test).{js,jsx,mjs}"
+       "**/__tests__/**/*.js?(x)",
+       "**/?(*.)+(spec|test).js?(x)"
     ],
     "collectCoverageFrom": [
       "<rootDir>/src/**/*.{js,jsx,mjs}"
@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
-    "babel-jest": "^23.0.1",
+    "babel-jest": "^23.2.0",
     "babel-loader": "^7.1.2",
     "babel-polyfill": "^6.26.0",
     "babel-preset-react-app": "^3.1.0",
@@ -60,15 +60,15 @@
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^4.19.1",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.8.0",
+    "eslint-config-airbnb": "^17.0.0",
+    "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-jest": "^21.15.1",
     "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.6.1",
-    "jest": "^23.1.0",
+    "eslint-plugin-react": "^7.10.0",
+    "jest": "^23.2.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
-    "webpack": "^4.12.0",
+    "webpack": "^4.14.0",
     "webpack-cli": "^3.0.3",
     "webpack-dev-server": "^3.1.4"
   },

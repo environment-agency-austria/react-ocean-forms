@@ -38,7 +38,8 @@ class ValidationSummary extends React.Component {
    * Unregisters the field from the form
    */
   componentWillUnmount() {
-    this.props.context.unregisterListener(this.props.id);
+    const { context, id } = this.props;
+    context.unregisterListener(id);
   }
 
   /**
@@ -61,7 +62,8 @@ class ValidationSummary extends React.Component {
   }
 
   scrollIntoView() {
-    if (this.headerRef.current && !this.props.disableFocusOnSubmit) {
+    const { disableFocusOnSubmit } = this.props;
+    if (this.headerRef.current && !disableFocusOnSubmit) {
       this.headerRef.current.scrollIntoView({ block: 'start', behavior: 'smooth' });
     }
   }
@@ -99,8 +101,9 @@ class ValidationSummary extends React.Component {
 
       // Use an optional render prop if the user
       // wants to customize the output of the error
-      if (this.props.renderFieldError !== null) {
-        return this.props.renderFieldError(
+      const { renderFieldError } = this.props;
+      if (renderFieldError !== null) {
+        return renderFieldError(
           error.id,
           fieldName,
           fieldErrors,
@@ -177,8 +180,9 @@ class ValidationSummary extends React.Component {
     // Use an optional render prop if the user
     // wants to customize the look and feel of
     // the validation summary
-    if (this.props.render !== null) {
-      return this.props.render(summary);
+    const { render: renderProp } = this.props;
+    if (renderProp !== null) {
+      return renderProp(summary);
     }
 
     return summary;

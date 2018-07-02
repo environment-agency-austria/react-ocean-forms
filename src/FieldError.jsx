@@ -8,7 +8,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { toArray } from './utils/';
+import { toArray } from './utils';
 import { errorsShape } from './shapes';
 
 

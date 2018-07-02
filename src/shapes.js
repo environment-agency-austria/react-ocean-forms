@@ -90,4 +90,3 @@ export const validationShape = PropTypes.shape({
   valid: PropTypes.bool.isRequired,
   error: errorsShape,
 });
-

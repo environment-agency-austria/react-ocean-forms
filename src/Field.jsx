@@ -64,6 +64,14 @@ class Field extends React.Component {
   }
 
   /**
+   * Unregisters the field from the form
+   */
+  componentWillUnmount() {
+    const { context, fullName } = this.props;
+    context.unregisterField(fullName);
+  }
+
+  /**
    * Updates the default value if a change has
    * been detected
    * TODO: This can't be the best way to handle this?!
@@ -107,13 +115,6 @@ class Field extends React.Component {
     }
 
     return null;
-  }
-
-  /**
-   * Unregisters the field from the form
-   */
-  componentWillUnmount() {
-    this.props.context.unregisterField(this.props.fullName);
   }
 
   /**

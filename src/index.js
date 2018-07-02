@@ -12,7 +12,13 @@ export { default as Field } from './Field';
 export { default as FieldGroup } from './FieldGroup';
 export { default as FieldError } from './FieldError';
 export { default as validators } from './validators';
-export { formContextShape, fieldMetaShape, fieldShape, errorShape, errorsShape } from './shapes';
+export {
+  formContextShape,
+  fieldMetaShape,
+  fieldShape,
+  errorShape,
+  errorsShape,
+} from './shapes';
 export { default as FieldLine } from './FieldLine';
 export { default as ValidationSummary } from './ValidationSummary';
 export { default as Input } from './Input';

@@ -5,5 +5,8 @@
     "node": true,
     "jest": true
   },
-  "plugins": ["react", "import", "jest"]
+  "plugins": ["react", "import", "jest"],
+  "rules": {
+    "react/jsx-one-expression-per-line": 1
+  }
 }
