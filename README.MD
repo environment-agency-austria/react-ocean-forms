@@ -91,7 +91,7 @@ Triggered when the form has been validated successfully and is ready to be submi
 Triggered after all field validations have been successfull. Provides the current values end expects an error object with the field names as properties and the errors inside those properties.
 * *values* (Object): Contains the form values. The name of the fields are used as property names for the values object.
 
-***onReset*** (values)
+***onReset***
 Triggered when the form has been resetted by the user.
 
 ***onFieldValueChanged*** (name, value)
