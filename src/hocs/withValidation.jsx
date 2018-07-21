@@ -41,6 +41,8 @@ export function baseWithValidation(WrappedComponent) {
         isValidating: false,
         asyncTimeout: null,
       };
+
+      this.unmounted = false;
     }
 
     /**
@@ -49,6 +51,7 @@ export function baseWithValidation(WrappedComponent) {
     componentWillUnmount() {
       const { asyncTimeout } = this.state;
       if (asyncTimeout !== null) clearTimeout(asyncTimeout);
+      this.unmounted = true;
     }
 
     /**
@@ -200,6 +203,12 @@ export function baseWithValidation(WrappedComponent) {
     updateAndNotify(newState) {
       const { context } = this.props;
       const { fullName } = this.state;
+
+      // Don't do anything if the component has already been
+      // unmounted. This can happen when the validated Field
+      // is already removed while there are async validators
+      // running in the background.
+      if (this.unmounted) return;
 
       this.setState(newState);
       context.notifyFieldEvent(fullName, 'validation', newState);
