@@ -51,7 +51,6 @@ ShallowWrapper {
         "value": "",
       },
       "id": "unitInput",
-      "info": undefined,
       "label": "unitLabel",
       "meta": Object {
         "error": null,
@@ -84,7 +83,6 @@ ShallowWrapper {
           "value": "",
         },
         "id": "unitInput",
-        "info": undefined,
         "label": "unitLabel",
         "meta": Object {
           "error": null,
@@ -171,7 +169,6 @@ ShallowWrapper {
         "value": "",
       },
       "id": "unitInput",
-      "info": undefined,
       "label": "unitLabel",
       "meta": Object {
         "error": null,
@@ -228,7 +225,6 @@ ShallowWrapper {
           "value": "",
         },
         "id": "unitInput",
-        "info": undefined,
         "label": "unitLabel",
         "meta": Object {
           "error": null,

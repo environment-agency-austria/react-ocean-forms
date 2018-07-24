@@ -1,4 +1,4 @@
-# react-ocean-forms 
+# react-ocean-forms
 [![npm](https://img.shields.io/npm/v/react-ocean-forms.svg)](https://www.npmjs.com/package/react-ocean-forms)
 [![GitHub license](https://img.shields.io/github/license/environment-agency-austria/react-ocean-forms.svg)](https://github.com/environment-agency-austria/react-ocean-forms/blob/master/LICENSE)
 
@@ -101,7 +101,7 @@ Triggered when the value of a field changes.
 The Form should contain at least one Field element and a submit button, otherwise it's quite useless. The form will wrap them inside a html form and a ```FormContext.Provider```
 
 ## Field Component
-Defines a form line containing a label and an input. Additionally it can render an info button and info alert as well as validation messages. If the user adds the required validator then it will mark the field as required as well.
+Defines a form line containing a label and an input. Additionally it will render validation messages. If the user adds the required validator then it will mark the field as required as well.
 
 ```jsx
 import { Field } from 'react-ocean-forms';

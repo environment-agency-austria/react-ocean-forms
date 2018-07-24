@@ -33,13 +33,11 @@ function Input(props) {
 Input.displayName = 'Input';
 
 Input.defaultProps = {
-  info: undefined,
   type: 'text',
 };
 
 Input.propTypes = {
   label: PropTypes.string.isRequired,
-  info: PropTypes.string,
   type: PropTypes.string,
   meta: fieldMetaShape.isRequired,
   field: fieldShape.isRequired,
