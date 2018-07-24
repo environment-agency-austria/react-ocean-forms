@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 - Fixed a bug where the state of an unmounted Field has been set
+- Added displayName props
 
 ## [1.1.1] # 2018-07-02
 - Fixed a bug where getDisplayValue wasn't called when the form plaintext or disabled state changed

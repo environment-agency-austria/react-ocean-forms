@@ -30,6 +30,8 @@ function Input(props) {
   );
 }
 
+Input.displayName = 'Input';
+
 Input.defaultProps = {
   info: undefined,
   type: 'text',

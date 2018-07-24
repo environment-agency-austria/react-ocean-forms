@@ -343,6 +343,8 @@ class Form extends React.Component {
   }
 }
 
+Form.displayName = 'Form';
+
 Form.defaultProps = {
   defaultValues: {},
   asyncValidateOnChange: false,

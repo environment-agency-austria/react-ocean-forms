@@ -60,6 +60,8 @@ function FieldLine(props) {
   /* eslint-enable jsx-a11y/label-has-for */
 }
 
+FieldLine.displayName = 'FieldLine';
+
 FieldLine.defaultProps = {
   validators: undefined,
 };

@@ -37,6 +37,8 @@ function FieldError(props) {
   return errors;
 }
 
+FieldError.displayName = 'FieldError';
+
 FieldError.defaultProps = {
   error: null,
 };

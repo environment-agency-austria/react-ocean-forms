@@ -315,6 +315,8 @@ class Field extends React.Component {
   }
 }
 
+Field.displayName = 'Field';
+
 Field.defaultProps = {
   asyncValidateOnChange: null,
   onChange: () => {},

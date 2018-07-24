@@ -171,6 +171,8 @@ class FieldGroup extends React.Component {
   }
 }
 
+FieldGroup.displayName = 'FieldGroup';
+
 FieldGroup.defaultProps = {
   asyncValidateOnChange: null,
 };

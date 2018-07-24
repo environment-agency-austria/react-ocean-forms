@@ -189,6 +189,8 @@ class ValidationSummary extends React.Component {
   }
 }
 
+ValidationSummary.displayName = 'ValidationSummary';
+
 ValidationSummary.defaultProps = {
   title: 'ojs_form_validationSummaryHeader',
   renderFieldError: null,
