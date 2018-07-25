@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [1.2.0] # 2018-07-25
 - Fixed a bug where the state of an unmounted Field has been set
 - Added displayName props
 - Removed unsupported info prop on Input (only supported in `react-ocean-forms-bootstrap` input)
