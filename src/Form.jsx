@@ -216,9 +216,18 @@ class Form extends React.Component {
     const { onSubmit } = this.props;
     if (onSubmit !== null) {
       const values = this.getValues();
-      onSubmit(values);
-      this.updateBusyState(false);
+      const submitResult = onSubmit(values);
+
+      if (submitResult instanceof Promise) {
+        submitResult.then(() => {
+          this.updateBusyState(false);
+        });
+
+        return;
+      }
     }
+
+    this.updateBusyState(false);
   }
 
   /**

@@ -174,9 +174,9 @@ describe('<Form />', () => {
     beforeEach(refreshContext);
     afterEach(() => {
       mockListeners.forEach(({ state }) => {
-        state.mockReset();
+        state.mockClear();
       });
-      onFieldValueChangedHandler.mockReset();
+      onFieldValueChangedHandler.mockClear();
     });
 
     afterAll(() => {
@@ -255,12 +255,12 @@ describe('<Form />', () => {
 
       it('should call the onValidate prop', () => {
         expect(onValidateHandler).toHaveBeenCalledWith(expectedFormValues);
-        onValidateHandler.mockReset();
+        onValidateHandler.mockClear();
       });
 
       it('should call the onSubmit prop', () => {
         expect(onSubmitHandler).toHaveBeenCalledWith(expectedFormValues);
-        onSubmitHandler.mockReset();
+        onSubmitHandler.mockClear();
       });
 
       it('should work without optional props', () => {
@@ -305,24 +305,32 @@ describe('<Form />', () => {
         ));
 
         mockListeners.forEach(({ state }) => {
-          state.mockReset();
+          state.mockClear();
         });
       });
 
       it('should not call the onSubmit prop', () => {
         expect(onSubmitHandler).not.toHaveBeenCalled();
-        onSubmitHandler.mockReset();
+        onSubmitHandler.mockClear();
       });
     });
 
     describe('invalid through field validators', () => {
-      it('should not throw an error', () => {
+      let originalValidate;
+      beforeAll(() => {
+        originalValidate = unitFieldState.validate;
         unitFieldState.validate = jest.fn().mockResolvedValue({
           isValidating: false,
           valid: false,
           error: 'foobar',
         });
+      });
 
+      afterAll(() => {
+        unitFieldState.validate = originalValidate;
+      });
+
+      it('should not throw an error', () => {
         const formElement = wrapper.find('form');
         expect(() => formElement.simulate('submit', mockEvent())).not.toThrowError();
       });
@@ -335,13 +343,13 @@ describe('<Form />', () => {
         ));
 
         mockListeners.forEach(({ state }) => {
-          state.mockReset();
+          state.mockClear();
         });
       });
 
       it('should not call the onSubmit prop', () => {
         expect(onSubmitHandler).not.toHaveBeenCalled();
-        onSubmitHandler.mockReset();
+        onSubmitHandler.mockClear();
       });
 
       it('should not crash if there are no listeners', () => {
@@ -353,6 +361,70 @@ describe('<Form />', () => {
 
         const formElement = wrapper.find('form');
         expect(() => formElement.simulate('submit', mockEvent())).not.toThrowError();
+      });
+    });
+
+    describe('context busy state', () => {
+      const testBusyState = (expected, done) => {
+        const formElement = wrapper.find('form');
+        formElement.simulate('submit', mockEvent());
+
+        process.nextTick(() => {
+          wrapper.update();
+          expect(getContext().busy).toBe(expected);
+          done();
+        });
+      };
+
+      it('should not be busy if the onSubmit callback returns immediately', (done) => {
+        testBusyState(false, done);
+      });
+
+      it('should not be busy if there is no onSubmit callback', (done) => {
+        wrapper.setProps({ onSubmit: undefined });
+        testBusyState(false, done);
+      });
+
+      describe('async onSubmit callback', () => {
+        /** Mock onSubmit that simulates a slow submit handler */
+        const slowOnSubmit = () => new Promise(
+          resolve => setTimeout(() => {
+            resolve();
+          }, 1000),
+        );
+
+        beforeAll(() => {
+          jest.useFakeTimers();
+          wrapper.setProps({ onSubmit: slowOnSubmit });
+        });
+
+        afterAll(() => {
+          wrapper.setProps({ onSubmit: onSubmitHandler });
+        });
+
+        afterAll(jest.useRealTimers);
+
+        it('should not throw an error onSubmit', () => {
+          const formElement = wrapper.find('form');
+          expect(() => formElement.simulate('submit', mockEvent())).not.toThrowError();
+        });
+
+        it('should be busy after invoking onSubmit', (done) => {
+          process.nextTick(() => {
+            expect(getContext().busy).toBe(true);
+            done();
+          });
+        });
+
+        it('should not be busy after onSubmit finished', (done) => {
+          jest.runAllTimers();
+
+          process.nextTick(() => {
+            wrapper.update();
+            expect(getContext().busy).toBe(false);
+            done();
+          });
+        });
       });
     });
   });
@@ -369,7 +441,7 @@ describe('<Form />', () => {
 
     it('should call the onReset prop', () => {
       expect(onResetHandler).toHaveBeenCalled();
-      onResetHandler.mockReset();
+      onResetHandler.mockClear();
     });
 
     it('should work without the onReset prop', () => {
