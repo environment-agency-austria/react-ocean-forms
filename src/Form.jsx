@@ -68,7 +68,6 @@ class Form extends React.Component {
     } = nextProps;
     const {
       context: oldContext,
-      validationContext: oldValidationContext,
     } = prevState;
 
     const stringFormatter = formatString !== null ? formatString : defaultStringFormatter;
@@ -82,10 +81,6 @@ class Form extends React.Component {
         defaultValues,
         disabled,
         plaintext,
-      },
-      validationContext: {
-        ...oldValidationContext,
-        stringFormatter,
       },
     };
   }
