@@ -52,40 +52,6 @@ class Form extends React.Component {
   }
 
   /**
-   * Checks if the defaultValue props have changed
-   * and updates the field values.
-   * @param {object} nextProps Next props
-   * @param {object} prevState Old state
-   */
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const {
-      defaultValues,
-      asyncValidateOnChange,
-      asyncValidationWait,
-      formatString,
-      disabled,
-      plaintext,
-    } = nextProps;
-    const {
-      context: oldContext,
-    } = prevState;
-
-    const stringFormatter = formatString !== null ? formatString : defaultStringFormatter;
-
-    return {
-      context: {
-        ...oldContext,
-        stringFormatter,
-        asyncValidateOnChange,
-        asyncValidationWait,
-        defaultValues,
-        disabled,
-        plaintext,
-      },
-    };
-  }
-
-  /**
    * Returns the current state of the given field
    * @param {string} name Field name
    * @returns {object} Current field state or default field state
@@ -313,6 +279,34 @@ class Form extends React.Component {
   }
 
   /**
+   * Combines the local form context with
+   * the values from the props to form the
+   * full form context passed to the form
+   * components.
+   */
+  prepareFormContext() {
+    const { context } = this.state;
+    const {
+      defaultValues,
+      asyncValidateOnChange,
+      asyncValidationWait,
+      formatString: stringFormatter,
+      disabled,
+      plaintext,
+    } = this.props;
+
+    return {
+      ...context,
+      defaultValues,
+      asyncValidateOnChange,
+      asyncValidationWait,
+      stringFormatter,
+      disabled,
+      plaintext,
+    };
+  }
+
+  /**
    * Renders the form and wraps all its children
    * in a FormContext provider and a html form.
    */
@@ -323,7 +317,7 @@ class Form extends React.Component {
       plaintext,
     } = this.props;
 
-    const { context } = this.state;
+    const context = this.prepareFormContext();
 
     let formClass = className || '';
     if (plaintext) formClass = `${formClass} plaintext`;
@@ -344,7 +338,7 @@ Form.defaultProps = {
   defaultValues: {},
   asyncValidateOnChange: false,
   asyncValidationWait: 400,
-  formatString: null,
+  formatString: defaultStringFormatter,
   onSubmit: null,
   onValidate: null,
   onReset: null,

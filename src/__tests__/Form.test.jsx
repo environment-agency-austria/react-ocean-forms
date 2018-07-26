@@ -23,7 +23,7 @@ describe('<Form />', () => {
   ));
   const wrapper = setup();
 
-  const getContext = () => wrapper.state('context');
+  const getContext = () => wrapper.first().prop('value');
 
   it('should render without error', () => {
     expect(wrapper).toMatchSnapshot();
