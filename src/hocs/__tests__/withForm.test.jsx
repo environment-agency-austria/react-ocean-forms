@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import { createMockFormContext } from '../../test-utils/enzymeFormContext';
-import { withForm } from '../withForm';
+import withForm from '../withForm';
 
 describe('withForm', () => {
   const formContext = createMockFormContext();

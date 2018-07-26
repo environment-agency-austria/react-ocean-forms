@@ -9,7 +9,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { toArray } from './utils';
-import { withForm } from './hocs/withForm';
+import withForm from './hocs/withForm';
 import { formContextShape } from './shapes';
 
 /**

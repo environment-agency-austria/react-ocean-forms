@@ -9,7 +9,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { getDisplayName, parseValidationError } from '../utils';
-import { withForm } from './withForm';
+import withForm from './withForm';
 import { formContextShape } from '../shapes';
 
 /**

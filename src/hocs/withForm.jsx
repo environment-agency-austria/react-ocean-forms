@@ -6,18 +6,13 @@
  */
 
 import React from 'react';
+import FormContext from '../FormContext';
 import { getDisplayName } from '../utils';
-
-/**
- * Context for the communication between the form
- * and its fields.
- */
-export const FormContext = React.createContext('form');
 
 /**
  * High order component for consuming the form context
  */
-export function withForm(Component) {
+export default function withForm(Component) {
   /**
    * Component that injects the form context prop
    * to the wrapped component

@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 
 import { formContextShape, validationShape } from './shapes';
 import withValidation from './hocs/withValidation';
-import { FormContext } from './hocs/withForm';
+import FormContext from './FormContext';
 
 /**
  * Wrapper for groups of input fields

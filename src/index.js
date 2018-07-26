@@ -6,7 +6,8 @@
  */
 
 export { default as Form } from './Form';
-export { FormContext, withForm } from './hocs/withForm';
+export { default as withForm } from './hocs/withForm';
+export { default as FormContext } from './FormContext';
 export { addCustomMessages } from './utils';
 export { default as Field } from './Field';
 export { default as FieldGroup } from './FieldGroup';

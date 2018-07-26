@@ -8,7 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { getDeepValue, parseValidationError, stringFormatter as defaultStringFormatter } from './utils';
-import { FormContext } from './hocs/withForm';
+import FormContext from './FormContext';
 import { fieldValueShape } from './shapes';
 
 /**
