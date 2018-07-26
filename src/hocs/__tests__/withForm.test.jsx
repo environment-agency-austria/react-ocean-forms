@@ -2,10 +2,20 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import { createMockFormContext } from '../../test-utils/enzymeFormContext';
-import withForm from '../withForm';
+
+const prepareMock = (formContext) => {
+  jest.doMock('../../FormContext', () => ({
+    Consumer: ({ children }) => children(formContext),
+  }));
+
+  /* eslint-disable global-require */
+  return require('../withForm').default;
+};
 
 describe('withForm', () => {
   const formContext = createMockFormContext();
+  const withForm = prepareMock(formContext);
+
   const TestComponent = () => (<div id="test-component" />);
   const WrappedComponent = withForm(TestComponent);
 
@@ -14,7 +24,6 @@ describe('withForm', () => {
   const setup = props => shallow((
     <WrappedComponent
       name={fieldName}
-      context={formContext}
       {...props}
     />
   ));
@@ -22,5 +31,17 @@ describe('withForm', () => {
 
   it('should render without error', () => {
     expect(wrapper).toMatchSnapshot();
+  });
+
+  describe('FormContext.Provider', () => {
+    const childWrapper = wrapper.dive();
+
+    it('should render the children without error', () => {
+      expect(childWrapper).toMatchSnapshot();
+    });
+
+    it('should have the formContext supplied as a prop', () => {
+      expect(childWrapper.prop('context')).toBe(formContext);
+    });
   });
 });

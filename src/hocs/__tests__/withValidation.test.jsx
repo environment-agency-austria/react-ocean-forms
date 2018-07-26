@@ -155,7 +155,7 @@ describe('withValidation', () => {
       checkNotifyCalled(state);
     });
 
-    it('should wait for the default amount until triggering the async validators', async () => {
+    it('should wait for the default amount until triggering the async validators', async (done) => {
       const state = await validationRef.validate(mockValue);
 
       expect(state).toMatchObject({
@@ -168,7 +168,18 @@ describe('withValidation', () => {
 
       jest.runAllTimers();
 
-      // TODO: Find a way to check for the result
+      process.nextTick(() => {
+        expect(state).toMatchObject({
+          isValidating: false,
+          valid: false,
+          error: [{
+            message_id: errorId,
+            params: {},
+          }],
+        });
+        checkNotifyCalled(state);
+        done();
+      });
     });
 
     it('should clear any existing timeout if validate is called again', async () => {
@@ -243,6 +254,16 @@ describe('withValidation', () => {
     wrapper = updateWrapper();
 
     expect(wrapper.prop('fullName')).toBe(`unit.${fieldName}`);
+  });
+
+
+  it('should not update its state after unmounting', () => {
+    formContext.notifyFieldEvent.mockReset();
+
+    const oldInstance = root.instance();
     root.unmount();
+
+    expect(() => oldInstance.updateAndNotify({ foo: 'bar' })).not.toThrowError();
+    expect(formContext.notifyFieldEvent).not.toHaveBeenCalled();
   });
 });
