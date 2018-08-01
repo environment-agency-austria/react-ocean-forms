@@ -259,7 +259,7 @@ describe('<Form />', () => {
       });
 
       it('should call the onSubmit prop', () => {
-        expect(onSubmitHandler).toHaveBeenCalledWith(expectedFormValues);
+        expect(onSubmitHandler).toHaveBeenCalledWith(expectedFormValues, undefined);
         onSubmitHandler.mockClear();
       });
 

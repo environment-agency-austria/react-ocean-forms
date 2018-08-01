@@ -27,6 +27,7 @@ class Form extends React.Component {
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleReset = this.handleReset.bind(this);
+    this.submit = this.submit.bind(this);
 
     this.state = {
       context: {
@@ -41,6 +42,8 @@ class Form extends React.Component {
 
         getFieldState: this.getFieldState,
         getValues: this.getValues,
+
+        submit: this.submit,
 
         busy: false,
         disabled: false,
@@ -123,14 +126,22 @@ class Form extends React.Component {
 
   /**
    * Handles the submit event of the form - prevents
-   * the default, triggers any validations if needed
-   * and raises the onFormSubmit prop callback if the
-   * form is currently valid.
+   * the default and runs the submit logic
    * @param {object} event Event object
    */
-  async handleSubmit(event) {
+  handleSubmit(event) {
     event.preventDefault();
+    this.submit();
+  }
 
+  /**
+   * Submits the form - triggers any validations if needed
+   * and raises the onFormSubmit prop callback if the
+   * form is currently valid.
+   * @param {object} submitArgs Arguments that will be passed
+   * to the onSubmit callback
+   */
+  async submit(submitArgs) {
     this.updateBusyState(true);
 
     // Iterate through all fields and validate them
@@ -159,7 +170,7 @@ class Form extends React.Component {
       return;
     }
 
-    this.callOnSubmit();
+    this.callOnSubmit(submitArgs);
   }
 
   /**
@@ -211,12 +222,14 @@ class Form extends React.Component {
   /**
    * Gathers all the data and calls the onSubmit callback
    * if provided.
+   * @param {object} submitArgs Arguments that will be passed
+   * to the onSubmit callback
    */
-  callOnSubmit() {
+  callOnSubmit(submitArgs) {
     const { onSubmit } = this.props;
     if (onSubmit !== null) {
       const values = this.getValues();
-      const submitResult = onSubmit(values);
+      const submitResult = onSubmit(values, submitArgs);
 
       if (submitResult instanceof Promise) {
         submitResult.then(() => {

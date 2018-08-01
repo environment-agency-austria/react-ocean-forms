@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 - Support for async onSubmit callback, will keep the form busy until the Promise resolves
+- Added submit callback to form context, which will trigger the form submit handler
 
 ## [1.2.0] # 2018-07-25
 - Fixed a bug where the state of an unmounted Field has been set

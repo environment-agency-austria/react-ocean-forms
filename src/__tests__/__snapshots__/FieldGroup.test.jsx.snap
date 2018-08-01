@@ -41,6 +41,7 @@ ShallowWrapper {
         },
         "registerListener": [MockFunction],
         "stringFormatter": [MockFunction],
+        "submit": [MockFunction],
         "unregisterField": [MockFunction],
         "unregisterListener": [MockFunction],
       }
@@ -126,6 +127,7 @@ ShallowWrapper {
         },
         "registerListener": [MockFunction],
         "stringFormatter": [MockFunction],
+        "submit": [MockFunction],
         "unregisterField": [MockFunction],
         "unregisterListener": [MockFunction],
       },
@@ -190,6 +192,7 @@ ShallowWrapper {
           },
           "registerListener": [MockFunction],
           "stringFormatter": [MockFunction],
+          "submit": [MockFunction],
           "unregisterField": [MockFunction],
           "unregisterListener": [MockFunction],
         },

@@ -24,6 +24,7 @@ export const createMockFormContext = registerCallback => ({
   getValues: jest.fn(),
 
   stringFormatter: jest.fn().mockImplementation(stringFormatter),
+  submit: jest.fn(),
 
   busy: false,
   disabled: false,

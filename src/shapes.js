@@ -40,19 +40,27 @@ export const fieldValueShape = PropTypes.oneOfType([
  * Shape of the complete form context
  */
 export const formContextShape = PropTypes.shape({
-  getFieldState: PropTypes.func.isRequired,
+  fieldPrefix: PropTypes.string,
+
   registerField: PropTypes.func.isRequired,
   unregisterField: PropTypes.func.isRequired,
+  notifyFieldEvent: PropTypes.func.isRequired,
+
   registerListener: PropTypes.func.isRequired,
   unregisterListener: PropTypes.func.isRequired,
-  notifyFieldEvent: PropTypes.func.isRequired,
+
+  getFieldState: PropTypes.func.isRequired,
   getValues: PropTypes.func.isRequired,
-  stringFormatter: PropTypes.func.isRequired,
-  asyncValidateOnChange: PropTypes.bool.isRequired,
-  asyncValidationWait: PropTypes.number.isRequired,
-  defaultValues: PropTypes.objectOf(fieldValueShape),
+
+  submit: PropTypes.func.isRequired,
+
   busy: PropTypes.bool.isRequired,
   disabled: PropTypes.bool.isRequired,
+
+  defaultValues: PropTypes.objectOf(fieldValueShape),
+  asyncValidateOnChange: PropTypes.bool.isRequired,
+  asyncValidationWait: PropTypes.number.isRequired,
+  stringFormatter: PropTypes.func.isRequired,
   plaintext: PropTypes.bool.isRequired,
 });
 
