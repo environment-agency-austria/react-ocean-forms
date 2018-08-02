@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [1.3.0] # 2018-08-02
 - Support for async onSubmit callback, will keep the form busy until the Promise resolves
 - Added submit callback to form context, which will trigger the form submit handler
 - Added `FormButton`
