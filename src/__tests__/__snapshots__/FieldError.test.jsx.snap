@@ -2,7 +2,6 @@
 
 exports[`<FieldError /> should do nothing if invalid is false 1`] = `
 ShallowWrapper {
-  "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <FieldError
     error={null}
@@ -25,15 +24,22 @@ ShallowWrapper {
     "adapter": ReactSixteenAdapter {
       "options": Object {
         "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getSnapshotBeforeUpdate": true,
+        },
       },
     },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
   },
 }
 `;
 
 exports[`<FieldError /> should render an error 1`] = `
 ShallowWrapper {
-  "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <FieldError
     error={
@@ -72,7 +78,18 @@ ShallowWrapper {
     "simulateEvent": [Function],
     "unmount": [Function],
   },
-  Symbol(enzyme.__node__): Array [
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": "unitError_foo",
+    "nodeType": "host",
+    "props": Object {
+      "children": "string",
+    },
+    "ref": null,
+    "rendered": "string",
+    "type": "span",
+  },
+  Symbol(enzyme.__nodes__): Array [
     Object {
       "instance": null,
       "key": "unitError_foo",
@@ -85,27 +102,20 @@ ShallowWrapper {
       "type": "span",
     },
   ],
-  Symbol(enzyme.__nodes__): Array [
-    Array [
-      Object {
-        "instance": null,
-        "key": "unitError_foo",
-        "nodeType": "host",
-        "props": Object {
-          "children": "string",
-        },
-        "ref": null,
-        "rendered": "string",
-        "type": "span",
-      },
-    ],
-  ],
   Symbol(enzyme.__options__): Object {
     "adapter": ReactSixteenAdapter {
       "options": Object {
         "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getSnapshotBeforeUpdate": true,
+        },
       },
     },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
   },
 }
 `;

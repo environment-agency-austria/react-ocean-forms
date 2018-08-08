@@ -27,7 +27,7 @@ describe('withValidation', () => {
 
   beforeEach(() => {
     wrapper = updateWrapper();
-    validationRef = wrapper.prop('validation');
+    validationRef = root.prop('validation');
   });
 
   it('should render without error', () => {
