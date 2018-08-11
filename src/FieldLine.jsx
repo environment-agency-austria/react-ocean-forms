@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 
 import { fieldMetaShape, fieldShape } from './shapes';
 import FieldError from './FieldError';
+import FormText from './FormText';
 import defaultValidators from './validators';
 
 /**
@@ -43,7 +44,7 @@ function FieldLine(props) {
   return (
     <div className={groupClass}>
       <label htmlFor={field.id} className="text-right">
-        {meta.stringFormatter(label)}
+        <FormText text={label} />
         {createRequiredMarker(validators)}
       </label>
       <div className="input-container">

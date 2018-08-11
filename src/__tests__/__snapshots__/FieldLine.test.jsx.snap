@@ -21,26 +21,7 @@ ShallowWrapper {
         "error": null,
         "isValidating": false,
         "plaintext": false,
-        "stringFormatter": [MockFunction] {
-          "calls": Array [
-            Array [
-              "unitLabel",
-            ],
-            Array [
-              "unitLabel",
-            ],
-          ],
-          "results": Array [
-            Object {
-              "isThrow": false,
-              "value": undefined,
-            },
-            Object {
-              "isThrow": false,
-              "value": undefined,
-            },
-          ],
-        },
+        "stringFormatter": [MockFunction],
         "touched": false,
         "valid": false,
       }
@@ -66,7 +47,11 @@ ShallowWrapper {
         <label
           className="text-right"
           htmlFor="unitInput"
-        />,
+        >
+          <FormComponent(FormText)
+            text="unitLabel"
+          />
+        </label>,
         <div
           className="input-container"
         >
@@ -77,28 +62,7 @@ ShallowWrapper {
             error={null}
             id="unitInput_errors"
             invalid={true}
-            stringFormatter={
-              [MockFunction] {
-                "calls": Array [
-                  Array [
-                    "unitLabel",
-                  ],
-                  Array [
-                    "unitLabel",
-                  ],
-                ],
-                "results": Array [
-                  Object {
-                    "isThrow": false,
-                    "value": undefined,
-                  },
-                  Object {
-                    "isThrow": false,
-                    "value": undefined,
-                  },
-                ],
-              }
-            }
+            stringFormatter={[MockFunction]}
           />
         </div>,
       ],
@@ -112,7 +76,9 @@ ShallowWrapper {
         "nodeType": "host",
         "props": Object {
           "children": Array [
-            undefined,
+            <FormComponent(FormText)
+              text="unitLabel"
+            />,
             null,
           ],
           "className": "text-right",
@@ -120,7 +86,17 @@ ShallowWrapper {
         },
         "ref": null,
         "rendered": Array [
-          undefined,
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "function",
+            "props": Object {
+              "text": "unitLabel",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
           null,
         ],
         "type": "label",
@@ -138,28 +114,7 @@ ShallowWrapper {
               error={null}
               id="unitInput_errors"
               invalid={true}
-              stringFormatter={
-                [MockFunction] {
-                  "calls": Array [
-                    Array [
-                      "unitLabel",
-                    ],
-                    Array [
-                      "unitLabel",
-                    ],
-                  ],
-                  "results": Array [
-                    Object {
-                      "isThrow": false,
-                      "value": undefined,
-                    },
-                    Object {
-                      "isThrow": false,
-                      "value": undefined,
-                    },
-                  ],
-                }
-              }
+              stringFormatter={[MockFunction]}
             />,
           ],
           "className": "input-container",
@@ -185,26 +140,7 @@ ShallowWrapper {
               "error": null,
               "id": "unitInput_errors",
               "invalid": true,
-              "stringFormatter": [MockFunction] {
-                "calls": Array [
-                  Array [
-                    "unitLabel",
-                  ],
-                  Array [
-                    "unitLabel",
-                  ],
-                ],
-                "results": Array [
-                  Object {
-                    "isThrow": false,
-                    "value": undefined,
-                  },
-                  Object {
-                    "isThrow": false,
-                    "value": undefined,
-                  },
-                ],
-              },
+              "stringFormatter": [MockFunction],
             },
             "ref": null,
             "rendered": null,
@@ -226,7 +162,11 @@ ShallowWrapper {
           <label
             className="text-right"
             htmlFor="unitInput"
-          />,
+          >
+            <FormComponent(FormText)
+              text="unitLabel"
+            />
+          </label>,
           <div
             className="input-container"
           >
@@ -237,28 +177,7 @@ ShallowWrapper {
               error={null}
               id="unitInput_errors"
               invalid={true}
-              stringFormatter={
-                [MockFunction] {
-                  "calls": Array [
-                    Array [
-                      "unitLabel",
-                    ],
-                    Array [
-                      "unitLabel",
-                    ],
-                  ],
-                  "results": Array [
-                    Object {
-                      "isThrow": false,
-                      "value": undefined,
-                    },
-                    Object {
-                      "isThrow": false,
-                      "value": undefined,
-                    },
-                  ],
-                }
-              }
+              stringFormatter={[MockFunction]}
             />
           </div>,
         ],
@@ -272,7 +191,9 @@ ShallowWrapper {
           "nodeType": "host",
           "props": Object {
             "children": Array [
-              undefined,
+              <FormComponent(FormText)
+                text="unitLabel"
+              />,
               null,
             ],
             "className": "text-right",
@@ -280,7 +201,17 @@ ShallowWrapper {
           },
           "ref": null,
           "rendered": Array [
-            undefined,
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "function",
+              "props": Object {
+                "text": "unitLabel",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
             null,
           ],
           "type": "label",
@@ -298,28 +229,7 @@ ShallowWrapper {
                 error={null}
                 id="unitInput_errors"
                 invalid={true}
-                stringFormatter={
-                  [MockFunction] {
-                    "calls": Array [
-                      Array [
-                        "unitLabel",
-                      ],
-                      Array [
-                        "unitLabel",
-                      ],
-                    ],
-                    "results": Array [
-                      Object {
-                        "isThrow": false,
-                        "value": undefined,
-                      },
-                      Object {
-                        "isThrow": false,
-                        "value": undefined,
-                      },
-                    ],
-                  }
-                }
+                stringFormatter={[MockFunction]}
               />,
             ],
             "className": "input-container",
@@ -345,26 +255,7 @@ ShallowWrapper {
                 "error": null,
                 "id": "unitInput_errors",
                 "invalid": true,
-                "stringFormatter": [MockFunction] {
-                  "calls": Array [
-                    Array [
-                      "unitLabel",
-                    ],
-                    Array [
-                      "unitLabel",
-                    ],
-                  ],
-                  "results": Array [
-                    Object {
-                      "isThrow": false,
-                      "value": undefined,
-                    },
-                    Object {
-                      "isThrow": false,
-                      "value": undefined,
-                    },
-                  ],
-                },
+                "stringFormatter": [MockFunction],
               },
               "ref": null,
               "rendered": null,
@@ -416,19 +307,7 @@ ShallowWrapper {
         "error": null,
         "isValidating": false,
         "plaintext": false,
-        "stringFormatter": [MockFunction] {
-          "calls": Array [
-            Array [
-              "unitLabel",
-            ],
-          ],
-          "results": Array [
-            Object {
-              "isThrow": false,
-              "value": undefined,
-            },
-          ],
-        },
+        "stringFormatter": [MockFunction],
         "touched": false,
         "valid": true,
       }
@@ -454,7 +333,11 @@ ShallowWrapper {
         <label
           className="text-right"
           htmlFor="unitInput"
-        />,
+        >
+          <FormComponent(FormText)
+            text="unitLabel"
+          />
+        </label>,
         <div
           className="input-container"
         >
@@ -465,21 +348,7 @@ ShallowWrapper {
             error={null}
             id="unitInput_errors"
             invalid={false}
-            stringFormatter={
-              [MockFunction] {
-                "calls": Array [
-                  Array [
-                    "unitLabel",
-                  ],
-                ],
-                "results": Array [
-                  Object {
-                    "isThrow": false,
-                    "value": undefined,
-                  },
-                ],
-              }
-            }
+            stringFormatter={[MockFunction]}
           />
         </div>,
       ],
@@ -493,7 +362,9 @@ ShallowWrapper {
         "nodeType": "host",
         "props": Object {
           "children": Array [
-            undefined,
+            <FormComponent(FormText)
+              text="unitLabel"
+            />,
             null,
           ],
           "className": "text-right",
@@ -501,7 +372,17 @@ ShallowWrapper {
         },
         "ref": null,
         "rendered": Array [
-          undefined,
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "function",
+            "props": Object {
+              "text": "unitLabel",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
           null,
         ],
         "type": "label",
@@ -519,21 +400,7 @@ ShallowWrapper {
               error={null}
               id="unitInput_errors"
               invalid={false}
-              stringFormatter={
-                [MockFunction] {
-                  "calls": Array [
-                    Array [
-                      "unitLabel",
-                    ],
-                  ],
-                  "results": Array [
-                    Object {
-                      "isThrow": false,
-                      "value": undefined,
-                    },
-                  ],
-                }
-              }
+              stringFormatter={[MockFunction]}
             />,
           ],
           "className": "input-container",
@@ -559,19 +426,7 @@ ShallowWrapper {
               "error": null,
               "id": "unitInput_errors",
               "invalid": false,
-              "stringFormatter": [MockFunction] {
-                "calls": Array [
-                  Array [
-                    "unitLabel",
-                  ],
-                ],
-                "results": Array [
-                  Object {
-                    "isThrow": false,
-                    "value": undefined,
-                  },
-                ],
-              },
+              "stringFormatter": [MockFunction],
             },
             "ref": null,
             "rendered": null,
@@ -593,7 +448,11 @@ ShallowWrapper {
           <label
             className="text-right"
             htmlFor="unitInput"
-          />,
+          >
+            <FormComponent(FormText)
+              text="unitLabel"
+            />
+          </label>,
           <div
             className="input-container"
           >
@@ -604,21 +463,7 @@ ShallowWrapper {
               error={null}
               id="unitInput_errors"
               invalid={false}
-              stringFormatter={
-                [MockFunction] {
-                  "calls": Array [
-                    Array [
-                      "unitLabel",
-                    ],
-                  ],
-                  "results": Array [
-                    Object {
-                      "isThrow": false,
-                      "value": undefined,
-                    },
-                  ],
-                }
-              }
+              stringFormatter={[MockFunction]}
             />
           </div>,
         ],
@@ -632,7 +477,9 @@ ShallowWrapper {
           "nodeType": "host",
           "props": Object {
             "children": Array [
-              undefined,
+              <FormComponent(FormText)
+                text="unitLabel"
+              />,
               null,
             ],
             "className": "text-right",
@@ -640,7 +487,17 @@ ShallowWrapper {
           },
           "ref": null,
           "rendered": Array [
-            undefined,
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "function",
+              "props": Object {
+                "text": "unitLabel",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
             null,
           ],
           "type": "label",
@@ -658,21 +515,7 @@ ShallowWrapper {
                 error={null}
                 id="unitInput_errors"
                 invalid={false}
-                stringFormatter={
-                  [MockFunction] {
-                    "calls": Array [
-                      Array [
-                        "unitLabel",
-                      ],
-                    ],
-                    "results": Array [
-                      Object {
-                        "isThrow": false,
-                        "value": undefined,
-                      },
-                    ],
-                  }
-                }
+                stringFormatter={[MockFunction]}
               />,
             ],
             "className": "input-container",
@@ -698,19 +541,7 @@ ShallowWrapper {
                 "error": null,
                 "id": "unitInput_errors",
                 "invalid": false,
-                "stringFormatter": [MockFunction] {
-                  "calls": Array [
-                    Array [
-                      "unitLabel",
-                    ],
-                  ],
-                  "results": Array [
-                    Object {
-                      "isThrow": false,
-                      "value": undefined,
-                    },
-                  ],
-                },
+                "stringFormatter": [MockFunction],
               },
               "ref": null,
               "rendered": null,
@@ -762,33 +593,7 @@ ShallowWrapper {
         "error": null,
         "isValidating": false,
         "plaintext": false,
-        "stringFormatter": [MockFunction] {
-          "calls": Array [
-            Array [
-              "unitLabel",
-            ],
-            Array [
-              "unitLabel",
-            ],
-            Array [
-              "unitLabel",
-            ],
-          ],
-          "results": Array [
-            Object {
-              "isThrow": false,
-              "value": undefined,
-            },
-            Object {
-              "isThrow": false,
-              "value": undefined,
-            },
-            Object {
-              "isThrow": false,
-              "value": undefined,
-            },
-          ],
-        },
+        "stringFormatter": [MockFunction],
         "touched": false,
         "valid": false,
       }
@@ -820,6 +625,9 @@ ShallowWrapper {
           className="text-right"
           htmlFor="unitInput"
         >
+          <FormComponent(FormText)
+            text="unitLabel"
+          />
           <span
             className="field-required"
           >
@@ -836,35 +644,7 @@ ShallowWrapper {
             error={null}
             id="unitInput_errors"
             invalid={true}
-            stringFormatter={
-              [MockFunction] {
-                "calls": Array [
-                  Array [
-                    "unitLabel",
-                  ],
-                  Array [
-                    "unitLabel",
-                  ],
-                  Array [
-                    "unitLabel",
-                  ],
-                ],
-                "results": Array [
-                  Object {
-                    "isThrow": false,
-                    "value": undefined,
-                  },
-                  Object {
-                    "isThrow": false,
-                    "value": undefined,
-                  },
-                  Object {
-                    "isThrow": false,
-                    "value": undefined,
-                  },
-                ],
-              }
-            }
+            stringFormatter={[MockFunction]}
           />
         </div>,
       ],
@@ -878,7 +658,9 @@ ShallowWrapper {
         "nodeType": "host",
         "props": Object {
           "children": Array [
-            undefined,
+            <FormComponent(FormText)
+              text="unitLabel"
+            />,
             <span
               className="field-required"
             >
@@ -890,7 +672,17 @@ ShallowWrapper {
         },
         "ref": null,
         "rendered": Array [
-          undefined,
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "function",
+            "props": Object {
+              "text": "unitLabel",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
           Object {
             "instance": null,
             "key": undefined,
@@ -919,35 +711,7 @@ ShallowWrapper {
               error={null}
               id="unitInput_errors"
               invalid={true}
-              stringFormatter={
-                [MockFunction] {
-                  "calls": Array [
-                    Array [
-                      "unitLabel",
-                    ],
-                    Array [
-                      "unitLabel",
-                    ],
-                    Array [
-                      "unitLabel",
-                    ],
-                  ],
-                  "results": Array [
-                    Object {
-                      "isThrow": false,
-                      "value": undefined,
-                    },
-                    Object {
-                      "isThrow": false,
-                      "value": undefined,
-                    },
-                    Object {
-                      "isThrow": false,
-                      "value": undefined,
-                    },
-                  ],
-                }
-              }
+              stringFormatter={[MockFunction]}
             />,
           ],
           "className": "input-container",
@@ -973,33 +737,7 @@ ShallowWrapper {
               "error": null,
               "id": "unitInput_errors",
               "invalid": true,
-              "stringFormatter": [MockFunction] {
-                "calls": Array [
-                  Array [
-                    "unitLabel",
-                  ],
-                  Array [
-                    "unitLabel",
-                  ],
-                  Array [
-                    "unitLabel",
-                  ],
-                ],
-                "results": Array [
-                  Object {
-                    "isThrow": false,
-                    "value": undefined,
-                  },
-                  Object {
-                    "isThrow": false,
-                    "value": undefined,
-                  },
-                  Object {
-                    "isThrow": false,
-                    "value": undefined,
-                  },
-                ],
-              },
+              "stringFormatter": [MockFunction],
             },
             "ref": null,
             "rendered": null,
@@ -1022,6 +760,9 @@ ShallowWrapper {
             className="text-right"
             htmlFor="unitInput"
           >
+            <FormComponent(FormText)
+              text="unitLabel"
+            />
             <span
               className="field-required"
             >
@@ -1038,35 +779,7 @@ ShallowWrapper {
               error={null}
               id="unitInput_errors"
               invalid={true}
-              stringFormatter={
-                [MockFunction] {
-                  "calls": Array [
-                    Array [
-                      "unitLabel",
-                    ],
-                    Array [
-                      "unitLabel",
-                    ],
-                    Array [
-                      "unitLabel",
-                    ],
-                  ],
-                  "results": Array [
-                    Object {
-                      "isThrow": false,
-                      "value": undefined,
-                    },
-                    Object {
-                      "isThrow": false,
-                      "value": undefined,
-                    },
-                    Object {
-                      "isThrow": false,
-                      "value": undefined,
-                    },
-                  ],
-                }
-              }
+              stringFormatter={[MockFunction]}
             />
           </div>,
         ],
@@ -1080,7 +793,9 @@ ShallowWrapper {
           "nodeType": "host",
           "props": Object {
             "children": Array [
-              undefined,
+              <FormComponent(FormText)
+                text="unitLabel"
+              />,
               <span
                 className="field-required"
               >
@@ -1092,7 +807,17 @@ ShallowWrapper {
           },
           "ref": null,
           "rendered": Array [
-            undefined,
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "function",
+              "props": Object {
+                "text": "unitLabel",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
             Object {
               "instance": null,
               "key": undefined,
@@ -1121,35 +846,7 @@ ShallowWrapper {
                 error={null}
                 id="unitInput_errors"
                 invalid={true}
-                stringFormatter={
-                  [MockFunction] {
-                    "calls": Array [
-                      Array [
-                        "unitLabel",
-                      ],
-                      Array [
-                        "unitLabel",
-                      ],
-                      Array [
-                        "unitLabel",
-                      ],
-                    ],
-                    "results": Array [
-                      Object {
-                        "isThrow": false,
-                        "value": undefined,
-                      },
-                      Object {
-                        "isThrow": false,
-                        "value": undefined,
-                      },
-                      Object {
-                        "isThrow": false,
-                        "value": undefined,
-                      },
-                    ],
-                  }
-                }
+                stringFormatter={[MockFunction]}
               />,
             ],
             "className": "input-container",
@@ -1175,33 +872,7 @@ ShallowWrapper {
                 "error": null,
                 "id": "unitInput_errors",
                 "invalid": true,
-                "stringFormatter": [MockFunction] {
-                  "calls": Array [
-                    Array [
-                      "unitLabel",
-                    ],
-                    Array [
-                      "unitLabel",
-                    ],
-                    Array [
-                      "unitLabel",
-                    ],
-                  ],
-                  "results": Array [
-                    Object {
-                      "isThrow": false,
-                      "value": undefined,
-                    },
-                    Object {
-                      "isThrow": false,
-                      "value": undefined,
-                    },
-                    Object {
-                      "isThrow": false,
-                      "value": undefined,
-                    },
-                  ],
-                },
+                "stringFormatter": [MockFunction],
               },
               "ref": null,
               "rendered": null,
