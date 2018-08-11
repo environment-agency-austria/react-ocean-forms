@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 - Added `FormText` component, a wrapper for `formContext.stringFormatter`
+- Fixed missing id field to `fieldShape`
 
 ## [1.3.0] # 2018-08-02
 - Support for async onSubmit callback, will keep the form busy until the Promise resolves

@@ -80,6 +80,7 @@ export const fieldMetaShape = PropTypes.shape({
  * Shape of the field parameters
  */
 export const fieldShape = PropTypes.shape({
+  id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   value: fieldValueShape.isRequired,
   onChange: PropTypes.func.isRequired,
