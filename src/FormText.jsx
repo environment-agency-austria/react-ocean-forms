@@ -13,6 +13,8 @@ function FormText({ context, text, values }) {
   return context.stringFormatter(text, values);
 }
 
+FormText.displayName = 'FormText';
+
 FormText.propTypes = {
   context: PropTypes.shape({
     stringFormatter: PropTypes.func.isRequired,
