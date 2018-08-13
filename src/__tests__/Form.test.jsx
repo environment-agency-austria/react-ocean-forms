@@ -45,6 +45,7 @@ describe('<Form />', () => {
       asyncValidateOnChange: false,
       asyncValidationWait: 400,
       defaultValues: {},
+      values: undefined,
     });
   });
 
@@ -55,6 +56,7 @@ describe('<Form />', () => {
       ['asyncValidateOnChange', true, 'asyncValidateOnChange'],
       ['asyncValidationWait', 800, 'asyncValidationWait'],
       ['defaultValues', { foo: 'bar' }, 'defaultValues'],
+      ['values', { foo: 'bar' }, 'values'],
       ['plaintext', true, 'plaintext'],
     ];
 

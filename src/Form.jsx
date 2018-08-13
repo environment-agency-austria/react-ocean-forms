@@ -310,6 +310,7 @@ class Form extends React.Component {
     const { context } = this.state;
     const {
       defaultValues,
+      values,
       asyncValidateOnChange,
       asyncValidationWait,
       formatString: stringFormatter,
@@ -320,6 +321,7 @@ class Form extends React.Component {
     return {
       ...context,
       defaultValues,
+      values,
       asyncValidateOnChange,
       asyncValidationWait,
       stringFormatter,
@@ -358,6 +360,7 @@ Form.displayName = 'Form';
 
 Form.defaultProps = {
   defaultValues: {},
+  values: undefined,
   asyncValidateOnChange: false,
   asyncValidationWait: 400,
   formatString: defaultStringFormatter,
@@ -372,6 +375,7 @@ Form.defaultProps = {
 
 Form.propTypes = {
   defaultValues: PropTypes.objectOf(fieldValueShape),
+  values: PropTypes.objectOf(fieldValueShape),
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,

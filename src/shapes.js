@@ -58,6 +58,7 @@ export const formContextShape = PropTypes.shape({
   disabled: PropTypes.bool.isRequired,
 
   defaultValues: PropTypes.objectOf(fieldValueShape),
+  values: PropTypes.objectOf(fieldValueShape),
   asyncValidateOnChange: PropTypes.bool.isRequired,
   asyncValidationWait: PropTypes.number.isRequired,
   stringFormatter: PropTypes.func.isRequired,

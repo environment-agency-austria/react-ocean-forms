@@ -4,10 +4,12 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 ### Breaking Changes
 - Changed behaviour of `defaultValues` - the Field value will only be overwritten if the Field isn't touched
-- Added `defaultValue` to `Field` - it will override the `defaultValues` of the Form
+- Added `values` to `Form` - basically they behave like the old defaultValues, but will override any defaultValues if present
 
 ### Other changes
 - Added `FormText` component, a wrapper for `formContext.stringFormatter`
+- Added `defaultValue` to `Field` - it will override the `defaultValues` of the Form
+- Added `value` to `Field` - it will override the `values` of the Form
 - Fixed missing id field to `fieldShape`
 
 ## [1.3.0] # 2018-08-02

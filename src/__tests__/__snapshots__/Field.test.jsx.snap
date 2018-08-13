@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Field /> should render without error 1`] = `
+exports[`<Field /> Render should render without crashing 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Field
@@ -46,30 +46,12 @@ ShallowWrapper {
       }
     }
     fullName="unitField"
-    getDisplayValue={
-      [MockFunction] {
-        "calls": Array [
-          Array [
-            "",
-            Object {
-              "disabled": false,
-              "plaintext": false,
-            },
-          ],
-        ],
-        "results": Array [
-          Object {
-            "isThrow": false,
-            "value": "",
-          },
-        ],
-      }
-    }
-    getSubmitValue={[MockFunction]}
+    getDisplayValue={[Function]}
+    getSubmitValue={[Function]}
     label="Unit field"
     name="unitField"
-    onBlur={[MockFunction]}
-    onChange={[MockFunction]}
+    onBlur={[Function]}
+    onChange={[Function]}
     validation={
       Object {
         "error": null,
@@ -94,6 +76,7 @@ ShallowWrapper {
     "nodeType": "function",
     "props": Object {
       "asyncValidateOnChange": null,
+      "defaultValue": undefined,
       "field": Object {
         "disabled": false,
         "id": "unitField",
@@ -101,243 +84,6 @@ ShallowWrapper {
         "onBlur": [Function],
         "onChange": [Function],
         "value": "",
-      },
-      "getDisplayValue": [MockFunction] {
-        "calls": Array [
-          Array [
-            "",
-            Object {
-              "disabled": false,
-              "plaintext": false,
-            },
-          ],
-        ],
-        "results": Array [
-          Object {
-            "isThrow": false,
-            "value": "",
-          },
-        ],
-      },
-      "getSubmitValue": [MockFunction],
-      "label": "Unit field",
-      "meta": Object {
-        "error": null,
-        "isValidating": false,
-        "plaintext": false,
-        "stringFormatter": [MockFunction],
-        "touched": false,
-        "valid": true,
-      },
-      "name": "unitField",
-    },
-    "ref": null,
-    "rendered": null,
-    "type": [Function],
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "function",
-      "props": Object {
-        "asyncValidateOnChange": null,
-        "field": Object {
-          "disabled": false,
-          "id": "unitField",
-          "name": "unitField",
-          "onBlur": [Function],
-          "onChange": [Function],
-          "value": "",
-        },
-        "getDisplayValue": [MockFunction] {
-          "calls": Array [
-            Array [
-              "",
-              Object {
-                "disabled": false,
-                "plaintext": false,
-              },
-            ],
-          ],
-          "results": Array [
-            Object {
-              "isThrow": false,
-              "value": "",
-            },
-          ],
-        },
-        "getSubmitValue": [MockFunction],
-        "label": "Unit field",
-        "meta": Object {
-          "error": null,
-          "isValidating": false,
-          "plaintext": false,
-          "stringFormatter": [MockFunction],
-          "touched": false,
-          "valid": true,
-        },
-        "name": "unitField",
-      },
-      "ref": null,
-      "rendered": null,
-      "type": [Function],
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getSnapshotBeforeUpdate": true,
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
-`;
-
-exports[`<Field /> should work without value callbacks 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <Field
-    asyncValidateOnChange={false}
-    component={[Function]}
-    context={
-      Object {
-        "asyncValidateOnChange": false,
-        "asyncValidationWait": 400,
-        "busy": false,
-        "defaultValues": Object {
-          "unitField": 33,
-        },
-        "disabled": false,
-        "fieldPrefix": null,
-        "getFieldState": [MockFunction],
-        "getValues": [MockFunction],
-        "notifyFieldEvent": [MockFunction],
-        "plaintext": false,
-        "registerField": [MockFunction] {
-          "calls": Array [
-            Array [
-              "unitField",
-              Object {
-                "getValue": [Function],
-                "label": "Unit field",
-                "reset": [Function],
-                "updateValidation": [MockFunction],
-                "validate": [Function],
-              },
-            ],
-          ],
-          "results": Array [
-            Object {
-              "isThrow": false,
-              "value": undefined,
-            },
-          ],
-        },
-        "registerListener": [MockFunction],
-        "stringFormatter": [MockFunction],
-        "submit": [MockFunction],
-        "unregisterField": [MockFunction],
-        "unregisterListener": [MockFunction],
-      }
-    }
-    fullName="unitField"
-    getDisplayValue={[Function]}
-    getSubmitValue={[Function]}
-    label="Unit field"
-    name="unitField"
-    onBlur={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-        "results": Array [
-          Object {
-            "isThrow": false,
-            "value": undefined,
-          },
-        ],
-      }
-    }
-    onChange={
-      [MockFunction] {
-        "calls": Array [
-          Array [
-            "",
-          ],
-        ],
-        "results": Array [
-          Object {
-            "isThrow": false,
-            "value": undefined,
-          },
-        ],
-      }
-    }
-    validation={
-      Object {
-        "error": null,
-        "isValidating": false,
-        "reset": [MockFunction] {
-          "calls": Array [
-            Array [],
-          ],
-          "results": Array [
-            Object {
-              "isThrow": false,
-              "value": undefined,
-            },
-          ],
-        },
-        "update": [MockFunction],
-        "valid": true,
-        "validate": [MockFunction] {
-          "calls": Array [
-            Array [
-              "blubb",
-              Object {
-                "foo": "bar",
-              },
-            ],
-          ],
-          "results": Array [
-            Object {
-              "isThrow": false,
-              "value": undefined,
-            },
-          ],
-        },
-      }
-    }
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "function",
-    "props": Object {
-      "asyncValidateOnChange": false,
-      "field": Object {
-        "disabled": false,
-        "id": "unitField",
-        "name": "unitField",
-        "onBlur": [Function],
-        "onChange": [Function],
-        "value": 33,
       },
       "getDisplayValue": [Function],
       "getSubmitValue": [Function],
@@ -351,6 +97,7 @@ ShallowWrapper {
         "valid": true,
       },
       "name": "unitField",
+      "value": undefined,
     },
     "ref": null,
     "rendered": null,
@@ -362,14 +109,15 @@ ShallowWrapper {
       "key": undefined,
       "nodeType": "function",
       "props": Object {
-        "asyncValidateOnChange": false,
+        "asyncValidateOnChange": null,
+        "defaultValue": undefined,
         "field": Object {
           "disabled": false,
           "id": "unitField",
           "name": "unitField",
           "onBlur": [Function],
           "onChange": [Function],
-          "value": 33,
+          "value": "",
         },
         "getDisplayValue": [Function],
         "getSubmitValue": [Function],
@@ -383,261 +131,7 @@ ShallowWrapper {
           "valid": true,
         },
         "name": "unitField",
-      },
-      "ref": null,
-      "rendered": null,
-      "type": [Function],
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getSnapshotBeforeUpdate": true,
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
-`;
-
-exports[`<Field /> value callbacks should display 42 as value 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <Field
-    asyncValidateOnChange={false}
-    component={[Function]}
-    context={
-      Object {
-        "asyncValidateOnChange": false,
-        "asyncValidationWait": 400,
-        "busy": false,
-        "defaultValues": Object {
-          "unitField": 33,
-        },
-        "disabled": false,
-        "fieldPrefix": null,
-        "getFieldState": [MockFunction],
-        "getValues": [MockFunction],
-        "notifyFieldEvent": [MockFunction],
-        "plaintext": false,
-        "registerField": [MockFunction] {
-          "calls": Array [
-            Array [
-              "unitField",
-              Object {
-                "getValue": [Function],
-                "label": "Unit field",
-                "reset": [Function],
-                "updateValidation": [MockFunction],
-                "validate": [Function],
-              },
-            ],
-          ],
-          "results": Array [
-            Object {
-              "isThrow": false,
-              "value": undefined,
-            },
-          ],
-        },
-        "registerListener": [MockFunction],
-        "stringFormatter": [MockFunction],
-        "submit": [MockFunction],
-        "unregisterField": [MockFunction],
-        "unregisterListener": [MockFunction],
-      }
-    }
-    fullName="unitField"
-    getDisplayValue={
-      [MockFunction] {
-        "calls": Array [
-          Array [
-            33,
-            Object {
-              "disabled": false,
-              "plaintext": false,
-            },
-          ],
-        ],
-        "results": Array [
-          Object {
-            "isThrow": false,
-            "value": 42,
-          },
-        ],
-      }
-    }
-    getSubmitValue={[MockFunction]}
-    label="Unit field"
-    name="unitField"
-    onBlur={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-        "results": Array [
-          Object {
-            "isThrow": false,
-            "value": undefined,
-          },
-        ],
-      }
-    }
-    onChange={
-      [MockFunction] {
-        "calls": Array [
-          Array [
-            "",
-          ],
-        ],
-        "results": Array [
-          Object {
-            "isThrow": false,
-            "value": undefined,
-          },
-        ],
-      }
-    }
-    validation={
-      Object {
-        "error": null,
-        "isValidating": false,
-        "reset": [MockFunction] {
-          "calls": Array [
-            Array [],
-          ],
-          "results": Array [
-            Object {
-              "isThrow": false,
-              "value": undefined,
-            },
-          ],
-        },
-        "update": [MockFunction],
-        "valid": true,
-        "validate": [MockFunction] {
-          "calls": Array [
-            Array [
-              "blubb",
-              Object {
-                "foo": "bar",
-              },
-            ],
-          ],
-          "results": Array [
-            Object {
-              "isThrow": false,
-              "value": undefined,
-            },
-          ],
-        },
-      }
-    }
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "function",
-    "props": Object {
-      "asyncValidateOnChange": false,
-      "field": Object {
-        "disabled": false,
-        "id": "unitField",
-        "name": "unitField",
-        "onBlur": [Function],
-        "onChange": [Function],
-        "value": 42,
-      },
-      "getDisplayValue": [MockFunction] {
-        "calls": Array [
-          Array [
-            33,
-            Object {
-              "disabled": false,
-              "plaintext": false,
-            },
-          ],
-        ],
-        "results": Array [
-          Object {
-            "isThrow": false,
-            "value": 42,
-          },
-        ],
-      },
-      "getSubmitValue": [MockFunction],
-      "label": "Unit field",
-      "meta": Object {
-        "error": null,
-        "isValidating": false,
-        "plaintext": false,
-        "stringFormatter": [MockFunction],
-        "touched": false,
-        "valid": true,
-      },
-      "name": "unitField",
-    },
-    "ref": null,
-    "rendered": null,
-    "type": [Function],
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "function",
-      "props": Object {
-        "asyncValidateOnChange": false,
-        "field": Object {
-          "disabled": false,
-          "id": "unitField",
-          "name": "unitField",
-          "onBlur": [Function],
-          "onChange": [Function],
-          "value": 42,
-        },
-        "getDisplayValue": [MockFunction] {
-          "calls": Array [
-            Array [
-              33,
-              Object {
-                "disabled": false,
-                "plaintext": false,
-              },
-            ],
-          ],
-          "results": Array [
-            Object {
-              "isThrow": false,
-              "value": 42,
-            },
-          ],
-        },
-        "getSubmitValue": [MockFunction],
-        "label": "Unit field",
-        "meta": Object {
-          "error": null,
-          "isValidating": false,
-          "plaintext": false,
-          "stringFormatter": [MockFunction],
-          "touched": false,
-          "valid": true,
-        },
-        "name": "unitField",
+        "value": undefined,
       },
       "ref": null,
       "rendered": null,
