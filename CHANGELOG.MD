@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 ### Breaking Changes
 - Changed behaviour of `defaultValues` - the Field value will only be overwritten if the Field isn't touched
+- Added `defaultValue` to `Field` - it will override the `defaultValues` of the Form
 
 ### Other changes
 - Added `FormText` component, a wrapper for `formContext.stringFormatter`

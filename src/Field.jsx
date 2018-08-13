@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 
 import { getDeepValue } from './utils';
 import withValidation from './hocs/withValidation';
-import { formContextShape, validationShape } from './shapes';
+import { formContextShape, validationShape, fieldValueShape } from './shapes';
 
 /**
  * Wrapper for input fields managed by
@@ -85,8 +85,10 @@ class Field extends React.Component {
         plaintext: newPlaintext,
       },
       getDisplayValue,
+      defaultValue: newDefaultValue,
     } = nextProps;
-    const newDefaultValue = getDeepValue(fullName, newDefaultValues);
+
+    const defaultValue = newDefaultValue || getDeepValue(fullName, newDefaultValues);
 
     const {
       contextMeta: {
@@ -97,7 +99,7 @@ class Field extends React.Component {
       touched,
     } = prevState;
 
-    const hasDefaultValueChanged = newDefaultValue !== oldDefaultValue;
+    const hasDefaultValueChanged = defaultValue !== oldDefaultValue;
     const hasDisabledChanged = newDisabled !== oldDisabled;
     const hasPlaintextChanged = newPlaintext !== oldPlaintext;
 
@@ -110,13 +112,13 @@ class Field extends React.Component {
     ) {
       return ({
         value: getDisplayValue(
-          newDefaultValue || '',
+          defaultValue || '',
           Field.getValueMeta(context),
         ),
         touched: false,
         dirty: false,
         contextMeta: {
-          defaultValue: newDefaultValue,
+          defaultValue,
           disabled: newDisabled,
           plaintext: newPlaintext,
         },
@@ -346,6 +348,7 @@ Field.displayName = 'Field';
 
 Field.defaultProps = {
   asyncValidateOnChange: null,
+  defaultValue: undefined,
   onChange: () => {},
   onBlur: () => {},
   getDisplayValue: value => (value),
@@ -361,6 +364,7 @@ Field.propTypes = {
     PropTypes.func,
   ]).isRequired,
   context: formContextShape.isRequired,
+  defaultValue: fieldValueShape,
   validation: validationShape.isRequired,
   asyncValidateOnChange: PropTypes.bool,
   onChange: PropTypes.func,
