@@ -370,8 +370,6 @@ Form.defaultProps = {
   plaintext: false,
 };
 
-// The react rules don't understand getDerivedStateFromProps yet...
-/* eslint-disable react/no-unused-prop-types */
 Form.propTypes = {
   defaultValues: PropTypes.objectOf(fieldValueShape),
   children: PropTypes.oneOfType([
@@ -389,6 +387,5 @@ Form.propTypes = {
   className: PropTypes.string,
   plaintext: PropTypes.bool,
 };
-/* eslint-enable react/no-unused-prop-types */
 
 export default Form;
