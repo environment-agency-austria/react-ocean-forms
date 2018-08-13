@@ -74,7 +74,6 @@ class Field extends React.Component {
   /**
    * Updates the default value if a change has
    * been detected
-   * TODO: This can't be the best way to handle this?!
    */
   static getDerivedStateFromProps(nextProps, prevState) {
     const {
@@ -90,24 +89,34 @@ class Field extends React.Component {
     const newDefaultValue = getDeepValue(fullName, newDefaultValues);
 
     const {
-      defaultValue: oldDefaultValue,
       contextMeta: {
+        defaultValue: oldDefaultValue,
         disabled: oldDisabled,
         plaintext: oldPlaintext,
       },
+      touched,
     } = prevState;
 
-    if (newDefaultValue !== oldDefaultValue
-      || newDisabled !== oldDisabled
-      || newPlaintext !== oldPlaintext
+    const hasDefaultValueChanged = newDefaultValue !== oldDefaultValue;
+    const hasDisabledChanged = newDisabled !== oldDisabled;
+    const hasPlaintextChanged = newPlaintext !== oldPlaintext;
+
+    if (!touched
+      && (
+        hasDefaultValueChanged
+        || hasDisabledChanged
+        || hasPlaintextChanged
+      )
     ) {
       return ({
-        defaultValue: newDefaultValue,
         value: getDisplayValue(
           newDefaultValue || '',
           Field.getValueMeta(context),
         ),
+        touched: false,
+        dirty: false,
         contextMeta: {
+          defaultValue: newDefaultValue,
           disabled: newDisabled,
           plaintext: newPlaintext,
         },
@@ -159,7 +168,7 @@ class Field extends React.Component {
    * Resets the field to its default state
    */
   reset() {
-    const { defaultValue } = this.state;
+    const { contextMeta: { defaultValue } } = this.state;
     const {
       validation,
       getDisplayValue,
@@ -262,31 +271,15 @@ class Field extends React.Component {
     onBlur();
   }
 
-  render() {
-    const {
-      component: InputComponent,
-      context: {
-        disabled,
-        stringFormatter,
-        plaintext,
-      },
-      fullName,
-      validation: {
-        valid,
-        error,
-        isValidating,
-      },
-      onChange,
-      onBlur,
-      ...attributes
-    } = this.props;
+  /**
+   * Creates the properties that can be directly
+   * mapped to the input component (e.g. html input)
+   */
+  createFieldProps() {
+    const { context: { disabled }, fullName } = this.props;
+    const { value } = this.state;
 
-    const {
-      value,
-      touched,
-    } = this.state;
-
-    const field = {
+    return {
       id: fullName,
       name: fullName,
       value,
@@ -294,9 +287,28 @@ class Field extends React.Component {
       onChange: this.handleFieldChanged,
       onBlur: this.handleFieldBlurred,
     };
+  }
 
-    // Sprinkle some metadata in
-    const meta = {
+  /**
+   * Creates the meta properties with meta information
+   * used by the input component
+   */
+  createMetaProps() {
+    const {
+      context: {
+        stringFormatter,
+        plaintext,
+      },
+      validation: {
+        valid,
+        error,
+        isValidating,
+      },
+    } = this.props;
+
+    const { touched } = this.state;
+
+    return {
       valid,
       error,
       isValidating,
@@ -304,6 +316,21 @@ class Field extends React.Component {
       stringFormatter,
       plaintext,
     };
+  }
+
+  render() {
+    const {
+      component: InputComponent,
+      context,
+      fullName,
+      validation,
+      onChange,
+      onBlur,
+      ...attributes
+    } = this.props;
+
+    const field = this.createFieldProps();
+    const meta = this.createMetaProps();
 
     return (
       <InputComponent
