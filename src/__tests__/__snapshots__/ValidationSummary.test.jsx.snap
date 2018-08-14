@@ -187,7 +187,8 @@ ShallowWrapper {
               onClick={[Function]}
             >
               Unit field
-              : 
+              :
+               
               <span>
                 test
               </span>
@@ -226,7 +227,8 @@ ShallowWrapper {
                 onClick={[Function]}
               >
                 Unit field
-                : 
+                :
+                 
                 <span>
                   test
                 </span>
@@ -246,7 +248,8 @@ ShallowWrapper {
                 onClick={[Function]}
               >
                 Unit field
-                : 
+                :
+                 
                 <span>
                   test
                 </span>
@@ -260,7 +263,8 @@ ShallowWrapper {
               "props": Object {
                 "children": Array [
                   "Unit field",
-                  ": ",
+                  ":",
+                  " ",
                   Array [
                     <span>
                       test
@@ -273,7 +277,8 @@ ShallowWrapper {
               "ref": null,
               "rendered": Array [
                 "Unit field",
-                ": ",
+                ":",
+                " ",
                 Object {
                   "instance": null,
                   "key": "unitField_test",
@@ -315,7 +320,8 @@ ShallowWrapper {
                 onClick={[Function]}
               >
                 Unit field
-                : 
+                :
+                 
                 <span>
                   test
                 </span>
@@ -354,7 +360,8 @@ ShallowWrapper {
                   onClick={[Function]}
                 >
                   Unit field
-                  : 
+                  :
+                   
                   <span>
                     test
                   </span>
@@ -374,7 +381,8 @@ ShallowWrapper {
                   onClick={[Function]}
                 >
                   Unit field
-                  : 
+                  :
+                   
                   <span>
                     test
                   </span>
@@ -388,7 +396,8 @@ ShallowWrapper {
                 "props": Object {
                   "children": Array [
                     "Unit field",
-                    ": ",
+                    ":",
+                    " ",
                     Array [
                       <span>
                         test
@@ -401,7 +410,8 @@ ShallowWrapper {
                 "ref": null,
                 "rendered": Array [
                   "Unit field",
-                  ": ",
+                  ":",
+                  " ",
                   Object {
                     "instance": null,
                     "key": "unitField_test",
@@ -582,7 +592,8 @@ ShallowWrapper {
               onClick={[Function]}
             >
               Unit field
-              : 
+              :
+               
               <span>
                 test
               </span>
@@ -621,7 +632,8 @@ ShallowWrapper {
                 onClick={[Function]}
               >
                 Unit field
-                : 
+                :
+                 
                 <span>
                   test
                 </span>
@@ -641,7 +653,8 @@ ShallowWrapper {
                 onClick={[Function]}
               >
                 Unit field
-                : 
+                :
+                 
                 <span>
                   test
                 </span>
@@ -655,7 +668,8 @@ ShallowWrapper {
               "props": Object {
                 "children": Array [
                   "Unit field",
-                  ": ",
+                  ":",
+                  " ",
                   Array [
                     <span>
                       test
@@ -668,7 +682,8 @@ ShallowWrapper {
               "ref": null,
               "rendered": Array [
                 "Unit field",
-                ": ",
+                ":",
+                " ",
                 Object {
                   "instance": null,
                   "key": "unitField_test",
@@ -710,7 +725,8 @@ ShallowWrapper {
                 onClick={[Function]}
               >
                 Unit field
-                : 
+                :
+                 
                 <span>
                   test
                 </span>
@@ -749,7 +765,8 @@ ShallowWrapper {
                   onClick={[Function]}
                 >
                   Unit field
-                  : 
+                  :
+                   
                   <span>
                     test
                   </span>
@@ -769,7 +786,8 @@ ShallowWrapper {
                   onClick={[Function]}
                 >
                   Unit field
-                  : 
+                  :
+                   
                   <span>
                     test
                   </span>
@@ -783,7 +801,8 @@ ShallowWrapper {
                 "props": Object {
                   "children": Array [
                     "Unit field",
-                    ": ",
+                    ":",
+                    " ",
                     Array [
                       <span>
                         test
@@ -796,7 +815,8 @@ ShallowWrapper {
                 "ref": null,
                 "rendered": Array [
                   "Unit field",
-                  ": ",
+                  ":",
+                  " ",
                   Object {
                     "instance": null,
                     "key": "unitField_test",

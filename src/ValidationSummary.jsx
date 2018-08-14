@@ -131,7 +131,10 @@ class ValidationSummary extends React.Component {
     return (
       <li key={id}>
         <a href="#" onClick={linkCallback}>
-          {fieldName}: {errors}
+          {fieldName}
+          :
+          {' '}
+          {errors}
         </a>
       </li>
     );
