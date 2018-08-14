@@ -8,7 +8,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { formContextShape, validationShape } from './shapes';
+import { formContextShape, validationShape, fieldValueShape } from './shapes';
 import withValidation from './hocs/withValidation';
 import FormContext from './FormContext';
 
@@ -90,6 +90,51 @@ class FieldGroup extends React.Component {
   }
 
   /**
+   * Generates the form context for the FieldGroup children
+   * Overrides fieldPrefix and notifyFieldEvent from the
+   * parent context, and overrides defaultValues and values
+   * for the group items if needed
+   */
+  getSubContext() {
+    const { context } = this.props;
+
+    return {
+      ...context,
+      ...this.state,
+      ...this.overrideContextValues('defaultValues'),
+      ...this.overrideContextValues('values'),
+    };
+  }
+
+  /**
+   * Checks if the FieldGroup has a prop with the given name
+   * and overrides the according value in the parent form context.
+   * @param {string} name Property name
+   */
+  overrideContextValues(name) {
+    const {
+      fullName,
+      context: { [name]: contextValue },
+      [name]: propValue,
+    } = this.props;
+
+    if (propValue === undefined) {
+      return {
+        [name]: contextValue,
+      };
+    }
+
+    return {
+      [name]: {
+        ...contextValue,
+        ...{
+          [fullName]: propValue,
+        },
+      },
+    };
+  }
+
+  /**
    * Resets the validation state
    */
   reset() {
@@ -109,19 +154,24 @@ class FieldGroup extends React.Component {
     context.notifyFieldEvent(name, event, args);
 
     if (event === 'change' || event === 'blur') {
-      const groupValue = this.getGroupValue();
-
       const asyncValidateOnChange = this.getAsyncValidateOnChangeSetting();
       if (event === 'change') {
         const localName = name.substring(fullName.length + 1);
-        groupValue[localName] = args;
 
         validate(
-          groupValue,
+          {
+            ...this.getGroupValue(),
+            ...{
+              // Override the value of the event sender, because
+              // the Field didn't update its state yet, making the
+              // Form.getValues() returning an old Field value.
+              [localName]: args,
+            },
+          },
           { checkAsync: asyncValidateOnChange },
         );
       } else if (!asyncValidateOnChange) {
-        validate(groupValue);
+        validate(this.getGroupValue());
       }
     }
   }
@@ -141,7 +191,6 @@ class FieldGroup extends React.Component {
 
   render() {
     const {
-      context,
       fullName,
       validation: {
         isValidating,
@@ -158,10 +207,7 @@ class FieldGroup extends React.Component {
       error,
     };
 
-    const subContext = {
-      ...context,
-      ...this.state,
-    };
+    const subContext = this.getSubContext();
 
     return (
       <FormContext.Provider value={subContext}>
@@ -175,6 +221,8 @@ FieldGroup.displayName = 'FieldGroup';
 
 FieldGroup.defaultProps = {
   asyncValidateOnChange: null,
+  defaultValues: undefined,
+  values: undefined,
 };
 
 FieldGroup.propTypes = {
@@ -184,6 +232,8 @@ FieldGroup.propTypes = {
   render: PropTypes.func.isRequired,
   validation: validationShape.isRequired,
   asyncValidateOnChange: PropTypes.bool,
+  defaultValues: PropTypes.objectOf(fieldValueShape),
+  values: PropTypes.objectOf(fieldValueShape),
 };
 
 export const BaseFieldGroup = FieldGroup;

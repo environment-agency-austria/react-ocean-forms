@@ -10,6 +10,8 @@ All notable changes to this project will be documented in this file.
 - Added `FormText` component, a wrapper for `formContext.stringFormatter`
 - Added `defaultValue` to `Field` - it will override the `defaultValues` of the Form
 - Added `value` to `Field` - it will override the `values` of the Form
+- Added `defaultValues` to `FieldGroup` - it will override the `defaultValues` of the Form
+- Added `values` to `FieldGroup` - it will override the `values` of the Form
 - Fixed missing id field to `fieldShape`
 
 ## [1.3.0] # 2018-08-02
