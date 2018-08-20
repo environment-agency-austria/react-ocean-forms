@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [1.4.0] # 2018-08-20
 ### Breaking Changes
 - Changed behaviour of `defaultValues` - the Field value will only be overwritten if the Field isn't touched
 - Added `values` to `Form` - basically they behave like the old defaultValues, but will override any defaultValues if present
