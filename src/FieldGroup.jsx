@@ -34,6 +34,8 @@ class FieldGroup extends React.Component {
       },
     } = props;
 
+    this.checkFormContext();
+
     // Our state will overwrite the parts of the formContext
     this.state = {
       fieldPrefix: fullName,
@@ -104,6 +106,20 @@ class FieldGroup extends React.Component {
       ...this.overrideContextValues('defaultValues'),
       ...this.overrideContextValues('values'),
     };
+  }
+
+  /**
+   * Checks if the FieldGroup is inside a valid form context
+   * and throws an user friendly error if not
+   */
+  checkFormContext() {
+    const { context, fullName } = this.props;
+    if (!context || typeof context.registerField !== 'function') {
+      throw new Error(
+        `Could not find a form context for field group "${fullName}". `
+        + 'Fields can only be used inside a Form tag.',
+      );
+    }
   }
 
   /**

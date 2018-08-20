@@ -96,6 +96,19 @@ describe('<FieldGroup />', () => {
     });
   });
 
+  describe('Invalid form context', () => {
+    const MOCK_ERROR_STRING = `Could not find a form context for field group "${MOCK_NAME}". `
+                            + 'Fields can only be used inside a Form tag.';
+
+    it('should throw an error if there is no form context', () => {
+      expect(() => setup({ props: { context: undefined } })).toThrowError(MOCK_ERROR_STRING);
+    });
+
+    it('should throw an error if the form context is invalid', () => {
+      expect(() => setup({ props: { context: { foo: 'bar' } } })).toThrowError(MOCK_ERROR_STRING);
+    });
+  });
+
   describe('Form context callbacks', () => {
     describe('Context.getValue', () => {
       it('should always return an empty object', () => {

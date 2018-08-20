@@ -50,6 +50,8 @@ class Field extends React.Component {
       },
     } = props;
 
+    this.checkFormContext();
+
     context.registerField(
       fullName,
       {
@@ -252,6 +254,21 @@ class Field extends React.Component {
 
     return propChange === null ? contextChange : propChange;
   }
+
+  /**
+   * Checks if the Field is inside a valid form context
+   * and throws an user friendly error if not
+   */
+  checkFormContext() {
+    const { context, fullName } = this.props;
+    if (!context || typeof context.registerField !== 'function') {
+      throw new Error(
+        `Could not find a form context for field "${fullName}". `
+        + 'Fields can only be used inside a Form tag.',
+      );
+    }
+  }
+
 
   /**
    * Resets the field to its default state

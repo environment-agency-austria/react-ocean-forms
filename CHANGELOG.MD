@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 - Added `defaultValues` to `FieldGroup` - it will override the `defaultValues` of the Form
 - Added `values` to `FieldGroup` - it will override the `values` of the Form
 - Fixed missing id field to `fieldShape`
+- Improved error message when trying to use Fields or FieldGroups outside of a form
 
 ## [1.3.0] # 2018-08-02
 - Support for async onSubmit callback, will keep the form busy until the Promise resolves
