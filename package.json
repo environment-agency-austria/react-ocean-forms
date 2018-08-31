@@ -59,6 +59,7 @@
     "prop-types": "^15.6.1"
   },
   "devDependencies": {
+    "@types/react": "^16.4.13",
     "babel-core": "^6.26.0",
     "babel-jest": "^23.4.0",
     "babel-loader": "^7.1.2",
