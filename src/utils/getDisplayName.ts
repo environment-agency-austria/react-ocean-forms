@@ -8,6 +8,6 @@
 /**
  * Returns the display name of the wrapped component.
  */
-export default function getDisplayName(WrappedComponent) {
-  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
+export default function getDisplayName(wrappedComponent: React.ComponentType): string {
+  return wrappedComponent.displayName || wrappedComponent.name || 'Component';
 }
