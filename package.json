@@ -19,20 +19,30 @@
     ],
     "testMatch": [
       "**/__tests__/**/*.js?(x)",
-      "**/?(*.)+(spec|test).js?(x)"
+      "**/__tests__/**/*.ts?(x)",
+      "**/?(*.)+(spec|test).js?(x)",
+      "**/?(*.)+(spec|test).ts?(x)"
     ],
     "collectCoverageFrom": [
-      "<rootDir>/src/**/*.{js,jsx,mjs}"
+      "<rootDir>/src/**/*.{js,jsx,mjs,ts,tsx}"
     ],
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "<rootDir>/src/tsconfig.json"
+      }
+    },
     "testEnvironment": "jsdom",
     "testURL": "http://localhost",
     "transform": {
-      "^.+\\.(js|jsx|mjs)$": "<rootDir>/node_modules/babel-jest"
+      "^.+\\.(js|jsx|mjs)$": "<rootDir>/node_modules/babel-jest",
+      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest"
     },
     "moduleNameMapper": {
       "^~(.*)$": "<rootDir>/src$1"
     },
     "moduleFileExtensions": [
+      "ts",
+      "tsx",
       "web.js",
       "mjs",
       "js",
@@ -68,6 +78,9 @@
     "jest": "^23.5.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
+    "ts-jest": "^23.1.4",
+    "ts-loader": "^4.5.0",
+    "typescript": "^3.0.3",
     "webpack": "^4.16.1",
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.4"
