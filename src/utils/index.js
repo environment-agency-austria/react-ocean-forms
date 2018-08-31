@@ -10,3 +10,4 @@ export { default as getDeepValue } from './getDeepValue';
 export { default as toArray } from './toArray';
 export { default as parseValidationError } from './parseValidationError';
 export { default as stringFormatter, addCustomMessages } from './stringFormatter';
+export * from './stringHasValue';
