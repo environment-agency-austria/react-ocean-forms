@@ -29,5 +29,6 @@ export default function getDeepValue<T, U extends TStringProp = TStringProp>(nam
 
       return o[i];
     },
-    object));
+    object)
+  );
 }

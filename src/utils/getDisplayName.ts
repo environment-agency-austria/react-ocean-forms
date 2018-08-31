@@ -5,9 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { stringHasValue } from './stringHasValue';
+
 /**
  * Returns the display name of the wrapped component.
  */
 export default function getDisplayName(wrappedComponent: React.ComponentType): string {
-  return wrappedComponent.displayName || wrappedComponent.name || 'Component';
+  if (stringHasValue(wrappedComponent.displayName)) { return wrappedComponent.displayName; }
+  if (stringHasValue(wrappedComponent.name)) { return wrappedComponent.name; }
+
+  return 'Component';
 }
