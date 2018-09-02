@@ -3,6 +3,7 @@
   "version": "1.4.0",
   "description": "Forms components for react based on the context api.",
   "main": "build/index.js",
+  "typings": "src/index.d.ts",
   "private": false,
   "eslint.packageManager": "yarn",
   "scripts": {
