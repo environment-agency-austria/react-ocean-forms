@@ -9,16 +9,9 @@ import * as React from 'react';
 
 import { toArray } from '../../utils';
 import { IFieldErrorObject } from '../../validators';
-import { IFormContextProps, withForm } from '../withForm';
+import { withForm } from '../withForm';
 import { IValidationState } from '../withValidation';
-
-interface IValidationSummaryProps extends IFormContextProps {
-  id: string;
-  title: string;
-  disableFocusOnSubmit: boolean;
-  renderFieldError?(id: string, fieldName: string, errors: React.ReactNode, linkCallback: React.MouseEventHandler): JSX.Element;
-  render?(children: JSX.Element): JSX.Element;
-}
+import { IValidationSummaryProps } from './ValidationSummary.types';
 
 interface IValidationEventArgs extends IValidationState {
   label: string;
@@ -104,12 +97,12 @@ export class BaseValidationSummary extends React.Component<IValidationSummaryPro
    * @param event Event name
    * @param state Field state
    */
-  private notify(name: string, event: string, state: IValidationEventArgs): void {
+  private notify(name: string, event: string, state?: IValidationEventArgs): void {
     if (event === 'validation') {
       this.setState(oldState => ({
         fields: {
           ...oldState.fields,
-          [name]: state,
+          [name]: state as IValidationEventArgs,
         },
       }));
     } else if (event === 'submit-invalid') {

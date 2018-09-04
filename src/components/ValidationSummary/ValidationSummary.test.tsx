@@ -1,11 +1,13 @@
 import * as React from 'react';
 
+// tslint:disable-next-line:no-implicit-dependencies
 import { shallow, ShallowWrapper } from 'enzyme';
 
 import { mockEvent } from '../../test-utils/enzymeEventUtils';
 import { createMockFormContext } from '../../test-utils/enzymeFormContext';
 import { TFormEventListener } from '../FormContext';
 import { BaseValidationSummary } from './ValidationSummary';
+import { IValidationSummaryProps } from './ValidationSummary.types';
 
 describe('<ValidationSummary />', () => {
   let listenerCallback: TFormEventListener;
@@ -13,7 +15,7 @@ describe('<ValidationSummary />', () => {
   const formContext = createMockFormContext(registerCallback);
 
   const summaryId = 'unitSummary';
-  const setup = (props?: any): ShallowWrapper => shallow((
+  const setup = (props?: Partial<IValidationSummaryProps>): ShallowWrapper => shallow((
     <BaseValidationSummary
       id={summaryId}
       context={formContext}
