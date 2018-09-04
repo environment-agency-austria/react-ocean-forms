@@ -1,4 +1,4 @@
-import toArray from '../toArray';
+import { toArray } from '../toArray';
 
 describe('toArray', () => {
   it('should wrap anything into an array', () => {

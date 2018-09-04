@@ -9,10 +9,10 @@
  * Returns an array with the parameter as its only element if
  * the parameter is not an array. Otherwise it returns an array
  */
-export default function toArray<T>(param: T | T[]): T[] {
+export const toArray = <T>(param: T | T[]): T[] => {
   if (!Array.isArray(param)) {
     return [param];
   }
 
   return param;
-}
+};

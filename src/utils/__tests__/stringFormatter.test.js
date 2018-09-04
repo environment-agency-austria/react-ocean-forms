@@ -1,4 +1,4 @@
-import stringFormatter, { TEST_MESSAGES, addCustomMessages } from '../stringFormatter';
+import { TEST_MESSAGES, addCustomMessages, stringFormatter } from '../stringFormatter';
 
 describe('stringFormatter', () => {
   const cases = [

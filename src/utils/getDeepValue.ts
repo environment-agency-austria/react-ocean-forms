@@ -18,7 +18,7 @@ type TStringProp = {
  * @param name Name / property path
  * @param object Object
  */
-export default function getDeepValue<T, U extends TStringProp = TStringProp>(name: string, object: U): T | undefined {
+export const getDeepValue = <T, U extends TStringProp = TStringProp>(name: string, object?: U): T | undefined => {
   return (name.split('.').reduce(
     (o: U, i: string) => {
       // Workaround for deep objects and
@@ -31,4 +31,4 @@ export default function getDeepValue<T, U extends TStringProp = TStringProp>(nam
     },
     object)
   );
-}
+};

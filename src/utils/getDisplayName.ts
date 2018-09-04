@@ -10,9 +10,9 @@ import { stringHasValue } from './stringHasValue';
 /**
  * Returns the display name of the wrapped component.
  */
-export default function getDisplayName(wrappedComponent: React.ComponentType): string {
+export const getDisplayName = (wrappedComponent: React.ComponentType): string => {
   if (stringHasValue(wrappedComponent.displayName)) { return wrappedComponent.displayName; }
   if (stringHasValue(wrappedComponent.name)) { return wrappedComponent.name; }
 
   return 'Component';
-}
+};

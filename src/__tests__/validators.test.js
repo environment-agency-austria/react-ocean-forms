@@ -1,4 +1,4 @@
-import validators from '../validators';
+import { validators } from '../validators';
 
 describe('default validators', () => {
   describe('required validator', () => {

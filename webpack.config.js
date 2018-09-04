@@ -9,7 +9,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const srcPath = path.resolve(__dirname, 'src');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './src/index.ts',
   devtool: 'source-map',
   output: {
     path: path.resolve(__dirname, 'build'),
