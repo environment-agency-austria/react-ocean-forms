@@ -16,7 +16,7 @@ import { FormText } from '../FormText';
  * Createa a required *
  * @param validators Validator array
  */
-function createRequiredMarker(validators: TValidator[]): JSX.Element | null {
+function createRequiredMarker(validators?: TValidator[]): JSX.Element | null {
   if (Array.isArray(validators) && validators.includes(defaultValidators.required)) {
     return <span className="field-required"> *</span>;
   }
@@ -26,7 +26,7 @@ function createRequiredMarker(validators: TValidator[]): JSX.Element | null {
 
 interface IFieldLineProps extends IFieldComponentProps {
   label: string;
-  validators: TValidator[];
+  validators?: TValidator[];
   children: React.ReactNode;
 }
 
