@@ -63,7 +63,7 @@ export const baseWithValidation = <T extends IValidationProps>(WrappedComponent:
      */
     public componentWillUnmount(): void {
       const { asyncTimeout } = this.state;
-      if (asyncTimeout !== undefined) clearTimeout(asyncTimeout);
+      if (asyncTimeout !== undefined) { clearTimeout(asyncTimeout); }
       this.unmounted = true;
     }
 
@@ -72,7 +72,7 @@ export const baseWithValidation = <T extends IValidationProps>(WrappedComponent:
      */
     private reset(): void {
       const { asyncTimeout } = this.state;
-      if (asyncTimeout !== undefined) clearTimeout(asyncTimeout);
+      if (asyncTimeout !== undefined) { clearTimeout(asyncTimeout); }
 
       this.updateAndNotify({
         valid: true,
@@ -186,7 +186,7 @@ export const baseWithValidation = <T extends IValidationProps>(WrappedComponent:
         validationState.error = parsedErrors.filter(error => typeof error === 'object');
         validationState.valid = validationState.error.length === 0;
 
-        if (validationState.error.length === 0) validationState.error = null;
+        if (validationState.error.length === 0) { validationState.error = null; }
 
         validationState.isValidating = false;
         validationState.asyncTimeout = undefined;
@@ -229,7 +229,7 @@ export const baseWithValidation = <T extends IValidationProps>(WrappedComponent:
       // unmounted. This can happen when the validated Field
       // is already removed while there are async validators
       // running in the background.
-      if (this.unmounted) return;
+      if (this.unmounted) { return; }
 
       this.setState(newState);
       context.notifyFieldEvent(fullName, 'validation', newState);
