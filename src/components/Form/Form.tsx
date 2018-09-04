@@ -133,7 +133,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
     const values: TFieldValues = {};
 
     fields.forEach(([name, state]) => {
-      if (state.isGroup === true) return;
+      if (state.isGroup === true) { return; }
 
       const nameParts = name.split('.');
       let valueRef = values;
@@ -142,7 +142,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
         if (nameParts.length === 1 || index === nameParts.length - 1) {
           valueRef[key] = state.getValue();
         } else {
-          if (valueRef[key] === undefined) valueRef[key] = {};
+          if (valueRef[key] === undefined) { valueRef[key] = {}; }
           valueRef = valueRef[key];
         }
       });
@@ -254,13 +254,13 @@ export class Form extends React.Component<IFormProps, IFormState> {
    */
   private triggerFormValidation(): boolean {
     const { onValidate } = this.props;
-    if (onValidate === undefined) return true;
+    if (onValidate === undefined) { return true; }
 
     const values = this.getValues();
     const result = onValidate(values);
 
     // If the callback returned null then the form is valid
-    if (result === null) return true;
+    if (result === null) { return true; }
 
     // Otherwise parse the result object and update the
     // field states.
@@ -407,7 +407,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
     const context = this.prepareFormContext();
 
     let formClass = className || '';
-    if (plaintext) formClass = `${formClass} plaintext`;
+    if (plaintext) { formClass = `${formClass} plaintext`; }
 
     return (
       <FormContext.Provider value={context}>
