@@ -16,7 +16,7 @@ export const KEYCODE = {
  * tested code wants to call preventDefault
  * @param {object} props Additional event props
  */
-const mockEvent = props => ({
+export const mockEvent = props => ({
   preventDefault: () => {},
   ...props,
 });

@@ -158,8 +158,6 @@ ShallowWrapper {
     }
     disableFocusOnSubmit={false}
     id="unitSummary"
-    render={null}
-    renderFieldError={null}
     title="ojs_form_validationSummaryHeader"
   />,
   Symbol(enzyme.__renderer__): Object {
@@ -183,7 +181,7 @@ ShallowWrapper {
         <ul>
           <li>
             <a
-              href="#"
+              href="#unitField"
               onClick={[Function]}
             >
               Unit field
@@ -223,7 +221,7 @@ ShallowWrapper {
           "children": Array [
             <li>
               <a
-                href="#"
+                href="#unitField"
                 onClick={[Function]}
               >
                 Unit field
@@ -244,7 +242,7 @@ ShallowWrapper {
             "nodeType": "host",
             "props": Object {
               "children": <a
-                href="#"
+                href="#unitField"
                 onClick={[Function]}
               >
                 Unit field
@@ -271,7 +269,7 @@ ShallowWrapper {
                     </span>,
                   ],
                 ],
-                "href": "#",
+                "href": "#unitField",
                 "onClick": [Function],
               },
               "ref": null,
@@ -316,7 +314,7 @@ ShallowWrapper {
           <ul>
             <li>
               <a
-                href="#"
+                href="#unitField"
                 onClick={[Function]}
               >
                 Unit field
@@ -356,7 +354,7 @@ ShallowWrapper {
             "children": Array [
               <li>
                 <a
-                  href="#"
+                  href="#unitField"
                   onClick={[Function]}
                 >
                   Unit field
@@ -377,7 +375,7 @@ ShallowWrapper {
               "nodeType": "host",
               "props": Object {
                 "children": <a
-                  href="#"
+                  href="#unitField"
                   onClick={[Function]}
                 >
                   Unit field
@@ -404,7 +402,7 @@ ShallowWrapper {
                       </span>,
                     ],
                   ],
-                  "href": "#",
+                  "href": "#unitField",
                   "onClick": [Function],
                 },
                 "ref": null,
@@ -563,8 +561,6 @@ ShallowWrapper {
     }
     disableFocusOnSubmit={false}
     id="unitSummary"
-    render={null}
-    renderFieldError={null}
     title="ojs_form_validationSummaryHeader"
   />,
   Symbol(enzyme.__renderer__): Object {
@@ -588,7 +584,7 @@ ShallowWrapper {
         <ul>
           <li>
             <a
-              href="#"
+              href="#unitField"
               onClick={[Function]}
             >
               Unit field
@@ -628,7 +624,7 @@ ShallowWrapper {
           "children": Array [
             <li>
               <a
-                href="#"
+                href="#unitField"
                 onClick={[Function]}
               >
                 Unit field
@@ -649,7 +645,7 @@ ShallowWrapper {
             "nodeType": "host",
             "props": Object {
               "children": <a
-                href="#"
+                href="#unitField"
                 onClick={[Function]}
               >
                 Unit field
@@ -676,7 +672,7 @@ ShallowWrapper {
                     </span>,
                   ],
                 ],
-                "href": "#",
+                "href": "#unitField",
                 "onClick": [Function],
               },
               "ref": null,
@@ -721,7 +717,7 @@ ShallowWrapper {
           <ul>
             <li>
               <a
-                href="#"
+                href="#unitField"
                 onClick={[Function]}
               >
                 Unit field
@@ -761,7 +757,7 @@ ShallowWrapper {
             "children": Array [
               <li>
                 <a
-                  href="#"
+                  href="#unitField"
                   onClick={[Function]}
                 >
                   Unit field
@@ -782,7 +778,7 @@ ShallowWrapper {
               "nodeType": "host",
               "props": Object {
                 "children": <a
-                  href="#"
+                  href="#unitField"
                   onClick={[Function]}
                 >
                   Unit field
@@ -809,7 +805,7 @@ ShallowWrapper {
                       </span>,
                     ],
                   ],
-                  "href": "#",
+                  "href": "#unitField",
                   "onClick": [Function],
                 },
                 "ref": null,

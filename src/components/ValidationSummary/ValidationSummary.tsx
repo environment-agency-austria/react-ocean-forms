@@ -16,8 +16,8 @@ interface IValidationSummaryProps extends IFormContextProps {
   id: string;
   title: string;
   disableFocusOnSubmit: boolean;
-  renderFieldError?: ((id: string, fieldName: string, errors: React.ReactNode, linkCallback: React.MouseEventHandler) => JSX.Element);
-  render?: ((children: JSX.Element) => JSX.Element);
+  renderFieldError?(id: string, fieldName: string, errors: React.ReactNode, linkCallback: React.MouseEventHandler): JSX.Element;
+  render?(children: JSX.Element): JSX.Element;
 }
 
 interface IValidationEventArgs extends IValidationState {

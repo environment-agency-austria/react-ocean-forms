@@ -1,17 +1,19 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+import * as React from 'react';
 
-import mockEvent from '../../test-utils/enzymeEventUtils';
+import { shallow, ShallowWrapper } from 'enzyme';
+
+import { mockEvent } from '../../test-utils/enzymeEventUtils';
 import { createMockFormContext } from '../../test-utils/enzymeFormContext';
+import { TFormEventListener } from '../FormContext';
 import { BaseValidationSummary } from './ValidationSummary';
 
 describe('<ValidationSummary />', () => {
-  let listenerCallback = null;
-  const registerCallback = (name, state) => { listenerCallback = state; };
+  let listenerCallback: TFormEventListener;
+  const registerCallback = (name: string, state: TFormEventListener): void => { listenerCallback = state; };
   const formContext = createMockFormContext(registerCallback);
 
   const summaryId = 'unitSummary';
-  const setup = props => shallow((
+  const setup = (props?: any): ShallowWrapper => shallow((
     <BaseValidationSummary
       id={summaryId}
       context={formContext}
