@@ -1,3 +1,5 @@
+import { IFieldState, IFormContext, TFormEventListener } from '../components/FormContext';
+import { IValidationProp } from '../components/withValidation';
 import { stringFormatter } from '../utils';
 
 /**
@@ -10,14 +12,22 @@ import { stringFormatter } from '../utils';
 /**
  * Creates a form context
  */
-export const createMockFormContext = registerCallback => ({
+export const createMockFormContext = (registerCallback?: Function): IFormContext => ({
   fieldPrefix: null,
 
-  registerField: jest.fn().mockImplementation((name, state) => registerCallback(name, state)),
+  registerField: jest.fn().mockImplementation((name: string, state: IFieldState): void => {
+    if (registerCallback) {
+      registerCallback(name, state);
+    }
+  }),
   unregisterField: jest.fn(),
   notifyFieldEvent: jest.fn(),
 
-  registerListener: jest.fn().mockImplementation((name, state) => registerCallback(name, state)),
+  registerListener: jest.fn().mockImplementation((name: string, callback: TFormEventListener): void => {
+    if (registerCallback) {
+      registerCallback(name, callback);
+    }
+  }),
   unregisterListener: jest.fn(),
 
   getFieldState: jest.fn(),
@@ -39,7 +49,7 @@ export const createMockFormContext = registerCallback => ({
  * Creates a validation object mocking the
  * withValidation hoc
  */
-export const createMockValidation = () => ({
+export const createMockValidation = (): IValidationProp => ({
   validate: jest.fn(),
   reset: jest.fn(),
   update: jest.fn(),
