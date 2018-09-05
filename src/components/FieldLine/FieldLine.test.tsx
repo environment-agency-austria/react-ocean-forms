@@ -1,8 +1,10 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+import * as React from 'react';
+
+// tslint:disable-next-line:no-implicit-dependencies
+import { shallow, ShallowWrapper } from 'enzyme';
 
 import { validators } from '../../validators';
-import { FieldLine } from './FieldLine';
+import { FieldLine, IFieldLineProps } from './FieldLine';
 
 describe('<FieldLine />', () => {
   const meta = {
@@ -22,9 +24,8 @@ describe('<FieldLine />', () => {
     onBlur: jest.fn(),
   };
 
-  const setup = props => shallow((
+  const setup = (props?: Partial<IFieldLineProps>): ShallowWrapper => shallow((
     <FieldLine
-      id="unitInput"
       label="unitLabel"
       meta={meta}
       field={field}

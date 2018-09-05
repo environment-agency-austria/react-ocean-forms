@@ -14,7 +14,6 @@ ShallowWrapper {
         "value": "",
       }
     }
-    id="unitInput"
     label="unitLabel"
     meta={
       Object {
@@ -300,7 +299,6 @@ ShallowWrapper {
         "value": "",
       }
     }
-    id="unitInput"
     label="unitLabel"
     meta={
       Object {
@@ -586,7 +584,6 @@ ShallowWrapper {
         "value": "",
       }
     }
-    id="unitInput"
     label="unitLabel"
     meta={
       Object {
