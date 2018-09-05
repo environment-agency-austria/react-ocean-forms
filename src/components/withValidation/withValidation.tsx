@@ -11,7 +11,7 @@ import { getDisplayName, parseValidationError, Subtract } from '../../utils';
 import { TAsyncValidator, TValidator } from '../../validators';
 import { TFieldValue } from '../Field';
 import { IFormContextProps, withForm } from '../withForm';
-import { IValidationComponentState, IValidationProps, IValidationState } from './withValidation.types';
+import { IValidationArgs, IValidationComponentState, IValidationProps, IValidationState } from './withValidation.types';
 
 interface IValidatedComponentProps extends IFormContextProps {
   name: string;
@@ -109,7 +109,7 @@ export const baseWithValidation = <T extends IValidationProps>(WrappedComponent:
       {
         checkAsync = true,
         immediateAsync = false,
-      } = {},
+      }: Partial<IValidationArgs> = {},
     ): Promise<IValidationState> {
       const {
         validators,
