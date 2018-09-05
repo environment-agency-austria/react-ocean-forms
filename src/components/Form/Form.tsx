@@ -41,7 +41,7 @@ interface IFormProps {
   disabled: boolean;
   className?: string;
   plaintext: boolean;
-  onSubmit?(values: TFieldValues, submitArgs?: any): Promise<void> | void;
+  onSubmit?(values: TFieldValues, submitArgs?: unknown): Promise<void> | void;
   onValidate?(values: TFieldValues): TFieldErrors;
   onFieldValueChanged?(name: string, args: TFieldValue): void;
   onReset?(): void;
@@ -201,7 +201,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
    * @param submitArgs Arguments that will be passed
    * to the onSubmit callback
    */
-  private async submit(submitArgs?: any): Promise<void> {
+  private async submit(submitArgs?: unknown): Promise<void> {
     this.updateBusyState(true);
 
     // Iterate through all fields and validate them
@@ -287,7 +287,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
    * @param submitArgs Arguments that will be passed
    * to the onSubmit callback
    */
-  private callOnSubmit(submitArgs?: any): void {
+  private callOnSubmit(submitArgs?: unknown): void {
     const { onSubmit } = this.props;
     if (onSubmit !== undefined) {
       const values = this.getValues();
