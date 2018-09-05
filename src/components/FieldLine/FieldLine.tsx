@@ -13,7 +13,7 @@ import { FieldError } from '../FieldError';
 import { FormText } from '../FormText';
 
 /**
- * Createa a required *
+ * Create a required *
  * @param validators Validator array
  */
 function createRequiredMarker(validators?: TValidator[]): JSX.Element | null {
@@ -24,9 +24,21 @@ function createRequiredMarker(validators?: TValidator[]): JSX.Element | null {
   return null;
 }
 
-interface IFieldLineProps extends IFieldComponentProps {
+/**
+ * Field Line properties
+ */
+export interface IFieldLineProps extends IFieldComponentProps {
+  /**
+   * Field label
+   */
   label: string;
+  /**
+   * Validators
+   */
   validators?: TValidator[];
+  /**
+   * Children
+   */
   children: React.ReactNode;
 }
 
