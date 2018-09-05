@@ -8,15 +8,32 @@ import * as React from 'react';
 import { IMessageValues } from '../../utils';
 import { IFormContextProps, withForm } from '../withForm';
 
-interface IFormTextProps extends IFormContextProps {
-  text: string;
+/**
+ * FormText component props
+ */
+export interface IFormTextProps extends IFormContextProps {
+  /**
+   * Text or message id
+   */
+  text: string | null;
+  /**
+   * Optional values for the stringFormatter
+   */
   values?: IMessageValues;
 }
 
-export const BaseFormText: React.SFC<IFormTextProps> = ({ context, text, values }: IFormTextProps): string | null => {
-  if (!text) return null;
+/**
+ * Wrapper component for passing strings to the
+ * context.stringFormatter method
+ */
+export const BaseFormText: React.SFC<IFormTextProps> = ({ context, text, values }: IFormTextProps): JSX.Element | null => {
+  if (!text) { return null; }
 
-  return context.stringFormatter(text, values);
+  return (
+    <React.Fragment>
+      {context.stringFormatter(text, values)}
+    </React.Fragment>
+  );
 };
 BaseFormText.displayName = 'FormText';
 
