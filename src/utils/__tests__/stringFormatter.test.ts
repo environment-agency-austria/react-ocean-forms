@@ -1,4 +1,4 @@
-import { TEST_MESSAGES, addCustomMessages, stringFormatter } from '../stringFormatter';
+import { addCustomMessages, stringFormatter, TEST_MESSAGES } from '../stringFormatter';
 
 describe('stringFormatter', () => {
   const cases = [
@@ -20,33 +20,33 @@ describe('stringFormatter', () => {
   });
 
   it('should support parameters', () => {
-    expect(stringFormatter('ojs_error_minLength', { length: 5 }))
+    expect(stringFormatter('ojs_error_minLength', { length: '5' }))
       .toBe('The value must be at least 5 characters long.');
   });
 
   it('should return unknown strings as-is', () => {
-    const string = 'foobar';
-    expect(stringFormatter(string)).toBe(string);
+    const testString = 'foobar';
+    expect(stringFormatter(testString)).toBe(testString);
   });
 
   it('should support parameters on unknown strings', () => {
-    const string = 'foo: {bar}';
-    expect(stringFormatter(string, { bar: 'baz' }))
+    const testString = 'foo: {bar}';
+    expect(stringFormatter(testString, { bar: 'baz' }))
       .toBe('foo: baz');
   });
 
   describe('it should ignore invalid parameters', () => {
     const subCases = cases.splice(1);
     test.each(subCases)('case %s', (name, value) => {
-      const string = 'foobar';
-      expect(stringFormatter(string, value)).toBe(string);
+      const testString = 'foobar';
+      expect(stringFormatter(testString, value)).toBe(testString);
     });
   });
 
   it('should support custom messages', () => {
     const key = 'unitMessage';
-    const string = 'hey unit!';
-    addCustomMessages({ [key]: string });
-    expect(stringFormatter(key)).toBe(string);
+    const testString = 'hey unit!';
+    addCustomMessages({ [key]: testString });
+    expect(stringFormatter(key)).toBe(testString);
   });
 });
