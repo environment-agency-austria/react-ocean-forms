@@ -9,6 +9,16 @@ import { TFieldValue } from '../components/Field';
 import { IFormContext } from '../components/FormContext';
 import { IMessageValues } from '../utils/stringFormatter';
 
+/**
+ * Enum representing the message id's for field errors.
+ */
+export enum FieldErrorMessageId {
+  AlphaNumeric = 'ojs_error_alphaNumeric',
+  MaxLength = 'ojs_error_maxLength',
+  MinLength = 'ojs_error_minLength',
+  Required = 'ojs_error_required',
+}
+
 export interface IFieldErrorObject {
   message_id: string;
   params: IMessageValues;

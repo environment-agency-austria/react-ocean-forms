@@ -7,7 +7,7 @@
 
 import { TFieldValue } from '../components/Field';
 import { IFormContext } from '../components/FormContext';
-import { TFieldError, TValidator } from './validators.types';
+import { FieldErrorMessageId, TFieldError, TValidator } from './validators.types';
 
 /**
  * Wrapper function to call validators with parameters
@@ -24,16 +24,16 @@ const withParam = (validator: TValidator, ...args: any[]): TValidator =>
  */
 const required = (value: TFieldValue): TFieldError => {
   // Special check for empty arrays
-  if (Array.isArray(value) && value.length === 0) { return 'ojs_error_required'; }
+  if (Array.isArray(value) && value.length === 0) { return FieldErrorMessageId.Required; }
   if (value === 0) { return undefined; }
 
-  return value ? undefined : 'ojs_error_required';
+  return value ? undefined : FieldErrorMessageId.Required;
 };
 
 /**
  * Checks if the value is alpha numeric
  */
-const alphaNumeric = (value: TFieldValue): TFieldError => (value && /[^a-zA-Z0-9 ]/i.test(value) ? 'ojs_error_alphaNumeric' : undefined);
+const alphaNumeric = (value: TFieldValue): TFieldError => (value && /[^a-zA-Z0-9 ]/i.test(value) ? FieldErrorMessageId.AlphaNumeric : undefined);
 
 /**
  * Checks if the given value has the minimum
@@ -46,7 +46,7 @@ const minLength = (value: TFieldValue, context: IFormContext, length: number): T
   if (value.length >= length) { return undefined; }
 
   return {
-    message_id: 'ojs_error_minLength',
+    message_id: FieldErrorMessageId.MinLength,
     params: {
       length: String(length),
     },
@@ -64,7 +64,7 @@ const maxLength = (value: TFieldValue, context: IFormContext, length: number): T
   if (value.length <= length) { return undefined; }
 
   return {
-    message_id: 'ojs_error_maxLength',
+    message_id: FieldErrorMessageId.MaxLength,
     params: {
       length: String(length),
     },
