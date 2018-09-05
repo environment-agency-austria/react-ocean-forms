@@ -1,14 +1,18 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+import * as React from 'react';
 
+// tslint:disable-next-line:no-implicit-dependencies
+import { shallow, ShallowWrapper } from 'enzyme';
+
+import { createMockFormContext } from '../../test-utils/enzymeFormContext';
+import { IMessageValues } from '../../utils';
+import { IFormContext } from '../FormContext';
 import { BaseFormText } from './FormText';
 
 describe('<FormText />', () => {
-  const MOCK_CONTEXT = {
-    stringFormatter: jest.fn().mockImplementation(value => value),
-  };
+  const MOCK_CONTEXT: IFormContext = createMockFormContext();
+  MOCK_CONTEXT.stringFormatter = jest.fn().mockImplementation(value => value);
 
-  const setup = (text, values) => shallow((
+  const setup = (text: string | null, values?: IMessageValues): ShallowWrapper => shallow((
     <BaseFormText
       context={MOCK_CONTEXT}
       text={text}
