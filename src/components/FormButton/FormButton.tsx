@@ -6,16 +6,8 @@
  */
 import * as React from 'react';
 
-import { IFormContextProps, withForm } from '../withForm';
-
-interface IFormButtonProps extends IFormContextProps {
-  // tslint:disable-next-line:no-reserved-keywords
-  type: string;
-  submitArgs?: unknown;
-  disabled: boolean;
-  component: React.ReactType;
-  onClick(event: MouseEvent): void;
-}
+import { withForm } from '../withForm';
+import { IFormButtonProps } from './FormButton.types';
 
 /**
  * Wrapper for a button that will
@@ -27,11 +19,11 @@ interface IFormButtonProps extends IFormContextProps {
 export const BaseFormButton: React.SFC<IFormButtonProps> = (
   {
     context: { busy, disabled: formDisabled, submit },
-    disabled = false,
-    type = 'submit',
-    onClick = ((): void => undefined),
+    disabled,
+    type,
+    onClick,
     submitArgs,
-    component: Component = 'button',
+    component: Component,
     ...rest
   }: IFormButtonProps,
 ): JSX.Element => {
@@ -77,6 +69,12 @@ export const BaseFormButton: React.SFC<IFormButtonProps> = (
   );
 };
 
+BaseFormButton.defaultProps = {
+  disabled: false,
+  type: 'submit',
+  onClick: ((): void => undefined),
+  component: 'button',
+};
 BaseFormButton.displayName = 'FormButton';
 
 export const FormButton = withForm(BaseFormButton);
