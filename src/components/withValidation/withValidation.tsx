@@ -8,17 +8,18 @@
 import * as React from 'react';
 
 import { getDisplayName, parseValidationError, Subtract } from '../../utils';
-import { TAsyncValidator, TValidator } from '../../validators';
+import { isIFieldErrorObject } from '../../validators';
 import { TFieldValue } from '../Field';
 import { IFormContextProps, withForm } from '../withForm';
-import { IValidationArgs, IValidationComponentState, IValidationProps, IValidationState } from './withValidation.types';
+import {
+  IBaseValidationProps,
+  IValidatedComponentProps,
+  IValidationArgs,
+  IValidationProps,
+  IValidationState,
+} from './withValidation.types';
 
-interface IValidatedComponentProps extends IFormContextProps {
-  name: string;
-  validators: TValidator[];
-  asyncValidators: TAsyncValidator[];
-  asyncValidationWait?: number;
-}
+type TWrappedValidatedComponentProps<T extends IValidationProps> = Subtract<T, IBaseValidationProps> & IValidatedComponentProps;
 
 /**
  * Injects a ValidatedComponent
@@ -26,35 +27,38 @@ interface IValidatedComponentProps extends IFormContextProps {
  */
 // tslint:disable-next-line:max-func-body-length
 export const baseWithValidation = <T extends IValidationProps>(WrappedComponent: React.ComponentType<T>):
-  React.Component<Subtract<T, IValidationProps> & IValidatedComponentProps> => {
+  React.ComponentType<TWrappedValidatedComponentProps<T>> => {
 
   /**
    * Component that handles validation of the
    * wrapped component.
    */
-  class ValidatedComponent extends React.Component<IValidatedComponentProps, IValidationComponentState> {
+  class ValidatedComponent extends React.Component<TWrappedValidatedComponentProps<T>, IValidationState> {
     public static displayName: string = `ValidatedComponent(${getDisplayName(WrappedComponent)})`;
 
     private unmounted: boolean = false;
 
-    constructor(props: IValidatedComponentProps) {
+    private asyncTimeout?: number;
+
+    private get fullName(): string {
+      const { name, context } = this.props;
+
+      return context.fieldPrefix
+        ? context.fieldPrefix.concat('.', name)
+        : name;
+    }
+
+    constructor(props: TWrappedValidatedComponentProps<T>) {
       super(props);
 
       this.validate = this.validate.bind(this);
       this.reset = this.reset.bind(this);
       this.updateValidationState = this.updateValidationState.bind(this);
 
-      const { name, context } = props;
-      const fullName = context.fieldPrefix
-        ? context.fieldPrefix.concat('.', name)
-        : name;
-
       this.state = {
-        fullName,
         valid: true,
         error: null,
         isValidating: false,
-        asyncTimeout: undefined,
       };
     }
 
@@ -62,23 +66,31 @@ export const baseWithValidation = <T extends IValidationProps>(WrappedComponent:
      * Unregisters the field from the form
      */
     public componentWillUnmount(): void {
-      const { asyncTimeout } = this.state;
-      if (asyncTimeout !== undefined) { clearTimeout(asyncTimeout); }
+      this.clearValidationTimeout();
       this.unmounted = true;
+    }
+
+    /**
+     * Clears the validation timeout if currently
+     * running
+     */
+    private clearValidationTimeout(): void {
+      if (this.asyncTimeout !== undefined) {
+        clearTimeout(this.asyncTimeout);
+        this.asyncTimeout = undefined;
+      }
     }
 
     /**
      * Resets the validation state to the default
      */
     private reset(): void {
-      const { asyncTimeout } = this.state;
-      if (asyncTimeout !== undefined) { clearTimeout(asyncTimeout); }
+      this.clearValidationTimeout();
 
       this.updateAndNotify({
         valid: true,
         error: null,
         isValidating: false,
-        asyncTimeout: undefined,
       });
     }
 
@@ -86,7 +98,7 @@ export const baseWithValidation = <T extends IValidationProps>(WrappedComponent:
      * Updates the validation state
      * @param state New state
      */
-    private updateValidationState(state: IValidationComponentState): void {
+    private updateValidationState(state: IValidationState): void {
       const oldState = this.state;
       const newState = {
         ...oldState,
@@ -116,25 +128,17 @@ export const baseWithValidation = <T extends IValidationProps>(WrappedComponent:
         asyncValidators,
         context: formContext,
       } = this.props;
-      const {
-        fullName,
-        asyncTimeout,
-      } = this.state;
 
       const validationState: IValidationState = {
         valid: true,
         error: null,
         isValidating: false,
-        asyncTimeout: undefined,
       };
 
       // Clear the old timeout so we only run the
       // async validators after the waiting period
       // when the value didn't change in the meantime
-      if (asyncTimeout !== undefined) {
-        clearTimeout(asyncTimeout);
-        validationState.asyncTimeout = undefined;
-      }
+      this.clearValidationTimeout();
 
       // No validators - nothing to do here
       if (!Array.isArray(validators) && !Array.isArray(asyncValidators)) {
@@ -147,9 +151,9 @@ export const baseWithValidation = <T extends IValidationProps>(WrappedComponent:
       if (Array.isArray(validators)) {
         validationState.valid = validators.every((validator) => {
           const result = validator(value, formContext);
-          const parsedResult = parseValidationError(fullName, result);
+          const parsedResult = parseValidationError(this.fullName, result);
 
-          if (typeof parsedResult === 'object') {
+          if (isIFieldErrorObject(parsedResult)) {
             validationState.error = parsedResult;
 
             return false;
@@ -181,15 +185,15 @@ export const baseWithValidation = <T extends IValidationProps>(WrappedComponent:
         ));
 
         const errors = await Promise.all(validatorFunctions);
-        const parsedErrors = errors.map(error => parseValidationError(fullName, error));
+        const parsedErrors = errors.map(error => parseValidationError(this.fullName, error));
 
-        validationState.error = parsedErrors.filter(error => typeof error === 'object');
+        validationState.error = parsedErrors.filter(isIFieldErrorObject);
         validationState.valid = validationState.error.length === 0;
 
         if (validationState.error.length === 0) { validationState.error = null; }
 
         validationState.isValidating = false;
-        validationState.asyncTimeout = undefined;
+        this.asyncTimeout = undefined;
 
         this.updateAndNotify(validationState);
 
@@ -210,7 +214,7 @@ export const baseWithValidation = <T extends IValidationProps>(WrappedComponent:
         ? formContext.asyncValidationWait
         : propAsyncValidationWait;
 
-      validationState.asyncTimeout = setTimeout(performAsyncValidation, asyncValidationWait);
+      this.asyncTimeout = setTimeout(performAsyncValidation, asyncValidationWait);
 
       this.updateAndNotify(validationState);
 
@@ -223,7 +227,6 @@ export const baseWithValidation = <T extends IValidationProps>(WrappedComponent:
      */
     private updateAndNotify(newState: IValidationState): void {
       const { context } = this.props;
-      const { fullName } = this.state;
 
       // Don't do anything if the component has already been
       // unmounted. This can happen when the validated Field
@@ -232,13 +235,12 @@ export const baseWithValidation = <T extends IValidationProps>(WrappedComponent:
       if (this.unmounted) { return; }
 
       this.setState(newState);
-      context.notifyFieldEvent(fullName, 'validation', newState);
+      context.notifyFieldEvent(this.fullName, 'validation', newState);
     }
 
     // tslint:disable-next-line:member-ordering
     public render(): JSX.Element {
       const {
-        fullName,
         isValidating,
         valid,
         error,
@@ -256,7 +258,7 @@ export const baseWithValidation = <T extends IValidationProps>(WrappedComponent:
 
       return (
         <WrappedComponent
-          fullName={fullName}
+          fullName={this.fullName}
           validation={validation}
           {...this.props}
         />
@@ -271,6 +273,7 @@ export const baseWithValidation = <T extends IValidationProps>(WrappedComponent:
  * Injects a ValidatedComponent
  * @param WrappedComponent Wrapped component
  */
-export const withValidation = <T extends IValidationProps>(WrappedComponent: React.ComponentType<T>) => {
+export const withValidation = <T extends IValidationProps & IFormContextProps>(WrappedComponent: React.ComponentType<T>):
+  React.ComponentType<Subtract<TWrappedValidatedComponentProps<T>, IFormContextProps>> => {
   return withForm(baseWithValidation(WrappedComponent));
 };

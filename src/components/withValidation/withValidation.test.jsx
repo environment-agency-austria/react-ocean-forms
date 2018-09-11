@@ -52,6 +52,8 @@ describe('withValidation', () => {
     formContext.notifyFieldEvent.mockReset();
   };
 
+  const getAsyncTimeout = () => root.instance().asyncTimeout;
+
   describe('sync validation', () => {
     const errorId = 'foo';
     const validators = [
@@ -162,8 +164,8 @@ describe('withValidation', () => {
         isValidating: true,
         valid: true,
         error: null,
-        asyncTimeout: expect.any(Number),
       });
+      expect(getAsyncTimeout()).toBeGreaterThan(0);
       checkNotifyCalled(state);
 
       jest.runAllTimers();
@@ -186,19 +188,22 @@ describe('withValidation', () => {
       // Just to make code coverage happy
       root.setProps({ asyncValidationWait: 200 });
 
+      expect(getAsyncTimeout()).toBeUndefined();
+
       const state1 = await validationRef.validate(mockValue);
+      const timeout1 = getAsyncTimeout();
+
       const state2 = await validationRef.validate(mockValue);
+      const timeout2 = getAsyncTimeout();
 
       expect(state1).toMatchObject({
         isValidating: true,
-        asyncTimeout: expect.any(Number),
       });
       expect(state2).toMatchObject({
         isValidating: true,
-        asyncTimeout: expect.any(Number),
       });
 
-      expect(state1.asyncTimeout).not.toEqual(state2.asyncTimeout);
+      expect(timeout1).not.toEqual(timeout2);
       jest.runAllTimers();
     });
   });
@@ -212,8 +217,6 @@ describe('withValidation', () => {
       checkNotifyCalled({
         valid: false,
         error: 'dummy',
-        asyncTimeout: null,
-        fullName: fieldName,
         isValidating: false,
       });
     });
@@ -223,9 +226,9 @@ describe('withValidation', () => {
       checkNotifyCalled({
         valid: true,
         error: null,
-        asyncTimeout: null,
         isValidating: false,
       });
+      expect(getAsyncTimeout()).toBeUndefined();
 
       // Edge case where we check if the timeout has
       // been cleared if a validation is in progress
@@ -235,9 +238,9 @@ describe('withValidation', () => {
       checkNotifyCalled({
         valid: true,
         error: null,
-        asyncTimeout: null,
         isValidating: false,
       });
+      expect(getAsyncTimeout()).toBeUndefined();
     });
   });
 

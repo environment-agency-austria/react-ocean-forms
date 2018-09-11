@@ -19,15 +19,46 @@ export enum FieldErrorMessageId {
   Required = 'ojs_error_required',
 }
 
+/**
+ * Error object for formatting errors through
+ * the stringFormatter method
+ */
 export interface IFieldErrorObject {
+  /**
+   * Message id of the error or raw
+   * error string
+   */
   message_id: string;
+  /**
+   * Optional parameters for the stringFormatter
+   */
   params: IMessageValues;
 }
 
+/**
+ * Returns true if the given object implements
+ * IFIeldErrorObject
+ * @param object Object to test
+ */
+// tslint:disable-next-line:no-any
+export function isIFieldErrorObject(object: any): object is IFieldErrorObject {
+  return object && typeof object.message_id === 'string';
+}
+
+/**
+ * Possible return values of a validator
+ */
 export type TFieldError = undefined | string | IFieldErrorObject;
+/**
+ * Possible error states of a validated component
+ */
+export type TFieldErrors = null | IFieldErrorObject | IFieldErrorObject[];
 
-export type TFieldErrors = TFieldError | TFieldError[] | null;
-
+/**
+ * Validator method type
+ */
 export type TValidator = ((value: TFieldValue, context: IFormContext, ...args: any[]) => TFieldError);
-
+/**
+ * Async validator method type
+ */
 export type TAsyncValidator = ((value: TFieldValue, context: IFormContext, ...args: any[]) => Promise<TFieldError>);

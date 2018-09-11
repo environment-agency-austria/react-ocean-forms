@@ -12,11 +12,11 @@ import { IFieldErrorObject, TFieldError } from '../validators';
  * @param name field name
  * @param error error message
  */
-export const parseValidationError = (name: string, error: TFieldError): IFieldErrorObject | undefined => {
+export const parseValidationError = (name: string, error: TFieldError): IFieldErrorObject | null => {
   if (typeof error === 'object') {
     if (error.message_id === undefined || error.params === undefined) {
       // Error object is invalid
-      return undefined;
+      return null;
     }
 
     return error;
@@ -35,5 +35,5 @@ export const parseValidationError = (name: string, error: TFieldError): IFieldEr
     console.error(`[Form] Validation result for the field ${name} was unexpected. Result: ${error}`);
   }
 
-  return undefined;
+  return null;
 };

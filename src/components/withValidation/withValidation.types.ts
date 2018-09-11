@@ -1,26 +1,20 @@
-import { IFieldErrorObject, TFieldErrors } from '../../validators';
+import { TAsyncValidator, TFieldErrors, TValidator } from '../../validators';
 import { TFieldValue } from '../Field';
 import { IFormContextProps } from '../withForm';
+
+export interface IValidatedComponentProps extends IFormContextProps {
+  name: string;
+  validators?: TValidator[];
+  asyncValidators?: TAsyncValidator[];
+  asyncValidationWait?: number;
+}
 
 /**
  * Interface with properties describing the current
  * validation state and offering interfaces for
  * various validation tasks
  */
-export interface IValidationProp {
-  /**
-   * True, if the field is currently validating
-   * (asynchronous validation running in background)
-   */
-  isValidating: boolean;
-  /**
-   * True, if all validators report a valid state
-   */
-  valid: boolean;
-  /**
-   * Contains any errors if available
-   */
-  error: TFieldErrors;
+export interface IValidationProp extends IValidationState {
   /**
    * Triggers the validation of the field
    * @param value Field value
@@ -35,13 +29,13 @@ export interface IValidationProp {
    * Forces a new validation state on this Field
    * @param state New validation state
    */
-  update(state: IValidationComponentState): void;
+  update(state: IValidationState): void;
 }
 
 /**
- * Interface for consumers of withValidation props
+ * Base interface for consumers of withValidation props
  */
-export interface IValidationProps extends IFormContextProps {
+export interface IBaseValidationProps {
   /**
    * Full Name of the component
    * (context.fieldPrefix + '.' + fieldName)
@@ -54,18 +48,50 @@ export interface IValidationProps extends IFormContextProps {
   validation: IValidationProp;
 }
 
+/**
+ * Interface for consumers of withValidation props
+ * Note: this interface is including the form context
+ * props, which are automatically mapped by the
+ * withValidation hoc
+ */
+export interface IValidationProps extends IBaseValidationProps, IFormContextProps { }
+
+/**
+ * Internal state of the validated component
+ */
 export interface IValidationState {
-  valid: boolean;
-  error: null | IFieldErrorObject | IFieldErrorObject[];
+  /**
+   * True, if the field is currently validating
+   * (asynchronous validation running in background)
+   */
   isValidating: boolean;
-  asyncTimeout?: number;
+  /**
+   * True, if all validators report a valid state
+   */
+  valid: boolean;
+  /**
+   * Contains any errors if available
+   */
+  error: TFieldErrors;
 }
 
-export interface IValidationComponentState extends IValidationState {
-  fullName: string;
-}
-
+/**
+ * Arguments for the validate method
+ */
 export interface IValidationArgs {
+  /**
+   * True, if the async validators should
+   * be triggered as well, otherwise only
+   * the sync validators are triggered
+   *
+   * Default: true
+   */
   checkAsync: boolean;
+  /**
+   * True, if the async validators should
+   * be triggered without any delay
+   *
+   * Default: false
+   */
   immediateAsync: boolean;
 }
