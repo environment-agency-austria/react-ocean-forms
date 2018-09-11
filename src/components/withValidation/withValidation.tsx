@@ -98,7 +98,7 @@ export const baseWithValidation = <T extends IValidationProps>(WrappedComponent:
      * Updates the validation state
      * @param state New state
      */
-    private updateValidationState(state: IValidationState): void {
+    private updateValidationState(state: Partial<IValidationState>): void {
       const oldState = this.state;
       const newState = {
         ...oldState,

@@ -38,7 +38,7 @@ export interface IValidationProp extends IValidationState {
    * @param value Field value
    * @param args Validation args @see IValidationArgs
    */
-  validate(value: TFieldValue, args?: IValidationArgs): Promise<IValidationState>;
+  validate(value: TFieldValue, args?: Partial<IValidationArgs>): Promise<IValidationState>;
   /**
    * Resets the validation state
    */
@@ -47,7 +47,7 @@ export interface IValidationProp extends IValidationState {
    * Forces a new validation state on this Field
    * @param state New validation state
    */
-  update(state: IValidationState): void;
+  update(state: Partial<IValidationState>): void;
 }
 
 /**
