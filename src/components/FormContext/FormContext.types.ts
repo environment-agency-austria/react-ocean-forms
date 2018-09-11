@@ -1,6 +1,6 @@
 import { TSTringFormatter } from '../../utils/stringFormatter';
 import { TFieldValue } from '../Field';
-import { IValidationArgs, IValidationComponentState, IValidationState } from '../withValidation';
+import { IValidationArgs, IValidationState } from '../withValidation';
 
 export type TFormEventListener = ((name: string, event: string, args?: any) => void);
 
@@ -10,7 +10,7 @@ export interface IFieldState {
   validate(args?: IValidationArgs): Promise<IValidationState>;
   getValue(): TFieldValue;
   reset(): void;
-  updateValidation(state: Partial<IValidationComponentState>): void;
+  updateValidation(state: Partial<IValidationState>): void;
 }
 
 export type TFieldValues = {
