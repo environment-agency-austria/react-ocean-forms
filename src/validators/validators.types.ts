@@ -57,8 +57,8 @@ export type TFieldErrors = null | IFieldErrorObject | IFieldErrorObject[];
 /**
  * Validator method type
  */
-export type TValidator = ((value: TFieldValue, context: IFormContext, ...args: any[]) => TFieldError);
+export type TValidator = ((value: TFieldValue, context: IFormContext, ...args: unknown[]) => TFieldError);
 /**
  * Async validator method type
  */
-export type TAsyncValidator = ((value: TFieldValue, context: IFormContext, ...args: any[]) => Promise<TFieldError>);
+export type TAsyncValidator = ((value: TFieldValue, context: IFormContext, ...args: unknown[]) => Promise<TFieldError>);

@@ -15,8 +15,9 @@ import { FieldErrorMessageId, TFieldError, TValidator } from './validators.types
  * @param context form context
  * @param args parameters for the validator
  */
-const withParam = (validator: TValidator, ...args: any[]): TValidator =>
-  ((value: TFieldValue, context: IFormContext): TValidator => validator(value, context, ...args));
+const withParam = (validator: TValidator, ...args: unknown[]): TValidator => {
+  return (value: TFieldValue, context: IFormContext): TFieldError => validator(value, context, args);
+};
 
 /**
  * Checks if there is any value
@@ -33,7 +34,11 @@ const required = (value: TFieldValue): TFieldError => {
 /**
  * Checks if the value is alpha numeric
  */
-const alphaNumeric = (value: TFieldValue): TFieldError => (value && /[^a-zA-Z0-9 ]/i.test(value) ? FieldErrorMessageId.AlphaNumeric : undefined);
+const alphaNumeric = (value: TFieldValue): TFieldError => {
+  if (typeof value !== 'string') { return undefined; }
+
+  return value && /[^a-zA-Z0-9 ]/i.test(value) ? FieldErrorMessageId.AlphaNumeric : undefined;
+};
 
 /**
  * Checks if the given value has the minimum
@@ -42,7 +47,8 @@ const alphaNumeric = (value: TFieldValue): TFieldError => (value && /[^a-zA-Z0-9
  * @param context form context
  * @param length minimum length
  */
-const minLength = (value: TFieldValue, context: IFormContext, length: number): TFieldError => {
+const minLength = (value: TFieldValue, context: IFormContext, [length]: [number]): TFieldError => {
+  if (!isILength(value)) { return undefined; }
   if (value.length >= length) { return undefined; }
 
   return {
@@ -60,7 +66,8 @@ const minLength = (value: TFieldValue, context: IFormContext, length: number): T
  * @param context form context
  * @param length maximum length
  */
-const maxLength = (value: TFieldValue, context: IFormContext, length: number): TFieldError => {
+const maxLength = (value: TFieldValue, context: IFormContext, [length]: [number]): TFieldError => {
+  if (!isILength(value)) { return undefined; }
   if (value.length <= length) { return undefined; }
 
   return {
@@ -70,6 +77,15 @@ const maxLength = (value: TFieldValue, context: IFormContext, length: number): T
     },
   };
 };
+
+interface ILength {
+  length: number;
+}
+
+// tslint:disable-next-line:no-any
+function isILength(object: any): object is ILength {
+  return object && typeof object.length === 'number';
+}
 
 export const validators = {
   withParam,
