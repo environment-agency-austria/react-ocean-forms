@@ -7,13 +7,8 @@
 
 import * as React from 'react';
 
-import { IFieldComponentProps } from '../Field';
 import { FieldLine } from '../FieldLine';
-
-interface IInputProps extends IFieldComponentProps {
-  // tslint:disable-next-line:no-reserved-keywords
-  type: string;
-}
+import { IInputProps } from './Input.types';
 
 /**
  * Component for displaying bootstrap
