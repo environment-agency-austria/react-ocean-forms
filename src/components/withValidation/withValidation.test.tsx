@@ -1,17 +1,20 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+import * as React from 'react';
+
+// tslint:disable-next-line:no-implicit-dependencies
+import { shallow, ShallowWrapper } from 'enzyme';
 
 import { createMockFormContext } from '../../test-utils/enzymeFormContext';
 import { baseWithValidation } from './withValidation';
+import { IValidatedComponentProps, IValidationProp, IValidationState } from './withValidation.types';
 
 describe('withValidation', () => {
   const formContext = createMockFormContext();
-  const TestComponent = () => (<div id="test-component" />);
+  const TestComponent = (): JSX.Element => (<div id="test-component" />);
   const WrappedComponent = baseWithValidation(TestComponent);
 
   const fieldName = 'unitField';
 
-  const setup = props => shallow((
+  const setup = (props?: Partial<IValidatedComponentProps>): ShallowWrapper => shallow((
     <WrappedComponent
       name={fieldName}
       context={formContext}
@@ -20,10 +23,10 @@ describe('withValidation', () => {
   ));
   let root = setup();
 
-  let wrapper = null;
-  let validationRef = null;
+  let wrapper: ShallowWrapper;
+  let validationRef: IValidationProp;
 
-  const updateWrapper = () => root.find('TestComponent');
+  const updateWrapper = (): ShallowWrapper => root.find('TestComponent');
 
   beforeEach(() => {
     wrapper = updateWrapper();
@@ -35,7 +38,7 @@ describe('withValidation', () => {
   });
 
   it('should return a valid state without validators', async () => {
-    await expect(validationRef.validate()).resolves.toMatchObject({
+    await expect(validationRef.validate('foo')).resolves.toMatchObject({
       error: null,
       isValidating: false,
       valid: true,
@@ -43,16 +46,18 @@ describe('withValidation', () => {
   });
 
   const mockValue = 'foobar';
-  const checkNotifyCalled = (state) => {
+  const checkNotifyCalled = (state: IValidationState): void => {
     expect(formContext.notifyFieldEvent).toHaveBeenLastCalledWith(
       fieldName,
       'validation',
       state,
     );
+    // @ts-ignore
     formContext.notifyFieldEvent.mockReset();
   };
 
-  const getAsyncTimeout = () => root.instance().asyncTimeout;
+  // @ts-ignore
+  const getAsyncTimeout = (): number | undefined => root.instance().asyncTimeout;
 
   describe('sync validation', () => {
     const errorId = 'foo';
@@ -210,13 +215,17 @@ describe('withValidation', () => {
 
   describe('form context callbacks', () => {
     it('should update the validation state if called for', () => {
+      const mockError = {
+        message_id: 'dummy',
+        params: {},
+      };
       validationRef.update({
         valid: false,
-        error: 'dummy',
+        error: mockError,
       });
       checkNotifyCalled({
         valid: false,
-        error: 'dummy',
+        error: mockError,
         isValidating: false,
       });
     });
@@ -259,13 +268,14 @@ describe('withValidation', () => {
     expect(wrapper.prop('fullName')).toBe(`unit.${fieldName}`);
   });
 
-
   it('should not update its state after unmounting', () => {
+    // @ts-ignore
     formContext.notifyFieldEvent.mockReset();
 
     const oldInstance = root.instance();
     root.unmount();
 
+    // @ts-ignore
     expect(() => oldInstance.updateAndNotify({ foo: 'bar' })).not.toThrowError();
     expect(formContext.notifyFieldEvent).not.toHaveBeenCalled();
   });
