@@ -12,8 +12,7 @@
     "test:coverage": "jest --coverage",
     "start": "webpack --watch --mode development",
     "build": "webpack -p",
-    "lint": "eslint src/**",
-    "lint:ts": "tslint --project src"
+    "lint": "tslint --project src"
   },
   "jest": {
     "setupFiles": [
@@ -74,12 +73,6 @@
     "clean-webpack-plugin": "^0.1.19",
     "enzyme": "^3.4.0",
     "enzyme-adapter-react-16": "^1.2.0",
-    "eslint": "^4.19.1",
-    "eslint-config-airbnb": "^17.0.0",
-    "eslint-plugin-import": "^2.13.0",
-    "eslint-plugin-jest": "^21.18.0",
-    "eslint-plugin-jsx-a11y": "^6.1.0",
-    "eslint-plugin-react": "^7.11.1",
     "jest": "^23.5.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
