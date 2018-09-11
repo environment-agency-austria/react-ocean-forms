@@ -2,10 +2,28 @@ import { TAsyncValidator, TFieldErrors, TValidator } from '../../validators';
 import { TFieldValue } from '../Field';
 import { IFormContextProps } from '../withForm';
 
+/**
+ * Properties of a component that is wrapped
+ * by withValidation
+ */
 export interface IValidatedComponentProps extends IFormContextProps {
+  /**
+   * Field name
+   */
   name: string;
+  /**
+   * Synchronous validators
+   */
   validators?: TValidator[];
+  /**
+   * Asynchronous validators
+   */
   asyncValidators?: TAsyncValidator[];
+  /**
+   * Wait time in ms that should pass after
+   * the last user input before the async
+   * validators will be triggered
+   */
   asyncValidationWait?: number;
 }
 
