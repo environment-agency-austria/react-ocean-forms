@@ -5,22 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 import * as React from 'react';
-import { IMessageValues } from '../../utils';
-import { IFormContextProps, withForm } from '../withForm';
-
-/**
- * FormText component props
- */
-export interface IFormTextProps extends IFormContextProps {
-  /**
-   * Text or message id
-   */
-  text: string | null;
-  /**
-   * Optional values for the stringFormatter
-   */
-  values?: IMessageValues;
-}
+import { withForm } from '../withForm';
+import { IFormTextProps } from './FormText.types';
 
 /**
  * Wrapper component for passing strings to the
