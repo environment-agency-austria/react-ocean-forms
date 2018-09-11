@@ -7,15 +7,8 @@
 
 import * as React from 'react';
 
-import { toArray, TSTringFormatter } from '../../utils';
-import { IFieldErrorObject } from '../../validators';
-
-interface IFieldErrorProps {
-  id: string;
-  invalid: boolean;
-  error?: IFieldErrorObject;
-  stringFormatter: TSTringFormatter;
-}
+import { toArray } from '../../utils';
+import { IFieldErrorProps } from './FieldError.types';
 
 /**
  * Component for displaying bootstrap
@@ -30,7 +23,7 @@ export const FieldError: React.SFC<IFieldErrorProps> = (props: IFieldErrorProps)
   } = props;
 
   // If the field isn't invalid do nothing
-  if (invalid !== true || error === undefined) return null;
+  if (invalid !== true || error === null) { return null; }
 
   // Error could be either an string or an array of strings
   const errorArray = toArray(error);
