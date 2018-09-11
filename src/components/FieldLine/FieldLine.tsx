@@ -8,9 +8,9 @@
 import * as React from 'react';
 
 import { TValidator, validators as defaultValidators } from '../../validators';
-import { IFieldComponentProps } from '../Field';
 import { FieldError } from '../FieldError';
 import { FormText } from '../FormText';
+import { IFieldLineProps } from './FieldLine.types';
 
 /**
  * Create a required *
@@ -22,24 +22,6 @@ function createRequiredMarker(validators?: TValidator[]): JSX.Element | null {
   }
 
   return null;
-}
-
-/**
- * Field Line properties
- */
-export interface IFieldLineProps extends IFieldComponentProps {
-  /**
-   * Field label
-   */
-  label: string;
-  /**
-   * Validators
-   */
-  validators?: TValidator[];
-  /**
-   * Children
-   */
-  children: React.ReactNode;
 }
 
 /**
