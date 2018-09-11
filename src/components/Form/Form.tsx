@@ -7,45 +7,9 @@
 import * as React from 'react';
 
 import { getDeepValue, parseValidationError } from '../../utils';
-import { stringFormatter as defaultStringFormatter, TSTringFormatter } from '../../utils/stringFormatter';
-import { TFieldErrors } from '../../validators';
-import { TFieldValue } from '../Field';
+import { stringFormatter as defaultStringFormatter } from '../../utils/stringFormatter';
 import { FormContext, IBaseFormContext, IFieldState, IFormContext, TFieldValues, TFormEventListener } from '../FormContext';
-
-// Form.propTypes = {
-//   defaultValues: PropTypes.objectOf(fieldValueShape),
-//   values: PropTypes.objectOf(fieldValueShape),
-//   children: PropTypes.oneOfType([
-//     PropTypes.arrayOf(PropTypes.node),
-//     PropTypes.node,
-//   ]).isRequired,
-//   asyncValidateOnChange: PropTypes.bool,
-//   asyncValidationWait: PropTypes.number,
-//   formatString: PropTypes.func,
-//   onSubmit: PropTypes.func,
-//   onValidate: PropTypes.func,
-//   onReset: PropTypes.func,
-//   onFieldValueChanged: PropTypes.func,
-//   disabled: PropTypes.bool,
-//   className: PropTypes.string,
-//   plaintext: PropTypes.bool,
-// };
-
-interface IFormProps {
-  defaultValues: TFieldValues;
-  values?: TFieldValues;
-  children: React.ReactNode[];
-  asyncValidateOnChange: boolean;
-  asyncValidationWait: number;
-  formatString: TSTringFormatter;
-  disabled: boolean;
-  className?: string;
-  plaintext: boolean;
-  onSubmit?(values: TFieldValues, submitArgs?: unknown): Promise<void> | void;
-  onValidate?(values: TFieldValues): TFieldErrors;
-  onFieldValueChanged?(name: string, args: TFieldValue): void;
-  onReset?(): void;
-}
+import { IFormProps } from './Form.types';
 
 interface IFormState {
   context: IBaseFormContext;
@@ -143,7 +107,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
           valueRef[key] = state.getValue();
         } else {
           if (valueRef[key] === undefined) { valueRef[key] = {}; }
-          valueRef = valueRef[key];
+          valueRef = valueRef[key] as TFieldValues;
         }
       });
     });
@@ -157,14 +121,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
    * @param event Event name
    * @param args Event args
    */
-  private notifyFieldEvent(name: string, event: string, args?: any): void {
-    if (event === 'change') {
-      const { onFieldValueChanged } = this.props;
-      if (onFieldValueChanged !== undefined) {
-        onFieldValueChanged(name, args);
-      }
-    }
-
+  private notifyFieldEvent(name: string, event: string, args?: unknown): void {
     if (event === 'validation') {
       const { [name]: { label } } = this.fields;
       this.notifyListeners(name, event, { ...args, label });
@@ -179,7 +136,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
    * @param event Event name
    * @param args Event args
    */
-  private notifyListeners(name: string, event: string, args?: any): void {
+  private notifyListeners(name: string, event: string, args?: unknown): void {
     const listeners = Object.entries(this.eventListeners);
     listeners.forEach(([, callback]) => callback(name, event, args));
   }

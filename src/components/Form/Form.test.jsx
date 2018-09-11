@@ -5,14 +5,12 @@ import mockEvent from '../../test-utils/enzymeEventUtils';
 import { Form } from './Form';
 
 describe('<Form />', () => {
-  const onFieldValueChangedHandler = jest.fn();
   const onSubmitHandler = jest.fn();
   const onResetHandler = jest.fn();
   const onValidateHandler = jest.fn().mockReturnValue(null);
 
   const setup = props => shallow((
     <Form
-      onFieldValueChanged={onFieldValueChangedHandler}
       onSubmit={onSubmitHandler}
       onReset={onResetHandler}
       onValidate={onValidateHandler}
@@ -178,13 +176,6 @@ describe('<Form />', () => {
       mockListeners.forEach(({ state }) => {
         state.mockClear();
       });
-      onFieldValueChangedHandler.mockClear();
-    });
-
-    afterAll(() => {
-      wrapper.setProps({
-        onFieldValueChanged: onFieldValueChangedHandler,
-      });
     });
 
     it('should register new listeners without crashing', () => {
@@ -208,29 +199,16 @@ describe('<Form />', () => {
       ));
     });
 
-    it('should call the onFieldValueChanged prop and the listeners', () => {
+    it('should call the listeners', () => {
       const eventName = 'change';
       const eventArgs = 'myNewValue';
 
       formContext.notifyFieldEvent(unitFieldName, eventName, eventArgs);
-      expect(onFieldValueChangedHandler).toHaveBeenCalledWith(unitFieldName, eventArgs);
       mockListeners.forEach(item => expect(item.state).toHaveBeenLastCalledWith(
         unitFieldName,
         eventName,
         eventArgs,
       ));
-    });
-
-    it('should work without the onFieldValueChanged prop', () => {
-      const eventName = 'change';
-      const eventArgs = 'myNewValue';
-
-      wrapper.setProps({
-        onFieldValueChanged: undefined,
-      });
-
-      formContext.notifyFieldEvent(unitFieldName, eventName, eventArgs);
-      expect(onFieldValueChangedHandler).not.toHaveBeenCalled();
     });
   });
 
