@@ -1,6 +1,3 @@
 {
-  "extends": ["tslint-eaa-contrib"],
-  "rules": {
-    "variable-name": [true, "ban-keywords", "check-format", "allow-pascal-case"]
-  }
+  "extends": ["tslint-eaa-contrib"]
 }
