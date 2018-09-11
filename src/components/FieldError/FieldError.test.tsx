@@ -1,14 +1,19 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+import * as React from 'react';
+
+// tslint:disable-next-line:no-implicit-dependencies
+import { shallow, ShallowWrapper } from 'enzyme';
 
 import { FieldError } from './FieldError';
+import { IFieldErrorProps } from './FieldError.types';
 
 describe('<FieldError />', () => {
   const mockStringFormatter = jest.fn().mockReturnValue('string');
-  const setup = props => shallow((
+  const setup = (props?: Partial<IFieldErrorProps>): ShallowWrapper => shallow((
     <FieldError
       id="unitError"
       stringFormatter={mockStringFormatter}
+      invalid={false}
+      error={null}
       {...props}
     />
   ));
