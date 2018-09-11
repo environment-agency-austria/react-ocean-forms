@@ -341,11 +341,11 @@ export class Form extends React.Component<IFormProps, IFormState> {
       ...context,
       defaultValues,
       values,
-      asyncValidateOnChange: asyncValidateOnChange,
       asyncValidationWait,
       stringFormatter,
       disabled,
       plaintext,
+      asyncValidateOnChange: asyncValidateOnChange,
     };
   }
 

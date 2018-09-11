@@ -247,13 +247,13 @@ export const baseWithValidation = <T extends IValidationProps>(WrappedComponent:
       } = this.state;
 
       const validation = {
-        validate: this.validate,
-        reset: this.reset,
-        update: this.updateValidationState,
-
         isValidating,
         valid,
         error,
+
+        validate: this.validate,
+        reset: this.reset,
+        update: this.updateValidationState,
       };
 
       return (

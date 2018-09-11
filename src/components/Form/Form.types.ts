@@ -1,6 +1,5 @@
 import { TSTringFormatter } from '../../utils';
 import { TFieldError } from '../../validators';
-import { TFieldValue } from '../Field';
 import { TFieldValues } from '../FormContext';
 
 /**

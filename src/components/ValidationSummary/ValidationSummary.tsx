@@ -187,13 +187,13 @@ export class BaseValidationSummary extends React.Component<IValidationSummaryPro
     const errors: IInvalidField[] = [];
 
     fieldArray.forEach(([name, state]) => {
-      if (state.valid === false && state.error !== null) {
-        errors.push({
-          id: name,
-          name: state.label,
-          error: state.error,
-        });
-      }
+      if (state.valid || state.error === null) { return; }
+
+      errors.push({
+        id: name,
+        name: state.label,
+        error: state.error,
+      });
     });
 
     // Don't render anything if there are no errors

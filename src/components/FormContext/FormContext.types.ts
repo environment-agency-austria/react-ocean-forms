@@ -2,7 +2,7 @@ import { TSTringFormatter } from '../../utils/stringFormatter';
 import { TFieldValue } from '../Field';
 import { IValidationArgs, IValidationState } from '../withValidation';
 
-export type TFormEventListener = ((name: string, event: string, args?: any) => void);
+export type TFormEventListener = ((name: string, event: string, args?: unknown) => void);
 
 export interface IFieldState {
   label: string;
@@ -33,7 +33,7 @@ export interface IBaseFormContext {
    * submit-invalid = undefined
    * validation = IValidationState + label: string -.-
    */
-  notifyFieldEvent(name: string, event: string, args?: any): void;
+  notifyFieldEvent(name: string, event: string, args?: unknown): void;
 
   registerListener(name: string, callback: TFormEventListener): void;
   unregisterListener(name: string): void;
@@ -41,7 +41,7 @@ export interface IBaseFormContext {
   getFieldState(name: string): IFieldState;
   getValues(): TFieldValues;
 
-  submit(submitArgs?: any): Promise<void>;
+  submit(submitArgs?: unknown): Promise<void>;
 }
 
 export interface IFormContext extends IBaseFormContext {

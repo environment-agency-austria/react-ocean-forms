@@ -9,12 +9,12 @@ import { IFormContext } from '../FormContext';
 import { BaseFormText } from './FormText';
 
 describe('<FormText />', () => {
-  const MOCK_CONTEXT: IFormContext = createMockFormContext();
-  MOCK_CONTEXT.stringFormatter = jest.fn().mockImplementation(value => value);
+  const mockContext: IFormContext = createMockFormContext();
+  mockContext.stringFormatter = jest.fn().mockImplementation(value => value);
 
   const setup = (text: string | null, values?: IMessageValues): ShallowWrapper => shallow((
     <BaseFormText
-      context={MOCK_CONTEXT}
+      context={mockContext}
       text={text}
       values={values}
     />
@@ -26,17 +26,17 @@ describe('<FormText />', () => {
   });
 
   describe('text existing', () => {
-    const MOCK_TEXT = 'mock-text';
-    const MOCK_VALUES = { foo: 'bar' };
+    const mockText = 'mock-text';
+    const mockValues = { foo: 'bar' };
 
-    const wrapper = setup(MOCK_TEXT, MOCK_VALUES);
+    const wrapper = setup(mockText, mockValues);
 
     it('should call context.stringFormatter', () => {
-      expect(MOCK_CONTEXT.stringFormatter).toHaveBeenCalledWith(MOCK_TEXT, MOCK_VALUES);
+      expect(mockContext.stringFormatter).toHaveBeenCalledWith(mockText, mockValues);
     });
 
     it('should render the text', () => {
-      expect(wrapper.text()).toBe(MOCK_TEXT);
+      expect(wrapper.text()).toBe(mockText);
     });
   });
 });
