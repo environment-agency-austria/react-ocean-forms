@@ -60,7 +60,6 @@ ShallowWrapper {
         "valid": true,
       },
       "type": "text",
-      "validators": undefined,
     },
     "ref": null,
     "rendered": "",
@@ -92,7 +91,6 @@ ShallowWrapper {
           "valid": true,
         },
         "type": "text",
-        "validators": undefined,
       },
       "ref": null,
       "rendered": "",
@@ -185,7 +183,6 @@ ShallowWrapper {
         "valid": true,
       },
       "type": "text",
-      "validators": undefined,
     },
     "ref": null,
     "rendered": Object {
@@ -241,7 +238,6 @@ ShallowWrapper {
           "valid": true,
         },
         "type": "text",
-        "validators": undefined,
       },
       "ref": null,
       "rendered": Object {

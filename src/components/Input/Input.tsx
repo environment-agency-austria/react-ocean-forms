@@ -22,9 +22,17 @@ export const Input: React.SFC<IInputProps> = (props: IInputProps): JSX.Element =
     meta,
   } = props;
 
+  const fieldValue = field.value;
+  if (typeof fieldValue !== 'string' && fieldValue !== undefined) {
+    throw new Error(
+      'Incompatible field value supplied for input component '
+      + `${field.id}. Only values with type string or undefined are allowed.`,
+    );
+  }
+
   return (
     <FieldLine {...props}>
-      {meta.plaintext ? field.value : <input type={type} {...field} />}
+      {meta.plaintext ? field.value : <input type={type} {...field} value={fieldValue} />}
     </FieldLine>
   );
 };
