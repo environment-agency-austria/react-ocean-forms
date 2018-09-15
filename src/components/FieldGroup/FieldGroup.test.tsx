@@ -1,24 +1,44 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+import * as React from 'react';
+
+// tslint:disable-next-line:no-implicit-dependencies
+import { shallow, ShallowWrapper } from 'enzyme';
 
 import { createMockFormContext, createMockValidation } from '../../test-utils/enzymeFormContext';
+import { IFieldState, IFormContext } from '../FormContext';
+import { IValidationProp } from '../withValidation';
 import { BaseFieldGroup } from './FieldGroup';
+import { IFieldGroupProps } from './FieldGroup.types';
 
 describe('<FieldGroup />', () => {
-  const MOCK_NAME = 'unitGroup';
-  const MOCK_LABEL = 'Unit group';
-  const MOCK_VALUE = {
+  const mockName = 'unitGroup';
+  const mockLabel = 'Unit group';
+  const mockValue = {
     field1: 'value1',
     field2: 'value2',
   };
 
+  interface ISetupArgs {
+    props?: Partial<IFieldGroupProps>;
+    contextOverrides?: Partial<IFormContext>;
+    validationOverrides?: Partial<IValidationProp>;
+  }
+
+  interface ISetupResult {
+    formContext: IFormContext;
+    fieldState: IFieldState;
+    validation: IValidationProp;
+    wrapper: ShallowWrapper;
+    renderMock: jest.Mock;
+    groupContext: IFormContext;
+  }
+
   const setup = ({
-    props = undefined,
-    contextOverrides = undefined,
-    validationOverrides = undefined,
-  } = {}) => {
+    props,
+    contextOverrides,
+    validationOverrides,
+  }: ISetupArgs = {}): ISetupResult => {
     let fieldState = null;
-    const registerCallback = (name, state) => { fieldState = state; };
+    const registerCallback = (name: string, state: IFieldState): void => { fieldState = state; };
     const renderMock = jest.fn().mockReturnValue(null);
 
     const formContext = {
@@ -26,7 +46,7 @@ describe('<FieldGroup />', () => {
       getValues: jest.fn().mockReturnValue({
         foo: 'bar',
         hue: 'hue',
-        [MOCK_NAME]: MOCK_VALUE,
+        [mockName]: mockValue,
       }),
       ...contextOverrides,
     };
@@ -37,9 +57,9 @@ describe('<FieldGroup />', () => {
 
     const wrapper = shallow((
       <BaseFieldGroup
-        name={MOCK_NAME}
-        fullName={MOCK_NAME}
-        label={MOCK_LABEL}
+        name={mockName}
+        fullName={mockName}
+        label={mockLabel}
         context={formContext}
         validation={validation}
         render={renderMock}
@@ -51,6 +71,7 @@ describe('<FieldGroup />', () => {
 
     return {
       formContext,
+      //@ts-ignore Field state is always initialized through the registerCallback
       fieldState,
       validation,
       wrapper,
@@ -67,9 +88,9 @@ describe('<FieldGroup />', () => {
   });
 
   describe('Form registration', () => {
-    let formContext;
-    let validation;
-    let wrapper;
+    let formContext: IFormContext;
+    let validation: IValidationProp;
+    let wrapper: ShallowWrapper;
 
     beforeAll(() => {
       ({ formContext, validation, wrapper } = setup());
@@ -77,9 +98,9 @@ describe('<FieldGroup />', () => {
 
     it('should register itself in the form context', () => {
       expect(formContext.registerField).toHaveBeenCalledWith(
-        MOCK_NAME,
+        mockName,
         {
-          label: MOCK_LABEL,
+          label: mockLabel,
           validate: expect.any(Function),
           reset: expect.any(Function),
           getValue: expect.any(Function),
@@ -92,20 +113,21 @@ describe('<FieldGroup />', () => {
 
     it('should unregister itself on unmount', () => {
       wrapper.unmount();
-      expect(formContext.unregisterField).toHaveBeenCalledWith(MOCK_NAME);
+      expect(formContext.unregisterField).toHaveBeenCalledWith(mockName);
     });
   });
 
   describe('Invalid form context', () => {
-    const MOCK_ERROR_STRING = `Could not find a form context for field group "${MOCK_NAME}". `
-                            + 'Fields can only be used inside a Form tag.';
+    const mockErrorString = `Could not find a form context for field group "${mockName}". `
+                          + 'Fields can only be used inside a Form tag.';
 
     it('should throw an error if there is no form context', () => {
-      expect(() => setup({ props: { context: undefined } })).toThrowError(MOCK_ERROR_STRING);
+      expect(() => setup({ props: { context: undefined } })).toThrowError(mockErrorString);
     });
 
     it('should throw an error if the form context is invalid', () => {
-      expect(() => setup({ props: { context: { foo: 'bar' } } })).toThrowError(MOCK_ERROR_STRING);
+      // @ts-ignore The whole point of this test is to check the behaviour with an invalid type
+      expect(() => setup({ props: { context: { foo: 'bar' } } })).toThrowError(mockErrorString);
     });
   });
 
@@ -122,14 +144,14 @@ describe('<FieldGroup />', () => {
 
     describe('Context.validate', () => {
       it('should correctly pass the validate method', () => {
-        const MOCK_VALIDATE_ARGS = { foo: 'bar' };
+        const mockValidateArgs = { checkAsync: false };
         const { fieldState, validation } = setup();
 
-        fieldState.validate(MOCK_VALIDATE_ARGS);
+        fieldState.validate(mockValidateArgs);
 
         expect(validation.validate).toHaveBeenLastCalledWith(
-          MOCK_VALUE,
-          MOCK_VALIDATE_ARGS,
+          mockValue,
+          mockValidateArgs,
         );
       });
     });
@@ -148,7 +170,7 @@ describe('<FieldGroup />', () => {
     it('should create a valid form context', () => {
       const { formContext, groupContext } = setup();
       expect(groupContext).toMatchObject({
-        fieldPrefix: MOCK_NAME,
+        fieldPrefix: mockName,
         registerField: formContext.registerField,
         unregisterField: formContext.unregisterField,
         notifyFieldEvent: expect.any(Function),
@@ -168,25 +190,25 @@ describe('<FieldGroup />', () => {
     describe('Context.fieldPrefix behaviour', () => {
       it('should override the fieldPrefix with the FieldGroup fullName', () => {
         const { groupContext } = setup();
-        expect(groupContext.fieldPrefix).toBe(MOCK_NAME);
+        expect(groupContext.fieldPrefix).toBe(mockName);
       });
     });
 
     describe('Context.notifyFieldEvent behaviour', () => {
-      const MOCK_SENDER_LOCAL = 'field2';
-      const MOCK_SENDER = `${MOCK_NAME}.${MOCK_SENDER_LOCAL}`;
+      const mockSenderLocal = 'field2';
+      const mockSender = `${mockName}.${mockSenderLocal}`;
 
-      const triggerNotification = (groupContext, eventName, eventArgs) => {
+      const triggerNotification = (groupContext: IFormContext, eventName: string, eventArgs?: unknown): void => {
         const notifyCallback = groupContext.notifyFieldEvent;
-        notifyCallback(MOCK_SENDER, eventName, eventArgs);
+        notifyCallback(mockSender, eventName, eventArgs);
       };
 
-      const checkEventPassing = (eventName, eventArgs) => {
+      const checkEventPassing = (eventName: string, eventArgs?: unknown): void => {
         it('should pass the event to the parent form context', () => {
           const { groupContext, formContext } = setup();
           triggerNotification(groupContext, eventName, eventArgs);
           expect(formContext.notifyFieldEvent).toHaveBeenCalledWith(
-            MOCK_SENDER,
+            mockSender,
             eventName,
             eventArgs,
           );
@@ -201,14 +223,14 @@ describe('<FieldGroup />', () => {
       });
 
       describe('Event "change"', () => {
-        const MOCK_CHANGED_FIELD_VALUE = 'mock-value';
+        const mockChangedFieldValue = 'mock-value';
         const eventName = 'change';
 
-        const assertValidateCalled = ({ validate }, checkAsync) => {
+        const assertValidateCalled = ({ validate }: IValidationProp, checkAsync: boolean): void => {
           expect(validate).toHaveBeenCalledWith(
             {
-              ...MOCK_VALUE,
-              [MOCK_SENDER_LOCAL]: MOCK_CHANGED_FIELD_VALUE,
+              ...mockValue,
+              [mockSenderLocal]: mockChangedFieldValue,
             },
             { checkAsync },
           );
@@ -218,30 +240,30 @@ describe('<FieldGroup />', () => {
 
         it('should call the validate function correctly', () => {
           const { groupContext, validation } = setup();
-          triggerNotification(groupContext, eventName, MOCK_CHANGED_FIELD_VALUE);
+          triggerNotification(groupContext, eventName, mockChangedFieldValue);
           assertValidateCalled(validation, false);
         });
 
         it('should respect the Form.asyncValidateOnChange configuration', () => {
-          const MOCK_CHECK_ASYNC = true;
+          const mockCheckAsync = true;
           const { groupContext, validation } = setup({
             contextOverrides: {
-              asyncValidateOnChange: MOCK_CHECK_ASYNC,
+              asyncValidateOnChange: mockCheckAsync,
             },
           });
-          triggerNotification(groupContext, eventName, MOCK_CHANGED_FIELD_VALUE);
-          assertValidateCalled(validation, MOCK_CHECK_ASYNC);
+          triggerNotification(groupContext, eventName, mockChangedFieldValue);
+          assertValidateCalled(validation, mockCheckAsync);
         });
 
         it('should respect the FieldGroup.asyncValidateOnChange configuration', () => {
-          const MOCK_CHECK_ASYNC = true;
+          const mockCheckAsync = true;
           const { groupContext, validation } = setup({
             props: {
-              asyncValidateOnChange: MOCK_CHECK_ASYNC,
+              asyncValidateOnChange: mockCheckAsync,
             },
           });
-          triggerNotification(groupContext, eventName, MOCK_CHANGED_FIELD_VALUE);
-          assertValidateCalled(validation, MOCK_CHECK_ASYNC);
+          triggerNotification(groupContext, eventName, mockChangedFieldValue);
+          assertValidateCalled(validation, mockCheckAsync);
         });
       });
 
@@ -256,10 +278,10 @@ describe('<FieldGroup />', () => {
 
         describe.each(cases)('should respect the %s configuration', (name, config) => {
           it('should not trigger a validation if validateOnChange is true', () => {
-            const MOCK_CHECK_ASYNC = true;
+            const mockCheckAsync = true;
             const { groupContext, validation } = setup({
               [config]: {
-                asyncValidateOnChange: MOCK_CHECK_ASYNC,
+                asyncValidateOnChange: mockCheckAsync,
               },
             });
             triggerNotification(groupContext, eventName);
@@ -267,14 +289,14 @@ describe('<FieldGroup />', () => {
           });
 
           it('should trigger a validation if validateOnChange is true', () => {
-            const MOCK_CHECK_ASYNC = false;
+            const mockCheckAsync = false;
             const { groupContext, validation } = setup({
               [config]: {
-                asyncValidateOnChange: MOCK_CHECK_ASYNC,
+                asyncValidateOnChange: mockCheckAsync,
               },
             });
             triggerNotification(groupContext, eventName);
-            expect(validation.validate).toHaveBeenCalledWith(MOCK_VALUE);
+            expect(validation.validate).toHaveBeenCalledWith(mockValue);
           });
         });
       });
@@ -292,26 +314,27 @@ describe('<FieldGroup />', () => {
         ['empty', {}],
         ['existing', {
           mockField: '42',
-          [MOCK_NAME]: { default: 'values' },
+          [mockName]: { default: 'values' },
         }],
       ];
 
       it.each(formStates)(`should correctly override %s Context.${prop}`, (stateName, formState) => {
-        const MOCK_GROUP_VALUE = { foo: 'bar' };
+        const mockGroupValue = { foo: 'bar' };
 
         const { groupContext } = setup({
           props: {
-            [prop]: MOCK_GROUP_VALUE,
+            [prop]: mockGroupValue,
           },
           contextOverrides: {
             [prop]: formState,
           },
         });
 
+        // @ts-ignore any is OK here
         expect(groupContext[prop]).toEqual({
           ...formState,
           ...{
-            [MOCK_NAME]: MOCK_GROUP_VALUE,
+            [mockName]: mockGroupValue,
           },
         });
       });
@@ -322,7 +345,7 @@ describe('<FieldGroup />', () => {
     it('should get called with the correct parameters', () => {
       const { renderMock } = setup();
       expect(renderMock).toHaveBeenCalledWith({
-        fullName: MOCK_NAME,
+        fullName: mockName,
         isValidating: false,
         valid: true,
         error: null,
@@ -330,37 +353,38 @@ describe('<FieldGroup />', () => {
     });
 
     it('should correctly pass the validation state', () => {
-      const MOCK_IS_VALIDATING = true;
-      const MOCK_IS_VALID = false;
-      const MOCK_ERROR = { message_id: 'bar' };
+      const mockIsValidating = true;
+      const mockIsValid = false;
+      const mockError = { message_id: 'bar', params: {} };
 
       const { renderMock } = setup({
         validationOverrides: {
-          isValidating: MOCK_IS_VALIDATING,
-          valid: MOCK_IS_VALID,
-          error: MOCK_ERROR,
+          isValidating: mockIsValidating,
+          valid: mockIsValid,
+          error: mockError,
         },
       });
       expect(renderMock).toHaveBeenCalledWith({
-        fullName: MOCK_NAME,
-        isValidating: MOCK_IS_VALIDATING,
-        valid: MOCK_IS_VALID,
-        error: MOCK_ERROR,
+        fullName: mockName,
+        isValidating: mockIsValidating,
+        valid: mockIsValid,
+        error: mockError,
       });
     });
   });
 
   describe('Edge cases', () => {
     it('FieldGroup.getGroupValue should return an empty object if context.getValues() doesn\'t have values for the group', () => {
-      const MOCK_GET_VALUES = jest.fn().mockReturnValue({});
+      const mockGetValues = jest.fn().mockReturnValue({});
       const { wrapper } = setup({
         contextOverrides: {
-          getValues: MOCK_GET_VALUES,
+          getValues: mockGetValues,
         },
       });
 
-      expect(wrapper.instance().getGroupValue()).toEqual({});
-      expect(MOCK_GET_VALUES).toHaveBeenCalled();
+      // @ts-ignore getGroupValue is private, maybe there is a better solution to test this?
+      expect((wrapper.instance() as BaseFieldGroup).getGroupValue()).toEqual({});
+      expect(mockGetValues).toHaveBeenCalled();
     });
   });
 });
