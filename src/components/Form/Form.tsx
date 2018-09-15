@@ -62,7 +62,6 @@ export class Form extends React.Component<IFormProps, IFormState> {
         submit: this.submit,
 
         busy: false,
-        disabled: false,
       },
     };
   }
