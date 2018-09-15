@@ -14,27 +14,16 @@ import { IFormButtonProps } from './FormButton.types';
  * automatically disable the button if the
  * form is busy
  */
-export const BaseFormButton: React.SFC<IFormButtonProps> = (
-  {
-    context: { busy, disabled: formDisabled, submit },
-    disabled,
-    type,
-    onClick,
-    submitArgs,
-    // tslint:disable-next-line:naming-convention
-    component: Component,
-    ...rest
-  }: IFormButtonProps,
-): JSX.Element => {
-  BaseFormButton.defaultProps = {
+export class BaseFormButton extends React.Component<IFormButtonProps> {
+  public static displayName: string = 'FormButton';
+
+  // tslint:disable-next-line:typedef
+  public static defaultProps = {
     component: 'button',
     type: 'submit',
-    submitArgs: undefined,
     disabled: false,
     onClick: (): void => undefined,
   };
-
-  const buttonDisabled = busy || formDisabled || disabled;
 
   /**
    * Calls formContext.submit if the button is not
@@ -42,7 +31,17 @@ export const BaseFormButton: React.SFC<IFormButtonProps> = (
    * submitParams, otherwise just calls the onClick
    * event handler
    */
-  const handleClick = (event: MouseEvent): void => {
+  private handleClick = (event: MouseEvent): void => {
+    const {
+      context: { busy, disabled: formDisabled, submit },
+      type,
+      submitArgs,
+      onClick,
+      disabled,
+    } = this.props;
+
+    const buttonDisabled = busy || formDisabled || disabled;
+
     if (buttonDisabled) {
       event.preventDefault();
 
@@ -55,25 +54,32 @@ export const BaseFormButton: React.SFC<IFormButtonProps> = (
     }
 
     onClick(event);
-  };
+  }
 
-  // Type is provided by the props
-  return (
-    <Component
-      type={type}
-      disabled={buttonDisabled}
-      onClick={handleClick}
-      {...rest}
-    />
-  );
-};
+  // tslint:disable-next-line:member-ordering
+  public render(): JSX.Element {
+    const {
+      context: { busy, disabled: formDisabled },
+      disabled,
+      type,
+      // tslint:disable-next-line:naming-convention
+      component: Component,
+      onClick,
+      ...rest
+    } = this.props;
 
-BaseFormButton.defaultProps = {
-  disabled: false,
-  type: 'submit',
-  onClick: ((): void => undefined),
-  component: 'button',
-};
-BaseFormButton.displayName = 'FormButton';
+    const buttonDisabled = busy || formDisabled || disabled;
+
+    return (
+      <Component
+        type={type}
+        disabled={buttonDisabled}
+        onClick={this.handleClick}
+        {...rest}
+      />
+    );
+
+  }
+}
 
 export const FormButton = withForm(BaseFormButton);
