@@ -204,7 +204,7 @@ export class BaseFieldGroup extends React.Component<IFieldGroupProps, IFieldGrou
    * Triggers the validation of the group
    * @param args Options for the validate call
    */
-  private validate = async (args?: IValidationArgs): Promise<IValidationState> => {
+  private validate = async (args?: Partial<IValidationArgs>): Promise<IValidationState> => {
     const { validation: { validate } } = this.props;
 
     // Overwrite the value of the group state with

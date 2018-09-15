@@ -324,7 +324,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    * Validates the field
    * @param args Validation arguments
    */
-  private validate = async (args?: IValidationArgs): Promise<IValidationState> => {
+  private validate = async (args?: Partial<IValidationArgs>): Promise<IValidationState> => {
     const { value } = this.state;
     const { validation: { validate }, getSubmitValue, context } = this.props;
 

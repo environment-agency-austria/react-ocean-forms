@@ -20,7 +20,7 @@ export interface IFieldState {
    * Triggers the validation of this field
    * @param args Validation args
    */
-  validate(args?: IValidationArgs): Promise<IValidationState>;
+  validate(args?: Partial<IValidationArgs>): Promise<IValidationState>;
   /**
    * Returns the current value of the field
    */
