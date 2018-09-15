@@ -36,7 +36,6 @@ ShallowWrapper {
         "unregisterField": [MockFunction],
         "unregisterListener": [MockFunction],
       },
-      "name": "unitField",
     },
     "ref": null,
     "rendered": null,
@@ -66,7 +65,6 @@ ShallowWrapper {
           "unregisterField": [MockFunction],
           "unregisterListener": [MockFunction],
         },
-        "name": "unitField",
       },
       "ref": null,
       "rendered": null,
@@ -94,9 +92,7 @@ ShallowWrapper {
 exports[`withForm should render without error 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <FormComponent(TestComponent)
-    name="unitField"
-  />,
+  Symbol(enzyme.__unrendered__): <FormComponent(TestComponent) />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
     "getNode": [Function],
