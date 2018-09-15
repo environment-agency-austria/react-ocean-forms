@@ -9,28 +9,8 @@ import * as React from 'react';
 
 import { getDeepValue } from '../../utils';
 import { IFormContext, TFieldValues } from '../FormContext';
-import { IValidationArgs, IValidationProps, IValidationState, withValidation } from '../withValidation';
-import { IFieldComponentFieldProps, IFieldComponentMeta, IFieldComponentProps, TFieldValue } from './Field.types';
-
-type TValueCallback = ((value: TFieldValue, meta: IValueMeta) => TFieldValue);
-
-interface IFieldProps extends IValidationProps {
-  name: string;
-  label: string;
-  component: React.ComponentType<IFieldComponentProps>;
-  defaultValue?: TFieldValue;
-  value?: TFieldValue;
-  asyncValidateOnChange?: boolean;
-  getDisplayValue: TValueCallback;
-  getSubmitValue: TValueCallback;
-  onBlur(): void;
-  onChange(value: TFieldValue): void;
-}
-
-interface IValueMeta {
-  disabled: boolean;
-  plaintext: boolean;
-}
+import { IValidationArgs, IValidationState, withValidation } from '../withValidation';
+import { IFieldComponentFieldProps, IFieldComponentMeta, IFieldProps, IValueMeta, TFieldValue } from './Field.types';
 
 interface IContextMeta extends IValueMeta {
   defaultValue?: TFieldValue;
@@ -91,8 +71,8 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
       {
         label,
 
-        validate: this.validate,
         updateValidation,
+        validate: this.validate,
         reset: this.reset,
         getValue: this.getValue,
       },
@@ -161,7 +141,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    * @param props Field props
    * @param value Field value
    */
-  private static callGetDisplayValue(props: IFieldProps, value: TFieldValue): TFieldValue {
+  private static callGetDisplayValue(props: IFieldProps, value: TFieldValue | undefined): TFieldValue {
     const { getDisplayValue, context } = props;
 
     return getDisplayValue(
@@ -179,7 +159,9 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    * @param externalValue External value
    * @param changes Changes object
    */
-  private static getPropValue(defaultValue: TFieldValue, externalValue: TFieldValue, changes: IMetaChanges): TFieldValue | undefined {
+  private static getPropValue(
+    defaultValue: TFieldValue | undefined, externalValue: TFieldValue | undefined, changes: IMetaChanges,
+  ): TFieldValue | undefined {
     const hasExternalValue = externalValue !== undefined;
 
     if (hasExternalValue && (changes.externalValue || changes.meta)) {
@@ -202,7 +184,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    * @param externalValue External value
    */
   private static getPropChanges(
-    props: IFieldProps, state: IFieldState, defaultValue: TFieldValue, externalValue: TFieldValue,
+    props: IFieldProps, state: IFieldState, defaultValue: TFieldValue | undefined, externalValue: TFieldValue | undefined,
   ): IMetaChanges {
     const {
       context: {
@@ -237,7 +219,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    */
   private static getLocalOverridenValue(
     localValue: TFieldValue | undefined, contextValue: TFieldValues | undefined, fullName: string,
-  ): TFieldValue {
+  ): TFieldValue | undefined {
     return localValue || getDeepValue(fullName, contextValue);
   }
 
@@ -246,7 +228,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    * Form.values
    * @param props Field props
    */
-  private static getExternalValue(props: IFieldProps): TFieldValue {
+  private static getExternalValue(props: IFieldProps): TFieldValue | undefined {
     const { fullName, context: { values }, value } = props;
 
     return BaseField.getLocalOverridenValue(value, values, fullName);
@@ -257,7 +239,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    * from Form.defaultValues
    * @param props Field props
    */
-  private static getDefaultValue(props: IFieldProps): TFieldValue {
+  private static getDefaultValue(props: IFieldProps): TFieldValue | undefined {
     const { fullName, context: { defaultValues }, defaultValue } = props;
 
     return BaseField.getLocalOverridenValue(defaultValue, defaultValues, fullName);
@@ -336,9 +318,9 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
     );
 
     this.setState({
+      value,
       touched: false,
       dirty: false,
-      value,
     });
 
     validation.reset();
@@ -368,7 +350,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    * the field state accordingly.
    * @param event Event object
    */
-  private handleFieldChanged(event: any): void {
+  private handleFieldChanged(event: React.ChangeEvent<HTMLInputElement>): void {
     const { value } = event.target;
     const {
       fullName,
@@ -379,9 +361,9 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
     } = this.props;
 
     this.setState({
+      value,
       dirty: true,
       touched: true,
-      value,
     });
 
     const asyncValidateOnChange = this.getAsyncValidateOnChangeSetting();
@@ -420,7 +402,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
       BaseField.getValueMeta(context),
     );
 
-    if (dirty && !asyncValidateOnChange) validate(submitValue);
+    if (dirty && !asyncValidateOnChange) { validate(submitValue); }
     context.notifyFieldEvent(fullName, 'blur');
     onBlur();
   }
@@ -434,10 +416,10 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
     const { value } = this.state;
 
     return {
-      id: fullName,
-      name: fullName,
       value,
       disabled,
+      id: fullName,
+      name: fullName,
       onChange: this.handleFieldChanged,
       onBlur: this.handleFieldBlurred,
     };
@@ -475,6 +457,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
   // tslint:disable-next-line:member-ordering
   public render(): JSX.Element {
     const {
+      // tslint:disable-next-line:naming-convention
       component: InputComponent,
       context,
       fullName,

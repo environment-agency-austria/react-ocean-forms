@@ -4,7 +4,6 @@ exports[`<Field /> Render should render without crashing 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Field
-    asyncValidateOnChange={null}
     component={[Function]}
     context={
       Object {
@@ -75,8 +74,6 @@ ShallowWrapper {
     "key": undefined,
     "nodeType": "function",
     "props": Object {
-      "asyncValidateOnChange": null,
-      "defaultValue": undefined,
       "field": Object {
         "disabled": false,
         "id": "unitField",
@@ -85,8 +82,6 @@ ShallowWrapper {
         "onChange": [Function],
         "value": "",
       },
-      "getDisplayValue": [Function],
-      "getSubmitValue": [Function],
       "label": "Unit field",
       "meta": Object {
         "error": null,
@@ -96,8 +91,6 @@ ShallowWrapper {
         "touched": false,
         "valid": true,
       },
-      "name": "unitField",
-      "value": undefined,
     },
     "ref": null,
     "rendered": null,
@@ -109,8 +102,6 @@ ShallowWrapper {
       "key": undefined,
       "nodeType": "function",
       "props": Object {
-        "asyncValidateOnChange": null,
-        "defaultValue": undefined,
         "field": Object {
           "disabled": false,
           "id": "unitField",
@@ -119,8 +110,6 @@ ShallowWrapper {
           "onChange": [Function],
           "value": "",
         },
-        "getDisplayValue": [Function],
-        "getSubmitValue": [Function],
         "label": "Unit field",
         "meta": Object {
           "error": null,
@@ -130,8 +119,6 @@ ShallowWrapper {
           "touched": false,
           "valid": true,
         },
-        "name": "unitField",
-        "value": undefined,
       },
       "ref": null,
       "rendered": null,
