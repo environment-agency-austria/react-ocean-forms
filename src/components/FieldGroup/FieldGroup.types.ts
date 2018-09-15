@@ -17,6 +17,10 @@ export interface IRenderParams extends IValidationState {
  */
 export interface IFieldGroupProps extends IValidationProps {
   /**
+   * Field name
+   */
+  name: string;
+  /**
    * Label of the group
    */
   label: string;
