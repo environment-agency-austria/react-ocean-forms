@@ -351,7 +351,7 @@ describe('<FieldGroup />', () => {
   });
 
   describe('Edge cases', () => {
-    it('FieldGroup.getGroupValue should return "" if context.getValues() doesn\'t have values for the group', () => {
+    it('FieldGroup.getGroupValue should return an empty object if context.getValues() doesn\'t have values for the group', () => {
       const MOCK_GET_VALUES = jest.fn().mockReturnValue({});
       const { wrapper } = setup({
         contextOverrides: {
@@ -359,7 +359,7 @@ describe('<FieldGroup />', () => {
         },
       });
 
-      expect(wrapper.instance().getGroupValue()).toBe('');
+      expect(wrapper.instance().getGroupValue()).toEqual({});
       expect(MOCK_GET_VALUES).toHaveBeenCalled();
     });
   });

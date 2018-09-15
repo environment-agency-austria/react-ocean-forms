@@ -4,7 +4,6 @@ exports[`<FieldGroup /> Render should render without crashing 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <FieldGroup
-    asyncValidateOnChange={null}
     context={
       Object {
         "asyncValidateOnChange": false,

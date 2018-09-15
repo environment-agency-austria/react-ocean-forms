@@ -7,29 +7,14 @@
 
 import * as React from 'react';
 
-import { TFieldErrors } from '../../validators';
 import { TFieldValue } from '../Field';
 import { FormContext, IFormContext, TFieldValues } from '../FormContext';
-import { IValidationArgs, IValidationProps, IValidationState, withValidation } from '../withValidation';
-
-interface IRenderParams {
-  fullName: string;
-  isValidating: boolean;
-  valid: boolean;
-  error: TFieldErrors;
-}
-
-interface IFieldGroupProps extends IValidationProps {
-  label: string;
-  asyncValidateOnChange?: boolean;
-  defaultValues?: TFieldValues;
-  values?: TFieldValues;
-  render(params: IRenderParams): JSX.Element;
-}
+import { IValidationArgs, IValidationState, withValidation } from '../withValidation';
+import { IFieldGroupProps } from './FieldGroup.types';
 
 interface IFieldGroupState {
   fieldPrefix: string;
-  notifyFieldEvent(name: string, event: string, args?: any): void;
+  notifyFieldEvent(name: string, event: string, args?: unknown): void;
 }
 
 /**
@@ -71,8 +56,8 @@ export class BaseFieldGroup extends React.Component<IFieldGroupProps, IFieldGrou
       {
         label,
 
-        validate: this.validate,
         updateValidation,
+        validate: this.validate,
         reset: this.reset,
         getValue: (): TFieldValue => ({}),
 
@@ -93,11 +78,11 @@ export class BaseFieldGroup extends React.Component<IFieldGroupProps, IFieldGrou
    * Helper function to get the correct value
    * of the group (including all values of the nested fields)
    */
-  private getGroupValue(): object | string {
+  private getGroupValue(): object {
     const { context, fullName } = this.props;
     const formValues = context.getValues();
 
-    return formValues[fullName] || '';
+    return formValues[fullName] as object || {};
   }
 
   /**
@@ -126,8 +111,8 @@ export class BaseFieldGroup extends React.Component<IFieldGroupProps, IFieldGrou
     return {
       ...context,
       ...this.state,
-      ...this.overrideContextValues('defaultValues'),
-      ...this.overrideContextValues('values'),
+      defaultValues: this.overrideContextValues<TFieldValues>('defaultValues'),
+      values: this.overrideContextValues<TFieldValues | undefined>('values'),
     };
   }
 
@@ -150,27 +135,32 @@ export class BaseFieldGroup extends React.Component<IFieldGroupProps, IFieldGrou
    * and overrides the according value in the parent form context.
    * @param name Property name
    */
-  private overrideContextValues(name: string): TFieldValues {
-    const {
-      fullName,
-      context: { [name]: contextValue },
-      [name]: propValue,
-    } = this.props;
+  private overrideContextValues<T extends TFieldValues | undefined>(name: 'defaultValues' | 'values'): T {
+    let contextValue: TFieldValues | undefined;
+    let propValue: TFieldValues | undefined;
 
-    if (propValue === undefined) {
-      return {
-        [name]: contextValue,
-      };
+    const { fullName } = this.props;
+
+    if (name === 'defaultValues') {
+      contextValue = this.props.context.defaultValues;
+      propValue = this.props.defaultValues;
+    } else if (name === 'values') {
+      contextValue = this.props.context.values;
+      propValue = this.props.values;
     }
 
-    return {
-      [name]: {
-        ...contextValue,
-        ...{
-          [fullName]: propValue,
-        },
+    if (propValue === undefined) {
+      return contextValue as T;
+    }
+
+    const returnValue = {
+      ...contextValue,
+      ...{
+        [fullName]: propValue,
       },
     };
+
+    return returnValue as T;
   }
 
   /**
@@ -188,30 +178,30 @@ export class BaseFieldGroup extends React.Component<IFieldGroupProps, IFieldGrou
    * @param event Event name
    * @param args Event args
    */
-  private notifyFieldEvent(name: string, event: string, args?: any): void {
+  private notifyFieldEvent(name: string, event: string, args?: unknown): void {
     const { fullName, context, validation: { validate } } = this.props;
     context.notifyFieldEvent(name, event, args);
 
-    if (event === 'change' || event === 'blur') {
-      const asyncValidateOnChange = this.getAsyncValidateOnChangeSetting();
-      if (event === 'change') {
-        const localName = name.substring(fullName.length + 1);
+    if (event !== 'change' && event !== 'blur') { return; }
 
-        validate(
-          {
-            ...this.getGroupValue(),
-            ...{
-              // Override the value of the event sender, because
-              // the Field didn't update its state yet, making the
-              // Form.getValues() returning an old Field value.
-              [localName]: args,
-            },
+    const asyncValidateOnChange = this.getAsyncValidateOnChangeSetting();
+    if (event === 'change') {
+      const localName = name.substring(fullName.length + 1);
+
+      validate(
+        {
+          ...this.getGroupValue(),
+          ...{
+            // Override the value of the event sender, because
+            // the Field didn't update its state yet, making the
+            // Form.getValues() returning an old Field value.
+            [localName]: args,
           },
-          { checkAsync: asyncValidateOnChange },
-        );
-      } else if (!asyncValidateOnChange) {
-        validate(this.getGroupValue());
-      }
+        },
+        { checkAsync: asyncValidateOnChange },
+      );
+    } else if (!asyncValidateOnChange) {
+      validate(this.getGroupValue());
     }
   }
 
