@@ -1,8 +1,7 @@
 import * as React from 'react';
 
 import { TSTringFormatter } from '../../utils/stringFormatter';
-import { TFieldErrors } from '../../validators';
-import { IValidationProps } from '../withValidation';
+import { IValidationProps, IValidationState } from '../withValidation';
 
 /**
  * Type that defines which values a field could hold
@@ -115,20 +114,7 @@ export interface IFieldComponentFieldProps {
 /**
  * Meta informations about the current field state
  */
-export interface IFieldComponentMeta {
-  /**
-   * True if the field is valid
-   */
-  valid: boolean;
-  /**
-   * Contains any field errors if invalid
-   */
-  error: TFieldErrors;
-  /**
-   * True if a async validator is running
-   * in the background
-   */
-  isValidating: boolean;
+export interface IFieldComponentMeta extends IValidationState {
   /**
    * True, if the user has changed the value
    */
