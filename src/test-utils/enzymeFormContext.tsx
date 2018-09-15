@@ -12,6 +12,7 @@ import { stringFormatter } from '../utils';
 /**
  * Creates a form context
  */
+// tslint:disable-next-line:naming-convention
 export const createMockFormContext = (registerCallback?: Function): IFormContext => ({
   fieldPrefix: null,
 
@@ -49,6 +50,7 @@ export const createMockFormContext = (registerCallback?: Function): IFormContext
  * Creates a validation object mocking the
  * withValidation hoc
  */
+// tslint:disable-next-line:naming-convention
 export const createMockValidation = (): IValidationProp => ({
   validate: jest.fn(),
   reset: jest.fn(),

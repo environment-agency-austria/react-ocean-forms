@@ -26,6 +26,7 @@ type TWrappedValidatedComponentProps<T extends IValidationProps> = Subtract<T, I
  * @param WrappedComponent Wrapped component
  */
 // tslint:disable-next-line:max-func-body-length
+// tslint:disable-next-line:naming-convention
 export const baseWithValidation = <T extends IValidationProps>(WrappedComponent: React.ComponentType<T>):
   React.ComponentType<TWrappedValidatedComponentProps<T>> => {
 
@@ -43,17 +44,13 @@ export const baseWithValidation = <T extends IValidationProps>(WrappedComponent:
     private get fullName(): string {
       const { name, context } = this.props;
 
-      return context.fieldPrefix
+      return context.fieldPrefix !== null
         ? context.fieldPrefix.concat('.', name)
         : name;
     }
 
     constructor(props: TWrappedValidatedComponentProps<T>) {
       super(props);
-
-      this.validate = this.validate.bind(this);
-      this.reset = this.reset.bind(this);
-      this.updateValidationState = this.updateValidationState.bind(this);
 
       this.state = {
         valid: true,
@@ -84,7 +81,7 @@ export const baseWithValidation = <T extends IValidationProps>(WrappedComponent:
     /**
      * Resets the validation state to the default
      */
-    private reset(): void {
+    private reset = (): void => {
       this.clearValidationTimeout();
 
       this.updateAndNotify({
@@ -98,7 +95,7 @@ export const baseWithValidation = <T extends IValidationProps>(WrappedComponent:
      * Updates the validation state
      * @param state New state
      */
-    private updateValidationState(state: Partial<IValidationState>): void {
+    private updateValidationState = (state: Partial<IValidationState>): void => {
       const oldState = this.state;
       const newState = {
         ...oldState,
@@ -116,13 +113,13 @@ export const baseWithValidation = <T extends IValidationProps>(WrappedComponent:
      * @param immediateAsync True if the async validators should fire immediately
      */
     // tslint:disable-next-line:max-func-body-length
-    private async validate(
+    private validate = async (
       value: TFieldValue,
       {
         checkAsync = true,
         immediateAsync = false,
       }: Partial<IValidationArgs> = {},
-    ): Promise<IValidationState> {
+    ): Promise<IValidationState> => {
       const {
         validators,
         asyncValidators,
@@ -179,7 +176,7 @@ export const baseWithValidation = <T extends IValidationProps>(WrappedComponent:
 
       // Asynchronous validators
       const performAsyncValidation = async (): Promise<IValidationState> => {
-        const validatorFunctions = asyncValidators.map(validator => validator(
+        const validatorFunctions = asyncValidators.map(async validator => validator(
           value,
           formContext,
         ));
@@ -273,6 +270,7 @@ export const baseWithValidation = <T extends IValidationProps>(WrappedComponent:
  * Injects a ValidatedComponent
  * @param WrappedComponent Wrapped component
  */
+// tslint:disable-next-line:naming-convention
 export const withValidation = <T extends IValidationProps & IFormContextProps>(WrappedComponent: React.ComponentType<T>):
   React.ComponentType<Subtract<TWrappedValidatedComponentProps<T>, IFormContextProps>> => {
   return withForm(baseWithValidation(WrappedComponent));

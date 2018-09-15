@@ -9,7 +9,9 @@ import { IValidatedComponentProps, IValidationProp, IValidationState } from './w
 
 describe('withValidation', () => {
   const formContext = createMockFormContext();
+  // tslint:disable-next-line:naming-convention
   const TestComponent = (): JSX.Element => (<div id="test-component" />);
+  // tslint:disable-next-line:naming-convention
   const WrappedComponent = baseWithValidation(TestComponent);
 
   const fieldName = 'unitField';

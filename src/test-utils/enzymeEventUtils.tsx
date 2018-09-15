@@ -12,7 +12,7 @@ export const KEYCODE = {
 
 interface IMockEvent {
   preventDefault(): void;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 /**
@@ -21,7 +21,8 @@ interface IMockEvent {
  * tested code wants to call preventDefault
  * @param props Additional event props
  */
-export const mockEvent = (props?: any): IMockEvent => ({
+// tslint:disable-next-line:naming-convention
+export const mockEvent = (props?: object): IMockEvent => ({
   // tslint:disable-next-line:no-empty
   preventDefault: (): void => {},
   ...props,

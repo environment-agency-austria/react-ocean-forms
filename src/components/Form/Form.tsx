@@ -45,17 +45,6 @@ export class Form extends React.Component<IFormProps, IFormState> {
   constructor(props: IFormProps) {
     super(props);
 
-    this.registerField = this.registerField.bind(this);
-    this.unregisterField = this.unregisterField.bind(this);
-    this.notifyFieldEvent = this.notifyFieldEvent.bind(this);
-
-    this.getFieldState = this.getFieldState.bind(this);
-    this.getValues = this.getValues.bind(this);
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleReset = this.handleReset.bind(this);
-    this.submit = this.submit.bind(this);
-
     this.state = {
       context: {
         fieldPrefix: null,
@@ -83,7 +72,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
    * @param name Field name
    * @returns Current field state or default field state
    */
-  private getFieldState(name: string): IFieldState {
+  private getFieldState = (name: string): IFieldState => {
     return this.fields[name];
   }
 
@@ -92,7 +81,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
    * all values from all the fields.
    * @returns Current values in form of { name: value, name2: value2, ... }
    */
-  private getValues(): TFieldValues {
+  private getValues = (): TFieldValues => {
     const fields = Object.entries(this.fields);
     const values: TFieldValues = {};
 
@@ -121,7 +110,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
    * @param event Event name
    * @param args Event args
    */
-  private notifyFieldEvent(name: string, event: string, args?: unknown): void {
+  private notifyFieldEvent = (name: string, event: string, args?: unknown): void => {
     if (event === 'validation') {
       const { [name]: { label } } = this.fields;
       this.notifyListeners(name, event, { ...args, label });
@@ -146,7 +135,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
    * the default and runs the submit logic
    * @param event Event object
    */
-  private handleSubmit(event: React.FormEvent): void {
+  private handleSubmit = (event: React.FormEvent): void => {
     event.preventDefault();
     this.submit();
   }
@@ -158,13 +147,13 @@ export class Form extends React.Component<IFormProps, IFormState> {
    * @param submitArgs Arguments that will be passed
    * to the onSubmit callback
    */
-  private async submit(submitArgs?: unknown): Promise<void> {
+  private submit = async (submitArgs?: unknown): Promise<void> => {
     this.updateBusyState(true);
 
     // Iterate through all fields and validate them
     // if needed.
     const fields = Object.entries(this.fields);
-    const validations = fields.map(([, state]) => state.validate({
+    const validations = fields.map(async ([, state]) => state.validate({
       checkAsync: true,
       immediateAsync: true,
     }));
@@ -268,7 +257,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
    * to the default state.
    * @param event Event object
    */
-  private handleReset(event: React.FormEvent): void {
+  private handleReset = (event: React.FormEvent): void => {
     event.preventDefault();
 
     const fields = Object.entries(this.fields);
@@ -285,7 +274,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
    * @param name Field name
    * @param fieldState Field state
    */
-  private registerField(name: string, fieldState: IFieldState): void {
+  private registerField = (name: string, fieldState: IFieldState): void => {
     if (typeof name !== 'string' || name.length === 0) {
       throw new Error('[Form] registerField: name is required');
     }
@@ -311,7 +300,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
    * Unregisters a field from the form.
    * @param name Field name
    */
-  private unregisterField(name: string): void {
+  private unregisterField = (name: string): void => {
     this.notifyListeners(name, 'validation', {
       label: this.fields[name].label,
       valid: true,

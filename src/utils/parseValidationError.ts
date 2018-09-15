@@ -12,6 +12,7 @@ import { IFieldErrorObject, TFieldError } from '../validators';
  * @param name field name
  * @param error error message
  */
+// tslint:disable-next-line:naming-convention
 export const parseValidationError = (name: string, error: TFieldError): IFieldErrorObject | null => {
   if (typeof error === 'object') {
     if (error.message_id === undefined || error.params === undefined) {

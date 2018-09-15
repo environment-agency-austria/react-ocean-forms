@@ -48,13 +48,6 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
   constructor(props: IFieldProps) {
     super(props);
 
-    this.handleFieldChanged = this.handleFieldChanged.bind(this);
-    this.handleFieldBlurred = this.handleFieldBlurred.bind(this);
-
-    this.reset = this.reset.bind(this);
-    this.getValue = this.getValue.bind(this);
-    this.validate = this.validate.bind(this);
-
     const {
       fullName,
       label,
@@ -267,7 +260,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
   /**
    * Returns the current field value
    */
-  private getValue(): TFieldValue {
+  private getValue = (): TFieldValue => {
     const { value } = this.state;
     const { getSubmitValue, context } = this.props;
 
@@ -308,7 +301,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
   /**
    * Resets the field to its default state
    */
-  private reset(): void {
+  private reset = (): void => {
     const { contextMeta: { externalValue, defaultValue } } = this.state;
     const { validation, onChange } = this.props;
 
@@ -331,7 +324,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    * Validates the field
    * @param args Validation arguments
    */
-  private async validate(args?: IValidationArgs): Promise<IValidationState> {
+  private validate = async (args?: IValidationArgs): Promise<IValidationState> => {
     const { value } = this.state;
     const { validation: { validate }, getSubmitValue, context } = this.props;
 
@@ -350,7 +343,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    * the field state accordingly.
    * @param event Event object
    */
-  private handleFieldChanged(event: React.ChangeEvent<HTMLInputElement>): void {
+  private handleFieldChanged = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const { value } = event.target;
     const {
       fullName,
@@ -386,7 +379,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    * triggers any validation if needed and updates
    * the field state accordingly.
    */
-  private handleFieldBlurred(): void {
+  private handleFieldBlurred = (): void => {
     const {
       fullName,
       validation: { validate },

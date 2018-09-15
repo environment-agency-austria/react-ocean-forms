@@ -10,7 +10,7 @@ import { BaseFormText } from './FormText';
 
 describe('<FormText />', () => {
   const mockContext: IFormContext = createMockFormContext();
-  mockContext.stringFormatter = jest.fn().mockImplementation(value => value);
+  mockContext.stringFormatter = jest.fn().mockImplementation((value: string): string => value);
 
   const setup = (text: string | null, values?: IMessageValues): ShallowWrapper => shallow((
     <BaseFormText

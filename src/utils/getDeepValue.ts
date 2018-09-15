@@ -18,6 +18,7 @@ type TStringProp = {
  * @param name Name / property path
  * @param object Object
  */
+// tslint:disable-next-line:naming-convention
 export const getDeepValue = <T, U extends TStringProp = TStringProp>(name: string, object?: U): T | undefined => {
   return (name.split('.').reduce(
     (o: U, i: string) => {

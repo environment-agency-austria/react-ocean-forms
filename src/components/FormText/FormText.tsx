@@ -13,7 +13,7 @@ import { IFormTextProps } from './FormText.types';
  * context.stringFormatter method
  */
 export const BaseFormText: React.SFC<IFormTextProps> = ({ context, text, values }: IFormTextProps): JSX.Element | null => {
-  if (!text) { return null; }
+  if (text === '' || text === null) { return null; }
 
   return (
     <React.Fragment>

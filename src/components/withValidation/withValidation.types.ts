@@ -28,6 +28,25 @@ export interface IValidatedComponentProps extends IFormContextProps {
 }
 
 /**
+ * Internal state of the validated component
+ */
+export interface IValidationState {
+  /**
+   * True, if the field is currently validating
+   * (asynchronous validation running in background)
+   */
+  isValidating: boolean;
+  /**
+   * True, if all validators report a valid state
+   */
+  valid: boolean;
+  /**
+   * Contains any errors if available
+   */
+  error: TFieldErrors;
+}
+
+/**
  * Interface with properties describing the current
  * validation state and offering interfaces for
  * various validation tasks
@@ -73,25 +92,6 @@ export interface IBaseValidationProps {
  * withValidation hoc
  */
 export interface IValidationProps extends IBaseValidationProps, IFormContextProps { }
-
-/**
- * Internal state of the validated component
- */
-export interface IValidationState {
-  /**
-   * True, if the field is currently validating
-   * (asynchronous validation running in background)
-   */
-  isValidating: boolean;
-  /**
-   * True, if all validators report a valid state
-   */
-  valid: boolean;
-  /**
-   * Contains any errors if available
-   */
-  error: TFieldErrors;
-}
 
 /**
  * Arguments for the validate method

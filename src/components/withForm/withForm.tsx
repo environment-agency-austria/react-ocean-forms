@@ -19,6 +19,7 @@ export const withForm = <T extends IFormContextProps>(Component: React.Component
    * to the wrapped component
    */
   type FormComponentProps = Subtract<T, IFormContextProps>;
+  // tslint:disable-next-line:naming-convention
   const FormComponent: React.SFC<FormComponentProps> = (props: FormComponentProps): JSX.Element => {
     return (
       <FormContext.Consumer>

@@ -1,2 +1,2 @@
-type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;
-export type Subtract<T, K> = Omit<T, keyof K>;
+type Omit<T, U> = Pick<T, Exclude<keyof T, U>>;
+export type Subtract<T, U> = Omit<T, keyof U>;

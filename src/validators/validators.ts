@@ -37,7 +37,7 @@ const required = (value: TFieldValue): TFieldError => {
 const alphaNumeric = (value: TFieldValue): TFieldError => {
   if (typeof value !== 'string') { return undefined; }
 
-  return value && /[^a-zA-Z0-9 ]/i.test(value) ? FieldErrorMessageId.AlphaNumeric : undefined;
+  return /[^a-zA-Z0-9 ]/i.test(value) ? FieldErrorMessageId.AlphaNumeric : undefined;
 };
 
 /**
@@ -87,6 +87,7 @@ function isILength(object: any): object is ILength {
   return object && typeof object.length === 'number';
 }
 
+// tslint:disable-next-line:naming-convention
 export const validators = {
   withParam,
   required,

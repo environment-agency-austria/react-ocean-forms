@@ -27,11 +27,6 @@ export class BaseFieldGroup extends React.Component<IFieldGroupProps, IFieldGrou
   constructor(props: IFieldGroupProps) {
     super(props);
 
-    this.validate = this.validate.bind(this);
-    this.reset = this.reset.bind(this);
-
-    this.notifyFieldEvent = this.notifyFieldEvent.bind(this);
-
     const {
       fullName,
       label,
@@ -166,7 +161,7 @@ export class BaseFieldGroup extends React.Component<IFieldGroupProps, IFieldGrou
   /**
    * Resets the validation state
    */
-  private reset(): void {
+  private reset = (): void => {
     const { validation: { reset } } = this.props;
     reset();
   }
@@ -178,7 +173,7 @@ export class BaseFieldGroup extends React.Component<IFieldGroupProps, IFieldGrou
    * @param event Event name
    * @param args Event args
    */
-  private notifyFieldEvent(name: string, event: string, args?: unknown): void {
+  private notifyFieldEvent = (name: string, event: string, args?: unknown): void => {
     const { fullName, context, validation: { validate } } = this.props;
     context.notifyFieldEvent(name, event, args);
 
@@ -209,7 +204,7 @@ export class BaseFieldGroup extends React.Component<IFieldGroupProps, IFieldGrou
    * Triggers the validation of the group
    * @param args Options for the validate call
    */
-  private validate(args?: IValidationArgs): Promise<IValidationState> {
+  private validate = async (args?: IValidationArgs): Promise<IValidationState> => {
     const { validation: { validate } } = this.props;
 
     // Overwrite the value of the group state with

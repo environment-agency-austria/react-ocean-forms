@@ -14,8 +14,6 @@ import { IFormButtonProps } from './FormButton.types';
  * automatically disable the button if the
  * form is busy
  */
-// tslint:disable-next-line:one-variable-per-declaration
-// tslint:disable-next-line:max-line-length
 export const BaseFormButton: React.SFC<IFormButtonProps> = (
   {
     context: { busy, disabled: formDisabled, submit },
@@ -23,6 +21,7 @@ export const BaseFormButton: React.SFC<IFormButtonProps> = (
     type,
     onClick,
     submitArgs,
+    // tslint:disable-next-line:naming-convention
     component: Component,
     ...rest
   }: IFormButtonProps,

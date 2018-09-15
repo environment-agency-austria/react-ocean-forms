@@ -26,13 +26,6 @@ export interface IBaseFormContext {
   registerField(name: string, state: IFieldState): void;
   unregisterField(name: string): void;
 
-  /**
-   * TODO: args currently depends on the name and could be:
-   * change = TFieldValue
-   * blur = undefined
-   * submit-invalid = undefined
-   * validation = IValidationState + label: string -.-
-   */
   notifyFieldEvent(name: string, event: string, args?: unknown): void;
 
   registerListener(name: string, callback: TFormEventListener): void;

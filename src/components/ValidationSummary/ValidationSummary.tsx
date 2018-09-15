@@ -52,9 +52,6 @@ export class BaseValidationSummary extends React.Component<IValidationSummaryPro
 
     this.headerRef = React.createRef();
 
-    this.notify = this.notify.bind(this);
-    this.scrollIntoView = this.scrollIntoView.bind(this);
-
     const { context: { registerListener }, id } = props;
     registerListener(id, this.notify);
 
@@ -97,7 +94,7 @@ export class BaseValidationSummary extends React.Component<IValidationSummaryPro
    * @param event Event name
    * @param state Field state
    */
-  private notify(name: string, event: string, state?: IValidationEventArgs): void {
+  private notify = (name: string, event: string, state?: IValidationEventArgs): void => {
     if (event === 'validation') {
       this.setState(oldState => ({
         fields: {
@@ -110,9 +107,9 @@ export class BaseValidationSummary extends React.Component<IValidationSummaryPro
     }
   }
 
-  private scrollIntoView(): void {
+  private scrollIntoView = (): void => {
     const { disableFocusOnSubmit } = this.props;
-    if (this.headerRef.current && !disableFocusOnSubmit) {
+    if (this.headerRef.current !== null && !disableFocusOnSubmit) {
       this.headerRef.current.scrollIntoView({ block: 'start', behavior: 'smooth' });
     }
   }
@@ -139,10 +136,10 @@ export class BaseValidationSummary extends React.Component<IValidationSummaryPro
       });
 
       // Focuses the invalid field on click on the error message
-      const linkCallback = (event: React.MouseEvent<Element>): void => {
+      const linkCallback = (event: React.MouseEvent): void => {
         event.preventDefault();
         const input = document.getElementById(error.id);
-        if (input) {
+        if (input !== null) {
           input.focus();
         }
       };
