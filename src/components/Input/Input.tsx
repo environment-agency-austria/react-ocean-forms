@@ -15,30 +15,33 @@ import { IInputProps } from './Input.types';
  * form groups with an html input and
  * oForm support
  */
-export const Input: React.SFC<IInputProps> = (props: IInputProps): JSX.Element => {
-  const {
-    field,
-    type,
-    meta,
-  } = props;
+export class Input extends React.Component<IInputProps> {
+  public static displayName: string = 'Input';
 
-  const fieldValue = field.value;
-  if (typeof fieldValue !== 'string' && fieldValue !== undefined) {
-    throw new Error(
-      'Incompatible field value supplied for input component '
-      + `${field.id}. Only values with type string or undefined are allowed.`,
+  // tslint:disable-next-line:typedef
+  public static defaultProps = {
+    type: 'text',
+  };
+
+  public render(): JSX.Element {
+    const {
+      field,
+      type,
+      meta,
+    } = this.props;
+
+    const fieldValue = field.value;
+    if (typeof fieldValue !== 'string' && fieldValue !== undefined) {
+      throw new Error(
+        'Incompatible field value supplied for input component '
+        + `${field.id}. Only values with type string or undefined are allowed.`,
+      );
+    }
+
+    return (
+      <FieldLine {...this.props}>
+        {meta.plaintext ? field.value : <input type={type} {...field} value={fieldValue} />}
+      </FieldLine>
     );
   }
-
-  return (
-    <FieldLine {...props}>
-      {meta.plaintext ? field.value : <input type={type} {...field} value={fieldValue} />}
-    </FieldLine>
-  );
-};
-
-Input.displayName = 'Input';
-
-Input.defaultProps = {
-  type: 'text',
-};
+}
