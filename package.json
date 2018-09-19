@@ -29,7 +29,7 @@
     ],
     "globals": {
       "ts-jest": {
-        "tsConfigFile": "<rootDir>/src/tsconfig.json"
+        "tsConfig": "<rootDir>/src/tsconfig.json"
       }
     },
     "testEnvironment": "jsdom",
@@ -76,7 +76,7 @@
     "jest": "^23.6.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
-    "ts-jest": "^23.1.4",
+    "ts-jest": "^23.10.0",
     "ts-loader": "^5.1.1",
     "tslint": "^5.11.0",
     "tslint-consistent-codestyle": "^1.13.3",
