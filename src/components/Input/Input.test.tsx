@@ -3,7 +3,7 @@ import * as React from 'react';
 // tslint:disable-next-line:no-implicit-dependencies
 import { shallow, ShallowWrapper } from 'enzyme';
 
-import { IFieldComponentMeta } from '../Field';
+import { IFieldComponentFieldProps, IFieldComponentMeta } from '../Field';
 import { Input } from './Input';
 import { IInputProps } from './Input.types';
 
@@ -11,6 +11,7 @@ describe('<Input />', () => {
   interface ISetupArgs {
     props?: Partial<IInputProps>;
     metaOverrides?: Partial<IFieldComponentMeta>;
+    fieldOverrides?: Partial<IFieldComponentFieldProps>;
   }
 
   interface ISetupResult {
@@ -20,6 +21,7 @@ describe('<Input />', () => {
   const setup = ({
     props,
     metaOverrides,
+    fieldOverrides,
   }: ISetupArgs = {}): ISetupResult => {
     const meta = {
       valid: true,
@@ -37,6 +39,7 @@ describe('<Input />', () => {
       disabled: false,
       onChange: jest.fn(),
       onBlur: jest.fn(),
+      ...fieldOverrides,
     };
 
     const wrapper = shallow((
@@ -61,5 +64,11 @@ describe('<Input />', () => {
   it('should only display the value if plaintext is set', () => {
     const wrapper = setup({ metaOverrides: { plaintext: true }});
     expect(wrapper).toMatchSnapshot();
+  });
+
+  describe('Unsupported value types', () => {
+    it('should throw an error if the value is not a string', () => {
+      expect(() => setup({ fieldOverrides: { value: 42 }})).toThrowError();
+    });
   });
 });
