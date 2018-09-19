@@ -25,9 +25,6 @@ ShallowWrapper {
     defaultValues={Object {}}
     disabled={false}
     formatString={[Function]}
-    onReset={[MockFunction]}
-    onSubmit={[MockFunction]}
-    onValidate={[MockFunction]}
     plaintext={false}
   >
     <div>
