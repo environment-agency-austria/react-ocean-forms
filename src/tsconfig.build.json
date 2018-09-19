@@ -3,10 +3,8 @@
   /*
    * This file is used for the build process.
    */
-
   "compilerOptions": {
-    // Don't generate the declaration files for now...
-    "declaration": false,
+    "declaration": true,
     "allowJs": false,
     "checkJs": false,
   },

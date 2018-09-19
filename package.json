@@ -1,9 +1,9 @@
 {
   "name": "react-ocean-forms",
-  "version": "2.0.0-alpha1",
+  "version": "2.0.0-alpha2",
   "description": "Forms components for react based on the context api.",
   "main": "build/index.js",
-  "typings": "src/index.d.ts",
+  "typings": "build/index.d.ts",
   "private": false,
   "eslint.packageManager": "yarn",
   "scripts": {
