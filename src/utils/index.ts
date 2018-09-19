@@ -11,4 +11,4 @@ export * from './toArray';
 export * from './parseValidationError';
 export * from './stringFormatter';
 export * from './stringHasValue';
-export * from './Subtract';
+export * from './Types';
