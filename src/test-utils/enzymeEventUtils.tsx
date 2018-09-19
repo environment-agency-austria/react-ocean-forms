@@ -27,5 +27,3 @@ export const mockEvent = (props?: object): IMockEvent => ({
   preventDefault: (): void => {},
   ...props,
 });
-
-export default mockEvent;
