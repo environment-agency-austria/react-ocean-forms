@@ -83,7 +83,7 @@
     "tslint-eaa-contrib": "^0.1.2",
     "tslint-microsoft-contrib": "^5.2.1",
     "tslint-react": "^3.6.0",
-    "typescript": "^3.0.3",
+    "typescript": "^3.1.0-rc.20180911",
     "webpack": "^4.19.1",
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.8"
