@@ -29,7 +29,7 @@
     ],
     "globals": {
       "ts-jest": {
-        "tsConfig": "<rootDir>/src/tsconfig.jest.json"
+        "tsConfig": "<rootDir>/config/jest/tsconfig.jest.json"
       }
     },
     "testEnvironment": "jsdom",
