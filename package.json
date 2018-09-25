@@ -77,16 +77,16 @@
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "ts-jest": "^23.10.1",
-    "ts-loader": "^5.1.1",
+    "ts-loader": "^5.2.0",
     "tslint": "^5.11.0",
     "tslint-consistent-codestyle": "^1.13.3",
     "tslint-eaa-contrib": "^0.1.2",
     "tslint-microsoft-contrib": "^5.2.1",
     "tslint-react": "^3.6.0",
     "typescript": "^3.1.0-rc.20180911",
-    "webpack": "^4.19.1",
-    "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.8"
+    "webpack": "^4.20.1",
+    "webpack-cli": "^3.1.1",
+    "webpack-dev-server": "^3.1.9"
   },
   "repository": {
     "type": "git",
