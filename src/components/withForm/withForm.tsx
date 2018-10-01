@@ -6,24 +6,40 @@
  */
 
 import * as React from 'react';
-import { getDisplayName, Subtract } from '../../utils';
+import { getDisplayName, PropsOf, Subtract } from '../../utils';
 import { FormContext, IFormContext } from '../FormContext';
 import { IFormContextProps } from './withForm.types';
 
 /**
+ * Internal type for form component props. Deals with the
+ * defaultProp logic and removes the form context props.
+ */
+type FormComponentProps<TComp> = Subtract<JSX.LibraryManagedAttributes<TComp, PropsOf<TComp>>, IFormContextProps>;
+
+/**
  * High order component for consuming the form context
  */
-export const withForm = <T extends IFormContextProps>(Component: React.ComponentType<T>): React.SFC<Subtract<T, IFormContextProps>> => {
+export const withForm = <TComp extends React.ComponentType<TProps>, TProps extends IFormContextProps = PropsOf<TComp>>(Component: TComp):
+React.ComponentType<FormComponentProps<TComp>> => {
+  /**
+   * We need to cast the component back to a
+   * React.ComponentType in order to use it in
+   * the FormContext.Consumer. Otherwise
+   * typescript will cry about the component
+   * not having a constructor / call signatures.
+   */
+  // tslint:disable-next-line:naming-convention
+  const CastedComponent = Component as React.ComponentType<TProps>;
+
   /**
    * Component that injects the form context prop
    * to the wrapped component
    */
-  type FormComponentProps = Subtract<T, IFormContextProps>;
   // tslint:disable-next-line:naming-convention
-  const FormComponent: React.SFC<FormComponentProps> = (props: FormComponentProps): JSX.Element => {
+  const FormComponent: React.SFC<FormComponentProps<TComp>> = (props: FormComponentProps<TComp>): JSX.Element => {
     return (
       <FormContext.Consumer>
-        {(context: IFormContext): JSX.Element => <Component {...props} context={context} />}
+        {(context: IFormContext): JSX.Element => <CastedComponent {...props} context={context} />}
       </FormContext.Consumer>
     );
   };
