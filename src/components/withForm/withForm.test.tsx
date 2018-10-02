@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-// tslint:disable-next-line:no-implicit-dependencies
 import { shallow, ShallowWrapper } from 'enzyme';
 
 import { createMockFormContext } from '../../test-utils/enzymeFormContext';

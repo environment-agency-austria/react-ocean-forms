@@ -21,6 +21,9 @@ export class Input extends React.Component<IInputProps> {
   // tslint:disable-next-line:typedef
   public static defaultProps = {
     type: 'text',
+    // TODO: Without this, the usage of Input
+    // inside of a Field would throw a type error..
+    label: undefined,
   };
 
   public render(): JSX.Element {

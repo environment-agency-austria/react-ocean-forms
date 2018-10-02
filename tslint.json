@@ -1,3 +1,6 @@
 {
-  "extends": ["tslint-eaa-contrib"]
+  "extends": ["tslint-eaa-contrib"],
+  "rules": {
+    "no-implicit-dependencies": [ true, ["enzyme"] ]
+  }
 }

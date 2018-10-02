@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-// tslint:disable-next-line:no-implicit-dependencies
 import { shallow, ShallowWrapper } from 'enzyme';
 import { mockEvent } from '../../test-utils/enzymeEventUtils';
 import { IFieldState, IFormContext, TFieldValues, TFormEventListener } from '../FormContext';
