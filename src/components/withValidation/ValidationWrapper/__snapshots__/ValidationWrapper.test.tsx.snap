@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`withValidation render prop should render without error 1`] = `
+exports[`withValidation should render without error 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <TestComponent
+  Symbol(enzyme.__unrendered__): <ValidationWrapper
     context={
       Object {
         "asyncValidateOnChange": false,
@@ -24,18 +24,8 @@ ShallowWrapper {
         "unregisterListener": [MockFunction],
       }
     }
-    fullName="fullName"
-    name="mock-item"
-    validation={
-      Object {
-        "error": null,
-        "isValidating": false,
-        "reset": [MockFunction],
-        "update": [MockFunction],
-        "valid": true,
-        "validate": [MockFunction],
-      }
-    }
+    name="unitField"
+    render={[Function]}
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
@@ -67,68 +57,6 @@ ShallowWrapper {
       "ref": null,
       "rendered": null,
       "type": "div",
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
-`;
-
-exports[`withValidation should render without error 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <ValidatedComponent(TestComponent)
-    name="mock-item"
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "function",
-    "props": Object {
-      "name": "mock-item",
-      "render": [Function],
-    },
-    "ref": null,
-    "rendered": null,
-    "type": [Function],
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "function",
-      "props": Object {
-        "name": "mock-item",
-        "render": [Function],
-      },
-      "ref": null,
-      "rendered": null,
-      "type": [Function],
     },
   ],
   Symbol(enzyme.__options__): Object {

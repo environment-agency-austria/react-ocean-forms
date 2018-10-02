@@ -6,13 +6,25 @@
  */
 import { TAsyncValidator, TFieldErrors, TValidator } from '../../validators';
 import { TFieldValue } from '../Field';
+import { IFormContext } from '../FormContext';
 import { IFormContextProps } from '../withForm';
 
 /**
  * Properties of a component that is wrapped
  * by withValidation
  */
-export interface IValidatedComponentProps extends IFormContextProps {
+export interface IValidationWrapperProps extends IValidatedComponentProps, IFormContextProps {
+  /**
+   * Render prop
+   */
+  render(fullName: string, validation: IValidationProp, context: IFormContext): JSX.Element;
+}
+
+/**
+ * Properties of a component that is wrapped
+ * by withValidation
+ */
+export interface IValidatedComponentProps {
   /**
    * Field name
    */
@@ -78,7 +90,7 @@ export interface IValidationProp extends IValidationState {
 /**
  * Base interface for consumers of withValidation props
  */
-export interface IBaseValidationProps {
+export interface IValidationProps extends IFormContextProps {
   /**
    * Full Name of the component
    * (context.fieldPrefix + '.' + fieldName)
@@ -90,14 +102,6 @@ export interface IBaseValidationProps {
    */
   validation: IValidationProp;
 }
-
-/**
- * Interface for consumers of withValidation props
- * Note: this interface is including the form context
- * props, which are automatically mapped by the
- * withValidation hoc
- */
-export interface IValidationProps extends IBaseValidationProps, IFormContextProps { }
 
 /**
  * Arguments for the validate method
