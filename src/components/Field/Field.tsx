@@ -10,7 +10,7 @@ import * as React from 'react';
 import { getDeepValue } from '../../utils';
 import { IFormContext, TFieldValues } from '../FormContext';
 import { IValidationArgs, IValidationState, withValidation } from '../withValidation';
-import { IFieldComponentFieldProps, IFieldComponentMeta, IFieldProps, IValueMeta, TFieldValue } from './Field.types';
+import { IFieldChangedEvent, IFieldComponentFieldProps, IFieldComponentMeta, IFieldProps, IValueMeta, TFieldValue } from './Field.types';
 
 interface IContextMeta extends IValueMeta {
   defaultValue?: TFieldValue;
@@ -343,7 +343,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    * the field state accordingly.
    * @param event Event object
    */
-  private handleFieldChanged = (event: React.ChangeEvent<HTMLInputElement>): void => {
+  private handleFieldChanged = (event: IFieldChangedEvent): void => {
     const { value } = event.target;
     const {
       fullName,

@@ -84,6 +84,15 @@ export interface IFieldProps extends IValidationProps {
 }
 
 /**
+ * Event for field value changes
+ */
+export interface IFieldChangedEvent {
+  target: {
+    value: TFieldValue;
+  };
+}
+
+/**
  * Props for the actual html input of a Field
  * input component. Designed to be passed to the
  * html input as-is.
@@ -109,12 +118,11 @@ export interface IFieldComponentFieldProps {
    * OnChange handler
    * @param event Change event
    */
-  onChange(event: React.ChangeEvent): void;
+  onChange(event: IFieldChangedEvent): void;
   /**
    * OnBlur handler
-   * @param event Blur event
    */
-  onBlur(event: React.FocusEvent): void;
+  onBlur(): void;
 }
 
 /**
