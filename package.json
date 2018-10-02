@@ -1,8 +1,9 @@
 {
   "name": "react-ocean-forms",
-  "version": "1.4.0",
+  "version": "2.0.0-beta1",
   "description": "Forms components for react based on the context api.",
   "main": "build/index.js",
+  "typings": "build/index.d.ts",
   "private": false,
   "eslint.packageManager": "yarn",
   "scripts": {
@@ -11,7 +12,7 @@
     "test:coverage": "jest --coverage",
     "start": "webpack --watch --mode development",
     "build": "webpack -p",
-    "lint": "eslint src/**"
+    "lint": "tslint --project src"
   },
   "jest": {
     "setupFiles": [
@@ -19,20 +20,30 @@
     ],
     "testMatch": [
       "**/__tests__/**/*.js?(x)",
-      "**/?(*.)+(spec|test).js?(x)"
+      "**/__tests__/**/*.ts?(x)",
+      "**/?(*.)+(spec|test).js?(x)",
+      "**/?(*.)+(spec|test).ts?(x)"
     ],
     "collectCoverageFrom": [
-      "<rootDir>/src/**/*.{js,jsx,mjs}"
+      "<rootDir>/src/**/*.{js,jsx,mjs,ts,tsx}"
     ],
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "<rootDir>/config/jest/tsconfig.jest.json"
+      }
+    },
     "testEnvironment": "jsdom",
     "testURL": "http://localhost",
     "transform": {
-      "^.+\\.(js|jsx|mjs)$": "<rootDir>/node_modules/babel-jest"
+      "^.+\\.(js|jsx|mjs)$": "<rootDir>/node_modules/babel-jest",
+      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest"
     },
     "moduleNameMapper": {
       "^~(.*)$": "<rootDir>/src$1"
     },
     "moduleFileExtensions": [
+      "ts",
+      "tsx",
       "web.js",
       "mjs",
       "js",
@@ -49,28 +60,33 @@
     "prop-types": "^15.6.1"
   },
   "devDependencies": {
+    "@types/enzyme": "^3.1.14",
+    "@types/jest": "^23.3.2",
+    "@types/react": "^16.4.14",
     "babel-core": "^6.26.0",
-    "babel-jest": "^23.4.0",
+    "babel-jest": "^23.6.0",
     "babel-loader": "^7.1.2",
     "babel-polyfill": "^6.26.0",
     "babel-preset-react-app": "^3.1.0",
     "babel-runtime": "^6.26.0",
     "case-sensitive-paths-webpack-plugin": "^2.1.2",
     "clean-webpack-plugin": "^0.1.19",
-    "enzyme": "^3.4.0",
-    "enzyme-adapter-react-16": "^1.2.0",
-    "eslint": "^4.19.1",
-    "eslint-config-airbnb": "^17.0.0",
-    "eslint-plugin-import": "^2.13.0",
-    "eslint-plugin-jest": "^21.18.0",
-    "eslint-plugin-jsx-a11y": "^6.1.0",
-    "eslint-plugin-react": "^7.11.1",
-    "jest": "^23.5.0",
-    "react": "^16.4.0",
-    "react-dom": "^16.4.0",
-    "webpack": "^4.16.1",
-    "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.4"
+    "enzyme": "^3.6.0",
+    "enzyme-adapter-react-16": "^1.5.0",
+    "jest": "^23.6.0",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "ts-jest": "^23.10.3",
+    "ts-loader": "^5.2.1",
+    "tslint": "^5.11.0",
+    "tslint-consistent-codestyle": "^1.13.3",
+    "tslint-eaa-contrib": "^0.1.2",
+    "tslint-microsoft-contrib": "^5.2.1",
+    "tslint-react": "^3.6.0",
+    "typescript": "^3.1.1",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.9"
   },
   "repository": {
     "type": "git",
