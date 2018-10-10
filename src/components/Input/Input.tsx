@@ -8,6 +8,7 @@
 import * as React from 'react';
 
 import { FieldLine } from '../FieldLine';
+import { withField } from '../withField';
 import { IInputProps } from './Input.types';
 
 /**
@@ -15,15 +16,12 @@ import { IInputProps } from './Input.types';
  * form groups with an html input and
  * oForm support
  */
-export class Input extends React.Component<IInputProps> {
+export class BaseInput extends React.Component<IInputProps> {
   public static displayName: string = 'Input';
 
   // tslint:disable-next-line:typedef
   public static defaultProps = {
     type: 'text',
-    // TODO: Without this, the usage of Input
-    // inside of a Field would throw a type error..
-    label: undefined,
   };
 
   public render(): JSX.Element {
@@ -48,3 +46,5 @@ export class Input extends React.Component<IInputProps> {
     );
   }
 }
+
+export const Input = withField(BaseInput);

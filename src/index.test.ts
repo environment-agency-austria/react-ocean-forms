@@ -3,7 +3,7 @@ import * as FormComponents from './index';
 describe('Index', () => {
   describe('Component exports', () => {
     const components = [
-      'Field', 'FieldError', 'FieldGroup', 'FieldLine',
+      'withField', 'FieldError', 'FieldGroup', 'FieldLine',
       'Form', 'FormButton', 'FormContext', 'FormText',
       'Input', 'ValidationSummary', 'withForm', 'withValidation',
     ];
