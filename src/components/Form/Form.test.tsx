@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { shallow, ShallowWrapper } from 'enzyme';
 import { mockEvent } from '../../test-utils/enzymeEventUtils';
-import { IFieldState, IFormContext, TFieldValues, TFormEventListener } from '../FormContext';
+import { IFieldState, IFieldValues, IFormContext, TFormEventListener } from '../FormContext';
 import { Form } from './Form';
 import { IFormProps } from './Form.types';
 
@@ -201,7 +201,7 @@ describe('<Form />', () => {
       const mockFields = [unitField, unitGroup, unitSubField];
       registerUnitField(mockFields, formContext);
 
-      let formValues: TFieldValues;
+      let formValues: IFieldValues;
       it('should return the values without crashing', () => {
         expect(() => {
           formValues = formContext.getValues();
@@ -316,7 +316,7 @@ describe('<Form />', () => {
     }
 
     interface ISetupSubmitResult extends ISetupResult {
-      expectedFormValues: TFieldValues;
+      expectedFormValues: IFieldValues;
       mockFields: IMockField[];
       mockListeners?: IMockListener[];
     }

@@ -8,7 +8,7 @@ import * as React from 'react';
 
 import { getDeepValue, parseValidationError } from '../../utils';
 import { stringFormatter as defaultStringFormatter } from '../../utils/stringFormatter';
-import { FormContext, IBaseFormContext, IFieldState, IFormContext, TFieldValues, TFormEventListener } from '../FormContext';
+import { FormContext, IBaseFormContext, IFieldState, IFieldValues, IFormContext, TFormEventListener } from '../FormContext';
 import { IFormProps } from './Form.types';
 
 interface IFormState {
@@ -80,9 +80,9 @@ export class Form extends React.Component<IFormProps, IFormState> {
    * all values from all the fields.
    * @returns Current values in form of { name: value, name2: value2, ... }
    */
-  private getValues = (): TFieldValues => {
+  private getValues = (): IFieldValues => {
     const fields = Object.entries(this.fields);
-    const values: TFieldValues = {};
+    const values: IFieldValues = {};
 
     fields.forEach(([name, state]) => {
       if (state.isGroup === true) { return; }
@@ -95,7 +95,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
           valueRef[key] = state.getValue();
         } else {
           if (valueRef[key] === undefined) { valueRef[key] = {}; }
-          valueRef = valueRef[key] as TFieldValues;
+          valueRef = valueRef[key] as IFieldValues;
         }
       });
     });

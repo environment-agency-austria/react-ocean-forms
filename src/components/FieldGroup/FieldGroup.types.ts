@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { TFieldValues } from '../FormContext';
+import { IFieldValues } from '../FormContext';
 import { IValidationProps, IValidationState } from '../withValidation';
 
 /**
@@ -38,11 +38,11 @@ export interface IFieldGroupProps extends IValidationProps {
   /**
    * Optional default values
    */
-  defaultValues?: TFieldValues;
+  defaultValues?: IFieldValues;
   /**
    * Optional values
    */
-  values?: TFieldValues;
+  values?: IFieldValues;
   /**
    * Render prop
    * @param params Meta information about the group

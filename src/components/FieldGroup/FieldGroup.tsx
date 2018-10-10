@@ -8,7 +8,7 @@
 import * as React from 'react';
 
 import { TFieldValue } from '../Field';
-import { FormContext, IFormContext, TFieldValues } from '../FormContext';
+import { FormContext, IFieldValues, IFormContext } from '../FormContext';
 import { IValidationArgs, IValidationState, withValidation } from '../withValidation';
 import { IFieldGroupProps } from './FieldGroup.types';
 
@@ -106,8 +106,8 @@ export class BaseFieldGroup extends React.Component<IFieldGroupProps, IFieldGrou
     return {
       ...context,
       ...this.state,
-      defaultValues: this.overrideContextValues<TFieldValues>('defaultValues'),
-      values: this.overrideContextValues<TFieldValues | undefined>('values'),
+      defaultValues: this.overrideContextValues<IFieldValues>('defaultValues'),
+      values: this.overrideContextValues<IFieldValues | undefined>('values'),
     };
   }
 
@@ -130,9 +130,9 @@ export class BaseFieldGroup extends React.Component<IFieldGroupProps, IFieldGrou
    * and overrides the according value in the parent form context.
    * @param name Property name
    */
-  private overrideContextValues<T extends TFieldValues | undefined>(name: 'defaultValues' | 'values'): T {
-    let contextValue: TFieldValues | undefined;
-    let propValue: TFieldValues | undefined;
+  private overrideContextValues<T extends IFieldValues | undefined>(name: 'defaultValues' | 'values'): T {
+    let contextValue: IFieldValues | undefined;
+    let propValue: IFieldValues | undefined;
 
     const { fullName } = this.props;
 
