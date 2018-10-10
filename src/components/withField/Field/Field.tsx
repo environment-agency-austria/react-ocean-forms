@@ -7,9 +7,9 @@
 
 import * as React from 'react';
 
-import { getDeepValue } from '../../utils';
-import { IFormContext, TFieldValues } from '../FormContext';
-import { IValidationArgs, IValidationState, withValidation } from '../withValidation';
+import { getDeepValue } from '../../../utils';
+import { IFormContext, TFieldValues } from '../../FormContext';
+import { IValidationArgs, IValidationState, withValidation } from '../../withValidation';
 import { IFieldChangedEvent, IFieldComponentFieldProps, IFieldComponentMeta, IFieldProps, IValueMeta, TFieldValue } from './Field.types';
 
 interface IContextMeta extends IValueMeta {
@@ -36,14 +36,6 @@ interface IMetaChanges {
  */
 export class BaseField extends React.Component<IFieldProps, IFieldState> {
   public static displayName: string = 'Field';
-
-  // tslint:disable-next-line:typedef
-  public static defaultProps = {
-    onChange: (): void => undefined,
-    onBlur: (): void => undefined,
-    getDisplayValue: (value: TFieldValue): TFieldValue => value,
-    getSubmitValue: (value: TFieldValue): TFieldValue => value,
-  };
 
   constructor(props: IFieldProps) {
     super(props);
@@ -135,10 +127,13 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    * @param value Field value
    */
   private static callGetDisplayValue(props: IFieldProps, value: TFieldValue | undefined): TFieldValue {
-    const { getDisplayValue, context } = props;
+    const {
+      context,
+      getDisplayValue = (val: TFieldValue): TFieldValue => val,
+    } = props;
 
     return getDisplayValue(
-      value || '',
+      value === undefined ? '' : value,
       BaseField.getValueMeta(context),
     );
   }
@@ -262,7 +257,15 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    */
   private getValue = (): TFieldValue => {
     const { value } = this.state;
-    const { getSubmitValue, context } = this.props;
+
+    return this.getSubmitValue(value);
+  }
+
+  private getSubmitValue = (value: TFieldValue): TFieldValue => {
+    const {
+      context,
+      getSubmitValue = (val: TFieldValue): TFieldValue => val,
+    } = this.props;
 
     return getSubmitValue(
       value,
@@ -317,7 +320,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
     });
 
     validation.reset();
-    onChange(value);
+    if (onChange !== undefined) { onChange(value); }
   }
 
   /**
@@ -326,13 +329,10 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    */
   private validate = async (args?: Partial<IValidationArgs>): Promise<IValidationState> => {
     const { value } = this.state;
-    const { validation: { validate }, getSubmitValue, context } = this.props;
+    const { validation: { validate } } = this.props;
 
     return validate(
-      getSubmitValue(
-        value,
-        BaseField.getValueMeta(context),
-      ),
+      this.getSubmitValue(value),
       args,
     );
   }
@@ -349,7 +349,6 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
       fullName,
       context,
       validation: { validate },
-      getSubmitValue,
       onChange,
     } = this.props;
 
@@ -360,10 +359,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
     });
 
     const asyncValidateOnChange = this.getAsyncValidateOnChangeSetting();
-    const submitValue = getSubmitValue(
-      value,
-      BaseField.getValueMeta(context),
-    );
+    const submitValue = this.getSubmitValue(value);
 
     validate(
       submitValue,
@@ -371,7 +367,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
     );
 
     context.notifyFieldEvent(fullName, 'change', submitValue);
-    onChange(submitValue);
+    if (onChange !== undefined) { onChange(submitValue); }
   }
 
   /**
@@ -385,19 +381,15 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
       validation: { validate },
       context,
       onBlur,
-      getSubmitValue,
     } = this.props;
     const { value, dirty } = this.state;
 
     const asyncValidateOnChange = this.getAsyncValidateOnChangeSetting();
-    const submitValue = getSubmitValue(
-      value,
-      BaseField.getValueMeta(context),
-    );
+    const submitValue = this.getSubmitValue(value);
 
     if (dirty && !asyncValidateOnChange) { validate(submitValue); }
     context.notifyFieldEvent(fullName, 'blur');
-    onBlur();
+    if (onBlur !== undefined) { onBlur(); }
   }
 
   /**
@@ -449,32 +441,11 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
 
   // tslint:disable-next-line:member-ordering
   public render(): JSX.Element {
-    const {
-      // tslint:disable-next-line:naming-convention
-      component: InputComponent,
-      context,
-      fullName,
-      validation,
-      onChange,
-      onBlur,
-      defaultValue,
-      value,
-      name,
-      asyncValidateOnChange,
-      getDisplayValue,
-      getSubmitValue,
-      ...attributes
-    } = this.props;
+    const { render } = this.props;
 
-    const field = this.createFieldProps();
-    const meta = this.createMetaProps();
-
-    return (
-      <InputComponent
-        {...attributes}
-        field={field}
-        meta={meta}
-      />
+    return render(
+      this.createFieldProps(),
+      this.createMetaProps(),
     );
   }
 }

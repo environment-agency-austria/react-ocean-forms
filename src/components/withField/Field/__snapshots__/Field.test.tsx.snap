@@ -4,7 +4,6 @@ exports[`<Field /> Render should render without crashing 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Field
-    component={[Function]}
     context={
       Object {
         "asyncValidateOnChange": false,
@@ -45,12 +44,9 @@ ShallowWrapper {
       }
     }
     fullName="unitField"
-    getDisplayValue={[Function]}
-    getSubmitValue={[Function]}
     label="Unit field"
     name="unitField"
-    onBlur={[Function]}
-    onChange={[Function]}
+    render={[Function]}
     validation={
       Object {
         "error": null,
@@ -73,57 +69,25 @@ ShallowWrapper {
   Symbol(enzyme.__node__): Object {
     "instance": null,
     "key": undefined,
-    "nodeType": "function",
+    "nodeType": "host",
     "props": Object {
-      "field": Object {
-        "disabled": false,
-        "id": "unitField",
-        "name": "unitField",
-        "onBlur": [Function],
-        "onChange": [Function],
-        "value": "",
-      },
-      "label": "Unit field",
-      "meta": Object {
-        "error": null,
-        "isValidating": false,
-        "plaintext": false,
-        "stringFormatter": [MockFunction],
-        "touched": false,
-        "valid": true,
-      },
+      "id": "test-component",
     },
     "ref": null,
     "rendered": null,
-    "type": [Function],
+    "type": "div",
   },
   Symbol(enzyme.__nodes__): Array [
     Object {
       "instance": null,
       "key": undefined,
-      "nodeType": "function",
+      "nodeType": "host",
       "props": Object {
-        "field": Object {
-          "disabled": false,
-          "id": "unitField",
-          "name": "unitField",
-          "onBlur": [Function],
-          "onChange": [Function],
-          "value": "",
-        },
-        "label": "Unit field",
-        "meta": Object {
-          "error": null,
-          "isValidating": false,
-          "plaintext": false,
-          "stringFormatter": [MockFunction],
-          "touched": false,
-          "valid": true,
-        },
+        "id": "test-component",
       },
       "ref": null,
       "rendered": null,
-      "type": [Function],
+      "type": "div",
     },
   ],
   Symbol(enzyme.__options__): Object {

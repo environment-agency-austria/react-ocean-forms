@@ -2,9 +2,9 @@ import * as React from 'react';
 
 import { shallow, ShallowWrapper } from 'enzyme';
 
-import { createMockFormContext, createMockValidation } from '../../test-utils/enzymeFormContext';
-import { IFieldState, IFormContext } from '../FormContext';
-import { IValidationProp } from '../withValidation';
+import { createMockFormContext, createMockValidation } from '../../../test-utils/enzymeFormContext';
+import { IFieldState, IFormContext } from '../../FormContext';
+import { IValidationProp } from '../../withValidation';
 import { BaseField } from './Field';
 import { IFieldComponentFieldProps, IFieldProps, TFieldValue } from './Field.types';
 
@@ -15,20 +15,24 @@ describe('<Field />', () => {
   interface ISetupArgs {
     props?: Partial<IFieldProps>;
     contextOverrides?: Partial<IFormContext>;
+    renderCallback?(field: IFieldComponentFieldProps): void;
   }
 
   interface ISetupResult {
     formContext: IFormContext;
     fieldState: IFieldState;
     validation: IValidationProp;
+    fieldProps: IFieldComponentFieldProps;
     wrapper: ShallowWrapper;
   }
 
   const setup = ({
     props,
     contextOverrides,
+    renderCallback,
   }: Partial<ISetupArgs> = {}): ISetupResult => {
     let fieldState: IFieldState;
+    let fieldProps: IFieldComponentFieldProps;
     const registerCallback = (name: string, state: IFieldState): void => { fieldState = state; };
 
     const formContext: IFormContext = {
@@ -37,17 +41,24 @@ describe('<Field />', () => {
     };
     const validation = createMockValidation();
 
-    // tslint:disable-next-line:naming-convention
-    const TestComponent = (): JSX.Element => (<div id="test-component" />);
+    const defaultRenderCallback = (field: IFieldComponentFieldProps): JSX.Element => {
+      fieldProps = field;
+
+      if (renderCallback) { renderCallback(fieldProps); }
+
+      return (
+        <div id="test-component" />
+      );
+    };
 
     const wrapper = shallow((
       <BaseField
         name={mockName}
         fullName={mockName}
         label={mockLabel}
-        component={TestComponent}
         context={formContext}
         validation={validation}
+        render={defaultRenderCallback}
         {...props}
       />
     ));
@@ -57,27 +68,19 @@ describe('<Field />', () => {
       //@ts-ignore Field state is always initialized through the registerCallback
       fieldState,
       validation,
+      //@ts-ignore Field props should be always initialized through the render callback
+      fieldProps,
       wrapper,
     };
   };
 
-  const getTestComponent = (wrapper: ShallowWrapper): ShallowWrapper => wrapper.find('TestComponent');
-  const getTestFieldProp = (wrapper: ShallowWrapper): IFieldComponentFieldProps => getTestComponent(wrapper).prop('field');
-  const getValue = (wrapper: ShallowWrapper): TFieldValue => getTestFieldProp(wrapper).value;
-  const assertValue = (wrapper: ShallowWrapper, value: TFieldValue): unknown => expect(getValue(wrapper)).toBe(value);
-  const simulateChange = (wrapper: ShallowWrapper, value: TFieldValue): void => {
-    const mockEvent = {
+  const assertValue = (fieldProps: IFieldComponentFieldProps, value: TFieldValue): unknown => expect(fieldProps.value).toBe(value);
+  const simulateChange = (field: IFieldComponentFieldProps, value: TFieldValue): void => {
+    field.onChange({
       target: {
         value,
-        name: mockName,
       },
-    };
-    // @ts-ignore This should work anyway...
-    getTestFieldProp(wrapper).onChange(mockEvent);
-  };
-  const simulateBlur = (wrapper: ShallowWrapper): void => {
-    const mockEvent = {};
-    getTestFieldProp(wrapper).onBlur(mockEvent as React.FocusEvent);
+    });
   };
 
   describe('Render', () => {
@@ -131,43 +134,44 @@ describe('<Field />', () => {
 
   describe('Default value handling', () => {
     let wrapper: ShallowWrapper;
+    let fieldProps: IFieldComponentFieldProps;
 
     afterEach(() => wrapper.unmount());
 
     it('should have an empty string as the default value', () => {
-      ({ wrapper } = setup());
-      assertValue(wrapper, '');
+      ({ wrapper, fieldProps } = setup());
+      assertValue(fieldProps, '');
     });
 
     it('should use the default value from Form.defaultValues if existing', () => {
       const mockDefaultValue = 'mock-default-value';
 
-      ({ wrapper } = setup({
+      ({ wrapper, fieldProps } = setup({
         contextOverrides: {
           defaultValues: { [mockName]: mockDefaultValue },
         },
       }));
 
-      assertValue(wrapper, mockDefaultValue);
+      assertValue(fieldProps, mockDefaultValue);
     });
 
     it('should use the Field.defaultValue if existing', () => {
       const mockDefaultValue = 'mock-field-value';
 
-      ({ wrapper } = setup({
+      ({ wrapper, fieldProps } = setup({
         props: {
           defaultValue: mockDefaultValue,
         },
       }));
 
-      assertValue(wrapper, mockDefaultValue);
+      assertValue(fieldProps, mockDefaultValue);
     });
 
     it('should prefer the Field.defaultValue over the Form.defaultValues', () => {
       const mockFieldDefaultValue = 'mock-field-value';
       const mockFormDefaultValue = 'mock-form-value';
 
-      ({ wrapper } = setup({
+      ({ wrapper, fieldProps } = setup({
         props: {
           defaultValue: mockFieldDefaultValue,
         },
@@ -176,7 +180,7 @@ describe('<Field />', () => {
         },
       }));
 
-      assertValue(wrapper, mockFieldDefaultValue);
+      assertValue(fieldProps, mockFieldDefaultValue);
     });
 
     it('should not use the defaultValue if the Field is touched', () => {
@@ -185,56 +189,59 @@ describe('<Field />', () => {
       const mockDefaultValue = 'mock-field-value';
       const mockChangeValue = 'mock-change-value';
 
-      ({ wrapper, formContext } = setup()); // eslint-disable-line
+      ({ wrapper, formContext, fieldProps } = setup({
+        renderCallback: (newProps: IFieldComponentFieldProps): void => { fieldProps = newProps; },
+      }));
 
       // Recreate a field value change
-      simulateChange(wrapper, mockChangeValue);
+      simulateChange(fieldProps, mockChangeValue);
 
       // Set new defaultProps through Form.defaultValues
       formContext.defaultValues = { [mockName]: mockDefaultValue };
       wrapper.setProps({ context: formContext });
-      assertValue(wrapper, mockChangeValue);
+      assertValue(fieldProps, mockChangeValue);
 
       // Set new defaultProps through Field.defaultValue
       wrapper.setProps({ defaultValue: mockDefaultValue });
-      assertValue(wrapper, mockChangeValue);
+      assertValue(fieldProps, mockChangeValue);
     });
   });
 
   describe('Prop value handling', () => {
     let wrapper: ShallowWrapper;
+    let fieldProps: IFieldComponentFieldProps;
 
     afterEach(() => wrapper.unmount());
 
     it('should use the value from Form.values if existing', () => {
       const mockValue = 'mock-value';
 
-      ({ wrapper } = setup({
+      ({ wrapper, fieldProps } = setup({
         contextOverrides: {
           values: { [mockName]: mockValue },
         },
       }));
 
-      assertValue(wrapper, mockValue);
+      assertValue(fieldProps, mockValue);
     });
 
     it('should use the Field.value if existing', () => {
       const mockValue = 'mock-field-value';
 
-      ({ wrapper } = setup({
+      ({ wrapper, fieldProps } = setup({
         props: {
           value: mockValue,
         },
       }));
 
-      assertValue(wrapper, mockValue);
+      assertValue(fieldProps, mockValue);
     });
 
     it('should prefer the Field.value over the Form.values', () => {
       const mockFieldValue = 'mock-field-value';
       const mockFormValue = 'mock-form-value';
 
-      ({ wrapper } = setup({
+      ({ wrapper, fieldProps } = setup({
         props: {
           value: mockFieldValue,
         },
@@ -243,14 +250,14 @@ describe('<Field />', () => {
         },
       }));
 
-      assertValue(wrapper, mockFieldValue);
+      assertValue(fieldProps, mockFieldValue);
     });
 
     it('Field.value should override the default values', () => {
       const mockValue = 'mock-field-value';
       const mockDefaultValue = 'mock-default-value';
 
-      ({ wrapper } = setup({
+      ({ wrapper, fieldProps } = setup({
         props: {
           value: mockValue,
           defaultValue: mockDefaultValue,
@@ -260,14 +267,14 @@ describe('<Field />', () => {
         },
       }));
 
-      assertValue(wrapper, mockValue);
+      assertValue(fieldProps, mockValue);
     });
 
     it('Form.values should override the default values', () => {
       const mockValue = 'mock-field-value';
       const mockDefaultValue = 'mock-default-value';
 
-      ({ wrapper } = setup({
+      ({ wrapper, fieldProps } = setup({
         props: {
           defaultValue: mockDefaultValue,
         },
@@ -277,7 +284,7 @@ describe('<Field />', () => {
         },
       }));
 
-      assertValue(wrapper, mockValue);
+      assertValue(fieldProps, mockValue);
     });
 
     it('should use the changed value even if the Field is touched', () => {
@@ -288,11 +295,13 @@ describe('<Field />', () => {
 
       const updateValue = (): void => {
         // Recreate a field value change
-        simulateChange(wrapper, mockChangeValue);
-        assertValue(wrapper, mockChangeValue);
+        simulateChange(fieldProps, mockChangeValue);
+        assertValue(fieldProps, mockChangeValue);
       };
 
-      ({ wrapper, formContext } = setup()); // eslint-disable-line
+      ({ wrapper, formContext, fieldProps } = setup({
+        renderCallback: (newProps: IFieldComponentFieldProps): void => { fieldProps = newProps; },
+      }));
 
       // Mock user input
       updateValue();
@@ -300,7 +309,7 @@ describe('<Field />', () => {
       // Set new value through Form.values
       formContext.values = { [mockName]: mockValue };
       wrapper.setProps({ context: formContext });
-      assertValue(wrapper, mockValue);
+      assertValue(fieldProps, mockValue);
 
       // Mock user input
       updateValue();
@@ -308,7 +317,7 @@ describe('<Field />', () => {
       // Set new props through Field.value
       mockValue = 'mock-new-field-value';
       wrapper.setProps({ value: mockValue });
-      assertValue(wrapper, mockValue);
+      assertValue(fieldProps, mockValue);
     });
   });
 
@@ -318,13 +327,15 @@ describe('<Field />', () => {
     let wrapper: ShallowWrapper;
     let validation: IValidationProp;
     let formContext: IFormContext;
+    let fieldProps: IFieldComponentFieldProps;
 
     const setupOnChange = (props?: Partial<IFieldProps>, contextOverrides?: Partial<IFormContext>): void => {
-      ({ wrapper, validation, formContext } = setup({
+      ({ wrapper, validation, formContext, fieldProps } = setup({
         props,
         contextOverrides,
+        renderCallback: (newProps: IFieldComponentFieldProps): void => { fieldProps = newProps; },
       }));
-      simulateChange(wrapper, mockValue);
+      simulateChange(fieldProps, mockValue);
     };
 
     afterEach(() => {
@@ -333,7 +344,7 @@ describe('<Field />', () => {
 
     it('should remember the changed value', () => {
       setupOnChange();
-      assertValue(wrapper, mockValue);
+      assertValue(fieldProps, mockValue);
     });
 
     it('should call the Field.getSubmitValue callback', () => {
@@ -395,9 +406,10 @@ describe('<Field />', () => {
     let wrapper: ShallowWrapper;
     let validation: IValidationProp;
     let formContext: IFormContext;
+    let fieldProps: IFieldComponentFieldProps;
 
     const setupLocal = (props?: Partial<IFieldProps>, contextOverrides?: Partial<IFormContext>): void => {
-      ({ wrapper, validation, formContext } = setup({
+      ({ wrapper, validation, formContext, fieldProps } = setup({
         props: { ...props, value: mockValue },
         contextOverrides: contextOverrides,
       }));
@@ -405,7 +417,7 @@ describe('<Field />', () => {
 
     const setupOnBlur = (props?: Partial<IFieldProps>, contextOverrides?: Partial<IFormContext>): void => {
       setupLocal(props, contextOverrides);
-      simulateBlur(wrapper);
+      fieldProps.onBlur();
     };
 
     afterEach(() => {
@@ -426,11 +438,11 @@ describe('<Field />', () => {
       const mockChangeValue = 'foo';
       setupLocal();
 
-      simulateChange(wrapper, mockChangeValue);
+      simulateChange(fieldProps, mockChangeValue);
 
       (validation.validate as jest.Mock).mockClear();
 
-      simulateBlur(wrapper);
+      fieldProps.onBlur();
       expect(validation.validate).toHaveBeenCalledWith(mockChangeValue);
     });
 
@@ -472,8 +484,8 @@ describe('<Field />', () => {
     };
 
     it('should call Field.getDisplayValue on first render', () => {
-      const { wrapper, getDisplayValue } = setupWithDisplayName();
-      assertValue(wrapper, mockDisplayValue);
+      const { getDisplayValue, fieldProps } = setupWithDisplayName();
+      assertValue(fieldProps, mockDisplayValue);
       expect(getDisplayValue).toHaveBeenCalledWith(
         '',
         { disabled: false, plaintext: false },
@@ -594,19 +606,19 @@ describe('<Field />', () => {
           : undefined;
 
         it('should correctly reset to its defaultValue', () => {
-          const { wrapper, fieldState } = setup({ props, contextOverrides });
+          const { fieldState, fieldProps } = setup({ props, contextOverrides });
 
-          simulateChange(wrapper, mockChangeValue);
+          simulateChange(fieldProps, mockChangeValue);
           fieldState.reset();
 
-          assertValue(wrapper, mockDefaultValue);
+          assertValue(fieldProps, mockDefaultValue);
         });
 
         it('should call the Field.getDisplayValue function', () => {
           const mockDisplayValue = 'mock-display-value';
           const mockGetDisplayValue = jest.fn().mockReturnValue(mockDisplayValue);
 
-          const { wrapper, fieldState } = setup({
+          const { fieldState, fieldProps } = setup({
             props: {
               ...props,
               getDisplayValue: mockGetDisplayValue,
@@ -614,10 +626,10 @@ describe('<Field />', () => {
             contextOverrides: contextOverrides,
           });
 
-          simulateChange(wrapper, mockChangeValue);
+          simulateChange(fieldProps, mockChangeValue);
           fieldState.reset();
 
-          assertValue(wrapper, mockDisplayValue);
+          assertValue(fieldProps, mockDisplayValue);
           expect(mockGetDisplayValue).toHaveBeenCalledWith(
             mockDefaultValue,
             { disabled: false, plaintext: false },
