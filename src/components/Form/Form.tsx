@@ -11,8 +11,8 @@ import { stringFormatter as defaultStringFormatter } from '../../utils/stringFor
 import { FormContext, IBaseFormContext, IFieldState, IFieldValues, IFormContext, TFormEventListener } from '../FormContext';
 import { IFormProps } from './Form.types';
 
-interface IFormState {
-  context: IBaseFormContext;
+interface IFormState<TFieldValues = IFieldValues> {
+  context: IBaseFormContext<TFieldValues>;
 }
 
 interface IEventListenerContainer {
@@ -26,7 +26,7 @@ interface IFieldContainer {
 /**
  * Wrapper for managed forms
  */
-export class Form extends React.Component<IFormProps, IFormState> {
+export class Form<TFieldValues = IFieldValues> extends React.Component<IFormProps<TFieldValues>, IFormState<TFieldValues>> {
   public static displayName: string = 'Form';
 
   // tslint:disable-next-line:typedef
@@ -42,7 +42,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
   private fields: IFieldContainer = {};
   private eventListeners: IEventListenerContainer = {};
 
-  constructor(props: IFormProps) {
+  constructor(props: IFormProps<TFieldValues>) {
     super(props);
 
     this.state = {
@@ -80,9 +80,9 @@ export class Form extends React.Component<IFormProps, IFormState> {
    * all values from all the fields.
    * @returns Current values in form of { name: value, name2: value2, ... }
    */
-  private getValues = (): IFieldValues => {
+  private getValues = (): TFieldValues => {
     const fields = Object.entries(this.fields);
-    const values: IFieldValues = {};
+    const values: any = {};
 
     fields.forEach(([name, state]) => {
       if (state.isGroup === true) { return; }
@@ -95,7 +95,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
           valueRef[key] = state.getValue();
         } else {
           if (valueRef[key] === undefined) { valueRef[key] = {}; }
-          valueRef = valueRef[key] as IFieldValues;
+          valueRef = valueRef[key] as TFieldValues;
         }
       });
     });
@@ -313,7 +313,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
    * full form context passed to the form
    * components.
    */
-  private prepareFormContext(): IFormContext {
+  private prepareFormContext(): IFormContext<TFieldValues> {
     const { context } = this.state;
     const {
       defaultValues,
@@ -349,7 +349,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
       plaintext,
     } = this.props;
 
-    const context = this.prepareFormContext();
+    const context: any = this.prepareFormContext();
 
     let formClass = className || '';
     if (plaintext) { formClass = `${formClass} plaintext`; }

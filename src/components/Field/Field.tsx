@@ -8,7 +8,7 @@
 import * as React from 'react';
 
 import { getDeepValue } from '../../utils';
-import { IFormContext, TFieldValues } from '../FormContext';
+import { IFieldValues, IFormContext } from '../FormContext';
 import { IValidationArgs, IValidationState, withValidation } from '../withValidation';
 import { IFieldChangedEvent, IFieldComponentFieldProps, IFieldComponentMeta, IFieldProps, IValueMeta, TFieldValue } from './Field.types';
 
@@ -211,7 +211,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    * @param fullName Field.fullName
    */
   private static getLocalOverridenValue(
-    localValue: TFieldValue | undefined, contextValue: TFieldValues | undefined, fullName: string,
+    localValue: TFieldValue | undefined, contextValue: Partial<IFieldValues> | undefined, fullName: string,
   ): TFieldValue | undefined {
     return localValue || getDeepValue(fullName, contextValue);
   }

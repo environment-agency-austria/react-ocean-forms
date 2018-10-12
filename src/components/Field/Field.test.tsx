@@ -76,8 +76,7 @@ describe('<Field />', () => {
     getTestFieldProp(wrapper).onChange(mockEvent);
   };
   const simulateBlur = (wrapper: ShallowWrapper): void => {
-    const mockEvent = {};
-    getTestFieldProp(wrapper).onBlur(mockEvent as React.FocusEvent);
+    getTestFieldProp(wrapper).onBlur();
   };
 
   describe('Render', () => {

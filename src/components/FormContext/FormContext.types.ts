@@ -52,7 +52,7 @@ export type IFieldValues = {
 /**
  * Base interface for the form context
  */
-export interface IBaseFormContext {
+export interface IBaseFormContext<TFieldValues = IFieldValues> {
   /**
    * Optional field prefix
    */
@@ -104,7 +104,7 @@ export interface IBaseFormContext {
   /**
    * Returns all field values
    */
-  getValues(): IFieldValues;
+  getValues(): TFieldValues;
 
   /**
    * Submits the form
@@ -116,18 +116,18 @@ export interface IBaseFormContext {
 /**
  * Interface describing the form context
  */
-export interface IFormContext extends IBaseFormContext {
+export interface IFormContext<TFieldValues = IFieldValues> extends IBaseFormContext<TFieldValues> {
   /**
    * Contains the default values of the form. Those values will be
    * put into the according fields when the form initializes.
    */
-  defaultValues: IFieldValues;
+  defaultValues: Partial<TFieldValues>;
   /**
    * Contains the values of the form. Changing this property will
    * update all Field values, overwriting their default values but also
    * any value the user put in.
    */
-  values?: IFieldValues;
+  values?: Partial<TFieldValues>;
   /**
    * If set to true the form will trigger asynchronous validation on
    * Fields whenever they change (e.g. on key press). Default behaviour

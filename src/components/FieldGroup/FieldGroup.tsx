@@ -131,7 +131,7 @@ export class BaseFieldGroup extends React.Component<IFieldGroupProps, IFieldGrou
    * @param name Property name
    */
   private overrideContextValues<T extends IFieldValues | undefined>(name: 'defaultValues' | 'values'): T {
-    let contextValue: IFieldValues | undefined;
+    let contextValue: Partial<IFieldValues> | undefined;
     let propValue: IFieldValues | undefined;
 
     const { fullName } = this.props;
