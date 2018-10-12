@@ -112,8 +112,6 @@ Object {
           },
         },
       },
-      "attachTo": undefined,
-      "hydrateIn": undefined,
     },
   },
 }
@@ -279,8 +277,6 @@ Object {
           },
         },
       },
-      "attachTo": undefined,
-      "hydrateIn": undefined,
     },
   },
 }
