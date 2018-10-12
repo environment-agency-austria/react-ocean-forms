@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { TValidator } from '../../validators';
-import { IFieldComponentProps } from '../Field';
+import { IFieldComponentProps } from '../withField';
 
 /**
  * Field Line properties

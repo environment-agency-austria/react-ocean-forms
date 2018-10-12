@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { parseValidationError } from '../../../utils';
 import { isIFieldErrorObject } from '../../../validators';
-import { TFieldValue } from '../../Field';
+import { TFieldValue } from '../../withField';
 import { withForm } from '../../withForm';
 import { IValidationArgs, IValidationState, IValidationWrapperProps } from '../withValidation.types';
 

@@ -2,8 +2,8 @@ import * as React from 'react';
 
 import { shallow, ShallowWrapper } from 'enzyme';
 
-import { IFieldComponentFieldProps, IFieldComponentMeta } from '../Field';
-import { Input } from './Input';
+import { IFieldComponentFieldProps, IFieldComponentMeta } from '../withField';
+import { BaseInput } from './Input';
 import { IInputProps } from './Input.types';
 
 describe('<Input />', () => {
@@ -42,7 +42,7 @@ describe('<Input />', () => {
     };
 
     const wrapper = shallow((
-      <Input
+      <BaseInput
         label="unitLabel"
         meta={meta}
         field={field}

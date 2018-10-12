@@ -7,8 +7,8 @@
 
 import * as React from 'react';
 
-import { TFieldValue } from '../Field';
 import { FormContext, IFormContext, TFieldValues } from '../FormContext';
+import { TFieldValue } from '../withField';
 import { IValidationArgs, IValidationState, withValidation } from '../withValidation';
 import { IFieldGroupProps } from './FieldGroup.types';
 
