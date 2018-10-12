@@ -15,6 +15,4 @@ export interface IInputProps extends IFieldComponentProps {
    */
   // tslint:disable-next-line:no-reserved-keywords
   type: string;
-
-  label: string;
 }

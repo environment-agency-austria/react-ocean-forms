@@ -162,4 +162,8 @@ export interface IFieldComponentProps {
    * Meta informations about the field state
    */
   meta: IFieldComponentMeta;
+  /**
+   * Label (string or message id)
+   */
+  label: string;
 }
