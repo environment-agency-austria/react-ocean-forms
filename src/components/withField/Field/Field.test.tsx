@@ -348,7 +348,7 @@ describe('<Field />', () => {
     });
 
     it('should call the Field.getSubmitValue callback', () => {
-      const mockGetSubmitValue = jest.fn().mockImplementation(value => value);
+      const mockGetSubmitValue = jest.fn().mockImplementation((value: TFieldValue): TFieldValue => value);
       setupOnChange({ getSubmitValue: mockGetSubmitValue });
 
       expect(mockGetSubmitValue).toHaveBeenCalledWith(
@@ -425,7 +425,7 @@ describe('<Field />', () => {
     });
 
     it('should call the Field.getSubmitValue function', () => {
-      const mockGetSubmitValue = jest.fn().mockImplementation(value => value);
+      const mockGetSubmitValue = jest.fn().mockImplementation((value: TFieldValue): TFieldValue => value);
       setupOnBlur({ getSubmitValue: mockGetSubmitValue });
 
       expect(mockGetSubmitValue).toHaveBeenCalledWith(

@@ -28,7 +28,7 @@ describe('<Form />', () => {
       </Form>
     ));
 
-    const formContext = wrapper.first().prop('value');
+    const formContext = wrapper.first().prop('value') as IFormContext;
     const form = wrapper.find('form');
 
     return {
@@ -62,7 +62,9 @@ describe('<Form />', () => {
   });
 
   const registerUnitField = (fields: IMockField[], formContext: IFormContext): void => {
-    fields.forEach(field => formContext.registerField(field.name, field.state));
+    fields.forEach(field => {
+      formContext.registerField(field.name, field.state);
+    });
   };
 
   interface IMockListener {
@@ -71,7 +73,7 @@ describe('<Form />', () => {
   }
 
   const createMockListener = (id?: string): IMockListener => ({
-    id: id || 'listener',
+    id: id === undefined ? 'listener' : id,
     state: jest.fn(),
   });
 
@@ -147,9 +149,11 @@ describe('<Form />', () => {
       }],
     ];
 
-    test.each(cases)('case %s', (testName, fieldName, fieldState) => {
+    test.each(cases)('case %s', (testName: string, fieldName: string, fieldState: IFieldState) => {
       const { formContext } = setup();
-      expect(() => formContext.registerField(fieldName, fieldState)).toThrowErrorMatchingSnapshot();
+      expect(() => {
+        formContext.registerField(fieldName, fieldState);
+      }).toThrowErrorMatchingSnapshot();
     });
   });
 
@@ -165,16 +169,18 @@ describe('<Form />', () => {
     describe('formContext.registerField - field registration', () => {
       const cases = createCases();
 
-      test.each(cases)('should register a new %s without crashing', (testName, field) => {
+      test.each(cases)('should register a new %s without crashing', (testName, field: IMockField) => {
         const { formContext } = setup();
-        expect(() => registerUnitField([field], formContext)).not.toThrowError();
+        expect(() => {
+          registerUnitField([field], formContext);
+        }).not.toThrowError();
       });
     });
 
     describe('formContext.unregisterField - field cleanup', () => {
       const cases = createCases();
 
-      test.each(cases)('should unregister %s without crashing', (testName, field) => {
+      test.each(cases)('should unregister %s without crashing', (testName, field: IMockField) => {
         const { formContext } = setup();
         formContext.registerField(field.name, field.state);
         formContext.unregisterField(field.name);
@@ -184,7 +190,7 @@ describe('<Form />', () => {
     describe('formContext.getFieldState - field states', () => {
       const cases = createCases();
 
-      test.each(cases)('should return the correct field state of a %s', (testName, field) => {
+      test.each(cases)('should return the correct field state of a %s', (testName, field: IMockField) => {
         const { formContext } = setup();
         registerUnitField([field], formContext);
         expect(formContext.getFieldState(field.name)).toBe(field.state);
@@ -248,7 +254,9 @@ describe('<Form />', () => {
       setupResult.formContext.registerField(unitField.name, unitField.state);
 
       const mockListeners = createMockListeners(count);
-      mockListeners.forEach(item => setupResult.formContext.registerListener(item.id, item.state));
+      mockListeners.forEach(item => {
+        setupResult.formContext.registerListener(item.id, item.state);
+      });
 
       return {
         ...setupResult,
@@ -261,7 +269,9 @@ describe('<Form />', () => {
       const mockListeners = createMockListeners(3);
       const { formContext } = setup();
       mockListeners.forEach((item) => {
-        expect(() => formContext.registerListener(item.id, item.state)).not.toThrowError();
+        expect(() => {
+          formContext.registerListener(item.id, item.state);
+        }).not.toThrowError();
       });
     });
 
@@ -270,7 +280,9 @@ describe('<Form />', () => {
       const { formContext } = setup();
       mockListeners.forEach((item) => {
         formContext.registerListener(item.id, item.state);
-        expect(() => formContext.unregisterListener(item.id)).not.toThrowError();
+        expect(() => {
+          formContext.unregisterListener(item.id);
+        }).not.toThrowError();
       });
     });
 
@@ -345,7 +357,9 @@ describe('<Form />', () => {
 
       if (addListeners) {
         mockListeners = createMockListeners(3);
-        mockListeners.forEach(item => result.formContext.registerListener(item.id, item.state));
+        mockListeners.forEach(item => {
+          result.formContext.registerListener(item.id, item.state);
+        });
       }
 
       await simulateSubmitEvent(result.wrapper);
