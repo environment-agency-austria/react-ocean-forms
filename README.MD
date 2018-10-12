@@ -22,7 +22,7 @@ Flexible and lightweight framework for rendering and validating forms with React
 To use the Forms you need to import its components into the file where you want to use them.
 
 ```js
-import { Form, Field, Input } from 'react-ocean-forms';
+import { Form, Input } from 'react-ocean-forms';
 ```
 
 Then use the form where needed.
@@ -34,10 +34,9 @@ Then use the form where needed.
   defaultValues={{ name: 'test'}}
   asyncValidateOnChange
 >
-  <Field
+  <Input
     name="name"
     label="demo_name"
-    component={Input}
   />
 
   <button type="submit">Submit</button>
