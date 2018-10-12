@@ -13,17 +13,6 @@ import { IFormContextProps } from '../withForm';
  * Properties of a component that is wrapped
  * by withValidation
  */
-export interface IValidationWrapperProps extends IValidatedComponentProps, IFormContextProps {
-  /**
-   * Render prop
-   */
-  render(fullName: string, validation: IValidationProp, context: IFormContext): JSX.Element;
-}
-
-/**
- * Properties of a component that is wrapped
- * by withValidation
- */
 export interface IValidatedComponentProps {
   /**
    * Field name
@@ -43,6 +32,17 @@ export interface IValidatedComponentProps {
    * validators will be triggered
    */
   asyncValidationWait?: number;
+}
+
+/**
+ * Properties of a component that is wrapped
+ * by withValidation
+ */
+export interface IValidationWrapperProps extends IValidatedComponentProps, IFormContextProps {
+  /**
+   * Render prop
+   */
+  render(fullName: string, validation: IValidationProp, context: IFormContext): JSX.Element;
 }
 
 /**

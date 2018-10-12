@@ -126,7 +126,9 @@ export class Form extends React.Component<IFormProps, IFormState> {
    */
   private notifyListeners(name: string, event: string, args?: unknown): void {
     const listeners = Object.entries(this.eventListeners);
-    listeners.forEach(([, callback]) => callback(name, event, args));
+    listeners.forEach(([, callback]) => {
+      callback(name, event, args);
+    });
   }
 
   /**
@@ -260,7 +262,9 @@ export class Form extends React.Component<IFormProps, IFormState> {
     event.preventDefault();
 
     const fields = Object.entries(this.fields);
-    fields.forEach(([, state]) => state.reset());
+    fields.forEach(([, state]) => {
+      state.reset();
+    });
 
     const { onReset } = this.props;
     if (onReset !== undefined) {
@@ -351,7 +355,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
 
     const context = this.prepareFormContext();
 
-    let formClass = className || '';
+    let formClass = className === undefined ? '' : className;
     if (plaintext) { formClass = `${formClass} plaintext`; }
 
     return (

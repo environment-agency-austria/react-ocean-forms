@@ -208,7 +208,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
   private static getLocalOverridenValue(
     localValue: TFieldValue | undefined, contextValue: TFieldValues | undefined, fullName: string,
   ): TFieldValue | undefined {
-    return localValue || getDeepValue(fullName, contextValue);
+    return localValue === undefined ? getDeepValue(fullName, contextValue) : localValue;
   }
 
   /**
@@ -293,7 +293,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    */
   private checkFormContext(): void {
     const { context, fullName } = this.props;
-    if (!context || typeof context.registerField !== 'function') {
+    if (context === undefined || typeof context.registerField !== 'function') {
       throw new Error(
         `Could not find a form context for field "${fullName}". `
         + 'Fields can only be used inside a Form tag.',
@@ -310,7 +310,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
 
     const value = BaseField.callGetDisplayValue(
       this.props,
-      externalValue || defaultValue,
+      externalValue === undefined ? defaultValue : externalValue,
     );
 
     this.setState({
