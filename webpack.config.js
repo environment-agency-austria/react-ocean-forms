@@ -21,7 +21,6 @@ module.exports = {
       {
         test: /\.(js|jsx|mjs)$/,
         include: srcPath,
-        exclude: /(node_modules|bower_components|build|coverage)/,
         use: {
           loader: 'babel-loader',
         },
@@ -30,9 +29,8 @@ module.exports = {
         // This loader is used to transpile the .ts and .tsx files
         // After that to js the output is transpiled
         // using babel-loader.
-        test: /\.ts|\.tsx$/,
+        test: /\.(tsx?)$/,
         include: srcPath,
-        exclude: /(node_modules|bower_components|build|coverage)/,
         use: [
           'babel-loader', {
             loader: 'ts-loader',
