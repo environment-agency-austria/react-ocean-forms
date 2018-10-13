@@ -85,6 +85,12 @@
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.9"
   },
+  "greenkeeper": {
+    "ignore": [
+      "babel-loader",
+      "babel-preset-react-app"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/environment-agency-austria/react-ocean-forms.git"
