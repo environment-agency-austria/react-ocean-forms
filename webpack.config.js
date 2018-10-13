@@ -30,7 +30,7 @@ module.exports = {
         // This loader is used to transpile the .ts and .tsx files
         // After that to js the output is transpiled
         // using babel-loader.
-        test: /\.(tsx?)$/,
+        test: /\.ts|\.tsx$/,
         include: srcPath,
         exclude: /(node_modules|bower_components|build|coverage)/,
         use: [
