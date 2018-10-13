@@ -4,10 +4,8 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import * as React from 'react';
-
-import { TSTringFormatter } from '../../utils/stringFormatter';
-import { IValidationProps, IValidationState } from '../withValidation';
+import { TSTringFormatter } from '../../../utils/stringFormatter';
+import { IValidationProps, IValidationState } from '../../withValidation';
 
 /**
  * Type that defines which values a field could hold
@@ -34,9 +32,9 @@ export interface IValueMeta {
 }
 
 /**
- * Props for the Field component
+ * Basic props for the field component
  */
-export interface IFieldProps extends IValidationProps {
+export interface IBaseFieldProps {
   /**
    * Field name
    */
@@ -45,10 +43,6 @@ export interface IFieldProps extends IValidationProps {
    * Label (string or message id)
    */
   label: string;
-  /**
-   * Input component
-   */
-  component: React.ComponentType<IFieldComponentProps>;
   /**
    * Optional default value
    */
@@ -66,21 +60,33 @@ export interface IFieldProps extends IValidationProps {
    * Called, when the field is loading its value from the forms
    * default values. Must return the value to display.
    */
-  getDisplayValue: TValueCallback;
+  getDisplayValue?: TValueCallback;
   /**
    * Called, when the field is submitting its value to the form.
    * Must return the value to submit.
    */
-  getSubmitValue: TValueCallback;
+  getSubmitValue?: TValueCallback;
   /**
    * Triggered on field blur.
    */
-  onBlur(): void;
+  onBlur?(): void;
   /**
    * Triggered on field value change.
    * @param value Current field value
    */
-  onChange(value: TFieldValue): void;
+  onChange?(value: TFieldValue): void;
+}
+
+/**
+ * Props for the Field component
+ */
+export interface IFieldProps extends IBaseFieldProps, IValidationProps {
+  /**
+   * Render prop for the input element
+   * @param field Props designed to be passed to the field as is @see IFieldComponentFieldProps
+   * @param meta Meta information about the field state
+   */
+  render(field: IFieldComponentFieldProps, meta: IFieldComponentMeta): JSX.Element;
 }
 
 /**
@@ -157,7 +163,7 @@ export interface IFieldComponentProps {
    */
   meta: IFieldComponentMeta;
   /**
-   * Label of the field
+   * Label (string or message id)
    */
   label: string;
 }

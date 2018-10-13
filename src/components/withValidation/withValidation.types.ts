@@ -5,20 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { TAsyncValidator, TFieldErrors, TValidator } from '../../validators';
-import { TFieldValue } from '../Field';
 import { IFormContext } from '../FormContext';
+import { TFieldValue } from '../withField';
 import { IFormContextProps } from '../withForm';
-
-/**
- * Properties of a component that is wrapped
- * by withValidation
- */
-export interface IValidationWrapperProps extends IValidatedComponentProps, IFormContextProps {
-  /**
-   * Render prop
-   */
-  render(fullName: string, validation: IValidationProp, context: IFormContext): JSX.Element;
-}
 
 /**
  * Properties of a component that is wrapped
@@ -43,6 +32,17 @@ export interface IValidatedComponentProps {
    * validators will be triggered
    */
   asyncValidationWait?: number;
+}
+
+/**
+ * Properties of a component that is wrapped
+ * by withValidation
+ */
+export interface IValidationWrapperProps extends IValidatedComponentProps, IFormContextProps {
+  /**
+   * Render prop
+   */
+  render(fullName: string, validation: IValidationProp, context: IFormContext): JSX.Element;
 }
 
 /**

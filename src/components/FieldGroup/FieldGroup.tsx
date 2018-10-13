@@ -7,8 +7,8 @@
 
 import * as React from 'react';
 
-import { TFieldValue } from '../Field';
 import { FormContext, IFieldValues, IFormContext } from '../FormContext';
+import { TFieldValue } from '../withField';
 import { IValidationArgs, IValidationState, withValidation } from '../withValidation';
 import { IFieldGroupProps } from './FieldGroup.types';
 
@@ -77,7 +77,12 @@ export class BaseFieldGroup extends React.Component<IFieldGroupProps, IFieldGrou
     const { context, fullName } = this.props;
     const formValues = context.getValues();
 
-    return formValues[fullName] as object || {};
+    const formValue = formValues[fullName];
+    if (formValue === '' || formValue === undefined) {
+      return {};
+    }
+
+    return formValue as object;
   }
 
   /**
@@ -117,7 +122,7 @@ export class BaseFieldGroup extends React.Component<IFieldGroupProps, IFieldGrou
    */
   private checkFormContext(): void {
     const { context, fullName } = this.props;
-    if (!context || typeof context.registerField !== 'function') {
+    if (context === undefined || typeof context.registerField !== 'function') {
       throw new Error(
         `Could not find a form context for field group "${fullName}". `
         + 'Fields can only be used inside a Form tag.',

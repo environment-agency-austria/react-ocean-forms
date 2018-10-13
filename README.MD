@@ -1,6 +1,8 @@
 # react-ocean-forms
 [![npm](https://img.shields.io/npm/v/react-ocean-forms.svg)](https://www.npmjs.com/package/react-ocean-forms)
 [![GitHub license](https://img.shields.io/github/license/environment-agency-austria/react-ocean-forms.svg)](https://github.com/environment-agency-austria/react-ocean-forms/blob/master/LICENSE)
+[![travis](https://travis-ci.com/environment-agency-austria/react-ocean-forms.svg?branch=master)](https://travis-ci.com/environment-agency-austria/react-ocean-forms) [![Greenkeeper badge](https://badges.greenkeeper.io/environment-agency-austria/react-ocean-forms.svg)](https://greenkeeper.io/)
+[![Coverage Status](https://coveralls.io/repos/github/environment-agency-austria/react-ocean-forms/badge.svg?branch=master)](https://coveralls.io/github/environment-agency-austria/react-ocean-forms?branch=master)
 
 Flexible and lightweight framework for rendering and validating forms with React.
 
@@ -22,7 +24,7 @@ Flexible and lightweight framework for rendering and validating forms with React
 To use the Forms you need to import its components into the file where you want to use them.
 
 ```js
-import { Form, Field, Input } from 'react-ocean-forms';
+import { Form, Input } from 'react-ocean-forms';
 ```
 
 Then use the form where needed.
@@ -34,10 +36,9 @@ Then use the form where needed.
   defaultValues={{ name: 'test'}}
   asyncValidateOnChange
 >
-  <Field
+  <Input
     name="name"
     label="demo_name"
-    component={Input}
   />
 
   <button type="submit">Submit</button>
