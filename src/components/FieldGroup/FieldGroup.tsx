@@ -188,7 +188,7 @@ export class BaseFieldGroup extends React.Component<IFieldGroupProps, IFieldGrou
     if (event === 'change') {
       const localName = name.substring(fullName.length + 1);
 
-      validate(
+      void validate(
         {
           ...this.getGroupValue(),
           ...{
@@ -201,7 +201,7 @@ export class BaseFieldGroup extends React.Component<IFieldGroupProps, IFieldGrou
         { checkAsync: asyncValidateOnChange },
       );
     } else if (!asyncValidateOnChange) {
-      validate(this.getGroupValue());
+      void validate(this.getGroupValue());
     }
   }
 

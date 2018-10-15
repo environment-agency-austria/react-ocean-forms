@@ -478,7 +478,7 @@ describe('<Form />', () => {
 
     describe('context busy state', () => {
       const testBusyState = (wrapper: ShallowWrapper, formContext: IFormContext, expected: boolean, done: jest.DoneCallback): void => {
-        simulateSubmitEvent(wrapper);
+        void simulateSubmitEvent(wrapper);
 
         process.nextTick(() => {
           wrapper.update();
@@ -500,7 +500,7 @@ describe('<Form />', () => {
 
       describe('async onSubmit callback', () => {
         const createSlowOnSubmit = (): () => Promise<void> => {
-          return (): Promise<void> => new Promise(
+          return async (): Promise<void> => new Promise<void>(
             (resolve: Function): NodeJS.Timer => setTimeout(
               (): void => { resolve(); },
               1000,

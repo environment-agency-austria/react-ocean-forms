@@ -138,7 +138,7 @@ export class Form<TFieldValues = IFieldValues> extends React.Component<IFormProp
    */
   private handleSubmit = (event: React.FormEvent): void => {
     event.preventDefault();
-    this.submit();
+    void this.submit();
   }
 
   /**
@@ -241,7 +241,7 @@ export class Form<TFieldValues = IFieldValues> extends React.Component<IFormProp
       const submitResult = onSubmit(values, submitArgs);
 
       if (submitResult instanceof Promise) {
-        submitResult.then(() => {
+        void submitResult.then(() => {
           this.updateBusyState(false);
         });
 

@@ -44,6 +44,13 @@ export class BaseValidationWrapper extends React.Component<IValidationWrapperPro
   }
 
   /**
+   * Returns the current async timeout
+   */
+  public getAsyncTimeout(): number | undefined {
+    return this.asyncTimeout;
+  }
+
+  /**
    * Clears the validation timeout if currently
    * running
    */

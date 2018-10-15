@@ -31,7 +31,7 @@ describe('withField', () => {
       />
     ));
 
-    const renderProp = wrapper.prop('render');
+    const renderProp = wrapper.prop('render') as ((field: IFieldComponentFieldProps, meta: IFieldComponentMeta) => JSX.Element);
 
     return {
       wrapper,

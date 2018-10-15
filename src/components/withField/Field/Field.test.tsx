@@ -553,7 +553,7 @@ describe('<Field />', () => {
         const mockValue = 'field-value';
 
         const { fieldState, validation } = setup({ props: { value: mockValue } });
-        fieldState.validate(mockValidateArgs);
+        void fieldState.validate(mockValidateArgs);
 
         expect(validation.validate).toHaveBeenLastCalledWith(
           mockValue,
@@ -573,7 +573,7 @@ describe('<Field />', () => {
           },
         });
 
-        fieldState.validate();
+        void fieldState.validate();
         expect(mockGetSubmitValue).toHaveBeenCalledWith(
           mockValue,
           { disabled: false, plaintext: false },

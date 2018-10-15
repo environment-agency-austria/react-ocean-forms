@@ -361,7 +361,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
     const asyncValidateOnChange = this.getAsyncValidateOnChangeSetting();
     const submitValue = this.getSubmitValue(value);
 
-    validate(
+    void validate(
       submitValue,
       { checkAsync: asyncValidateOnChange },
     );
@@ -387,7 +387,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
     const asyncValidateOnChange = this.getAsyncValidateOnChangeSetting();
     const submitValue = this.getSubmitValue(value);
 
-    if (dirty && !asyncValidateOnChange) { validate(submitValue); }
+    if (dirty && !asyncValidateOnChange) { void validate(submitValue); }
     context.notifyFieldEvent(fullName, 'blur');
     if (onBlur !== undefined) { onBlur(); }
   }

@@ -42,6 +42,7 @@ export interface IFieldErrorObject {
  */
 // tslint:disable-next-line:no-any
 export function isIFieldErrorObject(object: any): object is IFieldErrorObject {
+  // tslint:disable-next-line:no-unsafe-any
   return object && typeof object.message_id === 'string';
 }
 

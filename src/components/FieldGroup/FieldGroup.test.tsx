@@ -66,7 +66,7 @@ describe('<FieldGroup />', () => {
       />
     ));
 
-    const groupContext = wrapper.first().prop('value');
+    const groupContext = wrapper.first().prop('value') as IFormContext;
 
     return {
       formContext,
@@ -146,7 +146,7 @@ describe('<FieldGroup />', () => {
         const mockValidateArgs = { checkAsync: false };
         const { fieldState, validation } = setup();
 
-        fieldState.validate(mockValidateArgs);
+        void fieldState.validate(mockValidateArgs);
 
         expect(validation.validate).toHaveBeenLastCalledWith(
           mockValue,
@@ -217,7 +217,7 @@ describe('<FieldGroup />', () => {
       describe.each([
         ['test', { foo: 'bar' }],
         ['random', null],
-      ])('Event "%s"', (eventName, eventArgs) => {
+      ])('Event "%s"', (eventName: string, eventArgs: unknown) => {
         checkEventPassing(eventName, eventArgs);
       });
 

@@ -32,7 +32,7 @@ describe('withValidation', () => {
       />
     ));
 
-    const renderProp = wrapper.prop('render');
+    const renderProp = wrapper.prop('render') as ((fullName: string, validation: IValidationProp, context: IFormContext) => JSX.Element);
 
     return {
       wrapper,

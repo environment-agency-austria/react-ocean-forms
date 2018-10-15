@@ -50,7 +50,7 @@ export class BaseFormButton extends React.Component<IFormButtonProps> {
 
     if (type === 'submit') {
       event.preventDefault();
-      submit(submitArgs);
+      void submit(submitArgs);
     }
 
     onClick(event);

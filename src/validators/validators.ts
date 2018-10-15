@@ -25,10 +25,23 @@ const withParam = (validator: TValidator, ...args: unknown[]): TValidator => {
  */
 const required = (value: TFieldValue): TFieldError => {
   // Special check for empty arrays
-  if (Array.isArray(value) && value.length === 0) { return FieldErrorMessageId.Required; }
-  if (value === 0) { return undefined; }
+  if (Array.isArray(value)) {
+    return value.length === 0 ? FieldErrorMessageId.Required : undefined;
+  }
 
-  return value ? undefined : FieldErrorMessageId.Required;
+  if (typeof value === 'number') {
+    return undefined;
+  }
+
+  if (typeof value === 'boolean') {
+    return value === false ? FieldErrorMessageId.Required : undefined;
+  }
+
+  if (typeof value === 'string') {
+    return value.length === 0 ? FieldErrorMessageId.Required : undefined;
+  }
+
+  return value !== null && value !== undefined ? undefined : FieldErrorMessageId.Required;
 };
 
 /**
@@ -84,7 +97,8 @@ interface ILength {
 
 // tslint:disable-next-line:no-any
 function isILength(object: any): object is ILength {
-  return object && typeof object.length === 'number';
+  // tslint:disable-next-line:no-unsafe-any
+  return object !== null && object !== undefined && typeof object.length === 'number';
 }
 
 // tslint:disable-next-line:naming-convention
