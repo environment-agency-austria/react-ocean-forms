@@ -24,14 +24,14 @@
       "**/?(*.)+(spec|test).ts?(x)"
     ],
     "collectCoverageFrom": [
-      "<rootDir>/src/**/*.{js,jsx,mjs,ts,tsx}"
+      "<rootDir>/src/**/*.{js,jsx,mjs,ts,tsx}",
+      "!<rootDir>/src/test-utils/**"
     ],
     "globals": {
       "ts-jest": {
         "tsConfig": "<rootDir>/config/jest/tsconfig.jest.json"
       }
     },
-    "testEnvironment": "jsdom",
     "testURL": "http://localhost",
     "transform": {
       "^.+\\.(js|jsx|mjs)$": "<rootDir>/node_modules/babel-jest",
