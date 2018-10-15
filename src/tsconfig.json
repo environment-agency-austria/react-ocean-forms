@@ -28,5 +28,16 @@
     // disable javascript for now. The js sources are transpiled with webpack anyway
     "allowJs": false,
     "checkJs": false,
+
+    "plugins": [
+      { "name": "tslint-language-service",
+        "alwaysShowRuleFailuresAsWarnings": false,
+        "ignoreDefinitionFiles": true,
+        "configFile": "../tslint.json",
+        "disableNoUnusedVariableRule": false,
+        "supressWhileTypeErrorsPresent": false,
+        "mockTypeScriptVersion": false
+      }
+    ]
   }
 }
