@@ -97,7 +97,7 @@ export class BaseValidationWrapper extends React.Component<IValidationWrapperPro
    */
   // tslint:disable-next-line:max-func-body-length
   private validate = async (
-    value: TBasicFieldValue,
+    value: TBasicFieldValue | undefined,
     {
       checkAsync = true,
       immediateAsync = false,
