@@ -8,7 +8,7 @@
 import * as React from 'react';
 
 import { FormContext, IFieldValues, IFormContext } from '../FormContext';
-import { TFieldValue } from '../withField';
+import { TBasicFieldValue } from '../withField';
 import { IValidationArgs, IValidationState, withValidation } from '../withValidation';
 import { IFieldGroupProps } from './FieldGroup.types';
 
@@ -54,7 +54,7 @@ export class BaseFieldGroup extends React.Component<IFieldGroupProps, IFieldGrou
         updateValidation,
         validate: this.validate,
         reset: this.reset,
-        getValue: (): TFieldValue => ({}),
+        getValue: (): TBasicFieldValue => ({}),
 
         isGroup: true,
       },

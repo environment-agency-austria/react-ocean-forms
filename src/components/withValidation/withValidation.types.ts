@@ -6,7 +6,7 @@
  */
 import { TAsyncValidator, TFieldErrors, TValidator } from '../../validators';
 import { IFormContext } from '../FormContext';
-import { TFieldValue } from '../withField';
+import { TBasicFieldValue } from '../withField';
 import { IFormContextProps } from '../withForm';
 
 /**
@@ -75,7 +75,7 @@ export interface IValidationProp extends IValidationState {
    * @param value Field value
    * @param args Validation args @see IValidationArgs
    */
-  validate(value: TFieldValue, args?: Partial<IValidationArgs>): Promise<IValidationState>;
+  validate(value: TBasicFieldValue, args?: Partial<IValidationArgs>): Promise<IValidationState>;
   /**
    * Resets the validation state
    */

@@ -1,4 +1,4 @@
-import { TFieldValue } from '../components/withField';
+import { TBasicFieldValue } from '../components/withField';
 import { createMockFormContext } from '../test-utils/enzymeFormContext';
 import { validators } from './validators';
 import { FieldErrorMessageId } from './validators.types';
@@ -24,7 +24,7 @@ describe('default validators', () => {
       [undefined, {}],
     ];
 
-    it.each(cases)('should return %p if %p is passed', (output: string | undefined, input: TFieldValue) => {
+    it.each(cases)('should return %p if %p is passed', (output: string | undefined, input: TBasicFieldValue) => {
       expect(validators.required(input)).toBe(output);
     });
   });
@@ -50,7 +50,7 @@ describe('default validators', () => {
       [undefined, {}],
     ];
 
-    it.each(cases)('should return %p if %p is passed', (output: string | undefined, input: TFieldValue) => {
+    it.each(cases)('should return %p if %p is passed', (output: string | undefined, input: TBasicFieldValue) => {
       expect(validators.alphaNumeric(input)).toBe(output);
     });
   });
@@ -76,7 +76,7 @@ describe('default validators', () => {
       [errorId, { length: 2 }, 5],
     ];
 
-    it.each(cases)('should return %p if %p is passed', (output: string | undefined, input: TFieldValue, length: number) => {
+    it.each(cases)('should return %p if %p is passed', (output: string | undefined, input: TBasicFieldValue, length: number) => {
       const context = createMockFormContext();
       const result = validators.minLength(input, context, [length]);
       if (output === undefined) {
@@ -111,7 +111,7 @@ describe('default validators', () => {
       [errorId, { length: 8 }, 5],
     ];
 
-    it.each(cases)('should return %p if %p is passed', (output: string | undefined, input: TFieldValue, length: number) => {
+    it.each(cases)('should return %p if %p is passed', (output: string | undefined, input: TBasicFieldValue, length: number) => {
       const context = createMockFormContext();
       const result = validators.maxLength(input, context, [length]);
       if (output === undefined) {

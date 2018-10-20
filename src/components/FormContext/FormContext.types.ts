@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { TSTringFormatter } from '../../utils/stringFormatter';
-import { TFieldValue } from '../withField';
+import { TBasicFieldValue } from '../withField';
 import { IValidationArgs, IValidationState } from '../withValidation';
 
 export type TFormEventListener = ((name: string, event: string, args?: unknown) => void);
@@ -30,7 +30,7 @@ export interface IFieldState {
   /**
    * Returns the current value of the field
    */
-  getValue(): TFieldValue;
+  getValue(): TBasicFieldValue;
   /**
    * Resets the field to its initial state
    */
@@ -46,7 +46,7 @@ export interface IFieldState {
  * Type describing a collection of field values
  */
 export type IFieldValues = {
-  [prop: string]: TFieldValue | IFieldValues;
+  [prop: string]: TBasicFieldValue | IFieldValues;
 };
 
 /**

@@ -6,7 +6,7 @@
  */
 
 import { IFormContext } from '../components/FormContext';
-import { TFieldValue } from '../components/withField';
+import { TBasicFieldValue } from '../components/withField';
 import { FieldErrorMessageId, TFieldError, TValidator } from './validators.types';
 
 /**
@@ -16,14 +16,14 @@ import { FieldErrorMessageId, TFieldError, TValidator } from './validators.types
  * @param args parameters for the validator
  */
 const withParam = (validator: TValidator, ...args: unknown[]): TValidator => {
-  return (value: TFieldValue, context: IFormContext): TFieldError => validator(value, context, args);
+  return (value: TBasicFieldValue, context: IFormContext): TFieldError => validator(value, context, args);
 };
 
 /**
  * Checks if there is any value
  * @param value field value
  */
-const required = (value: TFieldValue): TFieldError => {
+const required = (value: TBasicFieldValue): TFieldError => {
   // Special check for empty arrays
   if (Array.isArray(value)) {
     return value.length === 0 ? FieldErrorMessageId.Required : undefined;
@@ -47,7 +47,7 @@ const required = (value: TFieldValue): TFieldError => {
 /**
  * Checks if the value is alpha numeric
  */
-const alphaNumeric = (value: TFieldValue): TFieldError => {
+const alphaNumeric = (value: TBasicFieldValue): TFieldError => {
   if (typeof value !== 'string') { return undefined; }
 
   return /[^a-zA-Z0-9 ]/i.test(value) ? FieldErrorMessageId.AlphaNumeric : undefined;
@@ -60,7 +60,7 @@ const alphaNumeric = (value: TFieldValue): TFieldError => {
  * @param context form context
  * @param length minimum length
  */
-const minLength = (value: TFieldValue, context: IFormContext, [length]: [number]): TFieldError => {
+const minLength = (value: TBasicFieldValue, context: IFormContext, [length]: [number]): TFieldError => {
   if (!isILength(value)) { return undefined; }
   if (value.length >= length) { return undefined; }
 
@@ -79,7 +79,7 @@ const minLength = (value: TFieldValue, context: IFormContext, [length]: [number]
  * @param context form context
  * @param length maximum length
  */
-const maxLength = (value: TFieldValue, context: IFormContext, [length]: [number]): TFieldError => {
+const maxLength = (value: TBasicFieldValue, context: IFormContext, [length]: [number]): TFieldError => {
   if (!isILength(value)) { return undefined; }
   if (value.length <= length) { return undefined; }
 

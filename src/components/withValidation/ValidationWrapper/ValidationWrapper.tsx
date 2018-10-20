@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { parseValidationError } from '../../../utils';
 import { isIFieldErrorObject } from '../../../validators';
-import { TFieldValue } from '../../withField';
+import { TBasicFieldValue } from '../../withField';
 import { withForm } from '../../withForm';
 import { IValidationArgs, IValidationState, IValidationWrapperProps } from '../withValidation.types';
 
@@ -97,7 +97,7 @@ export class BaseValidationWrapper extends React.Component<IValidationWrapperPro
    */
   // tslint:disable-next-line:max-func-body-length
   private validate = async (
-    value: TFieldValue,
+    value: TBasicFieldValue,
     {
       checkAsync = true,
       immediateAsync = false,

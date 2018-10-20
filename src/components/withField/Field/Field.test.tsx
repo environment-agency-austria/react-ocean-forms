@@ -6,7 +6,7 @@ import { createMockFormContext, createMockValidation } from '../../../test-utils
 import { IFieldState, IFormContext } from '../../FormContext';
 import { IValidationProp } from '../../withValidation';
 import { BaseField } from './Field';
-import { IFieldComponentFieldProps, IFieldProps, TFieldValue } from './Field.types';
+import { IFieldComponentFieldProps, IFieldProps, TBasicFieldValue } from './Field.types';
 
 describe('<Field />', () => {
   const mockName = 'unitField';
@@ -74,8 +74,8 @@ describe('<Field />', () => {
     };
   };
 
-  const assertValue = (fieldProps: IFieldComponentFieldProps, value: TFieldValue): unknown => expect(fieldProps.value).toBe(value);
-  const simulateChange = (field: IFieldComponentFieldProps, value: TFieldValue): void => {
+  const assertValue = (fieldProps: IFieldComponentFieldProps, value: TBasicFieldValue): unknown => expect(fieldProps.value).toBe(value);
+  const simulateChange = (field: IFieldComponentFieldProps, value: TBasicFieldValue): void => {
     field.onChange({
       target: {
         value,
@@ -348,7 +348,7 @@ describe('<Field />', () => {
     });
 
     it('should call the Field.getSubmitValue callback', () => {
-      const mockGetSubmitValue = jest.fn().mockImplementation((value: TFieldValue): TFieldValue => value);
+      const mockGetSubmitValue = jest.fn().mockImplementation((value: TBasicFieldValue): TBasicFieldValue => value);
       setupOnChange({ getSubmitValue: mockGetSubmitValue });
 
       expect(mockGetSubmitValue).toHaveBeenCalledWith(
@@ -425,7 +425,7 @@ describe('<Field />', () => {
     });
 
     it('should call the Field.getSubmitValue function', () => {
-      const mockGetSubmitValue = jest.fn().mockImplementation((value: TFieldValue): TFieldValue => value);
+      const mockGetSubmitValue = jest.fn().mockImplementation((value: TBasicFieldValue): TBasicFieldValue => value);
       setupOnBlur({ getSubmitValue: mockGetSubmitValue });
 
       expect(mockGetSubmitValue).toHaveBeenCalledWith(
