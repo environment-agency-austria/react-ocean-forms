@@ -11,7 +11,7 @@ import { IFieldValues } from '../FormContext';
 /**
  * Props for the Form component
  */
-export interface IFormProps<TFieldValues = IFieldValues> {
+export interface IFormProps<TFieldValues = IFieldValues, TSubmitArgs = unknown> {
   /**
    * Contains the default values of the form. Those values will be
    * put into the according fields when the form initializes.
@@ -62,7 +62,7 @@ export interface IFormProps<TFieldValues = IFieldValues> {
    * @param submitArgs By default undefined. Can be set by FormButton or
    * any other manual way of calling the submit method of the form context.
    */
-  onSubmit?(values: TFieldValues, submitArgs?: unknown): Promise<void> | void;
+  onSubmit?(values: TFieldValues, submitArgs?: TSubmitArgs): Promise<void> | void;
   /**
    * Triggered after all field validations have been successfull. Provides the current
    * values end expects an error object with the field names as properties and the errors

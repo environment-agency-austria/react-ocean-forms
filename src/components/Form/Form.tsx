@@ -26,7 +26,8 @@ interface IFieldContainer {
 /**
  * Wrapper for managed forms
  */
-export class Form<TFieldValues = IFieldValues> extends React.Component<IFormProps<TFieldValues>, IFormState<TFieldValues>> {
+export class Form<TFieldValues = IFieldValues, TSubmitArgs = unknown>
+extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TFieldValues>> {
   public static displayName: string = 'Form';
 
   // tslint:disable-next-line:typedef
@@ -148,7 +149,7 @@ export class Form<TFieldValues = IFieldValues> extends React.Component<IFormProp
    * @param submitArgs Arguments that will be passed
    * to the onSubmit callback
    */
-  private submit = async (submitArgs?: unknown): Promise<void> => {
+  private submit = async (submitArgs?: TSubmitArgs): Promise<void> => {
     this.updateBusyState(true);
 
     // Iterate through all fields and validate them
@@ -234,7 +235,7 @@ export class Form<TFieldValues = IFieldValues> extends React.Component<IFormProp
    * @param submitArgs Arguments that will be passed
    * to the onSubmit callback
    */
-  private callOnSubmit(submitArgs?: unknown): void {
+  private callOnSubmit(submitArgs?: TSubmitArgs): void {
     const { onSubmit } = this.props;
     if (onSubmit !== undefined) {
       const values = this.getValues();
