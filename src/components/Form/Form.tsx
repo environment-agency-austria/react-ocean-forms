@@ -83,7 +83,7 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
    */
   private getValues = (): TFieldValues => {
     const fields = Object.entries(this.fields);
-    const values: any = {};
+    const values: IFieldValues = {};
 
     fields.forEach(([name, state]) => {
       if (state.isGroup === true) { return; }
@@ -96,12 +96,12 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
           valueRef[key] = state.getValue();
         } else {
           if (valueRef[key] === undefined) { valueRef[key] = {}; }
-          valueRef = valueRef[key] as TFieldValues;
+          valueRef = valueRef[key] as IFieldValues;
         }
       });
     });
 
-    return values;
+    return (values as unknown) as TFieldValues;
   }
 
   /**
@@ -354,17 +354,20 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
       plaintext,
     } = this.props;
 
-    const context: any = this.prepareFormContext();
+    const context = this.prepareFormContext();
 
     let formClass = className === undefined ? '' : className;
     if (plaintext) { formClass = `${formClass} plaintext`; }
 
+    // tslint:disable-next-line:naming-convention
+    const TypedFormContext = (FormContext as unknown) as React.Context<IFormContext<TFieldValues | undefined>>;
+
     return (
-      <FormContext.Provider value={context}>
+      <TypedFormContext.Provider value={context}>
         <form className={formClass} onSubmit={this.handleSubmit} onReset={this.handleReset}>
           {children}
         </form>
-      </FormContext.Provider>
+      </TypedFormContext.Provider>
     );
   }
 }
