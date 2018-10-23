@@ -21,10 +21,11 @@ interface IFieldGroupState {
  * Wrapper for groups of input fields
  * managed by the form component
  */
-export class BaseFieldGroup extends React.Component<IFieldGroupProps, IFieldGroupState> {
+export class BaseFieldGroup<TFieldValues extends object = IFieldValues>
+extends React.Component<IFieldGroupProps<TFieldValues>, IFieldGroupState> {
   public static displayName: string = 'FieldGroup';
 
-  constructor(props: IFieldGroupProps) {
+  constructor(props: IFieldGroupProps<TFieldValues>) {
     super(props);
 
     const {
@@ -73,16 +74,16 @@ export class BaseFieldGroup extends React.Component<IFieldGroupProps, IFieldGrou
    * Helper function to get the correct value
    * of the group (including all values of the nested fields)
    */
-  private getGroupValue(): object {
+  private getGroupValue(): TFieldValues | undefined {
     const { context, fullName } = this.props;
     const formValues = context.getValues();
 
     const formValue = formValues[fullName];
     if (formValue === '' || formValue === undefined) {
-      return {};
+      return undefined;
     }
 
-    return formValue as object;
+    return formValue as TFieldValues;
   }
 
   /**
@@ -137,7 +138,7 @@ export class BaseFieldGroup extends React.Component<IFieldGroupProps, IFieldGrou
    */
   private overrideContextValues<T extends IFieldValues | undefined>(name: 'defaultValues' | 'values'): T {
     let contextValue: Partial<IFieldValues> | undefined;
-    let propValue: IFieldValues | undefined;
+    let propValue: Partial<TFieldValues> | undefined;
 
     const { fullName } = this.props;
 
@@ -188,16 +189,19 @@ export class BaseFieldGroup extends React.Component<IFieldGroupProps, IFieldGrou
     if (event === 'change') {
       const localName = name.substring(fullName.length + 1);
 
-      void validate(
-        {
-          ...this.getGroupValue(),
-          ...{
-            // Override the value of the event sender, because
-            // the Field didn't update its state yet, making the
-            // Form.getValues() returning an old Field value.
-            [localName]: args,
-          },
+      const currentGroupValue = this.getGroupValue();
+      const intermediateGroupValue = {
+        ...(currentGroupValue === undefined ? { } : currentGroupValue),
+        ...{
+          // Override the value of the event sender, because
+          // the Field didn't update its state yet, making the
+          // Form.getValues() returning an old Field value.
+          [localName]: args,
         },
+      };
+
+      void validate(
+        intermediateGroupValue as TFieldValues,
         { checkAsync: asyncValidateOnChange },
       );
     } else if (!asyncValidateOnChange) {

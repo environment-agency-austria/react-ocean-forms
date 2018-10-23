@@ -11,7 +11,7 @@ import { IValidationProps, IValidationState } from '../withValidation';
  * Meta information about the group
  * for the render prop
  */
-export interface IRenderParams extends IValidationState {
+export interface IFieldGroupRenderParams extends IValidationState {
   /**
    * Full name of the group
    */
@@ -21,7 +21,7 @@ export interface IRenderParams extends IValidationState {
 /**
  * Props for the field group component
  */
-export interface IFieldGroupProps extends IValidationProps {
+export interface IFieldGroupProps<TFieldValues = IFieldValues> extends IValidationProps<TFieldValues> {
   /**
    * Field name
    */
@@ -38,14 +38,14 @@ export interface IFieldGroupProps extends IValidationProps {
   /**
    * Optional default values
    */
-  defaultValues?: IFieldValues;
+  defaultValues?: TFieldValues;
   /**
    * Optional values
    */
-  values?: IFieldValues;
+  values?: TFieldValues;
   /**
    * Render prop
    * @param params Meta information about the group
    */
-  render(params: IRenderParams): JSX.Element;
+  render(params: IFieldGroupRenderParams): JSX.Element;
 }

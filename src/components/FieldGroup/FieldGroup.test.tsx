@@ -373,7 +373,7 @@ describe('<FieldGroup />', () => {
   });
 
   describe('Edge cases', () => {
-    it('FieldGroup.getGroupValue should return an empty object if context.getValues() doesn\'t have values for the group', () => {
+    it('FieldGroup.getGroupValue should return undefined if context.getValues() doesn\'t have values for the group', () => {
       const mockGetValues = jest.fn().mockReturnValue({});
       const { wrapper } = setup({
         contextOverrides: {
@@ -382,7 +382,7 @@ describe('<FieldGroup />', () => {
       });
 
       // @ts-ignore getGroupValue is private, maybe there is a better solution to test this?
-      expect((wrapper.instance() as BaseFieldGroup).getGroupValue()).toEqual({});
+      expect((wrapper.instance() as BaseFieldGroup).getGroupValue()).toBeUndefined();
       expect(mockGetValues).toHaveBeenCalled();
     });
   });
