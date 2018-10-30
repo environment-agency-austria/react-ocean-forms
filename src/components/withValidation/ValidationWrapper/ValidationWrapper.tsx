@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { parseValidationError } from '../../../utils';
 import { isIFieldErrorObject } from '../../../validators';
-import { TFieldValue } from '../../withField';
+import { TBasicFieldValue } from '../../withField';
 import { withForm } from '../../withForm';
 import { IValidationArgs, IValidationState, IValidationWrapperProps } from '../withValidation.types';
 
@@ -41,6 +41,13 @@ export class BaseValidationWrapper extends React.Component<IValidationWrapperPro
   public componentWillUnmount(): void {
     this.clearValidationTimeout();
     this.unmounted = true;
+  }
+
+  /**
+   * Returns the current async timeout
+   */
+  public getAsyncTimeout(): number | undefined {
+    return this.asyncTimeout;
   }
 
   /**
@@ -88,9 +95,8 @@ export class BaseValidationWrapper extends React.Component<IValidationWrapperPro
    * @param checkAsync True if the async validators should be triggered as well
    * @param immediateAsync True if the async validators should fire immediately
    */
-  // tslint:disable-next-line:max-func-body-length
   private validate = async (
-    value: TFieldValue,
+    value: TBasicFieldValue | undefined,
     {
       checkAsync = true,
       immediateAsync = false,

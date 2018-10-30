@@ -10,11 +10,11 @@ import { IValidationProps, IValidationState } from '../../withValidation';
 /**
  * Type that defines which values a field could hold
  */
-export type TFieldValue = string | boolean | number | object;
+export type TBasicFieldValue = string | boolean | number | object;
 /**
  * Type definition for getDisplayValue and getSubmitValue callbacks
  */
-export type TValueCallback = ((value: TFieldValue, meta: IValueMeta) => TFieldValue);
+export type TValueCallback = ((value: TBasicFieldValue, meta: IValueMeta) => TBasicFieldValue);
 
 /**
  * Information about the current meta state
@@ -46,11 +46,11 @@ export interface IBaseFieldProps {
   /**
    * Optional default value
    */
-  defaultValue?: TFieldValue;
+  defaultValue?: TBasicFieldValue;
   /**
    * Optional value
    */
-  value?: TFieldValue;
+  value?: TBasicFieldValue;
   /**
    * True, if the async validators should be triggered
    * on a change event
@@ -74,7 +74,7 @@ export interface IBaseFieldProps {
    * Triggered on field value change.
    * @param value Current field value
    */
-  onChange?(value: TFieldValue): void;
+  onChange?(value: TBasicFieldValue): void;
 }
 
 /**
@@ -94,7 +94,7 @@ export interface IFieldProps extends IBaseFieldProps, IValidationProps {
  */
 export interface IFieldChangedEvent {
   target: {
-    value: TFieldValue;
+    value: TBasicFieldValue;
   };
 }
 
@@ -115,7 +115,7 @@ export interface IFieldComponentFieldProps {
   /**
    * Field value
    */
-  value: TFieldValue;
+  value: TBasicFieldValue;
   /**
    * Disabled state
    */

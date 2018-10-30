@@ -8,19 +8,26 @@
 import * as React from 'react';
 
 import { getDeepValue } from '../../../utils';
-import { IFormContext, TFieldValues } from '../../FormContext';
+import { IFieldValues, IFormContext } from '../../FormContext';
 import { IValidationArgs, IValidationState, withValidation } from '../../withValidation';
-import { IFieldChangedEvent, IFieldComponentFieldProps, IFieldComponentMeta, IFieldProps, IValueMeta, TFieldValue } from './Field.types';
+import {
+  IFieldChangedEvent,
+  IFieldComponentFieldProps,
+  IFieldComponentMeta,
+  IFieldProps,
+  IValueMeta,
+  TBasicFieldValue,
+} from './Field.types';
 
 interface IContextMeta extends IValueMeta {
-  defaultValue?: TFieldValue;
-  externalValue?: TFieldValue;
+  defaultValue?: TBasicFieldValue;
+  externalValue?: TBasicFieldValue;
 }
 
 interface IFieldState {
   touched: boolean;
   dirty: boolean;
-  value: TFieldValue;
+  value: TBasicFieldValue;
   contextMeta: IContextMeta;
 }
 
@@ -126,10 +133,10 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    * @param props Field props
    * @param value Field value
    */
-  private static callGetDisplayValue(props: IFieldProps, value: TFieldValue | undefined): TFieldValue {
+  private static callGetDisplayValue(props: IFieldProps, value: TBasicFieldValue | undefined): TBasicFieldValue {
     const {
       context,
-      getDisplayValue = (val: TFieldValue): TFieldValue => val,
+      getDisplayValue = (val: TBasicFieldValue): TBasicFieldValue => val,
     } = props;
 
     return getDisplayValue(
@@ -148,8 +155,8 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    * @param changes Changes object
    */
   private static getPropValue(
-    defaultValue: TFieldValue | undefined, externalValue: TFieldValue | undefined, changes: IMetaChanges,
-  ): TFieldValue | undefined {
+    defaultValue: TBasicFieldValue | undefined, externalValue: TBasicFieldValue | undefined, changes: IMetaChanges,
+  ): TBasicFieldValue | undefined {
     const hasExternalValue = externalValue !== undefined;
 
     if (hasExternalValue && (changes.externalValue || changes.meta)) {
@@ -172,7 +179,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    * @param externalValue External value
    */
   private static getPropChanges(
-    props: IFieldProps, state: IFieldState, defaultValue: TFieldValue | undefined, externalValue: TFieldValue | undefined,
+    props: IFieldProps, state: IFieldState, defaultValue: TBasicFieldValue | undefined, externalValue: TBasicFieldValue | undefined,
   ): IMetaChanges {
     const {
       context: {
@@ -206,8 +213,8 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    * @param fullName Field.fullName
    */
   private static getLocalOverridenValue(
-    localValue: TFieldValue | undefined, contextValue: TFieldValues | undefined, fullName: string,
-  ): TFieldValue | undefined {
+    localValue: TBasicFieldValue | undefined, contextValue: Partial<IFieldValues> | undefined, fullName: string,
+  ): TBasicFieldValue | undefined {
     return localValue === undefined ? getDeepValue(fullName, contextValue) : localValue;
   }
 
@@ -216,7 +223,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    * Form.values
    * @param props Field props
    */
-  private static getExternalValue(props: IFieldProps): TFieldValue | undefined {
+  private static getExternalValue(props: IFieldProps): TBasicFieldValue | undefined {
     const { fullName, context: { values }, value } = props;
 
     return BaseField.getLocalOverridenValue(value, values, fullName);
@@ -227,7 +234,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    * from Form.defaultValues
    * @param props Field props
    */
-  private static getDefaultValue(props: IFieldProps): TFieldValue | undefined {
+  private static getDefaultValue(props: IFieldProps): TBasicFieldValue | undefined {
     const { fullName, context: { defaultValues }, defaultValue } = props;
 
     return BaseField.getLocalOverridenValue(defaultValue, defaultValues, fullName);
@@ -255,16 +262,16 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
   /**
    * Returns the current field value
    */
-  private getValue = (): TFieldValue => {
+  private getValue = (): TBasicFieldValue => {
     const { value } = this.state;
 
     return this.getSubmitValue(value);
   }
 
-  private getSubmitValue = (value: TFieldValue): TFieldValue => {
+  private getSubmitValue = (value: TBasicFieldValue): TBasicFieldValue => {
     const {
       context,
-      getSubmitValue = (val: TFieldValue): TFieldValue => val,
+      getSubmitValue = (val: TBasicFieldValue): TBasicFieldValue => val,
     } = this.props;
 
     return getSubmitValue(
@@ -361,7 +368,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
     const asyncValidateOnChange = this.getAsyncValidateOnChangeSetting();
     const submitValue = this.getSubmitValue(value);
 
-    validate(
+    void validate(
       submitValue,
       { checkAsync: asyncValidateOnChange },
     );
@@ -387,7 +394,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
     const asyncValidateOnChange = this.getAsyncValidateOnChangeSetting();
     const submitValue = this.getSubmitValue(value);
 
-    if (dirty && !asyncValidateOnChange) { validate(submitValue); }
+    if (dirty && !asyncValidateOnChange) { void validate(submitValue); }
     context.notifyFieldEvent(fullName, 'blur');
     if (onBlur !== undefined) { onBlur(); }
   }

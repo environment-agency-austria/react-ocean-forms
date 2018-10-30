@@ -6,7 +6,7 @@
  */
 
 import { IFormContext } from '../components/FormContext';
-import { TFieldValue } from '../components/withField';
+import { TBasicFieldValue } from '../components/withField';
 import { IMessageValues } from '../utils/stringFormatter';
 
 /**
@@ -42,6 +42,7 @@ export interface IFieldErrorObject {
  */
 // tslint:disable-next-line:no-any
 export function isIFieldErrorObject(object: any): object is IFieldErrorObject {
+  // tslint:disable-next-line:no-unsafe-any
   return object && typeof object.message_id === 'string';
 }
 
@@ -57,8 +58,8 @@ export type TFieldErrors = null | IFieldErrorObject | IFieldErrorObject[];
 /**
  * Validator method type
  */
-export type TValidator = ((value: TFieldValue, context: IFormContext, ...args: unknown[]) => TFieldError);
+export type TValidator = ((value: TBasicFieldValue | undefined, context: IFormContext, ...args: unknown[]) => TFieldError);
 /**
  * Async validator method type
  */
-export type TAsyncValidator = ((value: TFieldValue, context: IFormContext, ...args: unknown[]) => Promise<TFieldError>);
+export type TAsyncValidator = ((value: TBasicFieldValue | undefined, context: IFormContext, ...args: unknown[]) => Promise<TFieldError>);

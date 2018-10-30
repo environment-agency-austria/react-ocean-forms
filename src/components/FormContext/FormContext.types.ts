@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { TSTringFormatter } from '../../utils/stringFormatter';
-import { TFieldValue } from '../withField';
+import { TBasicFieldValue } from '../withField';
 import { IValidationArgs, IValidationState } from '../withValidation';
 
 export type TFormEventListener = ((name: string, event: string, args?: unknown) => void);
@@ -30,7 +30,7 @@ export interface IFieldState {
   /**
    * Returns the current value of the field
    */
-  getValue(): TFieldValue;
+  getValue(): TBasicFieldValue;
   /**
    * Resets the field to its initial state
    */
@@ -45,14 +45,14 @@ export interface IFieldState {
 /**
  * Type describing a collection of field values
  */
-export type TFieldValues = {
-  [prop: string]: TFieldValue | TFieldValues;
+export type IFieldValues = {
+  [prop: string]: TBasicFieldValue | IFieldValues;
 };
 
 /**
  * Base interface for the form context
  */
-export interface IBaseFormContext {
+export interface IBaseFormContext<TFieldValues = IFieldValues> {
   /**
    * Optional field prefix
    */
@@ -116,18 +116,18 @@ export interface IBaseFormContext {
 /**
  * Interface describing the form context
  */
-export interface IFormContext extends IBaseFormContext {
+export interface IFormContext<TFieldValues = IFieldValues> extends IBaseFormContext<TFieldValues> {
   /**
    * Contains the default values of the form. Those values will be
    * put into the according fields when the form initializes.
    */
-  defaultValues: TFieldValues;
+  defaultValues: Partial<TFieldValues>;
   /**
    * Contains the values of the form. Changing this property will
    * update all Field values, overwriting their default values but also
    * any value the user put in.
    */
-  values?: TFieldValues;
+  values?: Partial<TFieldValues>;
   /**
    * If set to true the form will trigger asynchronous validation on
    * Fields whenever they change (e.g. on key press). Default behaviour

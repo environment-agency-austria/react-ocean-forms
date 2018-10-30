@@ -85,8 +85,7 @@ describe('withValidation', () => {
     );
   };
 
-  // @ts-ignore
-  const getAsyncTimeout = (wrapper: ShallowWrapper): number | undefined => wrapper.instance().asyncTimeout;
+  const getAsyncTimeout = (wrapper: ShallowWrapper): number | undefined => (wrapper.instance() as BaseValidationWrapper).getAsyncTimeout();
 
   describe('sync validation', () => {
     it('should call the sync validators and return a validation state', async () => {
@@ -294,7 +293,7 @@ describe('withValidation', () => {
       // Edge case where we check if the timeout has
       // been cleared if a validation is in progress
       // when we call reset
-      validation.validate(mockValue);
+      void validation.validate(mockValue);
       validation.reset();
       checkNotifyCalled(
         formContext,
@@ -315,14 +314,13 @@ describe('withValidation', () => {
       },
     });
 
-    validation.validate(mockValue);
+    void validation.validate(mockValue);
     expect(getAsyncTimeout(wrapper)).not.toBeUndefined();
 
-    const oldInstance = wrapper.instance();
+    const oldInstance = wrapper.instance() as BaseValidationWrapper;
     wrapper.unmount();
 
-    // @ts-ignore
-    const asyncTimeout = oldInstance.asyncTimeout;
+    const asyncTimeout = oldInstance.getAsyncTimeout();
     expect(asyncTimeout).toBe(undefined);
   });
 
@@ -339,11 +337,13 @@ describe('withValidation', () => {
   it('should not update its state after unmounting', () => {
     const { wrapper, formContext } = setup();
 
-    const oldInstance = wrapper.instance();
+    const oldInstance = wrapper.instance() as BaseValidationWrapper;
     wrapper.unmount();
 
-    // @ts-ignore
-    expect(() => oldInstance.updateAndNotify({ foo: 'bar' })).not.toThrowError();
+    expect(() => {
+      // @ts-ignore
+      oldInstance.updateAndNotify({ foo: 'bar' });
+    }).not.toThrowError();
     expect(formContext.notifyFieldEvent).not.toHaveBeenCalled();
   });
 });

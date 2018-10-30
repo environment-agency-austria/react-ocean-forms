@@ -1,4 +1,4 @@
-import { addCustomMessages, stringFormatter, TEST_MESSAGES } from '../stringFormatter';
+import { addCustomMessages, IMessageValues, stringFormatter, TEST_MESSAGES } from '../stringFormatter';
 
 describe('stringFormatter', () => {
   const cases = [
@@ -9,7 +9,7 @@ describe('stringFormatter', () => {
   ];
 
   describe('it should ignore invalid messages', () => {
-    test.each(cases)('case %s', (name, value) => {
+    test.each(cases)('case %s', (name, value: string) => {
       expect(stringFormatter(value)).toBe(value);
     });
   });
@@ -37,7 +37,7 @@ describe('stringFormatter', () => {
 
   describe('it should ignore invalid parameters', () => {
     const subCases = cases.splice(1);
-    test.each(subCases)('case %s', (name, value) => {
+    test.each(subCases)('case %s', (name, value: IMessageValues) => {
       const testString = 'foobar';
       expect(stringFormatter(testString, value)).toBe(testString);
     });

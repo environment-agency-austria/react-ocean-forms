@@ -2,19 +2,17 @@ import * as React from 'react';
 
 import { shallow, ShallowWrapper } from 'enzyme';
 
-import { createMockFormContext, createMockValidation } from '../../test-utils/enzymeFormContext';
-import { IFormContext } from '../FormContext';
-import { withValidation } from './withValidation';
-import { IValidationProp, IValidationProps } from './withValidation.types';
+import { IFieldComponentFieldProps, IFieldComponentMeta, IFieldComponentProps } from './Field/Field.types';
+import { withField } from './withField';
 
-describe('withValidation', () => {
+describe('withField', () => {
   interface ISetupArgs {
-    props?: Partial<IValidationProps>;
+    props?: Partial<IFieldComponentProps>;
   }
 
   interface ISetupResult {
     wrapper: ShallowWrapper;
-    renderProp(fullName: string, validation: IValidationProp, context: IFormContext): JSX.Element;
+    renderProp(field: IFieldComponentFieldProps, meta: IFieldComponentMeta): JSX.Element;
   }
 
   const setup = ({
@@ -23,16 +21,17 @@ describe('withValidation', () => {
     // tslint:disable-next-line:naming-convention
     const TestComponent = (): JSX.Element => (<div id="test-component" />);
     // tslint:disable-next-line:naming-convention
-    const WrappedComponent = withValidation(TestComponent);
+    const WrappedComponent = withField(TestComponent);
 
     const wrapper = shallow((
       <WrappedComponent
         name="mock-item"
+        label="Mock Item"
         {...props}
       />
     ));
 
-    const renderProp = wrapper.prop('render') as ((fullName: string, validation: IValidationProp, context: IFormContext) => JSX.Element);
+    const renderProp = wrapper.prop('render') as ((field: IFieldComponentFieldProps, meta: IFieldComponentMeta) => JSX.Element);
 
     return {
       wrapper,
@@ -50,9 +49,22 @@ describe('withValidation', () => {
       const { renderProp } = setup();
       const wrapper = shallow(
         renderProp(
-          'fullName',
-          createMockValidation(),
-          createMockFormContext(),
+          {
+            disabled: false,
+            id: 'mock-item',
+            name: 'mock-item',
+            value: '',
+            onChange: jest.fn(),
+            onBlur: jest.fn(),
+          },
+          {
+            error: null,
+            isValidating: false,
+            plaintext: false,
+            stringFormatter: jest.fn(),
+            touched: false,
+            valid: true,
+          },
         ),
       );
       expect(wrapper).toMatchSnapshot();

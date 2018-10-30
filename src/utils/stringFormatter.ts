@@ -66,6 +66,7 @@ export const stringFormatter: TSTringFormatter = (id: string, values?: IMessageV
  * stringFormatter
  * @param messages Object containing messages
  */
+// tslint:disable-next-line:naming-convention
 export const addCustomMessages = (messages: IMessages): void => {
   DEFAULT_MESSAGES = {
     ...DEFAULT_MESSAGES,

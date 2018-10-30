@@ -11,15 +11,16 @@ type TWithFormMock<T extends IFormContextProps> = ((Component: React.ComponentTy
 
 const prepareMock = <T extends IFormContextProps>(formContext: IFormContext): TWithFormMock<T> => {
   interface IMockConsumer {
-    children: React.ComponentType<T>;
+    children(value: IFormContext): React.ReactNode;
   }
 
   jest.doMock('../FormContext', () => ({
-    // @ts-ignore This works, don't ask me why, but it works
-    FormContext: { Consumer: ({ children }: IMockConsumer): void => children(formContext) },
+    FormContext: { Consumer: ({ children }: IMockConsumer): React.ReactNode => {
+      return children(formContext);
+    }},
   }));
 
-  // tslint:disable-next-line:no-require-imports
+  // tslint:disable-next-line:no-require-imports no-unsafe-any
   return require('./withForm').withForm;
 };
 

@@ -1,6 +1,9 @@
 {
   "extends": ["tslint-eaa-contrib"],
   "rules": {
-    "no-implicit-dependencies": [ true, ["enzyme", "enzyme-adapter-react-16"] ]
+    "no-implicit-dependencies": [ true, ["enzyme", "enzyme-adapter-react-16"] ],
+    "no-suspicious-comment": {
+      "severity": "warning"
+    }
   }
 }

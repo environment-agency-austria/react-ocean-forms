@@ -6,23 +6,23 @@
  */
 import { TSTringFormatter } from '../../utils';
 import { TFieldError } from '../../validators';
-import { TFieldValues } from '../FormContext';
+import { IFieldValues } from '../FormContext';
 
 /**
  * Props for the Form component
  */
-export interface IFormProps {
+export interface IFormProps<TFieldValues = IFieldValues, TSubmitArgs = unknown> {
   /**
    * Contains the default values of the form. Those values will be
    * put into the according fields when the form initializes.
    */
-  defaultValues: TFieldValues;
+  defaultValues: Partial<TFieldValues>;
   /**
    * Contains the values of the form. Changing this property will
    * update all Field values, overwriting their default values but also
    * any value the user put in.
    */
-  values?: TFieldValues;
+  values?: Partial<TFieldValues>;
   /**
    * If set to true the form will trigger asynchronous validation on
    * Fields whenever they change (e.g. on key press). Default behaviour
@@ -62,7 +62,7 @@ export interface IFormProps {
    * @param submitArgs By default undefined. Can be set by FormButton or
    * any other manual way of calling the submit method of the form context.
    */
-  onSubmit?(values: TFieldValues, submitArgs?: unknown): Promise<void> | void;
+  onSubmit?(values: TFieldValues, submitArgs?: TSubmitArgs): Promise<void> | void;
   /**
    * Triggered after all field validations have been successfull. Provides the current
    * values end expects an error object with the field names as properties and the errors

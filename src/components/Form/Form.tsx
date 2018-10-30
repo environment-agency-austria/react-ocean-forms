@@ -8,11 +8,11 @@ import * as React from 'react';
 
 import { getDeepValue, parseValidationError } from '../../utils';
 import { stringFormatter as defaultStringFormatter } from '../../utils/stringFormatter';
-import { FormContext, IBaseFormContext, IFieldState, IFormContext, TFieldValues, TFormEventListener } from '../FormContext';
+import { FormContext, IBaseFormContext, IFieldState, IFieldValues, IFormContext, TFormEventListener } from '../FormContext';
 import { IFormProps } from './Form.types';
 
-interface IFormState {
-  context: IBaseFormContext;
+interface IFormState<TFieldValues = IFieldValues> {
+  context: IBaseFormContext<TFieldValues>;
 }
 
 interface IEventListenerContainer {
@@ -26,7 +26,8 @@ interface IFieldContainer {
 /**
  * Wrapper for managed forms
  */
-export class Form extends React.Component<IFormProps, IFormState> {
+export class Form<TFieldValues = IFieldValues, TSubmitArgs = unknown>
+extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TFieldValues>> {
   public static displayName: string = 'Form';
 
   // tslint:disable-next-line:typedef
@@ -42,7 +43,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
   private fields: IFieldContainer = {};
   private eventListeners: IEventListenerContainer = {};
 
-  constructor(props: IFormProps) {
+  constructor(props: IFormProps<TFieldValues>) {
     super(props);
 
     this.state = {
@@ -82,7 +83,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
    */
   private getValues = (): TFieldValues => {
     const fields = Object.entries(this.fields);
-    const values: TFieldValues = {};
+    const values: IFieldValues = {};
 
     fields.forEach(([name, state]) => {
       if (state.isGroup === true) { return; }
@@ -95,12 +96,12 @@ export class Form extends React.Component<IFormProps, IFormState> {
           valueRef[key] = state.getValue();
         } else {
           if (valueRef[key] === undefined) { valueRef[key] = {}; }
-          valueRef = valueRef[key] as TFieldValues;
+          valueRef = valueRef[key] as IFieldValues;
         }
       });
     });
 
-    return values;
+    return (values as unknown) as TFieldValues;
   }
 
   /**
@@ -138,7 +139,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
    */
   private handleSubmit = (event: React.FormEvent): void => {
     event.preventDefault();
-    this.submit();
+    void this.submit();
   }
 
   /**
@@ -148,7 +149,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
    * @param submitArgs Arguments that will be passed
    * to the onSubmit callback
    */
-  private submit = async (submitArgs?: unknown): Promise<void> => {
+  private submit = async (submitArgs?: TSubmitArgs): Promise<void> => {
     this.updateBusyState(true);
 
     // Iterate through all fields and validate them
@@ -234,14 +235,14 @@ export class Form extends React.Component<IFormProps, IFormState> {
    * @param submitArgs Arguments that will be passed
    * to the onSubmit callback
    */
-  private callOnSubmit(submitArgs?: unknown): void {
+  private callOnSubmit(submitArgs?: TSubmitArgs): void {
     const { onSubmit } = this.props;
     if (onSubmit !== undefined) {
       const values = this.getValues();
       const submitResult = onSubmit(values, submitArgs);
 
       if (submitResult instanceof Promise) {
-        submitResult.then(() => {
+        void submitResult.then(() => {
           this.updateBusyState(false);
         });
 
@@ -317,7 +318,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
    * full form context passed to the form
    * components.
    */
-  private prepareFormContext(): IFormContext {
+  private prepareFormContext(): IFormContext<TFieldValues> {
     const { context } = this.state;
     const {
       defaultValues,
@@ -358,12 +359,15 @@ export class Form extends React.Component<IFormProps, IFormState> {
     let formClass = className === undefined ? '' : className;
     if (plaintext) { formClass = `${formClass} plaintext`; }
 
+    // tslint:disable-next-line:naming-convention
+    const TypedFormContext = (FormContext as unknown) as React.Context<IFormContext<TFieldValues | undefined>>;
+
     return (
-      <FormContext.Provider value={context}>
+      <TypedFormContext.Provider value={context}>
         <form className={formClass} onSubmit={this.handleSubmit} onReset={this.handleReset}>
           {children}
         </form>
-      </FormContext.Provider>
+      </TypedFormContext.Provider>
     );
   }
 }

@@ -18,4 +18,15 @@ describe('parseValidationError', () => {
       params: {},
     });
   });
+
+  it('should return null if an invalid error was provided', () => {
+    const error = { foo: 'bar' };
+    // @ts-ignore
+    expect(parseValidationError(fieldName, error)).toBeNull();
+  });
+
+  it('should return null if an invalid type was provided', () => {
+    // @ts-ignore
+    expect(parseValidationError(fieldName, 42)).toBeNull();
+  });
 });

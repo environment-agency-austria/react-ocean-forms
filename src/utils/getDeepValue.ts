@@ -20,7 +20,7 @@ type TStringProp = {
  */
 // tslint:disable-next-line:naming-convention
 export const getDeepValue = <T, U extends TStringProp = TStringProp>(name: string, object?: U): T | undefined => {
-  return (name.split('.').reduce(
+  return <T | undefined>name.split('.').reduce(
     (o: U, i: string) => {
       // Workaround for deep objects and
       // 'cannot read property of undefined'
@@ -30,6 +30,6 @@ export const getDeepValue = <T, U extends TStringProp = TStringProp>(name: strin
 
       return o[i];
     },
-    object)
+    object,
   );
 };
