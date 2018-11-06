@@ -1,5 +1,10 @@
 {
   "extends": ["tslint-eaa-contrib"],
+  "linterOptions": {
+    "exclude": [
+      "config/**"
+    ]
+  },
   "rules": {
     "no-implicit-dependencies": [ true, ["enzyme", "enzyme-adapter-react-16"] ],
     "no-suspicious-comment": {
