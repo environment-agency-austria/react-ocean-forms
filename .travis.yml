@@ -8,6 +8,8 @@ jobs:
   include:
     - stage: Build
       script: "yarn build"
+    - stage: Lint
+      script: "yarn lint"
     - stage: Produce Coverage
       node_js: node
       script: jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage

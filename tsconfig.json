@@ -4,10 +4,8 @@
     * It is mainly used by vscode and other configurations.
     */
   "compilerOptions": {
-    // General setup
-    "baseUrl": "./",
     // Output stuff
-    "outDir": "../build",
+    "outDir": "build",
     "jsx": "react",
     "declaration": true,
     "sourceMap": true,
