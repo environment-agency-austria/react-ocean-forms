@@ -35,7 +35,7 @@ module.exports = {
           'babel-loader', {
             loader: 'ts-loader',
             options: {
-              configFile: path.resolve(srcPath, 'tsconfig.build.json'),
+              configFile: path.resolve(__dirname, 'tsconfig.build.json'),
             },
           },
         ],
