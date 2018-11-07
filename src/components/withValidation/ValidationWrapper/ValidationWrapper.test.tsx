@@ -3,6 +3,7 @@ import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 
 import { createMockFormContext } from '../../../test-utils/enzymeFormContext';
+import { validators as defaultValidators } from '../../../validators';
 import { IFormContext } from '../../FormContext';
 import { IValidationProp, IValidationState, IValidationWrapperProps } from '../withValidation.types';
 import { BaseValidationWrapper } from './ValidationWrapper';
@@ -136,6 +137,25 @@ describe('withValidation', () => {
       await validation.validate(mockValue);
 
       expect(asyncValidator).not.toHaveBeenCalled();
+    });
+
+    describe('required validator', () => {
+      it('should set validation.isRequired to false if there is no required validator present', () => {
+        const { validation } = setup();
+        expect(validation.isRequired).toBeFalsy();
+      });
+
+      it('should set validation.isRequired to true if there is a required validatior present', () => {
+        const validators = [
+          defaultValidators.required,
+        ];
+
+        const { validation } = setup({ props: {
+          validators,
+        }});
+
+        expect(validation.isRequired).toBeTruthy();
+      });
     });
   });
 
@@ -272,6 +292,7 @@ describe('withValidation', () => {
           valid: false,
           error: mockError,
           isValidating: false,
+          isRequired: false,
         },
       );
     });
@@ -286,6 +307,7 @@ describe('withValidation', () => {
           valid: true,
           error: null,
           isValidating: false,
+          isRequired: false,
         },
       );
       expect(getAsyncTimeout(wrapper)).toBeUndefined();
@@ -301,6 +323,7 @@ describe('withValidation', () => {
           valid: true,
           error: null,
           isValidating: false,
+          isRequired: false,
         },
       );
       expect(getAsyncTimeout(wrapper)).toBeUndefined();

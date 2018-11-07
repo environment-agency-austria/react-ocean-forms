@@ -9,6 +9,7 @@ In order to provide the best typescript experience we had to ditch the conect of
 ### Other
 - Removed deprecated Form.onFieldValueChanged callback
 - Fixed a bug where a form field would revert its value to '' if its current value evaulated to value == false.
+- Added `isRequired` to field meta. It is true if the field / input component contains a required validator.
 
 ## [1.4.0] # 2018-08-20
 ### Breaking Changes
