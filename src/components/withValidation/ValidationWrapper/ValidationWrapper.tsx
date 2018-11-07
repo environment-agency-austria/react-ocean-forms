@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { parseValidationError } from '../../../utils';
-import { isIFieldErrorObject } from '../../../validators';
+import { isIFieldErrorObject, validators as defaultValidators } from '../../../validators';
 import { TBasicFieldValue } from '../../withField';
 import { withForm } from '../../withForm';
 import { IValidationArgs, IValidationState, IValidationWrapperProps } from '../withValidation.types';
@@ -28,11 +28,7 @@ export class BaseValidationWrapper extends React.Component<IValidationWrapperPro
   constructor(props: IValidationWrapperProps) {
     super(props);
 
-    this.state = {
-      valid: true,
-      error: null,
-      isValidating: false,
-    };
+    this.state = this.createInitialValidationState();
   }
 
   /**
@@ -48,6 +44,29 @@ export class BaseValidationWrapper extends React.Component<IValidationWrapperPro
    */
   public getAsyncTimeout(): number | undefined {
     return this.asyncTimeout;
+  }
+
+  /**
+   * Creates the initial / default validation
+   * state of a validated component
+   */
+  private createInitialValidationState = (): IValidationState => {
+    return {
+      valid: true,
+      error: null,
+      isValidating: false,
+      isRequired: this.checkIsRequired(),
+    };
+  }
+
+  /**
+   * Returns true if this component contains
+   * a required field validator
+   */
+  private checkIsRequired = (): boolean => {
+    const { validators } = this.props;
+
+    return Array.isArray(validators) && validators.includes(defaultValidators.required);
   }
 
   /**
@@ -67,11 +86,7 @@ export class BaseValidationWrapper extends React.Component<IValidationWrapperPro
   private reset = (): void => {
     this.clearValidationTimeout();
 
-    this.updateAndNotify({
-      valid: true,
-      error: null,
-      isValidating: false,
-    });
+    this.updateAndNotify(this.createInitialValidationState());
   }
 
   /**
@@ -112,6 +127,7 @@ export class BaseValidationWrapper extends React.Component<IValidationWrapperPro
       valid: true,
       error: null,
       isValidating: false,
+      isRequired: this.checkIsRequired(),
     };
 
     // Clear the old timeout so we only run the
@@ -221,6 +237,7 @@ export class BaseValidationWrapper extends React.Component<IValidationWrapperPro
   public render(): JSX.Element {
     const {
       isValidating,
+      isRequired,
       valid,
       error,
     } = this.state;
@@ -229,6 +246,7 @@ export class BaseValidationWrapper extends React.Component<IValidationWrapperPro
 
     const validation = {
       isValidating,
+      isRequired,
       valid,
       error,
 

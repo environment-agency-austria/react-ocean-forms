@@ -55,6 +55,11 @@ export interface IValidationState {
    */
   isValidating: boolean;
   /**
+   * True, if the field is a required field
+   * (has a required validator attached)
+   */
+  isRequired: boolean;
+  /**
    * True, if all validators report a valid state
    */
   valid: boolean;

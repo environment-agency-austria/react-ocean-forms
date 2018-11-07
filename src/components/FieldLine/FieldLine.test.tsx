@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import { shallow, ShallowWrapper } from 'enzyme';
 
-import { validators } from '../../validators';
 import { FieldLine } from './FieldLine';
 import { IFieldLineProps } from './FieldLine.types';
 
@@ -11,6 +10,7 @@ describe('<FieldLine />', () => {
     valid: true,
     error: null,
     isValidating: false,
+    isRequired: false,
     touched: false,
     stringFormatter: jest.fn(),
     plaintext: false,
@@ -47,9 +47,8 @@ describe('<FieldLine />', () => {
   });
 
   it('should show a required marker', () => {
-    const wrapper = setup({
-      validators: [validators.required],
-    });
+    meta.isRequired = true;
+    const wrapper = setup();
     expect(wrapper).toMatchSnapshot();
   });
 });

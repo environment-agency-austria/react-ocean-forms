@@ -18,6 +18,7 @@ ShallowWrapper {
     meta={
       Object {
         "error": null,
+        "isRequired": false,
         "isValidating": false,
         "plaintext": false,
         "stringFormatter": [MockFunction],

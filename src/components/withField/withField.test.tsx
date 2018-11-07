@@ -60,6 +60,7 @@ describe('withField', () => {
           {
             error: null,
             isValidating: false,
+            isRequired: false,
             plaintext: false,
             stringFormatter: jest.fn(),
             touched: false,

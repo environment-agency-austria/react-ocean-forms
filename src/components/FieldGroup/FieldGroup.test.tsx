@@ -346,6 +346,7 @@ describe('<FieldGroup />', () => {
       expect(renderMock).toHaveBeenCalledWith({
         fullName: mockName,
         isValidating: false,
+        isRequired: false,
         valid: true,
         error: null,
       });
@@ -353,12 +354,14 @@ describe('<FieldGroup />', () => {
 
     it('should correctly pass the validation state', () => {
       const mockIsValidating = true;
+      const mockIsRequired = true;
       const mockIsValid = false;
       const mockError = { message_id: 'bar', params: {} };
 
       const { renderMock } = setup({
         validationOverrides: {
           isValidating: mockIsValidating,
+          isRequired: mockIsRequired,
           valid: mockIsValid,
           error: mockError,
         },
@@ -366,6 +369,7 @@ describe('<FieldGroup />', () => {
       expect(renderMock).toHaveBeenCalledWith({
         fullName: mockName,
         isValidating: mockIsValidating,
+        isRequired: mockIsRequired,
         valid: mockIsValid,
         error: mockError,
       });
