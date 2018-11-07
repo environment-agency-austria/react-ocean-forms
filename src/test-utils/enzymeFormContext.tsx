@@ -57,6 +57,7 @@ export const createMockValidation = (): IValidationProp => ({
   update: jest.fn(),
 
   isValidating: false,
+  isRequired: false,
   valid: true,
   error: null,
 });

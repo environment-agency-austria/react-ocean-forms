@@ -431,6 +431,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
         valid,
         error,
         isValidating,
+        isRequired,
       },
     } = this.props;
 
@@ -440,6 +441,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
       valid,
       error,
       isValidating,
+      isRequired,
       touched,
       stringFormatter,
       plaintext,

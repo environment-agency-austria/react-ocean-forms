@@ -29,6 +29,7 @@ ShallowWrapper {
     validation={
       Object {
         "error": null,
+        "isRequired": false,
         "isValidating": false,
         "reset": [MockFunction],
         "update": [MockFunction],

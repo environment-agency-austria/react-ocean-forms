@@ -11,6 +11,7 @@ describe('<FieldLine />', () => {
     valid: true,
     error: null,
     isValidating: false,
+    isRequired: false,
     touched: false,
     stringFormatter: jest.fn(),
     plaintext: false,

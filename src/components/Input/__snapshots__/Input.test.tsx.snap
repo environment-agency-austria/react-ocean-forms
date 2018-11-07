@@ -19,6 +19,7 @@ Object {
       meta={
         Object {
           "error": null,
+          "isRequired": false,
           "isValidating": false,
           "plaintext": true,
           "stringFormatter": [MockFunction],
@@ -53,6 +54,7 @@ Object {
         "label": "unitLabel",
         "meta": Object {
           "error": null,
+          "isRequired": false,
           "isValidating": false,
           "plaintext": true,
           "stringFormatter": [MockFunction],
@@ -83,6 +85,7 @@ Object {
           "label": "unitLabel",
           "meta": Object {
             "error": null,
+            "isRequired": false,
             "isValidating": false,
             "plaintext": true,
             "stringFormatter": [MockFunction],
@@ -136,6 +139,7 @@ Object {
       meta={
         Object {
           "error": null,
+          "isRequired": false,
           "isValidating": false,
           "plaintext": false,
           "stringFormatter": [MockFunction],
@@ -178,6 +182,7 @@ Object {
         "label": "unitLabel",
         "meta": Object {
           "error": null,
+          "isRequired": false,
           "isValidating": false,
           "plaintext": false,
           "stringFormatter": [MockFunction],
@@ -232,6 +237,7 @@ Object {
           "label": "unitLabel",
           "meta": Object {
             "error": null,
+            "isRequired": false,
             "isValidating": false,
             "plaintext": false,
             "stringFormatter": [MockFunction],
