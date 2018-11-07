@@ -229,6 +229,7 @@ extends React.Component<IFieldGroupProps<TFieldValues>, IFieldGroupState> {
       fullName,
       validation: {
         isValidating,
+        isRequired,
         valid,
         error,
       },
@@ -238,6 +239,7 @@ extends React.Component<IFieldGroupProps<TFieldValues>, IFieldGroupState> {
     const groupState = {
       fullName,
       isValidating,
+      isRequired,
       valid,
       error,
     };

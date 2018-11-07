@@ -54,6 +54,7 @@ ShallowWrapper {
             Object {
               "error": null,
               "fullName": "unitGroup",
+              "isRequired": false,
               "isValidating": false,
               "valid": true,
             },
@@ -70,6 +71,7 @@ ShallowWrapper {
     validation={
       Object {
         "error": null,
+        "isRequired": false,
         "isValidating": false,
         "reset": [MockFunction],
         "update": [MockFunction],
