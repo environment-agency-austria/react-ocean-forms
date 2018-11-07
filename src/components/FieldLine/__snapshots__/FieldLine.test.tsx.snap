@@ -596,18 +596,13 @@ ShallowWrapper {
     meta={
       Object {
         "error": null,
-        "isRequired": false,
+        "isRequired": true,
         "isValidating": false,
         "plaintext": false,
         "stringFormatter": [MockFunction],
         "touched": false,
         "valid": false,
       }
-    }
-    validators={
-      Array [
-        [Function],
-      ]
     }
   >
     <div>

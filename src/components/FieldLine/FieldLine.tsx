@@ -7,7 +7,6 @@
 
 import * as React from 'react';
 
-import { TValidator, validators as defaultValidators } from '../../validators';
 import { FieldError } from '../FieldError';
 import { FormText } from '../FormText';
 import { IFieldLineProps } from './FieldLine.types';
@@ -16,8 +15,8 @@ import { IFieldLineProps } from './FieldLine.types';
  * Create a required *
  * @param validators Validator array
  */
-function createRequiredMarker(validators?: TValidator[]): JSX.Element | null {
-  if (Array.isArray(validators) && validators.includes(defaultValidators.required)) {
+function createRequiredMarker(isRequired: boolean): JSX.Element | null {
+  if (isRequired) {
     return <span className="field-required"> *</span>;
   }
 
@@ -34,7 +33,6 @@ export const FieldLine: React.SFC<IFieldLineProps> = (props: IFieldLineProps): J
     meta,
     label,
     children,
-    validators,
   } = props;
 
   const groupClass = meta.valid ? 'field-group' : 'field-group is-invalid';
@@ -43,7 +41,7 @@ export const FieldLine: React.SFC<IFieldLineProps> = (props: IFieldLineProps): J
     <div className={groupClass}>
       <label htmlFor={field.id} className="text-right">
         <FormText text={label} />
-        {createRequiredMarker(validators)}
+        {createRequiredMarker(meta.isRequired)}
       </label>
       <div className="input-container">
         {children}
