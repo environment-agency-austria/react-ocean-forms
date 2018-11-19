@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+### New features
+- Added option for custom **required validators**. The form will now recognize a custom required validator if a synchronous validator is tagged with `isDefaultValidator = true`
+
 ## [2.0.0] # 2018-11-19
 ### Breaking changes
 **Changed default usage of form fields**

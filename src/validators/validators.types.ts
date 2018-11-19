@@ -63,3 +63,19 @@ export type TValidator = ((value: TBasicFieldValue | undefined, context: IFormCo
  * Async validator method type
  */
 export type TAsyncValidator = ((value: TBasicFieldValue | undefined, context: IFormContext, ...args: unknown[]) => Promise<TFieldError>);
+
+/**
+ * Default validator type
+ */
+export interface IDefaultValidator extends TValidator {
+  isDefaultValidator: true;
+}
+
+/**
+ * Returns true if the given object is a IDefaultValidator
+ * @param object Function to test
+ */
+// tslint:disable-next-line:no-any
+export function isDefaultValidator(object: any): object is IDefaultValidator {
+  return object && typeof object === 'function' && (<IDefaultValidator>object).isDefaultValidator === true;
+}

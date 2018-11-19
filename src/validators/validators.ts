@@ -43,6 +43,7 @@ const required = (value: TBasicFieldValue): TFieldError => {
 
   return value !== null && value !== undefined ? undefined : FieldErrorMessageId.Required;
 };
+required.isDefaultValidator = true;
 
 /**
  * Checks if the value is alpha numeric
