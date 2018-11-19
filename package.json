@@ -11,7 +11,7 @@
     "test:coverage": "jest --coverage",
     "start": "webpack --watch --mode development",
     "build": "webpack -p",
-    "lint": "tslint --project ."
+    "lint": "tslint -t stylish --project ."
   },
   "jest": {
     "setupFiles": [
