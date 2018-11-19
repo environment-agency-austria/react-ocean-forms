@@ -6,10 +6,11 @@ cache:
 
 jobs:
   include:
+    - stage: Test
+      node_js: node
+      name: "Lint"
+      script: "yarn lint"
+      name: "Coverage"
+      script: jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
     - stage: Build
       script: "yarn build"
-    - stage: Lint
-      script: "yarn lint"
-    - stage: Produce Coverage
-      node_js: node
-      script: jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
