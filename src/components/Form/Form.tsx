@@ -42,15 +42,9 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
 
   private fields: IFieldContainer = {};
   private eventListeners: IEventListenerContainer = {};
-  /**
-   * Reference to the html form element
-   */
-  private formRef: React.RefObject<HTMLFormElement>;
 
   constructor(props: IFormProps<TFieldValues>) {
     super(props);
-
-    this.formRef = React.createRef();
 
     this.state = {
       context: {
@@ -193,7 +187,7 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
     // Reset form, if prop says so
     const { resetOnSubmit } = this.props;
     if (resetOnSubmit) {
-      this.triggerReset();
+      this.reset();
     }
   }
 
@@ -266,7 +260,7 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
    */
   private handleReset = (event: React.FormEvent): void => {
     event.preventDefault();
-    void this.reset();
+    this.reset();
   }
 
   /**
@@ -283,16 +277,6 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
     if (onReset !== undefined) {
       onReset();
     }
-  }
-
-  /**
-   * Triggers the reset of the field values
-   */
-  private triggerReset = (): void => {
-    // Make sure that the formRef is set
-    if (!this.formRef.current) { return; }
-
-    this.formRef.current.reset();
   }
 
   /**
@@ -386,7 +370,7 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
 
     return (
       <TypedFormContext.Provider value={context}>
-        <form ref={this.formRef} className={formClass} onSubmit={this.handleSubmit} onReset={this.handleReset}>
+        <form className={formClass} onSubmit={this.handleSubmit} onReset={this.handleReset}>
           {children}
         </form>
       </TypedFormContext.Provider>
