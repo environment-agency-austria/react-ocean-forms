@@ -13,4 +13,5 @@ jobs:
       name: "Coverage"
       script: jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
     - stage: Build
+      node_js: "8"
       script: "yarn build"
