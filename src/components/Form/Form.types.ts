@@ -54,6 +54,10 @@ export interface IFormProps<TFieldValues = IFieldValues, TSubmitArgs = unknown> 
    * input element. This is useful to re-use Fields in a check page.
    */
   plaintext: boolean;
+  /**
+   * If set to true, all fields will be reset on an successful form submit
+   */
+  resetOnSubmit?: boolean;
 
   /**
    * Triggered when the form has been validated successfully and is ready to be submitted.

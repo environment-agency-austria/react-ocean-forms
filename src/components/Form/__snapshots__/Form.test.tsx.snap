@@ -86,7 +86,9 @@ ShallowWrapper {
         "onReset": [Function],
         "onSubmit": [Function],
       },
-      "ref": null,
+      "ref": Object {
+        "current": null,
+      },
       "rendered": Object {
         "instance": null,
         "key": undefined,
@@ -166,7 +168,9 @@ ShallowWrapper {
           "onReset": [Function],
           "onSubmit": [Function],
         },
-        "ref": null,
+        "ref": Object {
+          "current": null,
+        },
         "rendered": Object {
           "instance": null,
           "key": undefined,

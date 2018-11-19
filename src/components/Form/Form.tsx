@@ -42,9 +42,15 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
 
   private fields: IFieldContainer = {};
   private eventListeners: IEventListenerContainer = {};
+  /**
+   * Reference to the html form element
+   */
+  private formRef: React.RefObject<HTMLFormElement>;
 
   constructor(props: IFormProps<TFieldValues>) {
     super(props);
+
+    this.formRef = React.createRef();
 
     this.state = {
       context: {
@@ -180,7 +186,15 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
       return;
     }
 
-    this.callOnSubmit(submitArgs);
+    // Await the result from callOnSubmit
+    await this.callOnSubmit(submitArgs);
+    this.updateBusyState(false);
+
+    // Reset form, if prop says so
+    const { resetOnSubmit } = this.props;
+    if (resetOnSubmit) {
+      this.triggerReset();
+    }
   }
 
   /**
@@ -235,22 +249,13 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
    * @param submitArgs Arguments that will be passed
    * to the onSubmit callback
    */
-  private callOnSubmit(submitArgs?: TSubmitArgs): void {
+  private async callOnSubmit(submitArgs?: TSubmitArgs): Promise<void> {
     const { onSubmit } = this.props;
-    if (onSubmit !== undefined) {
-      const values = this.getValues();
-      const submitResult = onSubmit(values, submitArgs);
+    if (onSubmit === undefined) { return; }
 
-      if (submitResult instanceof Promise) {
-        void submitResult.then(() => {
-          this.updateBusyState(false);
-        });
+    const values = this.getValues();
 
-        return;
-      }
-    }
-
-    this.updateBusyState(false);
+    return onSubmit(values, submitArgs);
   }
 
   /**
@@ -261,7 +266,14 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
    */
   private handleReset = (event: React.FormEvent): void => {
     event.preventDefault();
+    void this.reset();
+  }
 
+  /**
+   * Sets the state of all fields back
+   * to the default state.
+   */
+  private reset = (): void => {
     const fields = Object.entries(this.fields);
     fields.forEach(([, state]) => {
       state.reset();
@@ -271,6 +283,16 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
     if (onReset !== undefined) {
       onReset();
     }
+  }
+
+  /**
+   * Triggers the reset of the field values
+   */
+  private triggerReset = (): void => {
+    // Make sure that the formRef is set
+    if (!this.formRef.current) { return; }
+
+    this.formRef.current.reset();
   }
 
   /**
@@ -364,7 +386,7 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
 
     return (
       <TypedFormContext.Provider value={context}>
-        <form className={formClass} onSubmit={this.handleSubmit} onReset={this.handleReset}>
+        <form ref={this.formRef} className={formClass} onSubmit={this.handleSubmit} onReset={this.handleReset}>
           {children}
         </form>
       </TypedFormContext.Provider>
