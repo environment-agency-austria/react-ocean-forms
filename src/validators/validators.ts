@@ -98,8 +98,7 @@ interface ILength {
 
 // tslint:disable-next-line:no-any
 function isILength(object: any): object is ILength {
-  // tslint:disable-next-line:no-unsafe-any
-  return object !== null && object !== undefined && typeof object.length === 'number';
+  return object !== null && object !== undefined && typeof (<ILength>object).length === 'number';
 }
 
 // tslint:disable-next-line:naming-convention

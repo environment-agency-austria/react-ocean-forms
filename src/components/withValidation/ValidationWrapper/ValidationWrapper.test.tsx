@@ -3,7 +3,7 @@ import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 
 import { createMockFormContext } from '../../../test-utils/enzymeFormContext';
-import { validators as defaultValidators } from '../../../validators';
+import { TValidator, validators as defaultValidators } from '../../../validators';
 import { IFormContext } from '../../FormContext';
 import { IValidationProp, IValidationState, IValidationWrapperProps } from '../withValidation.types';
 import { BaseValidationWrapper } from './ValidationWrapper';
@@ -175,7 +175,7 @@ describe('withValidation', () => {
         ],
       ];
 
-      it.each(cases)('%s', (name, validators, expectedIsRequiredState) => {
+      it.each(cases)('%s', (name: string, validators: undefined | TValidator[], expectedIsRequiredState: unknown) => {
         const { validation } = setup({ props: {
           validators,
         }});
