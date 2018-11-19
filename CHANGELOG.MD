@@ -1,13 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## [2.0.0] # 2018-11-19
 ### Breaking changes
 **Changed default usage of form fields**
 In order to provide the best typescript experience we had to ditch the conect of `<Field component={Input}>`. From version 2.0.0 onwards the field component is used directly, e.g.: `<Input name="demo" label="Demo Input" />`. The field component will still accept the field props. Developers who want to make their own field components now need to wrap those with the new `withField` higher order component. A full migration guide will be available soon.
 
 ### Other
-- Removed deprecated Form.onFieldValueChanged callback
+- Removed deprecated `Form.onFieldValueChanged` callback
 - Fixed a bug where a form field would revert its value to '' if its current value evaulated to value == false.
 - Added `isRequired` to field meta. It is true if the field / input component contains a required validator.
 
