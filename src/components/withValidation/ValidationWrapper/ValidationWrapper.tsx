@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { parseValidationError } from '../../../utils';
-import { isIFieldErrorObject, validators as defaultValidators } from '../../../validators';
+import { isDefaultValidator, isIFieldErrorObject } from '../../../validators';
 import { TBasicFieldValue } from '../../withField';
 import { withForm } from '../../withForm';
 import { IValidationArgs, IValidationState, IValidationWrapperProps } from '../withValidation.types';
@@ -66,7 +66,7 @@ export class BaseValidationWrapper extends React.Component<IValidationWrapperPro
   private checkIsRequired = (): boolean => {
     const { validators } = this.props;
 
-    return Array.isArray(validators) && validators.includes(defaultValidators.required);
+    return Array.isArray(validators) && validators.some(isDefaultValidator);
   }
 
   /**

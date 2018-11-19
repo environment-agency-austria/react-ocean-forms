@@ -3,7 +3,7 @@ import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 
 import { createMockFormContext } from '../../../test-utils/enzymeFormContext';
-import { validators as defaultValidators } from '../../../validators';
+import { TValidator, validators as defaultValidators } from '../../../validators';
 import { IFormContext } from '../../FormContext';
 import { IValidationProp, IValidationState, IValidationWrapperProps } from '../withValidation.types';
 import { BaseValidationWrapper } from './ValidationWrapper';
@@ -140,21 +140,47 @@ describe('withValidation', () => {
     });
 
     describe('required validator', () => {
-      it('should set validation.isRequired to false if there is no required validator present', () => {
-        const { validation } = setup();
-        expect(validation.isRequired).toBeFalsy();
-      });
+      const createValidator = (defaultValue: unknown): Function => {
+        const customRequiredValidator = (): undefined => undefined;
+        customRequiredValidator.isDefaultValidator = defaultValue;
 
-      it('should set validation.isRequired to true if there is a required validatior present', () => {
-        const validators = [
-          defaultValidators.required,
-        ];
+        return customRequiredValidator;
+      };
 
+      const cases = [
+        [
+          'should set validation.isRequired to false if there is no required validator present',
+          undefined,
+          false,
+        ],
+        [
+          'should set validation.isRequired to true if the default validator is present',
+          [ defaultValidators.required ],
+          true,
+        ],
+        [
+          'should set validation.isRequired to true if a validator with isDefaultValidator=true is present',
+          [ createValidator(true) ],
+          true,
+        ],
+        [
+          'should set validation.isRequired to false if a validator with isDefaultValidator=false is present',
+          [ createValidator(false) ],
+          false,
+        ],
+        [
+          'should set validation.isRequired to false if a validator with isDefaultValidator="foobar" is present',
+          [ createValidator('foobar') ],
+          false,
+        ],
+      ];
+
+      it.each(cases)('%s', (name: string, validators: undefined | TValidator[], expectedIsRequiredState: unknown) => {
         const { validation } = setup({ props: {
           validators,
         }});
 
-        expect(validation.isRequired).toBeTruthy();
+        expect(validation.isRequired).toEqual(expectedIsRequiredState);
       });
     });
   });
