@@ -47,3 +47,28 @@ Then use the form where needed.
 
 ## Documentation and Showcase
 [API Documentation and Showcase](https://environment-agency-austria.github.io/forms-showcase/#/)
+
+## Upgrading from react-ocean-forms 1.x.x to 2.0.0
+From version 2.0.0 onwards the syntax for `Field` has changed. Previously a field would be written like this:
+
+**Before**:
+```jsx
+<Field
+  name="demo"
+  label="My demo field"
+  component={Input}
+  />
+```
+
+**After**:
+```jsx
+<Input
+  name="demo"
+  label="My demo field"
+  />
+```
+
+The input component is now used directly without using it in the component prop of the field.
+
+### Changes for writing custom field components
+Custom field components must use the new `withField` higher order component. See [Input.tsx](./src/components/Input/Input.tsx) for an implementation example.
