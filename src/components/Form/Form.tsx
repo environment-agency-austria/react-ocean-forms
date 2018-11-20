@@ -190,7 +190,9 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
       if (resetForm) { this.reset(); }
     };
     if (callOnSubmitResult instanceof Promise) {
-      callOnSubmitResult.then(() => cleanup(resetOnSubmit));
+      void callOnSubmitResult.then(
+        () => { cleanup(resetOnSubmit); },
+      );
     } else {
       cleanup(resetOnSubmit);
     }
