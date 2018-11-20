@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### New features
+- Added prop `resetOnSubmit` to `Form`. When set to true, the form will trigger a form reset after a successful submit. Default setting: false
 - Added option for custom **required validators**. The form will now recognize a custom required validator if a synchronous validator is tagged with `isDefaultValidator = true`
 
 ## [2.0.0] # 2018-11-19
