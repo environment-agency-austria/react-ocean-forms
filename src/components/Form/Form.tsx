@@ -181,13 +181,18 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
     }
 
     // Await the result from callOnSubmit
-    await this.callOnSubmit(submitArgs);
-    this.updateBusyState(false);
-
-    // Reset form, if prop says so
+    const callOnSubmitResult = this.callOnSubmit(submitArgs);
     const { resetOnSubmit } = this.props;
-    if (resetOnSubmit) {
-      this.reset();
+
+    // Make sure the state is cleaned up before
+    const cleanup = (resetForm: boolean | undefined): void => {
+      this.updateBusyState(false);
+      if (resetForm) { this.reset(); }
+    };
+    if (callOnSubmitResult instanceof Promise) {
+      callOnSubmitResult.then(() => cleanup(resetOnSubmit));
+    } else {
+      cleanup(resetOnSubmit);
     }
   }
 
@@ -243,7 +248,7 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
    * @param submitArgs Arguments that will be passed
    * to the onSubmit callback
    */
-  private async callOnSubmit(submitArgs?: TSubmitArgs): Promise<void> {
+  private callOnSubmit(submitArgs?: TSubmitArgs): void | Promise<void> {
     const { onSubmit } = this.props;
     if (onSubmit === undefined) { return; }
 
