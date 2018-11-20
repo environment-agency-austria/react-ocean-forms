@@ -180,7 +180,22 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
       return;
     }
 
-    this.callOnSubmit(submitArgs);
+    // Await the result from callOnSubmit
+    const callOnSubmitResult = this.callOnSubmit(submitArgs);
+    const { resetOnSubmit } = this.props;
+
+    // Make sure the state is cleaned up before
+    const cleanup = (resetForm: boolean | undefined): void => {
+      this.updateBusyState(false);
+      if (resetForm) { this.reset(); }
+    };
+    if (callOnSubmitResult instanceof Promise) {
+      void callOnSubmitResult.then(
+        () => { cleanup(resetOnSubmit); },
+      );
+    } else {
+      cleanup(resetOnSubmit);
+    }
   }
 
   /**
@@ -235,22 +250,13 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
    * @param submitArgs Arguments that will be passed
    * to the onSubmit callback
    */
-  private callOnSubmit(submitArgs?: TSubmitArgs): void {
+  private callOnSubmit(submitArgs?: TSubmitArgs): void | Promise<void> {
     const { onSubmit } = this.props;
-    if (onSubmit !== undefined) {
-      const values = this.getValues();
-      const submitResult = onSubmit(values, submitArgs);
+    if (onSubmit === undefined) { return; }
 
-      if (submitResult instanceof Promise) {
-        void submitResult.then(() => {
-          this.updateBusyState(false);
-        });
+    const values = this.getValues();
 
-        return;
-      }
-    }
-
-    this.updateBusyState(false);
+    return onSubmit(values, submitArgs);
   }
 
   /**
@@ -261,7 +267,14 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
    */
   private handleReset = (event: React.FormEvent): void => {
     event.preventDefault();
+    this.reset();
+  }
 
+  /**
+   * Sets the state of all fields back
+   * to the default state.
+   */
+  private reset = (): void => {
     const fields = Object.entries(this.fields);
     fields.forEach(([, state]) => {
       state.reset();

@@ -543,6 +543,16 @@ describe('<Form />', () => {
         });
       });
     });
+
+    describe('reset on successful submit', () => {
+      it('should call the onReset prop on submit when resetOnSubmit is true', async () => {
+        const onResetHandler = jest.fn();
+        const { wrapper } = setup({ props: { onReset: onResetHandler, resetOnSubmit: true }});
+        await simulateSubmitEvent(wrapper);
+
+        expect(onResetHandler).toHaveBeenCalled();
+      });
+    });
   });
 
   describe('onReset handling', () => {
