@@ -7,11 +7,11 @@ cache:
 jobs:
   include:
     - stage: Test
-      node_js: node
       name: "Linting"
       script: "yarn lint"
     - script: jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
       name: "Produce coverage"
     - stage: Build
       node_js: "8"
+      name: "Webpack build"
       script: "yarn build"
