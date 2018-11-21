@@ -341,7 +341,11 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
       formatString: stringFormatter,
       disabled,
       plaintext,
+      busy: busyProp,
     } = this.props;
+
+    // Override the busy state with the busy prop if it is set to true
+    const busy = busyProp === true ? busyProp : context.busy;
 
     return {
       ...context,
@@ -351,6 +355,7 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
       stringFormatter,
       disabled,
       plaintext,
+      busy,
       asyncValidateOnChange: asyncValidateOnChange,
     };
   }

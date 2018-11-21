@@ -58,6 +58,11 @@ export interface IFormProps<TFieldValues = IFieldValues, TSubmitArgs = unknown> 
    * If set to true, all fields will be reset on an successful form submit
    */
   resetOnSubmit?: boolean;
+  /**
+   * If set to true, the form will be forced into a busy state and thus disabling
+   * any form buttons.
+   */
+  busy?: true;
 
   /**
    * Triggered when the form has been validated successfully and is ready to be submitted.

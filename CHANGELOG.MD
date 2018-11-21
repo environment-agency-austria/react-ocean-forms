@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ### New features
 - Added prop `resetOnSubmit` to `Form`. When set to true, the form will trigger a form reset after a successful submit. Default setting: false
 - Added option for custom **required validators**. The form will now recognize a custom required validator if a synchronous validator is tagged with `isDefaultValidator = true`
+- Added prop `busy` to `Form`. This allows to force the form into a busy state. Useful for example to disable the form buttons during data loading.
 
 ## [2.0.0] # 2018-11-19
 ### Breaking changes

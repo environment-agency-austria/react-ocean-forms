@@ -498,6 +498,24 @@ describe('<Form />', () => {
         testBusyState(wrapper, formContext, false, done);
       });
 
+      describe('busy prop override set to true', () => {
+        it('should be always busy', () => {
+          const { formContext } = setup({ props: { busy: true }});
+          expect(formContext.busy).toBeTruthy();
+        });
+
+        it('should be busy if the onSubmit callback returns immediately', (done) => {
+          const onSubmitHandler = jest.fn();
+          const { wrapper, formContext } = setup({ props: { onSubmit: onSubmitHandler, busy: true }});
+          testBusyState(wrapper, formContext, true, done);
+        });
+
+        it('should be busy if there is no onSubmit callback', (done) => {
+          const { wrapper, formContext } = setup({ props: { busy: true }});
+          testBusyState(wrapper, formContext, true, done);
+        });
+      });
+
       describe('async onSubmit callback', () => {
         const createSlowOnSubmit = (): () => Promise<void> => {
           return async (): Promise<void> => new Promise<void>(
@@ -538,6 +556,20 @@ describe('<Form />', () => {
             wrapper.update();
             const formContext: IFormContext = wrapper.first().prop('value');
             expect(formContext.busy).toBe(false);
+            done();
+          });
+        });
+
+        it('should be busy after onSubmit finished if the busy prop is set to true', async (done) => {
+          const { wrapper } = setup({ props: { onSubmit: createSlowOnSubmit(), busy: true }});
+          await simulateSubmitEvent(wrapper);
+
+          jest.runAllTimers();
+
+          process.nextTick(() => {
+            wrapper.update();
+            const formContext: IFormContext = wrapper.first().prop('value');
+            expect(formContext.busy).toBe(true);
             done();
           });
         });
