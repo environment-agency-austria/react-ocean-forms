@@ -623,6 +623,18 @@ describe('<Form />', () => {
         expect(onResetHandler).toHaveBeenCalled();
       });
     });
+
+    describe('html form submit event handling', () => {
+      it('should call event.preventDefault', () => {
+        const { form } = setup();
+        const mockSubmitEvent = {
+          preventDefault: jest.fn(),
+        };
+
+        form.simulate('submit', mockSubmitEvent);
+        expect(mockSubmitEvent.preventDefault).toHaveBeenCalled();
+      });
+    });
   });
 
   describe('onReset handling', () => {
