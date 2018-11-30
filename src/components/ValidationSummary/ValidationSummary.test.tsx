@@ -125,7 +125,7 @@ describe('<ValidationSummary />', () => {
 
         raiseError(listenerCallback);
 
-        const wrapper = shallow(mockRender.mock.calls[0][0]);
+        const wrapper = shallow(mockRender.mock.calls[0][0] as React.ReactElement<{}>);
         expect(wrapper).toMatchSnapshot();
       });
 
@@ -233,14 +233,18 @@ describe('<ValidationSummary />', () => {
 
     it('should not crash if the header was not rendered', () => {
       const { listenerCallback } = setup();
-      expect(() => listenerCallback('_form', 'submit-invalid')).not.toThrowError();
+      expect(() => {
+        listenerCallback('_form', 'submit-invalid');
+      }).not.toThrowError();
     });
   });
 
   describe('other form events', () => {
     it('should ignore other form events', () => {
       const { listenerCallback } = setup();
-      expect(() => listenerCallback('_form', 'random-event')).not.toThrowError();
+      expect(() => {
+        listenerCallback('_form', 'random-event');
+      }).not.toThrowError();
     });
   });
 });
