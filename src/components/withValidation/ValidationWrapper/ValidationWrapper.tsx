@@ -205,11 +205,11 @@ export class BaseValidationWrapper extends React.Component<IValidationWrapperPro
 
     // Get the correct wait setting
     const { asyncValidationWait: propAsyncValidationWait } = this.props;
-    const asyncValidationWait = propAsyncValidationWait === null
+    const asyncValidationWait = propAsyncValidationWait === undefined
       ? formContext.asyncValidationWait
       : propAsyncValidationWait;
 
-    this.asyncTimeout = setTimeout(performAsyncValidation, asyncValidationWait);
+    this.asyncTimeout = window.setTimeout(performAsyncValidation, asyncValidationWait);
 
     this.updateAndNotify(validationState);
 

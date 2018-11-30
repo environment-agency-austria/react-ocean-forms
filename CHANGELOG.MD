@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 - Fixed a bug where a valid result in `Form.onValidate` (for example result `{ testField: undefined }`) would be treated as invalid
+- Fixed a bug where the `ValidationWrapper` would always ignore `asyncValidationWait`
 
 ## [2.1.0] # 2018-11-30
 ### New features
