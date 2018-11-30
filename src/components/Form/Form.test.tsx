@@ -429,6 +429,18 @@ describe('<Form />', () => {
 
         expect(onSubmitHandler).toHaveBeenCalledWith(expectedFormValues, undefined);
       });
+
+      describe('onValidate handler that returns valid field states', () => {
+        it('should call the onSubmit prop', async () => {
+          const onValidateHandler = jest.fn().mockReturnValue({
+            unitField: undefined,
+          });
+          const onSubmitHandler = jest.fn();
+          const { expectedFormValues } = await setupSubmit({ props: { onValidate: onValidateHandler, onSubmit: onSubmitHandler }});
+
+          expect(onSubmitHandler).toHaveBeenCalledWith(expectedFormValues, undefined);
+        });
+      });
     });
 
     describe('invalid through form validator', () => {

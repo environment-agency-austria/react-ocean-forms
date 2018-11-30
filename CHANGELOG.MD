@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+- Fixed a bug where a valid result in `Form.onValidate` (for example result `{ testField: undefined }`) would be treated as invalid
+
 ## [2.1.0] # 2018-11-30
 ### New features
 - Added prop `resetOnSubmit` to `Form`. When set to true, the form will trigger a form reset after a successful submit. Default setting: false
