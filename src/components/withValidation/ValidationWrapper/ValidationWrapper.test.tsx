@@ -322,6 +322,21 @@ describe('withValidation', () => {
       expect(timeout1).not.toEqual(timeout2);
       jest.runAllTimers();
     });
+
+    it('should set validationState.error to null if it is an empty array after filtering invalid errors out', async () => {
+      const asyncValidator = jest.fn().mockResolvedValue({ foo: 'bar' });
+
+      const { validation } = setup({ props: {
+        asyncValidators: [asyncValidator],
+      }});
+
+      const state = await validation.validate(mockValue, { immediateAsync: true });
+      expect(state).toMatchObject({
+        isValidating: false,
+        valid: true,
+        error: null,
+      });
+    });
   });
 
   describe('form context callbacks', () => {
