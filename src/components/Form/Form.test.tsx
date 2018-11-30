@@ -111,6 +111,32 @@ describe('<Form />', () => {
     });
   });
 
+  describe('css classes', () => {
+    const hasClass = (wrapper: ShallowWrapper, className: string): void => {
+      expect(wrapper.find('form').prop('className')).toContain(className);
+    };
+
+    it('should output any additional classNames added to the form', () => {
+      const mockClass = 'mock-class';
+      const { wrapper } = setup({ props: { className: mockClass }});
+      hasClass(wrapper, mockClass);
+    });
+
+    describe('plaintext', () => {
+      it('should have the plaintext css class if in plaintext mode', () => {
+        const { wrapper } = setup({ props: { plaintext: true }});
+        hasClass(wrapper, 'plaintext');
+      });
+
+      it('should still add the additional classNames', () => {
+        const mockClass = 'mock-class';
+        const { wrapper } = setup({ props: { plaintext: true, className: mockClass }});
+        hasClass(wrapper, 'plaintext');
+        hasClass(wrapper, mockClass);
+      });
+    });
+  });
+
   describe('configuration', () => {
     const cases = [
       ['disabled', true, 'disabled'],
