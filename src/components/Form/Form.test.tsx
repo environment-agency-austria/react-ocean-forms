@@ -229,8 +229,9 @@ describe('<Form />', () => {
       const unitField = createMockField('unitField', 'Unit field');
       const unitGroup = createMockField('unitGroup', 'Unit group', true);
       const unitSubField = createMockField(`${unitGroup.name}.subField`, 'Sub field');
+      const unitSubField2 = createMockField(`${unitGroup.name}.subField2`, 'Sub field 2');
 
-      const mockFields = [unitField, unitGroup, unitSubField];
+      const mockFields = [unitField, unitGroup, unitSubField, unitSubField2];
       registerUnitField(mockFields, formContext);
 
       let formValues: IFieldValues;
@@ -255,10 +256,13 @@ describe('<Form />', () => {
 
       it('should return the correct form values', () => {
         const subFieldLocalName = unitSubField.name.substring(unitGroup.name.length + 1);
+        const subFieldLocalName2 = unitSubField2.name.substring(unitGroup.name.length + 1);
+
         const expectedFormValues = {
           [unitField.name]: unitField.state.label,
           [unitGroup.name]: {
             [subFieldLocalName]: unitSubField.state.label,
+            [subFieldLocalName2]: unitSubField2.state.label,
           },
         };
 
