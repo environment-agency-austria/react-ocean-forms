@@ -5,6 +5,7 @@
   "main": "build/index.js",
   "typings": "build/index.d.ts",
   "private": false,
+  "sideEffects": false,
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
