@@ -48,6 +48,9 @@
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10"
   },
+  "files": [
+    "build/"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/environment-agency-austria/react-ocean-forms.git"
