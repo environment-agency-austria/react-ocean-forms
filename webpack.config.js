@@ -52,12 +52,14 @@ module.exports = (_env, arg) => {
     plugins: [
       new CleanWebpackPlugin(['build/*']),
       new webpack.NamedModulesPlugin(),
-      new CaseSensitivePathsPlugin(),
     ],
   };
 
   if (arg.mode === 'development') {
-    config.plugins.push(new webpack.HotModuleReplacementPlugin());
+    config.plugins.push(
+      new webpack.HotModuleReplacementPlugin(),
+      new CaseSensitivePathsPlugin(),
+    );
   }
 
   return config;
