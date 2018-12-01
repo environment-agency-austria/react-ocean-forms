@@ -1,7 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## [2.1.3] # 2018-12-01
+- Made production package size smaller
+- Enabled tree shaking
 - Fixed a bug where a valid result in `Form.onValidate` (for example result `{ testField: undefined }`) would be treated as invalid
 - Fixed a bug where the `ValidationWrapper` would always ignore `asyncValidationWait`
 
