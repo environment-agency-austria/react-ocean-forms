@@ -264,6 +264,24 @@ describe('<FieldGroup />', () => {
           triggerNotification(groupContext, eventName, mockChangedFieldValue);
           assertValidateCalled(validation, mockCheckAsync);
         });
+
+        it('should use an empty object as the current state if the form does not provide one', () => {
+          const { groupContext, validation } = setup({
+            contextOverrides: {
+              getValues: jest.fn().mockReturnValue({
+                foo: 'bar',
+              }),
+            },
+          });
+
+          triggerNotification(groupContext, eventName, mockChangedFieldValue);
+          expect(validation.validate).toHaveBeenCalledWith(
+            {
+              [mockSenderLocal]: mockChangedFieldValue,
+            },
+            { checkAsync: false },
+          );
+        });
       });
 
       describe('Event "blur"', () => {

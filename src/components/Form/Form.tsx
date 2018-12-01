@@ -229,19 +229,21 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
     // field states.
     const fields = Object.entries(this.fields);
 
+    let allFieldsValid = true;
     fields.forEach(([name, state]) => {
       const fieldError = parseValidationError(name, getDeepValue(name, result));
-      const isValid = typeof fieldError !== 'object';
+      const isValid = fieldError === null || typeof fieldError !== 'object';
 
-      if (!isValid) {
-        state.updateValidation({
-          valid: false,
-          error: fieldError,
-        });
-      }
+      if (isValid) { return; }
+
+      state.updateValidation({
+        valid: false,
+        error: fieldError,
+      });
+      allFieldsValid = false;
     });
 
-    return false;
+    return allFieldsValid;
   }
 
   /**
