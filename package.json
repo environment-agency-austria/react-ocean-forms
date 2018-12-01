@@ -13,39 +13,6 @@
     "build": "webpack -p",
     "lint": "tslint -t stylish --project ."
   },
-  "jest": {
-    "setupFiles": [
-      "<rootDir>/config/jest/enzyme.ts"
-    ],
-    "testMatch": [
-      "**/__tests__/**/*.ts?(x)",
-      "**/?(*.)+(spec|test).ts?(x)"
-    ],
-    "collectCoverageFrom": [
-      "<rootDir>/src/**/*.{ts,tsx}",
-      "!<rootDir>/src/test-utils/**"
-    ],
-    "globals": {
-      "ts-jest": {
-        "tsConfig": "<rootDir>/config/jest/tsconfig.jest.json"
-      }
-    },
-    "testURL": "http://localhost",
-    "transform": {
-      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest"
-    },
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "web.js",
-      "mjs",
-      "js",
-      "json",
-      "web.jsx",
-      "jsx",
-      "node"
-    ]
-  },
   "peerDependencies": {
     "react": "^16.4.0"
   },
