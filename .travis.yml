@@ -15,12 +15,13 @@ jobs:
       node_js: "8"
       name: "Webpack build"
       script: "yarn build"
-
-deploy:
-  provider: npm
-  email: $NPM_DEPLOY_EMAIL
-  api_key: $NPM_API_KEY
-  skip_cleanup: true
-  tag: citest
-  on:
-    tags: true
+    - stage: Deploy
+      script: skip
+      deploy:
+        provider: npm
+        email: $NPM_DEPLOY_EMAIL
+        api_key: $NPM_API_KEY
+        skip_cleanup: true
+        tag: citest
+        on:
+          tags: true
