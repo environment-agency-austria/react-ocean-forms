@@ -15,8 +15,6 @@ jobs:
       node_js: "8"
       name: "Webpack build"
       script: "yarn build"
-    - stage: Deploy
-      script: skip
       deploy:
         provider: npm
         email: $NPM_DEPLOY_EMAIL
