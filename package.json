@@ -1,6 +1,6 @@
 {
   "name": "react-ocean-forms",
-  "version": "2.0.4-citest",
+  "version": "2.0.5-citest",
   "description": "Forms components for react based on the context api.",
   "main": "build/index.js",
   "typings": "build/index.d.ts",
