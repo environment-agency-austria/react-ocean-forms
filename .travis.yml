@@ -20,6 +20,5 @@ jobs:
         email: $NPM_DEPLOY_EMAIL
         api_key: $NPM_API_KEY
         skip_cleanup: true
-        tag: citest
         on:
           tags: true
