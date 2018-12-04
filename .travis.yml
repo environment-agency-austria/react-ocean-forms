@@ -6,10 +6,19 @@ cache:
 
 jobs:
   include:
-    - stage: Build
-      script: "yarn build"
-    - stage: Lint
+    - stage: Test
+      name: "Linting"
       script: "yarn lint"
-    - stage: Produce Coverage
-      node_js: node
-      script: jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+    - script: jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+      name: "Produce coverage"
+    - stage: Build
+      node_js: "8"
+      name: "Webpack build"
+      script: "yarn build"
+      deploy:
+        provider: npm
+        email: $NPM_DEPLOY_EMAIL
+        api_key: $NPM_API_KEY
+        skip_cleanup: true
+        on:
+          tags: true
