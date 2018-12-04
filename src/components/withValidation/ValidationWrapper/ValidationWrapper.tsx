@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { parseValidationError } from '../../../utils';
-import { isIFieldErrorObject, validators as defaultValidators } from '../../../validators';
+import { isDefaultValidator, isIFieldErrorObject } from '../../../validators';
 import { TBasicFieldValue } from '../../withField';
 import { withForm } from '../../withForm';
 import { IValidationArgs, IValidationState, IValidationWrapperProps } from '../withValidation.types';
@@ -66,7 +66,7 @@ export class BaseValidationWrapper extends React.Component<IValidationWrapperPro
   private checkIsRequired = (): boolean => {
     const { validators } = this.props;
 
-    return Array.isArray(validators) && validators.includes(defaultValidators.required);
+    return Array.isArray(validators) && validators.some(isDefaultValidator);
   }
 
   /**
@@ -205,11 +205,11 @@ export class BaseValidationWrapper extends React.Component<IValidationWrapperPro
 
     // Get the correct wait setting
     const { asyncValidationWait: propAsyncValidationWait } = this.props;
-    const asyncValidationWait = propAsyncValidationWait === null
+    const asyncValidationWait = propAsyncValidationWait === undefined
       ? formContext.asyncValidationWait
       : propAsyncValidationWait;
 
-    this.asyncTimeout = setTimeout(performAsyncValidation, asyncValidationWait);
+    this.asyncTimeout = window.setTimeout(performAsyncValidation, asyncValidationWait);
 
     this.updateAndNotify(validationState);
 

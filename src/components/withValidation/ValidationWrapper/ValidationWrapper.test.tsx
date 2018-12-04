@@ -3,7 +3,7 @@ import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 
 import { createMockFormContext } from '../../../test-utils/enzymeFormContext';
-import { validators as defaultValidators } from '../../../validators';
+import { TValidator, validators as defaultValidators } from '../../../validators';
 import { IFormContext } from '../../FormContext';
 import { IValidationProp, IValidationState, IValidationWrapperProps } from '../withValidation.types';
 import { BaseValidationWrapper } from './ValidationWrapper';
@@ -140,21 +140,47 @@ describe('withValidation', () => {
     });
 
     describe('required validator', () => {
-      it('should set validation.isRequired to false if there is no required validator present', () => {
-        const { validation } = setup();
-        expect(validation.isRequired).toBeFalsy();
-      });
+      const createValidator = (defaultValue: unknown): Function => {
+        const customRequiredValidator = (): undefined => undefined;
+        customRequiredValidator.isDefaultValidator = defaultValue;
 
-      it('should set validation.isRequired to true if there is a required validatior present', () => {
-        const validators = [
-          defaultValidators.required,
-        ];
+        return customRequiredValidator;
+      };
 
+      const cases = [
+        [
+          'should set validation.isRequired to false if there is no required validator present',
+          undefined,
+          false,
+        ],
+        [
+          'should set validation.isRequired to true if the default validator is present',
+          [ defaultValidators.required ],
+          true,
+        ],
+        [
+          'should set validation.isRequired to true if a validator with isDefaultValidator=true is present',
+          [ createValidator(true) ],
+          true,
+        ],
+        [
+          'should set validation.isRequired to false if a validator with isDefaultValidator=false is present',
+          [ createValidator(false) ],
+          false,
+        ],
+        [
+          'should set validation.isRequired to false if a validator with isDefaultValidator="foobar" is present',
+          [ createValidator('foobar') ],
+          false,
+        ],
+      ];
+
+      it.each(cases)('%s', (name: string, validators: undefined | TValidator[], expectedIsRequiredState: unknown) => {
         const { validation } = setup({ props: {
           validators,
         }});
 
-        expect(validation.isRequired).toBeTruthy();
+        expect(validation.isRequired).toEqual(expectedIsRequiredState);
       });
     });
   });
@@ -218,6 +244,7 @@ describe('withValidation', () => {
         asyncValidators: [asyncValidator],
       }});
 
+      const spiedTimeout = jest.spyOn(window, 'setTimeout');
       const state = await validation.validate(mockValue);
 
       expect(state).toMatchObject({
@@ -228,6 +255,11 @@ describe('withValidation', () => {
       expect(asyncValidator).not.toHaveBeenCalled();
       expect(getAsyncTimeout(wrapper)).toBeGreaterThan(0);
       checkNotifyCalled(formContext, state);
+
+      expect(spiedTimeout).toHaveBeenCalledWith(
+        expect.any(Function),
+        formContext.asyncValidationWait,
+      );
 
       jest.runAllTimers();
 
@@ -244,6 +276,24 @@ describe('withValidation', () => {
         checkNotifyCalled(formContext, state);
         done();
       });
+    });
+
+    it('should prefer the ValidationWrapper.asyncValidationWait prop over the formContext one', async () => {
+      const errorId = 'mockError';
+      const asyncValidator = jest.fn().mockResolvedValue(errorId);
+
+      const { validation } = setup({ props: {
+        asyncValidators: [asyncValidator],
+        asyncValidationWait: 42,
+      }});
+
+      const spiedTimeout = jest.spyOn(window, 'setTimeout');
+      await validation.validate(mockValue);
+
+      expect(spiedTimeout).toHaveBeenCalledWith(
+        expect.any(Function),
+        42,
+      );
     });
 
     it('should clear any existing timeout if validate is called again', async () => {
@@ -271,6 +321,21 @@ describe('withValidation', () => {
 
       expect(timeout1).not.toEqual(timeout2);
       jest.runAllTimers();
+    });
+
+    it('should set validationState.error to null if it is an empty array after filtering invalid errors out', async () => {
+      const asyncValidator = jest.fn().mockResolvedValue({ foo: 'bar' });
+
+      const { validation } = setup({ props: {
+        asyncValidators: [asyncValidator],
+      }});
+
+      const state = await validation.validate(mockValue, { immediateAsync: true });
+      expect(state).toMatchObject({
+        isValidating: false,
+        valid: true,
+        error: null,
+      });
     });
   });
 

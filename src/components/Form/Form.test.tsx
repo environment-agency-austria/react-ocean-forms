@@ -111,6 +111,32 @@ describe('<Form />', () => {
     });
   });
 
+  describe('css classes', () => {
+    const hasClass = (wrapper: ShallowWrapper, className: string): void => {
+      expect(wrapper.find('form').prop('className')).toContain(className);
+    };
+
+    it('should output any additional classNames added to the form', () => {
+      const mockClass = 'mock-class';
+      const { wrapper } = setup({ props: { className: mockClass }});
+      hasClass(wrapper, mockClass);
+    });
+
+    describe('plaintext', () => {
+      it('should have the plaintext css class if in plaintext mode', () => {
+        const { wrapper } = setup({ props: { plaintext: true }});
+        hasClass(wrapper, 'plaintext');
+      });
+
+      it('should still add the additional classNames', () => {
+        const mockClass = 'mock-class';
+        const { wrapper } = setup({ props: { plaintext: true, className: mockClass }});
+        hasClass(wrapper, 'plaintext');
+        hasClass(wrapper, mockClass);
+      });
+    });
+  });
+
   describe('configuration', () => {
     const cases = [
       ['disabled', true, 'disabled'],
@@ -203,8 +229,9 @@ describe('<Form />', () => {
       const unitField = createMockField('unitField', 'Unit field');
       const unitGroup = createMockField('unitGroup', 'Unit group', true);
       const unitSubField = createMockField(`${unitGroup.name}.subField`, 'Sub field');
+      const unitSubField2 = createMockField(`${unitGroup.name}.subField2`, 'Sub field 2');
 
-      const mockFields = [unitField, unitGroup, unitSubField];
+      const mockFields = [unitField, unitGroup, unitSubField, unitSubField2];
       registerUnitField(mockFields, formContext);
 
       let formValues: IFieldValues;
@@ -229,10 +256,13 @@ describe('<Form />', () => {
 
       it('should return the correct form values', () => {
         const subFieldLocalName = unitSubField.name.substring(unitGroup.name.length + 1);
+        const subFieldLocalName2 = unitSubField2.name.substring(unitGroup.name.length + 1);
+
         const expectedFormValues = {
           [unitField.name]: unitField.state.label,
           [unitGroup.name]: {
             [subFieldLocalName]: unitSubField.state.label,
+            [subFieldLocalName2]: unitSubField2.state.label,
           },
         };
 
@@ -403,6 +433,18 @@ describe('<Form />', () => {
 
         expect(onSubmitHandler).toHaveBeenCalledWith(expectedFormValues, undefined);
       });
+
+      describe('onValidate handler that returns valid field states', () => {
+        it('should call the onSubmit prop', async () => {
+          const onValidateHandler = jest.fn().mockReturnValue({
+            unitField: undefined,
+          });
+          const onSubmitHandler = jest.fn();
+          const { expectedFormValues } = await setupSubmit({ props: { onValidate: onValidateHandler, onSubmit: onSubmitHandler }});
+
+          expect(onSubmitHandler).toHaveBeenCalledWith(expectedFormValues, undefined);
+        });
+      });
     });
 
     describe('invalid through form validator', () => {
@@ -498,6 +540,24 @@ describe('<Form />', () => {
         testBusyState(wrapper, formContext, false, done);
       });
 
+      describe('busy prop override set to true', () => {
+        it('should be always busy', () => {
+          const { formContext } = setup({ props: { busy: true }});
+          expect(formContext.busy).toBeTruthy();
+        });
+
+        it('should be busy if the onSubmit callback returns immediately', (done) => {
+          const onSubmitHandler = jest.fn();
+          const { wrapper, formContext } = setup({ props: { onSubmit: onSubmitHandler, busy: true }});
+          testBusyState(wrapper, formContext, true, done);
+        });
+
+        it('should be busy if there is no onSubmit callback', (done) => {
+          const { wrapper, formContext } = setup({ props: { busy: true }});
+          testBusyState(wrapper, formContext, true, done);
+        });
+      });
+
       describe('async onSubmit callback', () => {
         const createSlowOnSubmit = (): () => Promise<void> => {
           return async (): Promise<void> => new Promise<void>(
@@ -541,6 +601,42 @@ describe('<Form />', () => {
             done();
           });
         });
+
+        it('should be busy after onSubmit finished if the busy prop is set to true', async (done) => {
+          const { wrapper } = setup({ props: { onSubmit: createSlowOnSubmit(), busy: true }});
+          await simulateSubmitEvent(wrapper);
+
+          jest.runAllTimers();
+
+          process.nextTick(() => {
+            wrapper.update();
+            const formContext: IFormContext = wrapper.first().prop('value');
+            expect(formContext.busy).toBe(true);
+            done();
+          });
+        });
+      });
+    });
+
+    describe('reset on successful submit', () => {
+      it('should call the onReset prop on submit when resetOnSubmit is true', async () => {
+        const onResetHandler = jest.fn();
+        const { wrapper } = setup({ props: { onReset: onResetHandler, resetOnSubmit: true }});
+        await simulateSubmitEvent(wrapper);
+
+        expect(onResetHandler).toHaveBeenCalled();
+      });
+    });
+
+    describe('html form submit event handling', () => {
+      it('should call event.preventDefault', () => {
+        const { form } = setup();
+        const mockSubmitEvent = {
+          preventDefault: jest.fn(),
+        };
+
+        form.simulate('submit', mockSubmitEvent);
+        expect(mockSubmitEvent.preventDefault).toHaveBeenCalled();
       });
     });
   });

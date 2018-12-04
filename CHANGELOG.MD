@@ -1,13 +1,25 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## [2.1.3] # 2018-12-01
+- Made production package size smaller
+- Enabled tree shaking
+- Fixed a bug where a valid result in `Form.onValidate` (for example result `{ testField: undefined }`) would be treated as invalid
+- Fixed a bug where the `ValidationWrapper` would always ignore `asyncValidationWait`
+
+## [2.1.0] # 2018-11-30
+### New features
+- Added prop `resetOnSubmit` to `Form`. When set to true, the form will trigger a form reset after a successful submit. Default setting: false
+- Added option for custom **required validators**. The form will now recognize a custom required validator if a synchronous validator is tagged with `isDefaultValidator = true`
+- Added prop `busy` to `Form`. This allows to force the form into a busy state. Useful for example to disable the form buttons during data loading.
+
+## [2.0.0] # 2018-11-19
 ### Breaking changes
 **Changed default usage of form fields**
 In order to provide the best typescript experience we had to ditch the conect of `<Field component={Input}>`. From version 2.0.0 onwards the field component is used directly, e.g.: `<Input name="demo" label="Demo Input" />`. The field component will still accept the field props. Developers who want to make their own field components now need to wrap those with the new `withField` higher order component. A full migration guide will be available soon.
 
 ### Other
-- Removed deprecated Form.onFieldValueChanged callback
+- Removed deprecated `Form.onFieldValueChanged` callback
 - Fixed a bug where a form field would revert its value to '' if its current value evaulated to value == false.
 - Added `isRequired` to field meta. It is true if the field / input component contains a required validator.
 
