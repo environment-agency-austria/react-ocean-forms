@@ -221,6 +221,15 @@ describe('<Form />', () => {
         registerUnitField([field], formContext);
         expect(formContext.getFieldState(field.name)).toBe(field.state);
       });
+
+      it('should throw an error when trying to access an non-existing field state', () => {
+        const { formContext } = setup();
+        const mockFieldName = 'mock-test';
+
+        expect(
+          () => formContext.getFieldState(mockFieldName),
+        ).toThrowError(`[Form] getFieldState: Could not find state of field '${mockFieldName}'`);
+      });
     });
 
     describe('formContext.getValues - form values', () => {

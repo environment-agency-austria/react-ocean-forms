@@ -15,14 +15,6 @@ interface IFormState<TFieldValues = IFieldValues> {
   context: IBaseFormContext<TFieldValues>;
 }
 
-interface IEventListenerContainer {
-  [s: string]: TFormEventListener;
-}
-
-interface IFieldContainer {
-  [s: string]: IFieldState;
-}
-
 /**
  * Wrapper for managed forms
  */
@@ -40,8 +32,8 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
     plaintext: false,
   };
 
-  private fields: IFieldContainer = {};
-  private eventListeners: IEventListenerContainer = {};
+  private readonly fields: Map<string, IFieldState> = new Map();
+  private readonly eventListeners: Map<string, TFormEventListener> = new Map();
 
   constructor(props: IFormProps<TFieldValues>) {
     super(props);
@@ -54,8 +46,8 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
         unregisterField: this.unregisterField,
         notifyFieldEvent: this.notifyFieldEvent,
 
-        registerListener: (name: string, callback: TFormEventListener): void => { this.eventListeners[name] = callback; },
-        unregisterListener: (name: string): void => { delete this.eventListeners[name]; },
+        registerListener: (name: string, callback: TFormEventListener): void => { this.eventListeners.set(name, callback); },
+        unregisterListener: (name: string): void => { this.eventListeners.delete(name); },
 
         getFieldState: this.getFieldState,
         getValues: this.getValues,
@@ -73,7 +65,12 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
    * @returns Current field state or default field state
    */
   private getFieldState = (name: string): IFieldState => {
-    return this.fields[name];
+    const fieldState = this.fields.get(name);
+    if (fieldState === undefined) {
+      throw new Error(`[Form] getFieldState: Could not find state of field '${name}'`);
+    }
+
+    return fieldState;
   }
 
   /**
@@ -82,10 +79,9 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
    * @returns Current values in form of { name: value, name2: value2, ... }
    */
   private getValues = (): TFieldValues => {
-    const fields = Object.entries(this.fields);
     const values: IFieldValues = {};
 
-    fields.forEach(([name, state]) => {
+    this.fields.forEach((state, name) => {
       if (state.isGroup === true) { return; }
 
       const nameParts = name.split('.');
@@ -112,7 +108,7 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
    */
   private notifyFieldEvent = (name: string, event: string, args?: unknown): void => {
     if (event === 'validation') {
-      const { [name]: { label } } = this.fields;
+      const { label } = this.getFieldState(name);
       this.notifyListeners(name, event, { ...args, label });
     } else {
       this.notifyListeners(name, event, args);
@@ -126,8 +122,7 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
    * @param args Event args
    */
   private notifyListeners(name: string, event: string, args?: unknown): void {
-    const listeners = Object.entries(this.eventListeners);
-    listeners.forEach(([, callback]) => {
+    this.eventListeners.forEach((callback) => {
       callback(name, event, args);
     });
   }
@@ -154,8 +149,8 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
 
     // Iterate through all fields and validate them
     // if needed.
-    const fields = Object.entries(this.fields);
-    const validations = fields.map(async ([, state]) => state.validate({
+    const fields = Array.from(this.fields.values());
+    const validations = fields.map(async (state) => state.validate({
       checkAsync: true,
       immediateAsync: true,
     }));
@@ -227,10 +222,8 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
 
     // Otherwise parse the result object and update the
     // field states.
-    const fields = Object.entries(this.fields);
-
     let allFieldsValid = true;
-    fields.forEach(([name, state]) => {
+    this.fields.forEach((state, name) => {
       const fieldError = parseValidationError(name, getDeepValue(name, result));
       const isValid = fieldError === null || typeof fieldError !== 'object';
 
@@ -277,8 +270,7 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
    * to the default state.
    */
   private reset = (): void => {
-    const fields = Object.entries(this.fields);
-    fields.forEach(([, state]) => {
+    this.fields.forEach((state) => {
       state.reset();
     });
 
@@ -312,7 +304,7 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
       throw new Error('[Form] registerField: invalid field state given');
     }
 
-    this.fields[name] = fieldState;
+    this.fields.set(name, fieldState);
   }
 
   /**
@@ -320,11 +312,12 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
    * @param name Field name
    */
   private unregisterField = (name: string): void => {
+    const { label } = this.getFieldState(name);
     this.notifyListeners(name, 'validation', {
-      label: this.fields[name].label,
+      label,
       valid: true,
     });
-    delete this.fields[name];
+    this.fields.delete(name);
   }
 
   /**
