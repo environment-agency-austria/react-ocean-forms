@@ -42,7 +42,7 @@
     "tslint": "^5.11.0",
     "tslint-consistent-codestyle": "^1.14.1",
     "tslint-eaa-contrib": "^0.1.5",
-    "tslint-microsoft-contrib": "^5.2.1",
+    "tslint-microsoft-contrib": "^6.0.0",
     "tslint-react": "^3.6.0",
     "typescript": "^3.1.6",
     "webpack": "^4.26.1",
