@@ -7,7 +7,7 @@
 
 import { IFormContext } from '../components/FormContext';
 import { TBasicFieldValue } from '../components/withField';
-import { FieldErrorMessageId, TFieldError, TValidator } from './validators.types';
+import { FieldErrorMessageId, TAsyncValidator, TFieldError, TValidator } from './validators.types';
 
 /**
  * Wrapper function to call validators with parameters
@@ -15,8 +15,8 @@ import { FieldErrorMessageId, TFieldError, TValidator } from './validators.types
  * @param context form context
  * @param args parameters for the validator
  */
-const withParam = (validator: TValidator, ...args: unknown[]): TValidator => {
-  return (value: TBasicFieldValue, context: IFormContext): TFieldError => validator(value, context, args);
+const withParam = <TCallback extends TValidator | TAsyncValidator>(validator: TCallback, ...args: unknown[]): TCallback => {
+  return (value: TBasicFieldValue, context: IFormContext): ReturnType<TCallback> => validator(value, context, args);
 };
 
 /**
