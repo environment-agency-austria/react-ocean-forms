@@ -26,7 +26,6 @@
     // disable javascript for now. The js sources are transpiled with webpack anyway
     "allowJs": false,
     "checkJs": false,
-
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,        
   }
