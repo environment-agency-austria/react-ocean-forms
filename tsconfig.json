@@ -7,8 +7,8 @@
     // Output stuff
     "outDir": "build",
     "jsx": "react",
-    "declaration": true,
-    "sourceMap": true,
+    "declaration": false,
+    "sourceMap": false,
     // Which libraries should be included
     "lib": [
       "es2017.object",
@@ -26,5 +26,8 @@
     // disable javascript for now. The js sources are transpiled with webpack anyway
     "allowJs": false,
     "checkJs": false,
+
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,        
   }
 }

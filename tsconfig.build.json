@@ -5,6 +5,7 @@
    */
   "compilerOptions": {
     "declaration": true,
+    "declarationDir": "build",
     "allowJs": false,
     "checkJs": false,
   },

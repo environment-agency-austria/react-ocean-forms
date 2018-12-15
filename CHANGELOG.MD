@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+- Migrated to rollup to improve package size and tree shaking
+
 ## [2.1.3] # 2018-12-01
 - Made production package size smaller
 - Enabled tree shaking
