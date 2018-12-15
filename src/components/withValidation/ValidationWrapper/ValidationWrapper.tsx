@@ -111,7 +111,7 @@ export class BaseValidationWrapper extends React.Component<IValidationWrapperPro
    * @param immediateAsync True if the async validators should fire immediately
    */
   private validate = async (
-    value: TBasicFieldValue | undefined,
+    value: TBasicFieldValue,
     {
       checkAsync = true,
       immediateAsync = false,
