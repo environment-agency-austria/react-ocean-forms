@@ -9,6 +9,7 @@ import * as React from 'react';
 import { getDeepValue, parseValidationError } from '../../utils';
 import { stringFormatter as defaultStringFormatter } from '../../utils/stringFormatter';
 import { FormContext, IBaseFormContext, IFieldState, IFieldValues, IFormContext, TFormEventListener } from '../FormContext';
+import { IValidationState } from '../withValidation';
 import { IFormProps } from './Form.types';
 
 interface IFormState<TFieldValues = IFieldValues> {
@@ -149,11 +150,13 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
 
     // Iterate through all fields and validate them
     // if needed.
-    const fields = Array.from(this.fields.values());
-    const validations = fields.map(async (state) => state.validate({
-      checkAsync: true,
-      immediateAsync: true,
-    }));
+    const validations: Promise<IValidationState>[] = [];
+    this.fields.forEach(field => {
+      validations.push(field.validate({
+        checkAsync: true,
+        immediateAsync: true,
+      }));
+    });
 
     const validationStates = await Promise.all(validations);
 

@@ -7,15 +7,17 @@
     // Output stuff
     "outDir": "build",
     "jsx": "react",
-    "declaration": true,
-    "sourceMap": true,
+    "declaration": false,
+    "sourceMap": false,
     // Which libraries should be included
     "lib": [
-      "es2017.object",
-      "es2016",
-      "dom"
+      "es5",
+      "dom",
+
+      "es2015.promise",
+      "es2015.collection",
     ],
-    "target": "es2015", // we target es2015. babel will do the rest
+    "target": "es5",
     "moduleResolution": "node",
     // Some style guidelines
     "noImplicitAny": true,
@@ -26,5 +28,7 @@
     // disable javascript for now. The js sources are transpiled with webpack anyway
     "allowJs": false,
     "checkJs": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,        
   }
 }

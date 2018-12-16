@@ -13,7 +13,7 @@ jobs:
       name: "Produce coverage"
     - stage: Build
       node_js: "8"
-      name: "Webpack build"
+      name: "Rollup build"
       script: "yarn build"
       deploy:
         provider: npm

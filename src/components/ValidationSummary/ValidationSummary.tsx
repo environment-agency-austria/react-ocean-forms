@@ -180,10 +180,10 @@ export class BaseValidationSummary extends React.Component<IValidationSummaryPro
     const { fields } = this.state;
 
     // Fetch the current errors out of the form context
-    const fieldArray = Object.entries(fields);
     const errors: IInvalidField[] = [];
 
-    fieldArray.forEach(([name, state]) => {
+    Object.keys(fields).forEach((name: string) => {
+      const state = fields[name];
       if (state.valid || state.error === null) { return; }
 
       errors.push({
