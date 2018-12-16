@@ -7,19 +7,31 @@ const path = require('path');
 const basePath = process.cwd();
 const packageJson = require(path.resolve(basePath, './package.json'));
 
-const getBaseConfig = (minify = false, noTsDeclaration = false) => {
-  const tsconfigOverride = noTsDeclaration ? { compilerOptions: { declaration: false, declarationMap: false } } : undefined;
-  const fileSizePlugin = minify ? filesize() : null;
+const externalDependencies = [
+  ...Object.keys(packageJson.dependencies || {}),
+  ...Object.keys(packageJson.peerDependencies || {})
+];
+
+const getBaseConfig = (showFilesize = false, noTsDeclaration = false) => {
+  const tsconfigOverride = noTsDeclaration ? { 
+    compilerOptions: { 
+      declaration: false, 
+      declarationMap: false 
+    } 
+  } : undefined;
 
   return {
     input: "src/index.ts",
     plugins: [
-      nodeResolve({ preferBuiltins: true, browser: true }),    
+      nodeResolve({ 
+        preferBuiltins: true, 
+        browser: true 
+      }),    
       typescript({
         clean: false,
         tsconfig: 'tsconfig.build.json',
         tsconfigOverride,
-      }),
+      }),      
       commonjs({
         namedExports: {
           'moment': [
@@ -27,18 +39,11 @@ const getBaseConfig = (minify = false, noTsDeclaration = false) => {
           ],
         },
       }),
-      fileSizePlugin,
+      showFilesize ? filesize() : null,
     ],
-    external: [
-      ...Object.keys(packageJson.dependencies || {}),
-      ...Object.keys(packageJson.peerDependencies || {})
-    ],
-    watch: {
-      include: [
-        'src/**',
-        'node_modules/**'
-      ]
-    }
+    external: (id) => {
+      return externalDependencies.some(dep => id.indexOf(dep) === 0);
+    },
   };
 };
 
