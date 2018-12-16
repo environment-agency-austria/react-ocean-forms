@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [2.1.4] # 2018-12-16
 - Migrated to rollup to improve package size and tree shaking
 - Fixed typing issue with `validators` in typescript 3.2+
 
