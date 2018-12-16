@@ -53,9 +53,9 @@ export const stringFormatter: TSTringFormatter = (id: string, values?: IMessageV
 
   // Iterate through each value and replace the
   // value inside the string
-  Object.entries(values).forEach(([key, value]) => {
+  Object.keys(values).forEach((key: string) => {
     const search = new RegExp(`{${key}}`, 'g');
-    formattedString = formattedString.replace(search, value);
+    formattedString = formattedString.replace(search, values[key]);
   });
 
   return formattedString;

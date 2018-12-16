@@ -464,13 +464,15 @@ describe('<Form />', () => {
       it('should update the validation state of the field', async () => {
         const { mockFields } = await setupSubmit({ props: { onValidate: createInvalidValidator() }});
 
-        // tslint:disable-next-line:no-non-null-assertion
-        expect(mockFields.find(item => item.name === unitFieldName)!.state.updateValidation).toHaveBeenCalledWith({
-          valid: false,
-          error: {
-            message_id: 'error',
-            params: { },
-          },
+        mockFields.forEach(item => {
+          if (item.name !== unitFieldName) { return; }
+          expect(item.state.updateValidation).toHaveBeenCalledWith({
+            valid: false,
+            error: {
+              message_id: 'error',
+              params: { },
+            },
+          });
         });
       });
 

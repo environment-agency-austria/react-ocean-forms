@@ -13,6 +13,7 @@ import { stringHasValue } from './stringHasValue';
 // tslint:disable-next-line:naming-convention
 export const getDisplayName = (wrappedComponent: React.ComponentType): string => {
   if (stringHasValue(wrappedComponent.displayName)) { return wrappedComponent.displayName; }
+  // @ts-ignore
   if (stringHasValue(wrappedComponent.name)) { return wrappedComponent.name; }
 
   return 'Component';
