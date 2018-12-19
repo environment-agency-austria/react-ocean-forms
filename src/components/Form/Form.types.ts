@@ -88,4 +88,4 @@ export interface IFormProps<TFieldValues = IFieldValues, TSubmitArgs = unknown> 
 
 export type TFormValidationResult = {
   [prop: string]: TFieldError | TFormValidationResult;
-};
+} | null;
