@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## [2.1.6] # 2018-12-19
 - Bugfix: Added `null` as allowed return type for `Form.onValidate` callback
 
 ## [2.1.5] # 2018-12-16
