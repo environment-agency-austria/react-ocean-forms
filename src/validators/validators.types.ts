@@ -62,6 +62,12 @@ export type TValidator = ((value: TBasicFieldValue, context: IFormContext, ...ar
  * Async validator method type
  */
 export type TAsyncValidator = ((value: TBasicFieldValue, context: IFormContext, ...args: unknown[]) => Promise<TFieldError>);
+/**
+ * A validator that may be async or not
+ */
+export type TAnyValidator = (
+  (value: TBasicFieldValue | undefined, context: IFormContext, ...args: unknown[]) => TFieldError | Promise<TFieldError>
+);
 
 /**
  * Default validator type
