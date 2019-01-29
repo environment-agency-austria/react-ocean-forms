@@ -50,7 +50,7 @@ ShallowWrapper {
           className="text-right"
           htmlFor="unitInput"
         >
-          <FormComponent(FormText)
+          <FormText
             text="unitLabel"
           />
         </label>,
@@ -78,7 +78,7 @@ ShallowWrapper {
         "nodeType": "host",
         "props": Object {
           "children": Array [
-            <FormComponent(FormText)
+            <FormText
               text="unitLabel"
             />,
             null,
@@ -165,7 +165,7 @@ ShallowWrapper {
             className="text-right"
             htmlFor="unitInput"
           >
-            <FormComponent(FormText)
+            <FormText
               text="unitLabel"
             />
           </label>,
@@ -193,7 +193,7 @@ ShallowWrapper {
           "nodeType": "host",
           "props": Object {
             "children": Array [
-              <FormComponent(FormText)
+              <FormText
                 text="unitLabel"
               />,
               null,
@@ -344,7 +344,7 @@ ShallowWrapper {
           className="text-right"
           htmlFor="unitInput"
         >
-          <FormComponent(FormText)
+          <FormText
             text="unitLabel"
           />
         </label>,
@@ -372,7 +372,7 @@ ShallowWrapper {
         "nodeType": "host",
         "props": Object {
           "children": Array [
-            <FormComponent(FormText)
+            <FormText
               text="unitLabel"
             />,
             null,
@@ -459,7 +459,7 @@ ShallowWrapper {
             className="text-right"
             htmlFor="unitInput"
           >
-            <FormComponent(FormText)
+            <FormText
               text="unitLabel"
             />
           </label>,
@@ -487,7 +487,7 @@ ShallowWrapper {
           "nodeType": "host",
           "props": Object {
             "children": Array [
-              <FormComponent(FormText)
+              <FormText
                 text="unitLabel"
               />,
               null,
@@ -638,7 +638,7 @@ ShallowWrapper {
           className="text-right"
           htmlFor="unitInput"
         >
-          <FormComponent(FormText)
+          <FormText
             text="unitLabel"
           />
           <span
@@ -671,7 +671,7 @@ ShallowWrapper {
         "nodeType": "host",
         "props": Object {
           "children": Array [
-            <FormComponent(FormText)
+            <FormText
               text="unitLabel"
             />,
             <span
@@ -773,7 +773,7 @@ ShallowWrapper {
             className="text-right"
             htmlFor="unitInput"
           >
-            <FormComponent(FormText)
+            <FormText
               text="unitLabel"
             />
             <span
@@ -806,7 +806,7 @@ ShallowWrapper {
           "nodeType": "host",
           "props": Object {
             "children": Array [
-              <FormComponent(FormText)
+              <FormText
                 text="unitLabel"
               />,
               <span
