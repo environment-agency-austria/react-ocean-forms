@@ -4,5 +4,12 @@
     "exclude": [
       "config/**"
     ]
+  },
+  "rules": {
+    "import-name": [
+      false, {
+        "react": "React"
+      }
+    ]
   }
 }
