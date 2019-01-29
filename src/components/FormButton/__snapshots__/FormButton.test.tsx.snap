@@ -5,26 +5,6 @@ ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <FormButton
     component="div"
-    context={
-      Object {
-        "asyncValidateOnChange": false,
-        "asyncValidationWait": 400,
-        "busy": false,
-        "defaultValues": Object {},
-        "disabled": false,
-        "fieldPrefix": null,
-        "getFieldState": [MockFunction],
-        "getValues": [MockFunction],
-        "notifyFieldEvent": [MockFunction],
-        "plaintext": false,
-        "registerField": [MockFunction],
-        "registerListener": [MockFunction],
-        "stringFormatter": [MockFunction],
-        "submit": [MockFunction],
-        "unregisterField": [MockFunction],
-        "unregisterListener": [MockFunction],
-      }
-    }
     disabled={false}
     onClick={[Function]}
     type="submit"
@@ -95,26 +75,6 @@ ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <FormButton
     component="button"
-    context={
-      Object {
-        "asyncValidateOnChange": false,
-        "asyncValidationWait": 400,
-        "busy": false,
-        "defaultValues": Object {},
-        "disabled": false,
-        "fieldPrefix": null,
-        "getFieldState": [MockFunction],
-        "getValues": [MockFunction],
-        "notifyFieldEvent": [MockFunction],
-        "plaintext": false,
-        "registerField": [MockFunction],
-        "registerListener": [MockFunction],
-        "stringFormatter": [MockFunction],
-        "submit": [MockFunction],
-        "unregisterField": [MockFunction],
-        "unregisterListener": [MockFunction],
-      }
-    }
     disabled={false}
     onClick={[Function]}
     type="submit"
