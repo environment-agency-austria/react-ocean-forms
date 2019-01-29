@@ -26,13 +26,8 @@ export const withField = <TComp extends React.ComponentType<TProps>, TProps exte
 
   const validatedComponent: React.SFC<IWrappedProps> = (props: IWrappedProps): JSX.Element => {
     const renderComponent = (field: IFieldComponentFieldProps, meta: IFieldComponentMeta): JSX.Element => {
-      return (
-        <CastedComponent
-          field={field}
-          meta={meta}
-          {...props}
-        />
-      );
+      // @ts-ignore
+      return <CastedComponent field={field} meta={meta} {...props} />;
     };
 
     return (

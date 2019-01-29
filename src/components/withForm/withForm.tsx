@@ -18,6 +18,7 @@ type FormComponentProps<TComp> = Subtract<JSX.LibraryManagedAttributes<TComp, Pr
 
 /**
  * High order component for consuming the form context
+ * @deprecated Deprecated in favour of `useFormContext` hook
  */
 export const withForm = <TComp extends React.ComponentType<TProps>, TProps extends IFormContextProps = PropsOf<TComp>>(Component: TComp):
 React.ComponentType<FormComponentProps<TComp>> => {
@@ -39,7 +40,10 @@ React.ComponentType<FormComponentProps<TComp>> => {
   const FormComponent: React.SFC<FormComponentProps<TComp>> = (props: FormComponentProps<TComp>): JSX.Element => {
     return (
       <FormContext.Consumer>
-        {(context: IFormContext): JSX.Element => <CastedComponent {...props} context={context} />}
+        {(context: IFormContext): JSX.Element => {
+          // @ts-ignore
+          return <CastedComponent {...props} context={context} />;
+        }}
       </FormContext.Consumer>
     );
   };
