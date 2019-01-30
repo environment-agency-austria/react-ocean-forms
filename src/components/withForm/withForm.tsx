@@ -7,7 +7,7 @@
 
 import React from 'react';
 import { getDisplayName, PropsOf, Subtract } from '../../utils';
-import { FormContext, IFormContext } from '../FormContext';
+import { useFormContext } from '../FormContext';
 import { IFormContextProps } from './withForm.types';
 
 /**
@@ -38,14 +38,10 @@ React.ComponentType<FormComponentProps<TComp>> => {
    */
   // tslint:disable-next-line:naming-convention
   const FormComponent: React.SFC<FormComponentProps<TComp>> = (props: FormComponentProps<TComp>): JSX.Element => {
-    return (
-      <FormContext.Consumer>
-        {(context: IFormContext): JSX.Element => {
-          // @ts-ignore
-          return <CastedComponent {...props} context={context} />;
-        }}
-      </FormContext.Consumer>
-    );
+    const context = useFormContext();
+
+    // @ts-ignore
+    return <CastedComponent {...props} context={context} />;
   };
   FormComponent.displayName = `FormComponent(${getDisplayName(Component)})`;
 
