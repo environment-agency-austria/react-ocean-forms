@@ -16,7 +16,7 @@
     "lint": "tslint -t stylish --project ."
   },
   "peerDependencies": {
-    "react": "^16.4.0"
+    "react": "^16.8.0-alpha.1"
   },
   "dependencies": {},
   "devDependencies": {
