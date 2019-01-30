@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+### New features
+- Added `useFormContext` hook for easy access to the form context
+
+### Other
+- Migrated to react 16.8 to enable hooks functionality
+- Deprecated `withForm` - `useFormContext`
+
 ## [2.1.6] # 2018-12-19
 - Bugfix: Added `null` as allowed return type for `Form.onValidate` callback
 
