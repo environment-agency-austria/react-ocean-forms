@@ -16,23 +16,23 @@
     "lint": "tslint -t stylish --project ."
   },
   "peerDependencies": {
-    "react": "^16.8.0-alpha.1"
+    "react": "^16.8.1"
   },
   "dependencies": {},
   "devDependencies": {
     "@types/enzyme": "^3.1.16",
     "@types/enzyme-adapter-react-16": "^1.0.3",
     "@types/jest": "^23.3.13",
-    "@types/react": "^16.7.22",
+    "@types/react": "^16.8.2",
     "coveralls": "^3.0.2",
     "enzyme": "^3.8.0",
-    "enzyme-adapter-react-16": "^1.8.0",
+    "enzyme-adapter-react-16": "^1.9.1",
     "jest": "^23.6.0",
-    "react": "^16.8.0-alpha.1",
-    "react-dom": "^16.8.0-alpha.1",
-    "rollup": "^1.1.0",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
+    "rollup": "^1.1.2",
     "rollup-plugin-commonjs": "^9.2.0",
-    "rollup-plugin-filesize": "^6.0.0",
+    "rollup-plugin-filesize": "^6.0.1",
     "rollup-plugin-node-resolve": "^4.0.0",
     "rollup-plugin-typescript2": "^0.19.2",
     "ts-jest": "^23.10.5",
@@ -45,7 +45,7 @@
     "typescript": "^3.2.2"
   },
   "resolutions": {
-    "@types/react": "16.7.22",
+    "@types/react": "16.8.2",
     "@types/enzyme": "^3.1.16"
   },
   "files": [
