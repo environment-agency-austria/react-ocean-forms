@@ -17,7 +17,7 @@ describe('FormContext', () => {
       (<jest.Mock>useContext).mockReturnValueOnce(undefined);
 
       expect(() => { useFormContext(); }).toThrowError(
-        '[useFormContext]: Could not find form context. This component must be used inside a <Form> tag.'
+        '[useFormContext]: Could not find form context. This component must be used inside a <Form> tag.',
       );
     });
   });
