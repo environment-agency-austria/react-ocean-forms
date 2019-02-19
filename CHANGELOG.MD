@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ### New features
 - Added `useFormContext` hook for easy access to the form context
 - Added `validators.withAsyncParam` wrapper function to call async validators with parameters
+- Added `disabled` and `plaintext` props to `Field` to override global form state locally
 
 ### Other
 - Migrated to react 16.8 to enable hooks functionality
