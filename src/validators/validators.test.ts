@@ -125,14 +125,18 @@ describe('default validators', () => {
     });
   });
 
-  describe('withParam utility', () => {
+  const withUtilityCases = [
+    ['withParam', validators.withParam],
+    ['withAsyncParam', validators.withAsyncParam],
+  ];
+  describe.each(withUtilityCases)('%s utility', (name: string, utility: ((first: Function, ...args: unknown[]) => Function)) => {
     const testValidator = jest.fn();
     const param1 = '123';
     const param2 = 456;
     const value = 'abcd';
     const context = createMockFormContext();
 
-    const func = validators.withParam(testValidator, param1, param2);
+    const func = utility(testValidator, param1, param2);
 
     it('should call the validator', () => {
       func(value, context);

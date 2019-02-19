@@ -7,7 +7,7 @@
 
 import { IFormContext } from '../components/FormContext';
 import { TBasicFieldValue } from '../components/withField';
-import { FieldErrorMessageId, TFieldError, TValidator } from './validators.types';
+import { FieldErrorMessageId, TAsyncValidator, TFieldError, TValidator } from './validators.types';
 
 /**
  * Wrapper function to call validators with parameters
@@ -17,6 +17,15 @@ import { FieldErrorMessageId, TFieldError, TValidator } from './validators.types
  */
 const withParam = (validator: TValidator, ...args: unknown[]): TValidator => {
   return (value: TBasicFieldValue, context: IFormContext): TFieldError => validator(value, context, args);
+};
+/**
+ * Wrapper function to call async validators with parameters
+ * @param validator function to call
+ * @param context form context
+ * @param args parameters for the validator
+ */
+const withAsyncParam = (validator: TAsyncValidator, ...args: unknown[]): TAsyncValidator => {
+  return async (value: TBasicFieldValue, context: IFormContext): Promise<TFieldError> => validator(value, context, args);
 };
 
 /**
@@ -104,6 +113,7 @@ function isILength(object: any): object is ILength {
 // tslint:disable-next-line:naming-convention
 export const validators = {
   withParam,
+  withAsyncParam,
   required,
   alphaNumeric,
   minLength,
