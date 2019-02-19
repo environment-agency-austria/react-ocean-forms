@@ -1,32 +1,18 @@
-import * as React from 'react';
+import React from 'react';
 
 import { shallow, ShallowWrapper } from 'enzyme';
 
 import { createMockFormContext } from '../../test-utils/enzymeFormContext';
-import { Subtract } from '../../utils';
-import { IFormContext } from '../FormContext';
+import { useFormContext } from '../FormContext';
+
+import { withForm } from './withForm';
 import { IFormContextProps } from './withForm.types';
 
-type TWithFormMock<T extends IFormContextProps> = ((Component: React.ComponentType<T>) => React.SFC<Subtract<T, IFormContextProps>>);
-
-const prepareMock = <T extends IFormContextProps>(formContext: IFormContext): TWithFormMock<T> => {
-  interface IMockConsumer {
-    children(value: IFormContext): React.ReactNode;
-  }
-
-  jest.doMock('../FormContext', () => ({
-    FormContext: { Consumer: ({ children }: IMockConsumer): React.ReactNode => {
-      return children(formContext);
-    }},
-  }));
-
-  // tslint:disable-next-line:no-require-imports no-unsafe-any
-  return require('./withForm').withForm;
-};
+jest.mock('../FormContext');
 
 describe('withForm', () => {
   const formContext = createMockFormContext();
-  const withForm = prepareMock(formContext);
+  (useFormContext as jest.Mock).mockReturnValue(formContext);
 
   // tslint:disable-next-line:naming-convention
   const TestComponent = (): JSX.Element => (<div id="test-component" />);
@@ -52,7 +38,7 @@ describe('withForm', () => {
     });
 
     it('should have the formContext supplied as a prop', () => {
-      expect(childWrapper.prop('context')).toBe(formContext);
+      expect(wrapper.prop('context')).toBe(formContext);
     });
   });
 });

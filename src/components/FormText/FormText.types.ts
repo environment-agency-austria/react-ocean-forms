@@ -5,12 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { IMessageValues } from '../../utils';
-import { IFormContextProps } from '../withForm';
 
 /**
  * FormText component props
  */
-export interface IFormTextProps extends IFormContextProps {
+export interface IFormTextProps {
   /**
    * Text or message id
    */

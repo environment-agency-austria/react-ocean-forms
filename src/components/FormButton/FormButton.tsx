@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import * as React from 'react';
+import React from 'react';
 
-import { withForm } from '../withForm';
+import { useFormContext } from '../FormContext';
 import { IFormButtonProps } from './FormButton.types';
 
 /**
@@ -14,16 +14,20 @@ import { IFormButtonProps } from './FormButton.types';
  * automatically disable the button if the
  * form is busy
  */
-export class BaseFormButton extends React.Component<IFormButtonProps> {
-  public static displayName: string = 'FormButton';
+export const FormButton = (props: IFormButtonProps): JSX.Element =>  {
+  const {
+    disabled,
+    type,
+    submitArgs,
+    // tslint:disable-next-line:naming-convention
+    component: Component,
+    onClick,
+    ...rest
+  } = props;
 
-  // tslint:disable-next-line:typedef
-  public static defaultProps = {
-    component: 'button',
-    type: 'submit',
-    disabled: false,
-    onClick: (): void => undefined,
-  };
+  const { busy, disabled: formDisabled, submit } = useFormContext();
+
+  const buttonDisabled = busy || formDisabled || disabled;
 
   /**
    * Calls formContext.submit if the button is not
@@ -31,17 +35,7 @@ export class BaseFormButton extends React.Component<IFormButtonProps> {
    * submitParams, otherwise just calls the onClick
    * event handler
    */
-  private handleClick = (event: MouseEvent): void => {
-    const {
-      context: { busy, disabled: formDisabled, submit },
-      type,
-      submitArgs,
-      onClick,
-      disabled,
-    } = this.props;
-
-    const buttonDisabled = busy || formDisabled || disabled;
-
+  const handleClick = (event: MouseEvent): void => {
     if (buttonDisabled) {
       event.preventDefault();
 
@@ -54,32 +48,15 @@ export class BaseFormButton extends React.Component<IFormButtonProps> {
     }
 
     onClick(event);
-  }
+  };
 
-  // tslint:disable-next-line:member-ordering
-  public render(): JSX.Element {
-    const {
-      context: { busy, disabled: formDisabled },
-      disabled,
-      type,
-      // tslint:disable-next-line:naming-convention
-      component: Component,
-      onClick,
-      ...rest
-    } = this.props;
-
-    const buttonDisabled = busy || formDisabled || disabled;
-
-    return (
-      <Component
-        type={type}
-        disabled={buttonDisabled}
-        onClick={this.handleClick}
-        {...rest}
-      />
-    );
-
-  }
-}
-
-export const FormButton = withForm(BaseFormButton);
+  // @ts-ignore Waiting for https://github.com/Microsoft/TypeScript/issues/28768 to be fixed
+  return <Component type={type} disabled={buttonDisabled} onClick={handleClick} {...rest} />;
+};
+FormButton.displayName = 'FormButton';
+FormButton.defaultProps = {
+  component: 'button',
+  type: 'submit',
+  disabled: false,
+  onClick: (): void => undefined,
+};

@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import * as React from 'react';
+import React from 'react';
 
 import { getDisplayName, PropsOf, Subtract } from '../../utils';
 import { IValidatedComponentProps } from '../withValidation';
@@ -26,13 +26,8 @@ export const withField = <TComp extends React.ComponentType<TProps>, TProps exte
 
   const validatedComponent: React.SFC<IWrappedProps> = (props: IWrappedProps): JSX.Element => {
     const renderComponent = (field: IFieldComponentFieldProps, meta: IFieldComponentMeta): JSX.Element => {
-      return (
-        <CastedComponent
-          field={field}
-          meta={meta}
-          {...props}
-        />
-      );
+      // @ts-ignore
+      return <CastedComponent field={field} meta={meta} {...props} />;
     };
 
     return (

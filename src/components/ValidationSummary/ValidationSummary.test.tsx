@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import { shallow, ShallowWrapper } from 'enzyme';
 
@@ -125,7 +125,13 @@ describe('<ValidationSummary />', () => {
 
         raiseError(listenerCallback);
 
-        const wrapper = shallow(mockRender.mock.calls[0][0] as React.ReactElement<{}>);
+        // We are using the mock calls in order to extract the parameters
+        // that have been used in the last call. The first parameter of the
+        // first call will contain the react element that we need.
+        // PS: Shut up tslint
+        const typedCalls = mockRender.mock.calls as [[React.ReactElement]];
+
+        const wrapper = shallow(typedCalls[0][0]);
         expect(wrapper).toMatchSnapshot();
       });
 

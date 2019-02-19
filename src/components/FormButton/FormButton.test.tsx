@@ -1,11 +1,13 @@
-import * as React from 'react';
+import React from 'react';
 
 import { shallow, ShallowWrapper } from 'enzyme';
 import { mockEvent } from '../../test-utils/enzymeEventUtils';
 import { createMockFormContext } from '../../test-utils/enzymeFormContext';
-import { IFormContext } from '../FormContext';
-import { BaseFormButton } from './FormButton';
+import { IFormContext, useFormContext } from '../FormContext';
+import { FormButton } from './FormButton';
 import { IFormButtonProps } from './FormButton.types';
+
+jest.mock('../FormContext');
 
 describe('<FormButton />', () => {
   interface ISetupArgs {
@@ -28,9 +30,10 @@ describe('<FormButton />', () => {
       ...contextOverrides,
     };
 
+    (useFormContext as jest.Mock).mockReturnValue(formContext);
+
     const wrapper = shallow((
-      <BaseFormButton
-        context={formContext}
+      <FormButton
         {...props}
       />
     ));

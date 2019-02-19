@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import * as React from 'react';
+import React from 'react';
 
 import { getDisplayName, PropsOf, Subtract } from '../../utils';
 import { IFormContext } from '../FormContext';
@@ -28,14 +28,8 @@ export const withValidation = <TComp extends React.ComponentType<TProps>, TProps
 
   const validatedComponent: React.SFC<IWrappedProps> = (props: IWrappedProps): JSX.Element => {
     const renderComponent = (fullName: string, validation: IValidationProp, context: IFormContext): JSX.Element => {
-      return (
-        <CastedComponent
-          context={context}
-          fullName={fullName}
-          validation={validation}
-          {...props}
-        />
-      );
+      // @ts-ignore
+      return <CastedComponent context={context} fullName={fullName} validation={validation} {...props} />;
     };
 
     return (

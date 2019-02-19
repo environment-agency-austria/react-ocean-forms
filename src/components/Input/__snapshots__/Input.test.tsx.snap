@@ -2,288 +2,70 @@
 
 exports[`<Input /> should only display the value if plaintext is set 1`] = `
 Object {
-  "wrapper": ShallowWrapper {
-    Symbol(enzyme.__root__): [Circular],
-    Symbol(enzyme.__unrendered__): <Input
-      field={
-        Object {
-          "disabled": false,
-          "id": "unitInput",
-          "name": "unitInput",
-          "onBlur": [MockFunction],
-          "onChange": [MockFunction],
-          "value": "",
-        }
-      }
-      label="unitLabel"
-      meta={
-        Object {
-          "error": null,
-          "isRequired": false,
-          "isValidating": false,
-          "plaintext": true,
-          "stringFormatter": [MockFunction],
-          "touched": false,
-          "valid": true,
-        }
-      }
-      type="text"
-    />,
-    Symbol(enzyme.__renderer__): Object {
-      "batchedUpdates": [Function],
-      "getNode": [Function],
-      "render": [Function],
-      "simulateError": [Function],
-      "simulateEvent": [Function],
-      "unmount": [Function],
-    },
-    Symbol(enzyme.__node__): Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "function",
-      "props": Object {
-        "children": "",
-        "field": Object {
-          "disabled": false,
-          "id": "unitInput",
-          "name": "unitInput",
-          "onBlur": [MockFunction],
-          "onChange": [MockFunction],
-          "value": "",
-        },
-        "label": "unitLabel",
-        "meta": Object {
-          "error": null,
-          "isRequired": false,
-          "isValidating": false,
-          "plaintext": true,
-          "stringFormatter": [MockFunction],
-          "touched": false,
-          "valid": true,
-        },
-        "type": "text",
-      },
-      "ref": null,
-      "rendered": "",
-      "type": [Function],
-    },
-    Symbol(enzyme.__nodes__): Array [
+  "wrapper": <FieldLine
+    field={
       Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "function",
-        "props": Object {
-          "children": "",
-          "field": Object {
-            "disabled": false,
-            "id": "unitInput",
-            "name": "unitInput",
-            "onBlur": [MockFunction],
-            "onChange": [MockFunction],
-            "value": "",
-          },
-          "label": "unitLabel",
-          "meta": Object {
-            "error": null,
-            "isRequired": false,
-            "isValidating": false,
-            "plaintext": true,
-            "stringFormatter": [MockFunction],
-            "touched": false,
-            "valid": true,
-          },
-          "type": "text",
-        },
-        "ref": null,
-        "rendered": "",
-        "type": [Function],
-      },
-    ],
-    Symbol(enzyme.__options__): Object {
-      "adapter": ReactSixteenAdapter {
-        "options": Object {
-          "enableComponentDidUpdateOnSetState": true,
-          "lifecycles": Object {
-            "componentDidUpdate": Object {
-              "onSetState": true,
-            },
-            "getDerivedStateFromProps": true,
-            "getSnapshotBeforeUpdate": true,
-            "setState": Object {
-              "skipsComponentDidUpdateOnNullish": true,
-            },
-          },
-        },
-      },
-    },
-  },
+        "disabled": false,
+        "id": "unitInput",
+        "name": "unitInput",
+        "onBlur": [MockFunction],
+        "onChange": [MockFunction],
+        "value": "",
+      }
+    }
+    label="unitLabel"
+    meta={
+      Object {
+        "error": null,
+        "isRequired": false,
+        "isValidating": false,
+        "plaintext": true,
+        "stringFormatter": [MockFunction],
+        "touched": false,
+        "valid": true,
+      }
+    }
+    type="text"
+  />,
 }
 `;
 
 exports[`<Input /> should render without crashing 1`] = `
 Object {
-  "wrapper": ShallowWrapper {
-    Symbol(enzyme.__root__): [Circular],
-    Symbol(enzyme.__unrendered__): <Input
-      field={
-        Object {
-          "disabled": false,
-          "id": "unitInput",
-          "name": "unitInput",
-          "onBlur": [MockFunction],
-          "onChange": [MockFunction],
-          "value": "",
-        }
-      }
-      label="unitLabel"
-      meta={
-        Object {
-          "error": null,
-          "isRequired": false,
-          "isValidating": false,
-          "plaintext": false,
-          "stringFormatter": [MockFunction],
-          "touched": false,
-          "valid": true,
-        }
-      }
-      type="text"
-    />,
-    Symbol(enzyme.__renderer__): Object {
-      "batchedUpdates": [Function],
-      "getNode": [Function],
-      "render": [Function],
-      "simulateError": [Function],
-      "simulateEvent": [Function],
-      "unmount": [Function],
-    },
-    Symbol(enzyme.__node__): Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "function",
-      "props": Object {
-        "children": <input
-          disabled={false}
-          id="unitInput"
-          name="unitInput"
-          onBlur={[MockFunction]}
-          onChange={[MockFunction]}
-          type="text"
-          value=""
-        />,
-        "field": Object {
-          "disabled": false,
-          "id": "unitInput",
-          "name": "unitInput",
-          "onBlur": [MockFunction],
-          "onChange": [MockFunction],
-          "value": "",
-        },
-        "label": "unitLabel",
-        "meta": Object {
-          "error": null,
-          "isRequired": false,
-          "isValidating": false,
-          "plaintext": false,
-          "stringFormatter": [MockFunction],
-          "touched": false,
-          "valid": true,
-        },
-        "type": "text",
-      },
-      "ref": null,
-      "rendered": Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "host",
-        "props": Object {
-          "disabled": false,
-          "id": "unitInput",
-          "name": "unitInput",
-          "onBlur": [MockFunction],
-          "onChange": [MockFunction],
-          "type": "text",
-          "value": "",
-        },
-        "ref": null,
-        "rendered": null,
-        "type": "input",
-      },
-      "type": [Function],
-    },
-    Symbol(enzyme.__nodes__): Array [
+  "wrapper": <FieldLine
+    field={
       Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "function",
-        "props": Object {
-          "children": <input
-            disabled={false}
-            id="unitInput"
-            name="unitInput"
-            onBlur={[MockFunction]}
-            onChange={[MockFunction]}
-            type="text"
-            value=""
-          />,
-          "field": Object {
-            "disabled": false,
-            "id": "unitInput",
-            "name": "unitInput",
-            "onBlur": [MockFunction],
-            "onChange": [MockFunction],
-            "value": "",
-          },
-          "label": "unitLabel",
-          "meta": Object {
-            "error": null,
-            "isRequired": false,
-            "isValidating": false,
-            "plaintext": false,
-            "stringFormatter": [MockFunction],
-            "touched": false,
-            "valid": true,
-          },
-          "type": "text",
-        },
-        "ref": null,
-        "rendered": Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "disabled": false,
-            "id": "unitInput",
-            "name": "unitInput",
-            "onBlur": [MockFunction],
-            "onChange": [MockFunction],
-            "type": "text",
-            "value": "",
-          },
-          "ref": null,
-          "rendered": null,
-          "type": "input",
-        },
-        "type": [Function],
-      },
-    ],
-    Symbol(enzyme.__options__): Object {
-      "adapter": ReactSixteenAdapter {
-        "options": Object {
-          "enableComponentDidUpdateOnSetState": true,
-          "lifecycles": Object {
-            "componentDidUpdate": Object {
-              "onSetState": true,
-            },
-            "getDerivedStateFromProps": true,
-            "getSnapshotBeforeUpdate": true,
-            "setState": Object {
-              "skipsComponentDidUpdateOnNullish": true,
-            },
-          },
-        },
-      },
-    },
-  },
+        "disabled": false,
+        "id": "unitInput",
+        "name": "unitInput",
+        "onBlur": [MockFunction],
+        "onChange": [MockFunction],
+        "value": "",
+      }
+    }
+    label="unitLabel"
+    meta={
+      Object {
+        "error": null,
+        "isRequired": false,
+        "isValidating": false,
+        "plaintext": false,
+        "stringFormatter": [MockFunction],
+        "touched": false,
+        "valid": true,
+      }
+    }
+    type="text"
+  >
+    <input
+      disabled={false}
+      id="unitInput"
+      name="unitInput"
+      onBlur={[MockFunction]}
+      onChange={[MockFunction]}
+      type="text"
+      value=""
+    />
+  </FieldLine>,
 }
 `;

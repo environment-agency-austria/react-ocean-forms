@@ -5,14 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import * as React from 'react';
+import React from 'react';
 
 /**
  * Acquire the props for a Component {T}
  */
 export type PropsOf<T> =
   // tslint:disable-next-line:no-any
-  T extends (props: infer P) => React.ReactElement<any> | null // Try to infer for SFCs
+  T extends (props: infer P) => React.ReactElement | null // Try to infer for SFCs
   ? P
   : T extends new (props: infer P) => React.Component // Otherwise try to infer for classes
     ? P

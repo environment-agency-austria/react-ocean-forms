@@ -1,19 +1,22 @@
-import * as React from 'react';
+import React from 'react';
 
 import { shallow, ShallowWrapper } from 'enzyme';
 
 import { createMockFormContext } from '../../test-utils/enzymeFormContext';
 import { IMessageValues } from '../../utils';
-import { IFormContext } from '../FormContext';
-import { BaseFormText } from './FormText';
+import { IFormContext, useFormContext } from '../FormContext';
+import { FormText } from './FormText';
+
+jest.mock('../FormContext');
 
 describe('<FormText />', () => {
   const mockContext: IFormContext = createMockFormContext();
   mockContext.stringFormatter = jest.fn().mockImplementation((value: string): string => value);
 
+  (useFormContext as jest.Mock).mockReturnValue(mockContext);
+
   const setup = (text: string | null, values?: IMessageValues): ShallowWrapper => shallow((
-    <BaseFormText
-      context={mockContext}
+    <FormText
       text={text}
       values={values}
     />

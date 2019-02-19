@@ -5,9 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import * as React from 'react';
+import React from 'react';
 import { getDisplayName, PropsOf, Subtract } from '../../utils';
-import { FormContext, IFormContext } from '../FormContext';
+import { useFormContext } from '../FormContext';
 import { IFormContextProps } from './withForm.types';
 
 /**
@@ -18,6 +18,7 @@ type FormComponentProps<TComp> = Subtract<JSX.LibraryManagedAttributes<TComp, Pr
 
 /**
  * High order component for consuming the form context
+ * @deprecated Deprecated in favour of `useFormContext` hook
  */
 export const withForm = <TComp extends React.ComponentType<TProps>, TProps extends IFormContextProps = PropsOf<TComp>>(Component: TComp):
 React.ComponentType<FormComponentProps<TComp>> => {
@@ -37,11 +38,10 @@ React.ComponentType<FormComponentProps<TComp>> => {
    */
   // tslint:disable-next-line:naming-convention
   const FormComponent: React.SFC<FormComponentProps<TComp>> = (props: FormComponentProps<TComp>): JSX.Element => {
-    return (
-      <FormContext.Consumer>
-        {(context: IFormContext): JSX.Element => <CastedComponent {...props} context={context} />}
-      </FormContext.Consumer>
-    );
+    const context = useFormContext();
+
+    // @ts-ignore
+    return <CastedComponent {...props} context={context} />;
   };
   FormComponent.displayName = `FormComponent(${getDisplayName(Component)})`;
 
