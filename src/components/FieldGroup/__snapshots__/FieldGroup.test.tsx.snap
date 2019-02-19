@@ -1,250 +1,47 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FieldGroup /> Render should render without crashing 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <FieldGroup
-    context={
-      Object {
-        "asyncValidateOnChange": false,
-        "asyncValidationWait": 400,
-        "busy": false,
-        "defaultValues": Object {},
-        "disabled": false,
-        "fieldPrefix": null,
-        "getFieldState": [MockFunction],
-        "getValues": [MockFunction],
-        "notifyFieldEvent": [MockFunction],
-        "plaintext": false,
-        "registerField": [MockFunction] {
-          "calls": Array [
-            Array [
-              "unitGroup",
-              Object {
-                "getValue": [Function],
-                "isGroup": true,
-                "label": "Unit group",
-                "reset": [Function],
-                "updateValidation": [MockFunction],
-                "validate": [Function],
-              },
-            ],
-          ],
-          "results": Array [
-            Object {
-              "isThrow": false,
-              "value": undefined,
-            },
-          ],
-        },
-        "registerListener": [MockFunction],
-        "stringFormatter": [MockFunction],
-        "submit": [MockFunction],
-        "unregisterField": [MockFunction],
-        "unregisterListener": [MockFunction],
-      }
-    }
-    fullName="unitGroup"
-    label="Unit group"
-    name="unitGroup"
-    render={
-      [MockFunction] {
+<ContextProvider
+  value={
+    Object {
+      "asyncValidateOnChange": false,
+      "asyncValidationWait": 400,
+      "busy": false,
+      "defaultValues": Object {},
+      "disabled": false,
+      "fieldPrefix": "unitGroup",
+      "getFieldState": [MockFunction],
+      "getValues": [MockFunction],
+      "notifyFieldEvent": [Function],
+      "plaintext": false,
+      "registerField": [MockFunction] {
         "calls": Array [
           Array [
+            "unitGroup",
             Object {
-              "error": null,
-              "fullName": "unitGroup",
-              "isRequired": false,
-              "isValidating": false,
-              "valid": true,
+              "getValue": [Function],
+              "isGroup": true,
+              "label": "Unit group",
+              "reset": [Function],
+              "updateValidation": [MockFunction],
+              "validate": [Function],
             },
           ],
         ],
         "results": Array [
           Object {
-            "isThrow": false,
-            "value": null,
+            "type": "return",
+            "value": undefined,
           },
         ],
-      }
+      },
+      "registerListener": [MockFunction],
+      "stringFormatter": [MockFunction],
+      "submit": [MockFunction],
+      "unregisterField": [MockFunction],
+      "unregisterListener": [MockFunction],
+      "values": undefined,
     }
-    validation={
-      Object {
-        "error": null,
-        "isRequired": false,
-        "isValidating": false,
-        "reset": [MockFunction],
-        "update": [MockFunction],
-        "valid": true,
-        "validate": [MockFunction],
-      }
-    }
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "checkPropTypes": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "function",
-    "props": Object {
-      "children": null,
-      "value": Object {
-        "asyncValidateOnChange": false,
-        "asyncValidationWait": 400,
-        "busy": false,
-        "defaultValues": Object {},
-        "disabled": false,
-        "fieldPrefix": "unitGroup",
-        "getFieldState": [MockFunction],
-        "getValues": [MockFunction],
-        "notifyFieldEvent": [Function],
-        "plaintext": false,
-        "registerField": [MockFunction] {
-          "calls": Array [
-            Array [
-              "unitGroup",
-              Object {
-                "getValue": [Function],
-                "isGroup": true,
-                "label": "Unit group",
-                "reset": [Function],
-                "updateValidation": [MockFunction],
-                "validate": [Function],
-              },
-            ],
-          ],
-          "results": Array [
-            Object {
-              "isThrow": false,
-              "value": undefined,
-            },
-          ],
-        },
-        "registerListener": [MockFunction],
-        "stringFormatter": [MockFunction],
-        "submit": [MockFunction],
-        "unregisterField": [MockFunction],
-        "unregisterListener": [MockFunction],
-        "values": undefined,
-      },
-    },
-    "ref": null,
-    "rendered": null,
-    "type": Object {
-      "$$typeof": Symbol(react.provider),
-      "_context": Object {
-        "$$typeof": Symbol(react.context),
-        "Consumer": Object {
-          "$$typeof": Symbol(react.context),
-          "_calculateChangedBits": null,
-          "_context": [Circular],
-        },
-        "Provider": [Circular],
-        "_calculateChangedBits": null,
-        "_currentRenderer": null,
-        "_currentRenderer2": null,
-        "_currentValue": undefined,
-        "_currentValue2": undefined,
-        "_threadCount": 0,
-      },
-    },
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "function",
-      "props": Object {
-        "children": null,
-        "value": Object {
-          "asyncValidateOnChange": false,
-          "asyncValidationWait": 400,
-          "busy": false,
-          "defaultValues": Object {},
-          "disabled": false,
-          "fieldPrefix": "unitGroup",
-          "getFieldState": [MockFunction],
-          "getValues": [MockFunction],
-          "notifyFieldEvent": [Function],
-          "plaintext": false,
-          "registerField": [MockFunction] {
-            "calls": Array [
-              Array [
-                "unitGroup",
-                Object {
-                  "getValue": [Function],
-                  "isGroup": true,
-                  "label": "Unit group",
-                  "reset": [Function],
-                  "updateValidation": [MockFunction],
-                  "validate": [Function],
-                },
-              ],
-            ],
-            "results": Array [
-              Object {
-                "isThrow": false,
-                "value": undefined,
-              },
-            ],
-          },
-          "registerListener": [MockFunction],
-          "stringFormatter": [MockFunction],
-          "submit": [MockFunction],
-          "unregisterField": [MockFunction],
-          "unregisterListener": [MockFunction],
-          "values": undefined,
-        },
-      },
-      "ref": null,
-      "rendered": null,
-      "type": Object {
-        "$$typeof": Symbol(react.provider),
-        "_context": Object {
-          "$$typeof": Symbol(react.context),
-          "Consumer": Object {
-            "$$typeof": Symbol(react.context),
-            "_calculateChangedBits": null,
-            "_context": [Circular],
-          },
-          "Provider": [Circular],
-          "_calculateChangedBits": null,
-          "_currentRenderer": null,
-          "_currentRenderer2": null,
-          "_currentValue": undefined,
-          "_currentValue2": undefined,
-          "_threadCount": 0,
-        },
-      },
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "legacyContextMode": "parent",
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getChildContext": Object {
-            "calledByRenderer": false,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-  },
-}
+  }
+/>
 `;
