@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## [2.2.0] # 2019-02-19
 ### New features
 - Added `useFormContext` hook for easy access to the form context
 - Added `validators.withAsyncParam` wrapper function to call async validators with parameters
