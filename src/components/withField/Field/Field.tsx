@@ -24,11 +24,17 @@ interface IContextMeta extends IValueMeta {
   externalValue?: TBasicFieldValue;
 }
 
+interface ILocalOverridenMeta {
+  disabled?: boolean;
+  plaintext?: boolean;
+}
+
 interface IFieldState {
   touched: boolean;
   dirty: boolean;
   value: TBasicFieldValue;
   contextMeta: IContextMeta;
+  propsMeta: ILocalOverridenMeta;
 }
 
 interface IMetaChanges {
@@ -51,6 +57,8 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
       fullName,
       label,
       context,
+      disabled,
+      plaintext,
       validation: {
         update: updateValidation,
       },
@@ -78,6 +86,10 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
         disabled: false,
         plaintext: false,
       },
+      propsMeta: {
+        disabled,
+        plaintext,
+      },
     };
   }
 
@@ -90,6 +102,8 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    */
   public static getDerivedStateFromProps(nextProps: IFieldProps, prevState: IFieldState): IFieldState | null {
     const {
+      disabled: overrideDisabled,
+      plaintext: overridePlaintext,
       context: {
         disabled: newDisabled,
         plaintext: newPlaintext,
@@ -122,6 +136,10 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
           disabled: newDisabled,
           plaintext: newPlaintext,
         },
+        propsMeta: {
+          disabled: overrideDisabled,
+          plaintext: overridePlaintext,
+        },
       });
     }
 
@@ -136,12 +154,14 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
   private static callGetDisplayValue(props: IFieldProps, value: TBasicFieldValue | undefined): TBasicFieldValue {
     const {
       context,
+      disabled,
+      plaintext,
       getDisplayValue = (val: TBasicFieldValue): TBasicFieldValue => val,
     } = props;
 
     return getDisplayValue(
       value === undefined ? '' : value,
-      BaseField.getValueMeta(context),
+      BaseField.getValueMeta(context, disabled, plaintext),
     );
   }
 
@@ -182,6 +202,8 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
     props: IFieldProps, state: IFieldState, defaultValue: TBasicFieldValue | undefined, externalValue: TBasicFieldValue | undefined,
   ): IMetaChanges {
     const {
+      disabled: newOverrideDisabled,
+      plaintext: newOverridePlaintext,
       context: {
         disabled: newDisabled,
         plaintext: newPlaintext,
@@ -195,13 +217,18 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
         disabled: oldDisabled,
         plaintext: oldPlaintext,
       },
+      propsMeta: {
+        disabled: oldOverrideDisabled,
+        plaintext: oldOverridePlaintext,
+      },
       touched,
     } = state;
 
     return {
       defaultValue: !touched && defaultValue !== oldDefaultValue,
       externalValue: externalValue !== oldExternalValue,
-      meta: newDisabled !== oldDisabled || newPlaintext !== oldPlaintext,
+      meta: newDisabled !== oldDisabled || newPlaintext !== oldPlaintext
+            || newOverrideDisabled !== oldOverrideDisabled || newOverridePlaintext !== oldOverridePlaintext,
     };
   }
 
@@ -243,11 +270,13 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
   /**
    * Returns a meta object for the value lifecycle hooks
    * @param context Form context
+   * @param overrideDisabled Disabled prop from field
+   * @param overridePlaintext Plaintext prop from field
    */
-  private static getValueMeta(context: IFormContext): IValueMeta {
+  private static getValueMeta(context: IFormContext, overrideDisabled?: boolean, overridePlaintext?: boolean): IValueMeta {
     return {
-      disabled: context.disabled,
-      plaintext: context.plaintext,
+      disabled: overrideDisabled === undefined ? context.disabled : overrideDisabled,
+      plaintext: overridePlaintext === undefined ? context.plaintext : overridePlaintext,
     };
   }
 
@@ -271,12 +300,14 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
   private getSubmitValue = (value: TBasicFieldValue): TBasicFieldValue => {
     const {
       context,
+      disabled,
+      plaintext,
       getSubmitValue = (val: TBasicFieldValue): TBasicFieldValue => val,
     } = this.props;
 
     return getSubmitValue(
       value,
-      BaseField.getValueMeta(context),
+      BaseField.getValueMeta(context, disabled, plaintext),
     );
   }
 
@@ -404,12 +435,12 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    * mapped to the input component (e.g. html input)
    */
   private createFieldProps(): IFieldComponentFieldProps {
-    const { context: { disabled }, fullName } = this.props;
+    const { disabled: disabledOverride, context: { disabled }, fullName } = this.props;
     const { value } = this.state;
 
     return {
       value,
-      disabled,
+      disabled: disabledOverride === undefined ? disabled : disabledOverride,
       id: fullName,
       name: fullName,
       onChange: this.handleFieldChanged,
@@ -423,6 +454,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
    */
   private createMetaProps(): IFieldComponentMeta {
     const {
+      plaintext: plaintextOverride,
       context: {
         stringFormatter,
         plaintext,
@@ -444,7 +476,7 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
       isRequired,
       touched,
       stringFormatter,
-      plaintext,
+      plaintext: plaintextOverride === undefined ? plaintext : plaintextOverride,
     };
   }
 

@@ -44,6 +44,14 @@ export interface IFieldGroupProps<TFieldValues = IFieldValues> extends IValidati
    */
   values?: TFieldValues;
   /**
+   * Disables this field group and all its fields.
+   */
+  disabled?: boolean;
+  /**
+   * Puts the field group and all its fields in plaintext mode.
+   */
+  plaintext?: boolean;
+  /**
    * Render prop
    * @param params Meta information about the group
    */

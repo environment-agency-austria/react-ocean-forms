@@ -67,6 +67,14 @@ export interface IBaseFieldProps {
    */
   getSubmitValue?: TValueCallback;
   /**
+   * Disables this field.
+   */
+  disabled?: boolean;
+  /**
+   * Puts the field in plaintext mode.
+   */
+  plaintext?: boolean;
+  /**
    * Triggered on field blur.
    */
   onBlur?(): void;
