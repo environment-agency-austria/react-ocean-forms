@@ -107,11 +107,13 @@ extends React.Component<IFieldGroupProps<TFieldValues>, IFieldGroupState> {
    * for the group items if needed
    */
   private getSubContext(): IFormContext {
-    const { context } = this.props;
+    const { context, disabled, plaintext } = this.props;
 
     return {
       ...context,
       ...this.state,
+      disabled: disabled === undefined ? context.disabled : disabled,
+      plaintext: plaintext === undefined ? context.plaintext : plaintext,
       defaultValues: this.overrideContextValues<IFieldValues>('defaultValues'),
       values: this.overrideContextValues<IFieldValues | undefined>('values'),
     };

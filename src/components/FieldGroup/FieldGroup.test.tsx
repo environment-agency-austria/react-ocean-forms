@@ -356,6 +356,39 @@ describe('<FieldGroup />', () => {
         });
       });
     });
+
+    const overrideCases = [
+      ['plaintext'],
+      ['disabled'],
+    ];
+
+    describe.each(overrideCases)('Context.%s behaviour', (prop) => {
+      const cases = [
+        [false, undefined, false],
+        [true, undefined, true],
+        [false, false, false],
+        [false, false, true],
+        [true, true, true],
+        [true, true, false],
+      ];
+
+      it.each(cases)(
+        `${prop} should be %s if Field.${prop} is %s and FormContext.${prop} is %s`,
+        (expectedValue: boolean, propValue: boolean | undefined, contextValue: boolean) => {
+          const { groupContext } = setup({
+            props: {
+              [prop]: propValue,
+            },
+            contextOverrides: {
+              [prop]: contextValue,
+            },
+          });
+
+          // @ts-ignore any is OK here
+          expect(groupContext[prop]).toEqual(expectedValue);
+        },
+      );
+    });
   });
 
   describe('render prop', () => {
