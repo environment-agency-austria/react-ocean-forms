@@ -28,8 +28,10 @@ export const getDeepValue = <T, U extends TStringProp = TStringProp>(name: strin
       if (o === undefined) { return undefined; }
       if (o[i] === null) { return undefined; }
 
+      // tslint:disable-next-line:no-unsafe-any
       return o[i];
     },
+    // @ts-ignore
     object,
   );
 };

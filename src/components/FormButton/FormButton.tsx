@@ -14,14 +14,14 @@ import { IFormButtonProps } from './FormButton.types';
  * automatically disable the button if the
  * form is busy
  */
-export const FormButton = (props: IFormButtonProps): JSX.Element =>  {
+export const FormButton: React.FunctionComponent<IFormButtonProps> = (props): JSX.Element => {
   const {
-    disabled,
-    type,
+    disabled = false,
+    type = 'submit',
     submitArgs,
     // tslint:disable-next-line:naming-convention
-    component: Component,
-    onClick,
+    component: Component = 'button',
+    onClick = (): void => undefined,
     ...rest
   } = props;
 
@@ -35,7 +35,7 @@ export const FormButton = (props: IFormButtonProps): JSX.Element =>  {
    * submitParams, otherwise just calls the onClick
    * event handler
    */
-  const handleClick = (event: MouseEvent): void => {
+  const handleClick = (event: React.MouseEvent): void => {
     if (buttonDisabled) {
       event.preventDefault();
 
@@ -52,11 +52,4 @@ export const FormButton = (props: IFormButtonProps): JSX.Element =>  {
 
   // @ts-ignore Waiting for https://github.com/Microsoft/TypeScript/issues/28768 to be fixed
   return <Component type={type} disabled={buttonDisabled} onClick={handleClick} {...rest} />;
-};
-FormButton.displayName = 'FormButton';
-FormButton.defaultProps = {
-  component: 'button',
-  type: 'submit',
-  disabled: false,
-  onClick: (): void => undefined,
 };
