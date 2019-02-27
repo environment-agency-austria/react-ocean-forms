@@ -1,15 +1,9 @@
 {
-  /*
-    * This is the overall configuration for typescript.
-    * It is mainly used by vscode and other configurations.
-    */
   "compilerOptions": {
-    // Output stuff
     "outDir": "build",
     "jsx": "react",
     "declaration": false,
     "sourceMap": false,
-    // Which libraries should be included
     "lib": [
       "es5",
       "dom",
@@ -18,17 +12,16 @@
       "es2015.collection",
     ],
     "target": "es5",
-    "moduleResolution": "node",
-    // Some style guidelines
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "strictNullChecks": true,
     "noUnusedLocals": true,
-    // disable javascript for now. The js sources are transpiled with webpack anyway
     "allowJs": false,
     "checkJs": false,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,        
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "alwaysStrict": true
   }
 }
