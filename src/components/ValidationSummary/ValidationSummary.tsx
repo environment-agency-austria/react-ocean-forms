@@ -53,6 +53,7 @@ export class BaseValidationSummary extends React.Component<IValidationSummaryPro
     this.headerRef = React.createRef();
 
     const { context: { registerListener }, id } = props;
+    // @ts-ignore TODO: Improve the typings of registerListener to allow custom listener methods
     registerListener(id, this.notify);
 
     this.state = {
