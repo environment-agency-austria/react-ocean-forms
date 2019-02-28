@@ -8,7 +8,7 @@ jobs:
   include:
     - stage: Test
       name: "Linting"
-      script: "yarn lint --debug"
+      script: "yarn lint"
     - script: jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
       name: "Produce coverage"
     - stage: Build
