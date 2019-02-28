@@ -3,6 +3,9 @@ node_js:
   - "10"
 cache:
   yarn: true
+env:
+  global:
+    - YARN_VERSION="1.13.0"
 
 jobs:
   include:
