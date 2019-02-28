@@ -13,7 +13,7 @@
     "test:coverage": "jest --coverage",
     "start": "rollup -c -w",
     "build": "rollup -c",
-    "lint": "eslint src/**"
+    "lint": "eslint \"src/**\""
   },
   "peerDependencies": {
     "react": "^16.8.0"
