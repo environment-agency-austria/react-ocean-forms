@@ -13,7 +13,6 @@ export interface IFormButtonProps {
   /**
    * Button type
    */
-  // tslint:disable-next-line:no-reserved-keywords
   type?: string;
   /**
    * Optional submit args, will be passed to the

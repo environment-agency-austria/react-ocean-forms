@@ -13,6 +13,5 @@ export interface IInputProps extends IFieldComponentProps {
   /**
    * Input type (e.g. text, number, ...)
    */
-  // tslint:disable-next-line:no-reserved-keywords
   type: string;
 }

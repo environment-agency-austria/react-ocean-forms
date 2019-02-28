@@ -14,13 +14,13 @@ import { IFormTextProps } from './FormText.types';
  * context.stringFormatter method
  */
 export const FormText: React.SFC<IFormTextProps> = ({ text, values }: IFormTextProps): JSX.Element | null => {
-  if (text === '' || text === null) { return null; }
-
   const context = useFormContext();
+  if (text === '' || text === null) { return null; }
 
   return (
     <React.Fragment>
       {context.stringFormatter(text, values)}
+      <button disabled={true} />
     </React.Fragment>
   );
 };

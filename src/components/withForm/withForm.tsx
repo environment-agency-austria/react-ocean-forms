@@ -29,14 +29,12 @@ React.ComponentType<FormComponentProps<TComp>> => {
    * typescript will cry about the component
    * not having a constructor / call signatures.
    */
-  // tslint:disable-next-line:naming-convention
   const CastedComponent = Component as React.ComponentType<TProps>;
 
   /**
    * Component that injects the form context prop
    * to the wrapped component
    */
-  // tslint:disable-next-line:naming-convention
   const FormComponent: React.SFC<FormComponentProps<TComp>> = (props: FormComponentProps<TComp>): JSX.Element => {
     const context = useFormContext();
 

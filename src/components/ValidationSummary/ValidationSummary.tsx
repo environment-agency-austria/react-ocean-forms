@@ -39,7 +39,6 @@ interface IValidationSummaryState {
 export class BaseValidationSummary extends React.Component<IValidationSummaryProps, IValidationSummaryState> {
   public static displayName: string = 'ValidationSummary';
 
-  // tslint:disable-next-line:typedef
   public static defaultProps = {
     title: 'ojs_form_validationSummaryHeader',
     disableFocusOnSubmit: false,
@@ -168,7 +167,6 @@ export class BaseValidationSummary extends React.Component<IValidationSummaryPro
     });
   }
 
-  // tslint:disable-next-line:member-ordering
   public render(): JSX.Element | null {
     const {
       id,

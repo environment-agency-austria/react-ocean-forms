@@ -63,6 +63,14 @@ const alphaNumeric = (value: TBasicFieldValue): TFieldError => {
   return /[^a-zA-Z0-9 ]/i.test(value) ? FieldErrorMessageId.AlphaNumeric : undefined;
 };
 
+interface ILength {
+  length: number;
+}
+
+function isILength(object: any): object is ILength {
+  return object !== null && object !== undefined && typeof (<ILength>object).length === 'number';
+}
+
 /**
  * Checks if the given value has the minimum
  * length
@@ -101,16 +109,6 @@ const maxLength = (value: TBasicFieldValue, context: IFormContext, [length]: [nu
   };
 };
 
-interface ILength {
-  length: number;
-}
-
-// tslint:disable-next-line:no-any
-function isILength(object: any): object is ILength {
-  return object !== null && object !== undefined && typeof (<ILength>object).length === 'number';
-}
-
-// tslint:disable-next-line:naming-convention
 export const validators = {
   withParam,
   withAsyncParam,

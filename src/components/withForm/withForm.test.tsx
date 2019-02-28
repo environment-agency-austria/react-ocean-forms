@@ -14,9 +14,7 @@ describe('withForm', () => {
   const formContext = createMockFormContext();
   (useFormContext as jest.Mock).mockReturnValue(formContext);
 
-  // tslint:disable-next-line:naming-convention
   const TestComponent = (): JSX.Element => (<div id="test-component" />);
-  // tslint:disable-next-line:naming-convention
   const WrappedComponent = withForm(TestComponent);
 
   const setup = (props?: Partial<IFormContextProps>): ShallowWrapper => shallow((

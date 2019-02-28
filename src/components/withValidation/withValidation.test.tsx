@@ -20,9 +20,7 @@ describe('withValidation', () => {
   const setup = ({
     props,
   }: Partial<ISetupArgs> = {}): ISetupResult => {
-    // tslint:disable-next-line:naming-convention
     const TestComponent = (): JSX.Element => (<div id="test-component" />);
-    // tslint:disable-next-line:naming-convention
     const WrappedComponent = withValidation(TestComponent);
 
     const wrapper = shallow((

@@ -21,8 +21,7 @@ interface IFieldGroupState {
  * Wrapper for groups of input fields
  * managed by the form component
  */
-export class BaseFieldGroup<TFieldValues extends object = IFieldValues>
-extends React.Component<IFieldGroupProps<TFieldValues>, IFieldGroupState> {
+export class BaseFieldGroup<TFieldValues extends object = IFieldValues> extends React.Component<IFieldGroupProps<TFieldValues>, IFieldGroupState> {
   public static displayName: string = 'FieldGroup';
 
   constructor(props: IFieldGroupProps<TFieldValues>) {
@@ -225,7 +224,6 @@ extends React.Component<IFieldGroupProps<TFieldValues>, IFieldGroupState> {
     return validate(value, args);
   }
 
-  // tslint:disable-next-line:member-ordering
   public render(): JSX.Element {
     const {
       fullName,
