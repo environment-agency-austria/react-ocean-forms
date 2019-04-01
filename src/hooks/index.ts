@@ -1,3 +1,4 @@
+export * from './useFieldRegistration';
 export * from './useFormContext';
 export * from './useFullName';
 export * from './useIsUnmounted';
