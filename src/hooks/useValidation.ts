@@ -15,7 +15,7 @@ import { useFormContext } from './useFormContext';
 import { useIsUnmounted } from './useIsUnmounted';
 import { useTimeout } from './useTimeout';
 
-interface IBasicValidationState {
+export interface IBasicValidationState {
   /**
    * True, if the field is currently validating
    * (asynchronous validation running in background)
