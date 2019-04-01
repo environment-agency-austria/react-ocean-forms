@@ -45,9 +45,9 @@ export interface IFieldState {
 /**
  * Type describing a collection of field values
  */
-export type IFieldValues = {
+export interface IFieldValues {
   [prop: string]: TBasicFieldValue | IFieldValues;
-};
+}
 
 /**
  * Base interface for the form context
