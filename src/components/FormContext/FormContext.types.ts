@@ -6,7 +6,7 @@
  */
 import { TSTringFormatter } from '../../utils/stringFormatter';
 import { TBasicFieldValue } from '../withField';
-import { IValidationState, IValidationArgs } from '../../hooks';
+import { TUpdateMethod, IValidationArgs, IBasicValidationState } from '../../hooks';
 
 export type TFormEventListener = ((name: string, event: string, args?: unknown) => void);
 
@@ -26,7 +26,7 @@ export interface IFieldState {
    * Triggers the validation of this field
    * @param args Validation args
    */
-  validate(args?: Partial<IValidationArgs>): Promise<IValidationState>;
+  validate(args?: Partial<IValidationArgs>): Promise<IBasicValidationState>;
   /**
    * Returns the current value of the field
    */
@@ -39,7 +39,7 @@ export interface IFieldState {
    * Updates the validation state of the field
    * @param state New validation state
    */
-  updateValidation(state: Partial<IValidationState>): void;
+  updateValidation: TUpdateMethod;
 }
 
 /**

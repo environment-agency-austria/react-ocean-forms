@@ -6,7 +6,7 @@
  */
 import { IValidationState } from '../../hooks';
 import { IFieldValues } from '../FormContext';
-import { IValidatedComponentProps } from '../ValidationWrapper';
+import { IValidationProps } from '../withValidation';
 
 /**
  * Meta information about the group
@@ -22,7 +22,11 @@ export interface IFieldGroupRenderParams extends IValidationState {
 /**
  * Props for the field group component
  */
-export interface IFieldGroupProps<TFieldValues = IFieldValues> extends IValidatedComponentProps {
+export interface IFieldGroupProps<TFieldValues = IFieldValues> extends IValidationProps<TFieldValues> {
+  /**
+   * Field name
+   */
+  name: string;
   /**
    * Label of the group
    */
