@@ -214,10 +214,11 @@ describe('<FieldGroup />', () => {
         });
       };
 
-      describe.each([
+      const cases: [string, unknown][] = [
         ['test', { foo: 'bar' }],
         ['random', null],
-      ])('Event "%s"', (eventName: string, eventArgs: unknown) => {
+      ];
+      describe.each(cases)('Event "%s"', (eventName: string, eventArgs: unknown) => {
         checkEventPassing(eventName, eventArgs);
       });
 
@@ -325,7 +326,7 @@ describe('<FieldGroup />', () => {
     ];
 
     describe.each(propCases)('Context.%s behaviour', (prop) => {
-      const formStates = [
+      const formStates: [string, unknown][] = [
         ['null', null],
         ['undefined', undefined],
         ['empty', {}],
@@ -363,7 +364,7 @@ describe('<FieldGroup />', () => {
     ];
 
     describe.each(overrideCases)('Context.%s behaviour', (prop) => {
-      const cases = [
+      const cases: [boolean, undefined | boolean, boolean][] = [
         [false, undefined, false],
         [true, undefined, true],
         [false, false, false],

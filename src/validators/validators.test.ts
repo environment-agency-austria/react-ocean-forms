@@ -6,7 +6,7 @@ import { FieldErrorMessageId } from './validators.types';
 describe('default validators', () => {
   describe('required validator', () => {
     const errorId = FieldErrorMessageId.Required;
-    const cases = [
+    const cases: any[] = [
       [errorId, []],
       [undefined, ['mock']],
 
@@ -31,7 +31,7 @@ describe('default validators', () => {
 
   describe('alphaNumeric validator', () => {
     const errorId = FieldErrorMessageId.AlphaNumeric;
-    const cases = [
+    const cases: any[] = [
       [undefined, []],
       [undefined, ['mock']],
 
@@ -57,7 +57,7 @@ describe('default validators', () => {
 
   describe('minLength validator', () => {
     const errorId = FieldErrorMessageId.MinLength;
-    const cases = [
+    const cases: any[] = [
       [errorId, [], 5],
       [undefined, ['mock', 'foo', 'bar', 'baz', 'buzz'], 5],
 
@@ -92,7 +92,7 @@ describe('default validators', () => {
 
   describe('maxLength validator', () => {
     const errorId = FieldErrorMessageId.MaxLength;
-    const cases = [
+    const cases: any[] = [
       [undefined, [], 5],
       [errorId, ['mock', 'foo', 'bar', 'baz', 'buzz', 'honk'], 5],
 
@@ -125,7 +125,7 @@ describe('default validators', () => {
     });
   });
 
-  const withUtilityCases = [
+  const withUtilityCases: any[] = [
     ['withParam', validators.withParam],
     ['withAsyncParam', validators.withAsyncParam],
   ];

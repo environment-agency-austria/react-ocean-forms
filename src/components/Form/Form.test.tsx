@@ -138,7 +138,7 @@ describe('<Form />', () => {
   });
 
   describe('configuration', () => {
-    const cases = [
+    const cases: any[] = [
       ['disabled', true, 'disabled'],
       ['formatString', jest.fn(), 'stringFormatter'],
       ['asyncValidateOnChange', true, 'asyncValidateOnChange'],
@@ -158,7 +158,7 @@ describe('<Form />', () => {
 
   describe('invalid field registration', () => {
     const mf = (): void => {};
-    const cases = [
+    const cases: any[] = [
       ['no parameters', undefined, undefined],
       ['invalid field name', '', undefined],
       ['no state', 'foo', undefined],
@@ -183,7 +183,7 @@ describe('<Form />', () => {
   });
 
   describe('field states and values', () => {
-    const createCases = (): (string | IMockField)[][] => {
+    const createCases = (): [string, IMockField, boolean?][] => {
       return [
         ['field', createMockField('unitField', 'Unit field')],
         ['group', createMockField('unitGroup', 'Unit group', true)],
