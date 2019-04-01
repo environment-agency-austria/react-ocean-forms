@@ -7,7 +7,7 @@
 
 import React from 'react';
 import { getDisplayName, PropsOf, Subtract } from '../../utils';
-import { useFormContext } from '../FormContext';
+import { useFormContext } from '../../hooks';
 import { IFormContextProps } from './withForm.types';
 
 /**

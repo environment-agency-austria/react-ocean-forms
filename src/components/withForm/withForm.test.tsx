@@ -3,12 +3,12 @@ import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 
 import { createMockFormContext } from '../../test-utils/enzymeFormContext';
-import { useFormContext } from '../FormContext';
 
+import { useFormContext } from '../../hooks';
 import { withForm } from './withForm';
 import { IFormContextProps } from './withForm.types';
 
-jest.mock('../FormContext');
+jest.mock('../../hooks');
 
 describe('withForm', () => {
   const formContext = createMockFormContext();
