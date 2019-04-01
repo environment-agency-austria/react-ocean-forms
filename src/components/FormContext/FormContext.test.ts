@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { useFormContext } from './FormContext.hooks';
+import { useFormContext } from '../../hooks/useFormContext';
 
 jest.mock('react');
 
