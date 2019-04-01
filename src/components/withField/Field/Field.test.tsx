@@ -4,9 +4,9 @@ import { shallow, ShallowWrapper } from 'enzyme';
 
 import { createMockFormContext, createMockValidation } from '../../../test-utils/enzymeFormContext';
 import { IFieldState, IFormContext } from '../../FormContext';
-import { IValidationProp } from '../../withValidation';
 import { BaseField } from './Field';
 import { IFieldComponentFieldProps, IFieldProps, TBasicFieldValue } from './Field.types';
+import { IValidationProp } from '../../ValidationWrapper';
 
 describe('<Field />', () => {
   const mockName = 'unitField';

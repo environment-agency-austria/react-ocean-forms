@@ -4,8 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { TSTringFormatter } from '../../../utils/stringFormatter';
-import { IValidationProps, IValidationState } from '../../withValidation';
+import { TSTringFormatter } from '../../../utils';
+import { IValidationState } from '../../../hooks';
+import { IValidationProps } from '../../withValidation';
 
 /**
  * Type that defines which values a field could hold

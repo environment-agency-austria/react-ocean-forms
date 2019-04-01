@@ -6,7 +6,7 @@
  */
 import React from 'react';
 
-import { useFormContext } from '../FormContext';
+import { useFormContext } from '../../hooks';
 import { IFormButtonProps } from './FormButton.types';
 
 /**

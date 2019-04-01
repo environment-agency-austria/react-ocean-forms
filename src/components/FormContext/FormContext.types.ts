@@ -6,7 +6,7 @@
  */
 import { TSTringFormatter } from '../../utils/stringFormatter';
 import { TBasicFieldValue } from '../withField';
-import { IValidationArgs, IValidationState } from '../withValidation';
+import { IValidationState, IValidationArgs } from '../../hooks';
 
 export type TFormEventListener = ((name: string, event: string, args?: unknown) => void);
 

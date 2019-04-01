@@ -7,7 +7,7 @@
 import React from 'react';
 
 import { getDisplayName, PropsOf, Subtract } from '../../utils';
-import { IValidatedComponentProps } from '../withValidation';
+import { IValidatedComponentProps } from '../ValidationWrapper';
 import { Field, IBaseFieldProps, IFieldComponentFieldProps, IFieldComponentMeta, IFieldComponentProps } from './Field';
 
 type WrappedValidatedComponentProps<TComp> =

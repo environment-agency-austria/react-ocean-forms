@@ -9,8 +9,8 @@ import React from 'react';
 
 import { toArray } from '../../utils';
 import { IFieldErrorObject } from '../../validators';
+import { IValidationState } from '../../hooks';
 import { withForm } from '../withForm';
-import { IValidationState } from '../withValidation';
 import { IValidationSummaryProps } from './ValidationSummary.types';
 
 interface IValidationEventArgs extends IValidationState {
