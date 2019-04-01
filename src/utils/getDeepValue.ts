@@ -7,7 +7,6 @@
 
 // Local type for better readability
 type TStringProp = {
-  // tslint:disable-next-line:no-any
   [prop: string]: any;
 };
 
@@ -18,7 +17,6 @@ type TStringProp = {
  * @param name Name / property path
  * @param object Object
  */
-// tslint:disable-next-line:naming-convention
 export const getDeepValue = <T, U extends TStringProp = TStringProp>(name: string, object?: U): T | undefined => {
   return <T | undefined>name.split('.').reduce(
     (o: U, i: string) => {
@@ -28,7 +26,6 @@ export const getDeepValue = <T, U extends TStringProp = TStringProp>(name: strin
       if (o === undefined) { return undefined; }
       if (o[i] === null) { return undefined; }
 
-      // tslint:disable-next-line:no-unsafe-any
       return o[i];
     },
     // @ts-ignore

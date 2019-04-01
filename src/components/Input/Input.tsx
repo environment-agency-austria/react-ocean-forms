@@ -19,7 +19,6 @@ import { IInputProps } from './Input.types';
 export class BaseInput extends React.Component<IInputProps> {
   public static displayName: string = 'Input';
 
-  // tslint:disable-next-line:typedef
   public static defaultProps = {
     type: 'text',
   };

@@ -35,7 +35,7 @@ describe('withValidation', () => {
     let fullName: string;
     let validation: IValidationProp;
 
-    const renderCallback = (cFullName: string, cValidation: IValidationProp, cContext: IFormContext): JSX.Element => {
+    const renderCallback = (cFullName: string, cValidation: IValidationProp): JSX.Element => {
       fullName = cFullName;
       validation = cValidation;
 

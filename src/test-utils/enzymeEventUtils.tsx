@@ -21,9 +21,7 @@ interface IMockEvent {
  * tested code wants to call preventDefault
  * @param props Additional event props
  */
-// tslint:disable-next-line:naming-convention
 export const mockEvent = (props?: object): IMockEvent => ({
-  // tslint:disable-next-line:no-empty
   preventDefault: (): void => {},
   ...props,
 });

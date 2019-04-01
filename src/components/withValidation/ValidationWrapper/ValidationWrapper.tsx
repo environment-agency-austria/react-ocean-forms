@@ -233,7 +233,6 @@ export class BaseValidationWrapper extends React.Component<IValidationWrapperPro
     context.notifyFieldEvent(this.fullName, 'validation', newState);
   }
 
-  // tslint:disable-next-line:member-ordering
   public render(): JSX.Element {
     const {
       isValidating,

@@ -480,7 +480,6 @@ export class BaseField extends React.Component<IFieldProps, IFieldState> {
     };
   }
 
-  // tslint:disable-next-line:member-ordering
   public render(): JSX.Element {
     const { render } = this.props;
 

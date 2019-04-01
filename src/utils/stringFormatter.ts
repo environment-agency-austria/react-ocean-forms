@@ -15,7 +15,6 @@ interface IMessages {
   [s: string]: string;
 }
 
-// tslint:disable-next-line:naming-convention
 let DEFAULT_MESSAGES: IMessages = {
   ojs_error_required: 'This field is mandatory.',
   ojs_error_alphaNumeric: 'Only alpha-numeric input is allowed.',
@@ -24,7 +23,6 @@ let DEFAULT_MESSAGES: IMessages = {
   ojs_field_required: 'Required',
   ojs_form_validationSummaryHeader: 'Errors',
 };
-// tslint:disable-next-line:naming-convention
 export const TEST_MESSAGES = DEFAULT_MESSAGES;
 
 /**
@@ -34,7 +32,6 @@ export const TEST_MESSAGES = DEFAULT_MESSAGES;
  * @param id Message id to be formatted
  * @param values Parameter values
  */
-// tslint:disable-next-line:naming-convention
 export const stringFormatter: TSTringFormatter = (id: string, values?: IMessageValues): string => {
   // Do nothing if the id is not a string
   if (typeof id !== 'string') { return id; }
@@ -66,7 +63,6 @@ export const stringFormatter: TSTringFormatter = (id: string, values?: IMessageV
  * stringFormatter
  * @param messages Object containing messages
  */
-// tslint:disable-next-line:naming-convention
 export const addCustomMessages = (messages: IMessages): void => {
   DEFAULT_MESSAGES = {
     ...DEFAULT_MESSAGES,

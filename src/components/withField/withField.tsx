@@ -19,7 +19,6 @@ type WrappedValidatedComponentProps<TComp> =
 export const withField = <TComp extends React.ComponentType<TProps>, TProps extends IFieldComponentProps = PropsOf<TComp>>
 (component: TComp): React.ComponentType<WrappedValidatedComponentProps<TComp>> => {
 
-  // tslint:disable-next-line:naming-convention
   const CastedComponent = component as React.ComponentType<TProps>;
 
   type IWrappedProps = WrappedValidatedComponentProps<TComp>;

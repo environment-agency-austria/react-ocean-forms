@@ -21,7 +21,6 @@ type WrappedValidatedComponentProps<TComp> =
 export const withValidation = <TComp extends React.ComponentType<TProps>, TProps extends IValidationProps = PropsOf<TComp>>
 (component: TComp): React.ComponentType<WrappedValidatedComponentProps<TComp>> => {
 
-  // tslint:disable-next-line:naming-convention
   const CastedComponent = component as React.ComponentType<TProps>;
 
   type IWrappedProps = WrappedValidatedComponentProps<TComp>;

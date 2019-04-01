@@ -20,10 +20,9 @@ interface IFormState<TFieldValues = IFieldValues> {
  * Wrapper for managed forms
  */
 export class Form<TFieldValues = IFieldValues, TSubmitArgs = unknown>
-extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TFieldValues>> {
+  extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TFieldValues>> {
   public static displayName: string = 'Form';
 
-  // tslint:disable-next-line:typedef
   public static defaultProps = {
     defaultValues: {},
     asyncValidationWait: 400,
@@ -362,7 +361,6 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
    * Renders the form and wraps all its children
    * in a FormContext provider and a html form.
    */
-  // tslint:disable-next-line:member-ordering
   public render(): JSX.Element {
     const {
       children,
@@ -375,7 +373,6 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
     let formClass = className === undefined ? '' : className;
     if (plaintext) { formClass = `${formClass} plaintext`; }
 
-    // tslint:disable-next-line:naming-convention
     const TypedFormContext = (FormContext as unknown) as React.Context<IFormContext<TFieldValues | undefined>>;
 
     return (

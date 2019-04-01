@@ -12,7 +12,6 @@ import { IFieldErrorObject, TFieldError } from '../validators';
  * @param name field name
  * @param error error message
  */
-// tslint:disable-next-line:naming-convention
 export const parseValidationError = (name: string, error: TFieldError): IFieldErrorObject | null => {
   if (typeof error === 'object') {
     if (error.message_id === undefined || error.params === undefined) {
@@ -32,7 +31,6 @@ export const parseValidationError = (name: string, error: TFieldError): IFieldEr
   }
 
   if (error !== undefined) {
-    // tslint:disable-next-line:no-console
     console.error(`[Form] Validation result for the field ${name} was unexpected. Result: ${error}`);
   }
 

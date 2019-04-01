@@ -157,7 +157,6 @@ describe('<Form />', () => {
   });
 
   describe('invalid field registration', () => {
-    // tslint:disable-next-line:no-empty
     const mf = (): void => {};
     const cases = [
       ['no parameters', undefined, undefined],
@@ -478,7 +477,6 @@ describe('<Form />', () => {
 
       it('should trigger a submit-invalid event', async () => {
         const { mockListeners } = await setupSubmit({ props: { onValidate: createInvalidValidator() }, addListeners: true});
-        // tslint:disable-next-line:no-non-null-assertion
         mockListeners!.forEach(item => expect(item.state).toHaveBeenLastCalledWith(
           '_form',
           'submit-invalid',
@@ -511,7 +509,6 @@ describe('<Form />', () => {
       it('should trigger a submit-invalid event', async () => {
         const { mockListeners } = await setupSubmit({ customField: createInvalidField(), addListeners: true});
 
-        // tslint:disable-next-line:no-non-null-assertion
         mockListeners!.forEach(item => expect(item.state).toHaveBeenLastCalledWith(
           '_form',
           'submit-invalid',

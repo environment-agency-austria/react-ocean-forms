@@ -17,7 +17,6 @@ interface IObjectWithName {
 /**
  * Returns the display name of the wrapped component.
  */
-// tslint:disable-next-line:naming-convention
 export const getDisplayName = (wrappedComponent: IObjectWithName | IObjectWithDisplayName | unknown): string => {
   if (stringHasValue((<IObjectWithDisplayName>wrappedComponent).displayName)) {
     return <string>(<IObjectWithDisplayName>wrappedComponent).displayName;

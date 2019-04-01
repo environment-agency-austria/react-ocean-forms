@@ -40,7 +40,6 @@ export interface IFieldErrorObject {
  * IFIeldErrorObject
  * @param object Object to test
  */
-// tslint:disable-next-line:no-any
 export function isIFieldErrorObject(object: any): object is IFieldErrorObject {
   return object && typeof (<IFieldErrorObject>object).message_id === 'string';
 }
@@ -74,7 +73,6 @@ export interface IDefaultValidator extends TValidator {
  * Returns true if the given object is a IDefaultValidator
  * @param object Function to test
  */
-// tslint:disable-next-line:no-any
 export function isDefaultValidator(object: any): object is IDefaultValidator {
   return object && typeof object === 'function' && (<IDefaultValidator>object).isDefaultValidator === true;
 }
