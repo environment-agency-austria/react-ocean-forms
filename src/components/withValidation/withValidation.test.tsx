@@ -4,8 +4,9 @@ import { shallow, ShallowWrapper } from 'enzyme';
 
 import { createMockFormContext, createMockValidation } from '../../test-utils/enzymeFormContext';
 import { IFormContext } from '../FormContext';
+import { IValidationProp } from '../ValidationWrapper';
 import { withValidation } from './withValidation';
-import { IValidationProp, IValidationProps } from './withValidation.types';
+import { IValidationProps } from './withValidation.types';
 
 describe('withValidation', () => {
   interface ISetupArgs {

@@ -8,15 +8,15 @@
 import React from 'react';
 
 import { getDisplayName, PropsOf, Subtract } from '../../utils';
-import { IFormContext } from '../FormContext';
-import { ValidationWrapper } from './ValidationWrapper';
-import { IValidatedComponentProps, IValidationProp, IValidationProps } from './withValidation.types';
+import { ValidationWrapper, IValidationProp, IValidatedComponentProps } from '../ValidationWrapper';
+import { IValidationProps } from './withValidation.types';
 
 type WrappedValidatedComponentProps<TComp> =
   Subtract<JSX.LibraryManagedAttributes<TComp, PropsOf<TComp>>, IValidationProps> & IValidatedComponentProps;
 
 /**
  * Higher order component for validation
+ * @deprecated
  */
 export const withValidation = <TComp extends React.ComponentType<TProps>, TProps extends IValidationProps = PropsOf<TComp>>
 (component: TComp): React.ComponentType<WrappedValidatedComponentProps<TComp>> => {
@@ -26,9 +26,9 @@ export const withValidation = <TComp extends React.ComponentType<TProps>, TProps
   type IWrappedProps = WrappedValidatedComponentProps<TComp>;
 
   const validatedComponent: React.SFC<IWrappedProps> = (props: IWrappedProps): JSX.Element => {
-    const renderComponent = (fullName: string, validation: IValidationProp, context: IFormContext): JSX.Element => {
+    const renderComponent = (fullName: string, validation: IValidationProp): JSX.Element => {
       // @ts-ignore
-      return <CastedComponent context={context} fullName={fullName} validation={validation} {...props} />;
+      return <CastedComponent fullName={fullName} validation={validation} {...props} />;
     };
 
     return (
