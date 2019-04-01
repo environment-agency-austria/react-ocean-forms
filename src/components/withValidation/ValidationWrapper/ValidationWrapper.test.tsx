@@ -140,14 +140,14 @@ describe('withValidation', () => {
     });
 
     describe('required validator', () => {
-      const createValidator = (defaultValue: unknown): Function => {
+      const createValidator = (defaultValue: unknown): TValidator => {
         const customRequiredValidator = (): undefined => undefined;
         customRequiredValidator.isDefaultValidator = defaultValue;
 
         return customRequiredValidator;
       };
 
-      const cases = [
+      const cases: [string, undefined | TValidator[], boolean][] = [
         [
           'should set validation.isRequired to false if there is no required validator present',
           undefined,

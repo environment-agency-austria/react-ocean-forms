@@ -1,7 +1,7 @@
 import { addCustomMessages, IMessageValues, stringFormatter, TEST_MESSAGES } from '../stringFormatter';
 
 describe('stringFormatter', () => {
-  const cases = [
+  const cases: [string, any][] = [
     ['Object', { foo: 'bar' }],
     ['Number', 12345],
     ['Array', [1, 2, 3, 4, 5]],

@@ -409,7 +409,7 @@ describe('<Field />', () => {
       });
 
       describe('meta.disabled handling', () => {
-        const cases = [
+        const cases: [string, boolean, boolean | undefined, boolean][] = [
           [ 'Field.disabled = undefined, FormContext.disabled = false', false, undefined, false ],
           [ 'Field.disabled = undefined, FormContext.disabled = true', true, undefined, true ],
           [ 'Field.disabled = false, FormContext.disabled = false', false, false, false ],
@@ -432,7 +432,7 @@ describe('<Field />', () => {
       });
 
       describe('meta.plaintext handling', () => {
-        const cases = [
+        const cases: [string, boolean, boolean | undefined, boolean][] = [
           [ 'Field.plaintext = undefined, FormContext.plaintext = false', false, undefined, false ],
           [ 'Field.plaintext = undefined, FormContext.plaintext = true', true, undefined, true ],
           [ 'Field.plaintext = false, FormContext.plaintext = false', false, false, false ],
