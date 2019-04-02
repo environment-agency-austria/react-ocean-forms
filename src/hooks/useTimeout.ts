@@ -47,12 +47,9 @@ export function useTimeout(): TUseTimeoutResult {
     [],
   );
 
-  useEffect(
-    () => {
-      return () => internalClearTimeout();
-    },
-    [ internalClearTimeout ]
-  );
+  useEffect(() => {
+    return () => { internalClearTimeout(); }
+  }, [ internalClearTimeout ]);
 
   return [
     internalSetTimeout,
