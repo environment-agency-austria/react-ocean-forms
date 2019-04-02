@@ -31,6 +31,8 @@ export function useFieldGroup(
   disabled: boolean | undefined,
   plaintext: boolean | undefined,
   asyncValidateOnChange: boolean | undefined,
+  defaultValues: IFieldValues | undefined,
+  values: IFieldValues | undefined,
 ): [ IFormContext, IFieldGroupRenderParams ] {
   const formContext = useFormContext();
   const fullName = useFullName(name);
@@ -114,10 +116,9 @@ export function useFieldGroup(
     notifyFieldEvent,
     disabled: disabled === undefined ? formContext.disabled : disabled,
     plaintext: plaintext === undefined ? formContext.plaintext : plaintext,
-    // TODO: Add old strange logic
-    // defaultValues: this.overrideContextValues<IFieldValues>('defaultValues'),
-    // values: this.overrideContextValues<IFieldValues | undefined>('values'),
-  }), [disabled, formContext, fullName, notifyFieldEvent, plaintext]);
+    defaultValues: defaultValues === undefined ? formContext.defaultValues : { ...formContext.defaultValues, ... { [fullName]: defaultValues }},
+    values: values === undefined ? formContext.values : { ...formContext.values, ... { [fullName]: values }},
+  }), [defaultValues, disabled, formContext, fullName, notifyFieldEvent, plaintext, values]);
 
   const groupState = useMemo(
     () => ({

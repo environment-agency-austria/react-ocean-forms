@@ -17,11 +17,11 @@ import { useFieldGroup } from './hooks/useFieldGroup';
  */
 export const FieldGroup: React.FC<IFieldGroupProps> = ({
   name, validators, asyncValidators, asyncValidationWait, render,
-  disabled, plaintext, label, asyncValidateOnChange,
+  disabled, plaintext, label, asyncValidateOnChange, defaultValues, values,
 }): JSX.Element => {
   const [ subContext, groupState ] = useFieldGroup(
     name, label, validators, asyncValidators, asyncValidationWait,
-    disabled, plaintext, asyncValidateOnChange,
+    disabled, plaintext, asyncValidateOnChange, defaultValues, values,
   );
 
   return (
