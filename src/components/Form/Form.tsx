@@ -9,8 +9,8 @@ import React from 'react';
 import { getDeepValue, parseValidationError } from '../../utils';
 import { stringFormatter as defaultStringFormatter } from '../../utils/stringFormatter';
 import { FormContext, IBaseFormContext, IFieldState, IFieldValues, IFormContext, TFormEventListener } from '../FormContext';
-import { IValidationState } from '../withValidation';
 import { IFormProps } from './Form.types';
+import { IBasicValidationState } from '../../hooks';
 
 interface IFormState<TFieldValues = IFieldValues> {
   context: IBaseFormContext<TFieldValues>;
@@ -149,7 +149,7 @@ export class Form<TFieldValues = IFieldValues, TSubmitArgs = unknown>
 
     // Iterate through all fields and validate them
     // if needed.
-    const validations: Promise<IValidationState>[] = [];
+    const validations: Promise<IBasicValidationState>[] = [];
     this.fields.forEach(field => {
       validations.push(field.validate({
         checkAsync: true,
