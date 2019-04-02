@@ -7,7 +7,7 @@ exports[`withValidation render prop should render without error 1`] = `
 `;
 
 exports[`withValidation should render without error 1`] = `
-<FormComponent(ValidationWrapper)
+<Component
   name="mock-item"
   render={[Function]}
 />
