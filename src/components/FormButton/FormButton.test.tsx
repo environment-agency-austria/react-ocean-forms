@@ -3,11 +3,12 @@ import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { mockEvent } from '../../test-utils/enzymeEventUtils';
 import { createMockFormContext } from '../../test-utils/enzymeFormContext';
-import { IFormContext, useFormContext } from '../FormContext';
+import { useFormContext } from '../../hooks';
+import { IFormContext } from '../FormContext';
 import { FormButton } from './FormButton';
 import { IFormButtonProps } from './FormButton.types';
 
-jest.mock('../FormContext');
+jest.mock('../../hooks');
 
 describe('<FormButton />', () => {
   interface ISetupArgs {
