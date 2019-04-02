@@ -105,7 +105,7 @@ export function useFieldGroup(
         void validate(getGroupValue(formContext, fullName));
       }
     },
-    [asyncValidateOnChange, formContext, fullName, fullName.length, validate],
+    [asyncValidateOnChange, formContext, fullName, validate],
   );
 
   const subContext: IFormContext = useMemo(() => ({
