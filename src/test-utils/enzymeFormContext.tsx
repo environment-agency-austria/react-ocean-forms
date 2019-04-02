@@ -1,6 +1,6 @@
 import { IFieldState, IFormContext, TFormEventListener } from '../components/FormContext';
-import { IValidationProp } from '../components/withValidation';
 import { stringFormatter } from '../utils';
+import { IValidationProp } from '../components';
 
 /**
  * Components inside the form module require access to the form context.
