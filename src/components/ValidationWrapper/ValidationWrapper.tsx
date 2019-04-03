@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { useFullName, useValidation } from '../../hooks';
 import { IValidationProp, IValidationWrapperProps } from './ValidationWrapper.types';
@@ -10,24 +10,24 @@ import { IValidationProp, IValidationWrapperProps } from './ValidationWrapper.ty
 export const ValidationWrapper: React.FC<IValidationWrapperProps> = ({ name, validators, asyncValidators, asyncValidationWait, render }): JSX.Element => {
   const fullName = useFullName(name);
 
-  const [
+  const {
     validationState,
     validate,
-    reset,
-    update,
-  ] = useValidation(
+    resetValidation,
+    updateValidationState,
+  } = useValidation(
     fullName,
     validators,
     asyncValidators,
     asyncValidationWait
   );
 
-  const validationProp: IValidationProp = {
+  const validationProp: IValidationProp = useMemo(() => ({
     ...validationState,
-    reset,
+    reset: resetValidation,
     validate,
-    update,
-  };
+    update: updateValidationState,
+  }), [resetValidation, updateValidationState, validate, validationState]);
 
   return render(
     fullName,

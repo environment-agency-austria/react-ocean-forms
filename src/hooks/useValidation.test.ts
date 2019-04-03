@@ -43,10 +43,10 @@ describe('useValidation', () => {
     ));
 
     const validation: IValidationProp = {
-      ...result.current[0],
-      validate: result.current[1],
-      reset: result.current[2],
-      update: result.current[3],
+      ...result.current.validationState,
+      validate: result.current.validate,
+      reset: result.current.resetValidation,
+      update: result.current.updateValidationState,
     };
 
     return {

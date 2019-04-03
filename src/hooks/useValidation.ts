@@ -7,7 +7,7 @@
 
 import { useCallback, useState, useMemo } from 'react';
 
-import { TBasicFieldValue } from '../components/withField';
+import { TBasicFieldValue } from '../components';
 import { TFieldErrors, TValidator, isDefaultValidator, TAsyncValidator, isIFieldErrorObject } from '../validators';
 import { parseValidationError } from '../utils';
 
@@ -64,12 +64,12 @@ export type TValidateMethod<TFieldValue = TBasicFieldValue> = (value: TFieldValu
 export type TResetMethod = () => void;
 export type TUpdateMethod = (state: Partial<IBasicValidationState>) => void;
 
-export type IUseValidationResult = [
-  IValidationState,
-  TValidateMethod,
-  TResetMethod,
-  TUpdateMethod,
-];
+export interface IUseValidationResult {
+  validationState: IValidationState;
+  validate: TValidateMethod;
+  resetValidation: TResetMethod;
+  updateValidationState: TUpdateMethod;
+}
 
 /**
  * Checks if the given validators contain at least one default
@@ -233,10 +233,10 @@ export function useValidation(
     isRequired: isRequired(validators),
   }), [ validators, validationState ]);
 
-  return [
-    fullValidationState,
+  return {
+    validationState: fullValidationState,
     validate,
-    reset,
-    updateAndNotify,
-  ];
+    resetValidation: reset,
+    updateValidationState: updateAndNotify,
+  }
 }
