@@ -1,6 +1,6 @@
 import { TValidator, TAsyncValidator } from '../../validators';
 import { TValidateMethod, TResetMethod, TUpdateMethod, IValidationState } from '../../hooks';
-import { TBasicFieldValue } from '../withField';
+import { TBasicFieldValue } from '../Field';
 
 /**
  * Properties of a component that is wrapped

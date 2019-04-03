@@ -7,10 +7,10 @@
 
 import React from 'react';
 
-import { getDeepValue } from '../../../utils';
-import { IValidationArgs, IValidationState } from '../../../hooks';
-import { IFieldValues, IFormContext } from '../../FormContext';
-import { withValidation } from '../../withValidation';
+import { getDeepValue } from '../../utils';
+import { IValidationArgs, IValidationState } from '../../hooks';
+import { IFieldValues, IFormContext } from '../FormContext';
+import { withValidation } from '../withValidation';
 import {
   IFieldChangedEvent,
   IFieldComponentFieldProps,

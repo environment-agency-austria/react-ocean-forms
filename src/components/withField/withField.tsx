@@ -8,7 +8,7 @@ import React from 'react';
 
 import { getDisplayName, PropsOf, Subtract } from '../../utils';
 import { IValidatedComponentProps } from '../ValidationWrapper';
-import { Field, IBaseFieldProps, IFieldComponentFieldProps, IFieldComponentMeta, IFieldComponentProps } from './Field';
+import { Field, IBaseFieldProps, IFieldComponentFieldProps, IFieldComponentMeta, IFieldComponentProps } from '../Field';
 
 type WrappedValidatedComponentProps<TComp> =
   Subtract<JSX.LibraryManagedAttributes<TComp, PropsOf<TComp>>, IFieldComponentProps> & IBaseFieldProps & IValidatedComponentProps;

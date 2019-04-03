@@ -2,7 +2,7 @@ import React from 'react';
 
 import { shallow, ShallowWrapper } from 'enzyme';
 
-import { IFieldComponentFieldProps, IFieldComponentMeta } from '../withField';
+import { IFieldComponentFieldProps, IFieldComponentMeta } from '../Field';
 import { BaseInput } from './Input';
 import { IInputProps } from './Input.types';
 
