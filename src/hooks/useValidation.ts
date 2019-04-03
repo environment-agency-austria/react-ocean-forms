@@ -114,7 +114,7 @@ export function useValidation(
       };
 
       setValidationState(fullNewState);
-      formContext.notifyFieldEvent(fullName, 'validation', newState);
+      formContext.notifyFieldEvent(fullName, 'validation', fullNewState);
     },
     [ isUnmounted, fullName, formContext, validationState ],
   );
