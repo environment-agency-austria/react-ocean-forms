@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+export * from './Field';
 export * from './FieldError';
 export * from './FieldGroup';
 export * from './FieldLine';
