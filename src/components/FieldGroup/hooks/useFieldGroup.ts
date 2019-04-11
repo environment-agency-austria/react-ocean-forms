@@ -36,12 +36,12 @@ export function useFieldGroup(
 ): [ IFormContext, IFieldGroupRenderParams ] {
   const formContext = useFormContext();
   const fullName = useFullName(name);
-  const [
+  const {
     validationState,
     validate,
     resetValidation,
-    updateValidation,
-  ] = useValidation(
+    updateValidationState,
+  } = useValidation(
     fullName,
     validators,
     asyncValidators,
@@ -65,7 +65,7 @@ export function useFieldGroup(
     fullName,
     label,
     true,
-    updateValidation,
+    updateValidationState,
     validateGroup,
     resetValidation,
     useCallback(() => ({}), []),

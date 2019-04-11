@@ -60,17 +60,17 @@ describe('useFieldGroup', () => {
       ...createMockValidation(),
       ...validationOverrides,
     };
-    (useValidation as jest.Mock).mockReturnValue([
-      {
+    (useValidation as jest.Mock).mockReturnValue({
+      validationState: {
         isValidating: validation.isValidating,
         valid: validation.valid,
         error: validation.error,
         isRequired: validation.isRequired,
       },
-      validation.validate,
-      validation.reset,
-      validation.update,
-    ]);
+      validate: validation.validate,
+      resetValidation: validation.reset,
+      updateValidationState: validation.update,
+    });
 
     (useFieldRegistration as jest.Mock).mockImplementation((fullName, label, isGroup, updateValidation, validate, reset, getValue) => {
       fieldState = {
