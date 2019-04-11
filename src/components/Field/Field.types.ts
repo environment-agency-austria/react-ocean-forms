@@ -6,7 +6,7 @@
  */
 import { TSTringFormatter } from '../../utils';
 import { IValidationState } from '../../hooks';
-import { IValidationProps } from '../withValidation';
+import { IValidatedComponentProps } from '../ValidationWrapper';
 
 /**
  * Type that defines which values a field could hold
@@ -89,7 +89,7 @@ export interface IBaseFieldProps {
 /**
  * Props for the Field component
  */
-export interface IFieldProps extends IBaseFieldProps, IValidationProps {
+export interface IFieldProps extends IBaseFieldProps, IValidatedComponentProps {
   /**
    * Render prop for the input element
    * @param field Props designed to be passed to the field as is @see IFieldComponentFieldProps
