@@ -7,7 +7,7 @@ exports[`withField render prop should render without error 1`] = `
 `;
 
 exports[`withField should render without error 1`] = `
-<ValidatedComponent(Field)
+<Component
   label="Mock Item"
   name="mock-item"
   render={[Function]}
