@@ -120,8 +120,11 @@ export function useValidation(
   );
 
   const reset = useCallback(
-    () => updateAndNotify(createInitialValidationState()),
-    [ updateAndNotify ],
+    () => {
+      clearAsyncTimeout();
+      updateAndNotify(createInitialValidationState());
+    },
+    [clearAsyncTimeout, updateAndNotify],
   );
 
   const validate = useCallback(
