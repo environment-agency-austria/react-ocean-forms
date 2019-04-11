@@ -1,10 +1,10 @@
-import { useValidation, useFullName, useFormContext, useFieldRegistration, IValidationArgs, IValidationState, IBasicValidationState } from '../../hooks';
+import { useValidation, useFullName, useFormContext, useFieldRegistration, IValidationArgs, IBasicValidationState } from '../../hooks';
 
 import { IFieldComponentFieldProps, IFieldComponentMeta, IBaseFieldProps, TBasicFieldValue, IFieldChangedEvent } from './Field.types';
 import { IValidatedComponentProps } from '../ValidationWrapper';
 import { useMemo, useState, useCallback } from 'react';
 
-interface IUseFieldProps extends IBaseFieldProps, IValidatedComponentProps { }
+export interface IUseFieldProps extends IBaseFieldProps, IValidatedComponentProps { }
 
 interface IUseFieldResult {
   fieldProps: IFieldComponentFieldProps;
@@ -149,7 +149,7 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
       formContext.notifyFieldEvent(fullName, 'blur');
       onBlur();
     },
-    [],
+    [asyncValidateOnChange, fieldState.dirty, fieldState.value, formContext, fullName, getSubmitValue, isDisabled, isPlaintext, onBlur, validate],
   );
 
   const fieldProps = useMemo(
