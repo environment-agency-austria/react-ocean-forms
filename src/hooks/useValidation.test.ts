@@ -4,7 +4,7 @@ import { IValidationWrapperProps, IFormContext, IValidationProp } from '../compo
 import { createMockFormContext } from '../test-utils/enzymeFormContext';
 import { TValidator, validators as defaultValidators } from '../validators';
 
-import { useValidation, IBasicValidationState } from './useValidation';
+import { useValidation, IBasicValidationState, IUseValidationResult } from './useValidation';
 import { useFormContext } from './useFormContext';
 
 jest.mock('./useFormContext');
@@ -22,7 +22,10 @@ describe('useValidation', () => {
     formContext: IFormContext;
     validation: IValidationProp;
 
+    unmount(): boolean;
+    rerender(): void;
     waitForNextUpdate(): Promise<void>;
+    result: { current: IUseValidationResult };
   }
 
   const setup = ({
@@ -35,7 +38,7 @@ describe('useValidation', () => {
     };
     (useFormContext as jest.Mock).mockReturnValue(formContext);
 
-    const { result, waitForNextUpdate } = renderHook(() => useValidation(
+    const { result, unmount, rerender, waitForNextUpdate } = renderHook(() => useValidation(
       props.name === undefined ? fieldName : props.name,
       props.validators,
       props.asyncValidators,
@@ -53,6 +56,9 @@ describe('useValidation', () => {
       formContext,
       validation,
 
+      unmount,
+      rerender,
+      result,
       waitForNextUpdate,
     };
   };
@@ -60,7 +66,7 @@ describe('useValidation', () => {
   it('should return a valid state without validators', async () => {
     const { validation } = setup();
 
-    await validation.validate('foo');
+    await act(async () => { validation.validate('foo') });
     expect(validation).toMatchObject({
       error: null,
       isValidating: false,
@@ -78,29 +84,26 @@ describe('useValidation', () => {
   };
 
   describe('sync validation', () => {
-    it('should call the sync validators and return a validation state', (done) => {
+    it('should call the sync validators and return a validation state', async () => {
       const validator = jest.fn().mockReturnValue(undefined);
 
       const { validation, formContext } = setup({ props: {
         validators: [validator],
       }});
 
-      act(() => {
-        (async () => {
-          const state = await validation.validate(mockValue);
-          expect(state).toMatchObject({
-            isValidating: false,
-            valid: true,
-            error: null,
-          });
+      await act(async () => {
+        const state = await validation.validate(mockValue);
+        expect(state).toMatchObject({
+          isValidating: false,
+          valid: true,
+          error: null,
+        });
 
-          checkNotifyCalled(formContext, state);
-          done();
-        })();
+        checkNotifyCalled(formContext, state);
       });
     });
 
-    it('should stop at the first invalid validator', (done) => {
+    it('should stop at the first invalid validator', async () => {
       const errorId = 'mockError';
       const validators = [
         jest.fn().mockReturnValue(undefined),
@@ -112,20 +115,16 @@ describe('useValidation', () => {
         validators,
       }});
 
-      act(() => {
-        (async () => {
-          await validation.validate(mockValue);
-
-          expect(validators[0]).toHaveBeenCalledTimes(1);
-          expect(validators[1]).toHaveBeenCalledTimes(1);
-          expect(validators[2]).not.toHaveBeenCalled();
-
-          done();
-        })();
+      await act(async () => {
+        await validation.validate(mockValue);
       });
+
+      expect(validators[0]).toHaveBeenCalledTimes(1);
+      expect(validators[1]).toHaveBeenCalledTimes(1);
+      expect(validators[2]).not.toHaveBeenCalled();
     });
 
-    it('should not call the async validator if the sync validators are invalid', (done) => {
+    it('should not call the async validator if the sync validators are invalid', async () => {
       const validator = jest.fn().mockReturnValue('error');
       const asyncValidator = jest.fn().mockResolvedValue(undefined);
 
@@ -134,15 +133,11 @@ describe('useValidation', () => {
         asyncValidators: [asyncValidator],
       }});
 
-      act(() => {
-        (async () => {
-          await validation.validate(mockValue);
-
-          expect(asyncValidator).not.toHaveBeenCalled();
-
-          done();
-        })();
+      await act(async () => {
+        await validation.validate(mockValue);
       });
+
+      expect(asyncValidator).not.toHaveBeenCalled();
     });
 
     describe('required validator', () => {
@@ -202,27 +197,23 @@ describe('useValidation', () => {
       jest.useRealTimers();
     });
 
-    it('should ignore async validators if checkAsync is false', (done) => {
+    it('should ignore async validators if checkAsync is false', async () => {
       const asyncValidator = jest.fn().mockResolvedValue(undefined);
 
       const { validation, formContext } = setup({ props: {
         asyncValidators: [asyncValidator],
       }});
 
-      act(() => {
-        (async () => {
-          const state = await validation.validate(mockValue, { checkAsync: false });
-          expect(state).toMatchObject({
-            isValidating: false,
-            valid: true,
-            error: null,
-          });
-          expect(asyncValidator).not.toHaveBeenCalled();
+      await act(async () => {
+        const state = await validation.validate(mockValue, { checkAsync: false });
+        expect(state).toMatchObject({
+          isValidating: false,
+          valid: true,
+          error: null,
+        });
+        expect(asyncValidator).not.toHaveBeenCalled();
 
-          checkNotifyCalled(formContext, state);
-
-          done();
-        })();
+        checkNotifyCalled(formContext, state);
       });
     });
 
@@ -234,8 +225,57 @@ describe('useValidation', () => {
         asyncValidators: [asyncValidator],
       }});
 
-      const state = await validation.validate(mockValue, { immediateAsync: true });
-      expect(state).toMatchObject({
+      await act(async () => {
+        const state = await validation.validate(mockValue, { immediateAsync: true });
+        expect(state).toMatchObject({
+          isValidating: false,
+          valid: false,
+          error: [{
+            message_id: errorId,
+            params: {},
+          }],
+        });
+        expect(asyncValidator).toHaveBeenCalledTimes(1);
+
+        checkNotifyCalled(formContext, state);
+      });
+    });
+
+    it('should wait for the default amount until triggering the async validators', async () => {
+      const errorId = 'mockError';
+      const asyncValidator = jest.fn().mockResolvedValue(errorId);
+
+      const { validation, formContext, result } = setup({ props: {
+        asyncValidators: [asyncValidator],
+      }});
+
+      const spiedTimeout = jest.spyOn(window, 'setTimeout');
+
+      await act(async () => {
+        const state = await validation.validate(mockValue);
+
+        expect(state).toMatchObject({
+          isValidating: true,
+          valid: true,
+          error: null,
+        });
+        expect(asyncValidator).not.toHaveBeenCalled();
+        checkNotifyCalled(formContext, state);
+        expect(formContext.notifyFieldEvent).toHaveBeenCalledTimes(1);
+
+        expect(spiedTimeout).toHaveBeenCalledWith(
+          expect.any(Function),
+          formContext.asyncValidationWait,
+        );
+      });
+
+      await act(async () => {
+        jest.runAllTimers();
+        expect(asyncValidator).toHaveBeenCalledTimes(1);
+      });
+
+      expect(formContext.notifyFieldEvent).toHaveBeenCalledTimes(2);
+      expect(result.current.validationState).toMatchObject({
         isValidating: false,
         valid: false,
         error: [{
@@ -243,54 +283,9 @@ describe('useValidation', () => {
           params: {},
         }],
       });
-      expect(asyncValidator).toHaveBeenCalledTimes(1);
-
-      checkNotifyCalled(formContext, state);
     });
 
-    // it('should wait for the default amount until triggering the async validators', async (done) => {
-    //   const errorId = 'mockError';
-    //   const asyncValidator = jest.fn().mockResolvedValue(errorId);
-
-    //   const { wrapper, validation, formContext } = setup({ props: {
-    //     asyncValidators: [asyncValidator],
-    //   }});
-
-    //   const spiedTimeout = jest.spyOn(window, 'setTimeout');
-    //   const state = await validation.validate(mockValue);
-
-    //   expect(state).toMatchObject({
-    //     isValidating: true,
-    //     valid: true,
-    //     error: null,
-    //   });
-    //   expect(asyncValidator).not.toHaveBeenCalled();
-    //   expect(getAsyncTimeout(wrapper)).toBeGreaterThan(0);
-    //   checkNotifyCalled(formContext, state);
-
-    //   expect(spiedTimeout).toHaveBeenCalledWith(
-    //     expect.any(Function),
-    //     formContext.asyncValidationWait,
-    //   );
-
-    //   jest.runAllTimers();
-
-    //   process.nextTick(() => {
-    //     expect(state).toMatchObject({
-    //       isValidating: false,
-    //       valid: false,
-    //       error: [{
-    //         message_id: errorId,
-    //         params: {},
-    //       }],
-    //     });
-    //     expect(asyncValidator).toHaveBeenCalledTimes(1);
-    //     checkNotifyCalled(formContext, state);
-    //     done();
-    //   });
-    // });
-
-    it('should prefer the ValidationWrapper.asyncValidationWait prop over the formContext one', (done) => {
+    it('should prefer the ValidationWrapper.asyncValidationWait prop over the formContext one', async () => {
       const errorId = 'mockError';
       const asyncValidator = jest.fn().mockResolvedValue(errorId);
 
@@ -299,66 +294,60 @@ describe('useValidation', () => {
         asyncValidationWait: 42,
       }});
 
-      act(() => {
-        (async () => {
-          const spiedTimeout = jest.spyOn(window, 'setTimeout');
-          await validation.validate(mockValue);
+      await act(async () => {
+        const spiedTimeout = jest.spyOn(window, 'setTimeout');
+        await validation.validate(mockValue);
 
-          expect(spiedTimeout).toHaveBeenCalledWith(
-            expect.any(Function),
-            42,
-          );
-
-          done();
-        })();
+        expect(spiedTimeout).toHaveBeenCalledWith(
+          expect.any(Function),
+          42,
+        );
       });
     });
 
-    // it('should clear any existing timeout if validate is called again', async () => {
-    //   const errorId = 'mockError';
-    //   const asyncValidator = jest.fn().mockResolvedValue(errorId);
+    it('should clear any existing timeout if validate is called again', async () => {
+      const errorId = 'mockError';
+      const asyncValidator = jest.fn().mockResolvedValue(errorId);
 
-    //   const { wrapper, validation } = setup({ props: {
-    //     asyncValidators: [asyncValidator],
-    //   }});
+      const { validation } = setup({ props: {
+        asyncValidators: [asyncValidator],
+      }});
 
-    //   expect(getAsyncTimeout(wrapper)).toBeUndefined();
+      await act(async () => {
+        const state1 = await validation.validate(mockValue);
+        expect(state1).toMatchObject({
+          isValidating: true,
+        });
+      });
+      expect(asyncValidator).toHaveBeenCalledTimes(0);
 
-    //   const state1 = await validation.validate(mockValue);
-    //   const timeout1 = getAsyncTimeout(wrapper);
+      await act(async () => {
+        const state2 = await validation.validate(mockValue);
+        expect(state2).toMatchObject({
+          isValidating: true,
+        });
+      });
 
-    //   const state2 = await validation.validate(mockValue);
-    //   const timeout2 = getAsyncTimeout(wrapper);
+      await act(async () => {
+        jest.runAllTimers();
+        expect(asyncValidator).toHaveBeenCalledTimes(1);
+      });
+    });
 
-    //   expect(state1).toMatchObject({
-    //     isValidating: true,
-    //   });
-    //   expect(state2).toMatchObject({
-    //     isValidating: true,
-    //   });
-
-    //   expect(timeout1).not.toEqual(timeout2);
-    //   jest.runAllTimers();
-    // });
-
-    it.skip('should set validationState.error to null if it is an empty array after filtering invalid errors out', (done) => {
+    it('should set validationState.error to null if it is an empty array after filtering invalid errors out', async () => {
       const asyncValidator = jest.fn().mockResolvedValue({ foo: 'bar' });
 
       const { validation } = setup({ props: {
         asyncValidators: [asyncValidator],
       }});
 
-      act(() => {
-        (async () => {
-          const state = await validation.validate(mockValue, { immediateAsync: true });
-          expect(state).toMatchObject({
-            isValidating: false,
-            valid: true,
-            error: null,
-          });
-
-          done();
-        })();
+      await act(async () => {
+        const state = await validation.validate(mockValue, { immediateAsync: true });
+        expect(state).toMatchObject({
+          isValidating: false,
+          valid: true,
+          error: null,
+        });
       });
     });
   });
@@ -388,64 +377,31 @@ describe('useValidation', () => {
       );
     });
 
-    // it('should correctly reset the validation state', () => {
-    //   const { wrapper, formContext, validation } = setup();
+    it('should correctly reset the validation state', async () => {
+      const { formContext, validation } = setup();
 
-    //   validation.reset();
-    //   checkNotifyCalled(
-    //     formContext,
-    //     {
-    //       valid: true,
-    //       error: null,
-    //       isValidating: false,
-    //     },
-    //   );
-    //   expect(getAsyncTimeout(wrapper)).toBeUndefined();
-
-    //   // Edge case where we check if the timeout has
-    //   // been cleared if a validation is in progress
-    //   // when we call reset
-    //   void validation.validate(mockValue);
-    //   validation.reset();
-    //   checkNotifyCalled(
-    //     formContext,
-    //     {
-    //       valid: true,
-    //       error: null,
-    //       isValidating: false,
-    //     },
-    //   );
-    //   expect(getAsyncTimeout(wrapper)).toBeUndefined();
-    // });
+      act(() => {
+        validation.reset();
+      });
+      checkNotifyCalled(
+        formContext,
+        {
+          valid: true,
+          error: null,
+          isValidating: false,
+        },
+      );
+    });
   });
 
-  // it('should clear any timeouts on unmount', () => {
-  //   const { wrapper, validation } = setup({
-  //     props: {
-  //       asyncValidators: [ jest.fn().mockResolvedValue(undefined) ],
-  //     },
-  //   });
+  it('should not update its state after unmounting', () => {
+    const { validation, formContext, unmount } = setup();
 
-  //   void validation.validate(mockValue);
-  //   expect(getAsyncTimeout(wrapper)).not.toBeUndefined();
+    unmount();
 
-  //   const oldInstance = wrapper.instance() as BaseValidationWrapper;
-  //   wrapper.unmount();
-
-  //   const asyncTimeout = oldInstance.getAsyncTimeout();
-  //   expect(asyncTimeout).toBe(undefined);
-  // });
-
-  // it('should not update its state after unmounting', () => {
-  //   const { wrapper, formContext } = setup();
-
-  //   const oldInstance = wrapper.instance() as BaseValidationWrapper;
-  //   wrapper.unmount();
-
-  //   expect(() => {
-  //     // @ts-ignore
-  //     oldInstance.updateAndNotify({ foo: 'bar' });
-  //   }).not.toThrowError();
-  //   expect(formContext.notifyFieldEvent).not.toHaveBeenCalled();
-  // });
+    expect(() => {
+      validation.update({ isValidating: true });
+    }).not.toThrowError();
+    expect(formContext.notifyFieldEvent).not.toHaveBeenCalled();
+  });
 });
