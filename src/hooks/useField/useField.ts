@@ -1,11 +1,12 @@
 import { useMemo, useState, useCallback, useEffect, useRef } from 'react';
 
-import { IBaseFieldProps, IValidatedComponentProps, IFieldComponentFieldProps, IFieldComponentMeta, TBasicFieldValue, IFieldChangedEvent } from '../components';
-import { useFormContext } from './useFormContext';
-import { useFullName } from './useFullName';
-import { useValidation, IValidationArgs, IBasicValidationState } from './useValidation';
-import { useFieldRegistration } from './useFieldRegistration';
-import { getDeepValue } from '../utils';
+import { IValidatedComponentProps } from '../../components';
+import { getDeepValue } from '../../utils';
+import { useFormContext } from '../useFormContext';
+import { useFullName } from '../useFullName';
+import { useValidation, IValidationArgs, IBasicValidationState } from '../useValidation';
+import { useFieldRegistration } from '../useFieldRegistration';
+import { IBaseFieldProps, TBasicFieldValue, IFieldComponentFieldProps, IFieldComponentMeta, IFieldChangedEvent } from './useField.types';
 
 export interface IUseFieldProps extends IBaseFieldProps, IValidatedComponentProps { }
 

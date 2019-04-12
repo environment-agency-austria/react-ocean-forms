@@ -1,21 +1,5 @@
-/**
- * Copyright (c) 2018-present, Umweltbundesamt GmbH
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
+import { IValidationState } from '../useValidation';
 import { TSTringFormatter } from '../../utils';
-import { IValidationState } from '../../hooks';
-import { IValidatedComponentProps } from '../ValidationWrapper';
-
-/**
- * Type that defines which values a field could hold
- */
-export type TBasicFieldValue = string | boolean | number | object;
-/**
- * Type definition for getDisplayValue and getSubmitValue callbacks
- */
-export type TValueCallback = ((value: TBasicFieldValue, meta: IValueMeta) => TBasicFieldValue);
 
 /**
  * Information about the current meta state
@@ -31,6 +15,15 @@ export interface IValueMeta {
    */
   plaintext: boolean;
 }
+
+/**
+ * Type that defines which values a field could hold
+ */
+export type TBasicFieldValue = string | boolean | number | object;
+/**
+ * Type definition for getDisplayValue and getSubmitValue callbacks
+ */
+export type TValueCallback = ((value: TBasicFieldValue, meta: IValueMeta) => TBasicFieldValue);
 
 /**
  * Basic props for the field component
@@ -84,18 +77,6 @@ export interface IBaseFieldProps {
    * @param value Current field value
    */
   onChange?(value: TBasicFieldValue): void;
-}
-
-/**
- * Props for the Field component
- */
-export interface IFieldProps extends IBaseFieldProps, IValidatedComponentProps {
-  /**
-   * Render prop for the input element
-   * @param field Props designed to be passed to the field as is @see IFieldComponentFieldProps
-   * @param meta Meta information about the field state
-   */
-  render(field: IFieldComponentFieldProps, meta: IFieldComponentMeta): JSX.Element;
 }
 
 /**
@@ -156,23 +137,4 @@ export interface IFieldComponentMeta extends IValidationState {
    * True if the field is in plaintext mode
    */
   plaintext: boolean;
-}
-
-/**
- * Props for the input component of a Field
- */
-export interface IFieldComponentProps {
-  /**
-   * Props for the actual html input, designed
-   * to be passed as-is
-   */
-  field: IFieldComponentFieldProps;
-  /**
-   * Meta informations about the field state
-   */
-  meta: IFieldComponentMeta;
-  /**
-   * Label (string or message id)
-   */
-  label: string;
 }

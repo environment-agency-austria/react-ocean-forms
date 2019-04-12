@@ -1,17 +1,18 @@
 import { renderHook, cleanup, act } from 'react-hooks-testing-library';
 
+import { IFormContext, IValidationProp, IFieldState } from '../../components';
+import { createMockFormContext, createMockValidation } from '../../test-utils/enzymeFormContext';
+import { useFullName } from '../useFullName';
+import { useFormContext } from '../useFormContext';
+import { useValidation } from '../useValidation';
+import { useFieldRegistration } from '../useFieldRegistration';
 import { useField, IUseFieldResult, IUseFieldProps } from './useField';
-import { IFieldProps, IFormContext, IValidationProp, IFieldComponentFieldProps, TBasicFieldValue, IFieldState } from '../components';
-import { createMockFormContext, createMockValidation } from '../test-utils/enzymeFormContext';
-import { useFullName } from './useFullName';
-import { useFormContext } from './useFormContext';
-import { useValidation } from './useValidation';
-import { useFieldRegistration } from './useFieldRegistration';
+import { TBasicFieldValue, IFieldComponentFieldProps } from './useField.types';
 
-jest.mock('./useFormContext');
-jest.mock('./useFullName');
-jest.mock('./useValidation');
-jest.mock('./useFieldRegistration');
+jest.mock('../useFormContext');
+jest.mock('../useFullName');
+jest.mock('../useValidation');
+jest.mock('../useFieldRegistration');
 
 afterEach(cleanup);
 
@@ -20,7 +21,7 @@ describe('useField', () => {
   const mockLabel = 'Unit field';
 
   interface ISetupArgs {
-    props?: Partial<IFieldProps>;
+    props?: Partial<IUseFieldProps>;
     contextOverrides?: Partial<IFormContext>;
   }
 
@@ -305,7 +306,7 @@ describe('useField', () => {
   describe('onChange handling', () => {
     const mockValue = 'mock-change-value';
 
-    const setupOnChange = (props?: Partial<IFieldProps>, contextOverrides?: Partial<IFormContext>): ISetupResult => {
+    const setupOnChange = (props?: Partial<IUseFieldProps>, contextOverrides?: Partial<IFormContext>): ISetupResult => {
       const setupResult = setup({
         props,
         contextOverrides,
@@ -424,14 +425,14 @@ describe('useField', () => {
   describe('onBlur handling', () => {
     const mockValue = 'mock-value';
 
-    const setupLocal = (props?: Partial<IFieldProps>, contextOverrides?: Partial<IFormContext>): ISetupResult => {
+    const setupLocal = (props?: Partial<IUseFieldProps>, contextOverrides?: Partial<IFormContext>): ISetupResult => {
       return setup({
         props: { ...props, value: mockValue },
         contextOverrides: contextOverrides,
       });
     };
 
-    const setupOnBlur = (props?: Partial<IFieldProps>, contextOverrides?: Partial<IFormContext>): ISetupResult => {
+    const setupOnBlur = (props?: Partial<IUseFieldProps>, contextOverrides?: Partial<IFormContext>): ISetupResult => {
       const setupResult = setupLocal(props, contextOverrides);
 
       act(() => {

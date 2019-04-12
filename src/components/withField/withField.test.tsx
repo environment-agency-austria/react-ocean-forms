@@ -2,9 +2,9 @@ import React from 'react';
 
 import { shallow, ShallowWrapper } from 'enzyme';
 
-import { IFieldComponentProps } from '../Field';
-import { withField } from './withField';
 import { useField } from '../../hooks';
+import { withField } from './withField';
+import { IFieldComponentProps } from './withField.types';
 
 jest.mock('../../hooks');
 

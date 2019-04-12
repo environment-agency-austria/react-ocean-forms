@@ -5,7 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { TBasicFieldValue, IFormContext } from '../components';
+import { IFormContext } from '../components';
+import { TBasicFieldValue } from '../hooks';
 import { IMessageValues } from '../utils/stringFormatter';
 
 /**

@@ -5,8 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { TSTringFormatter } from '../../utils/stringFormatter';
-import { TBasicFieldValue } from '../Field';
-import { TUpdateMethod, IValidationArgs, IBasicValidationState } from '../../hooks';
+import { TUpdateMethod, IValidationArgs, IBasicValidationState, TBasicFieldValue } from '../../hooks';
 
 export type TFormEventListener = ((name: string, event: string, args?: unknown) => void);
 

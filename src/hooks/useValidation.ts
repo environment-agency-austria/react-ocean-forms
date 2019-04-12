@@ -7,11 +7,11 @@
 
 import { useCallback, useState, useMemo } from 'react';
 
-import { TBasicFieldValue } from '../components';
 import { TFieldErrors, TValidator, isDefaultValidator, TAsyncValidator, isIFieldErrorObject } from '../validators';
 import { parseValidationError } from '../utils';
 
 import { useFormContext } from './useFormContext';
+import { TBasicFieldValue } from './useField';
 import { useIsUnmounted } from './useIsUnmounted';
 import { useTimeout } from './useTimeout';
 
