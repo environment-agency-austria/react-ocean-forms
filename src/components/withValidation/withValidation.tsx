@@ -8,8 +8,8 @@
 import React from 'react';
 
 import { getDisplayName, PropsOf, Subtract } from '../../utils';
-import { ValidationWrapper, IValidationProp, IValidatedComponentProps } from '../ValidationWrapper';
-import { IValidationProps } from './withValidation.types';
+import { IValidationProps, IValidationProp, IValidatedComponentProps } from './withValidation.types';
+import { useValidation, useFullName } from '../../hooks';
 
 type WrappedValidatedComponentProps<TComp> =
   Subtract<JSX.LibraryManagedAttributes<TComp, PropsOf<TComp>>, IValidationProps> & IValidatedComponentProps;
@@ -25,20 +25,31 @@ export const withValidation = <TComp extends React.ComponentType<TProps>, TProps
 
   type IWrappedProps = WrappedValidatedComponentProps<TComp>;
 
-  const validatedComponent: React.SFC<IWrappedProps> = (props: IWrappedProps): JSX.Element => {
-    const renderComponent = (fullName: string, validation: IValidationProp): JSX.Element => {
-      // @ts-ignore
-      return <CastedComponent fullName={fullName} validation={validation} {...props} />;
+  const ValidatedComponent: React.SFC<IWrappedProps> = ({ name, validators, asyncValidators, asyncValidationWait, ...rest }): JSX.Element => {
+    const fullName = useFullName(name);
+    const {
+      validationState,
+      validate,
+      resetValidation,
+      updateValidationState,
+    } = useValidation(
+      fullName,
+      validators,
+      asyncValidators,
+      asyncValidationWait
+    );
+
+    const validationProp: IValidationProp = {
+      ...validationState,
+      reset: resetValidation,
+      validate,
+      update: updateValidationState,
     };
 
-    return (
-      <ValidationWrapper
-        {...props}
-        render={renderComponent}
-      />
-    );
+    // @ts-ignore
+    return <CastedComponent fullName={fullName} validation={validationProp} {...rest} />;
   };
-  validatedComponent.displayName = `ValidatedComponent(${getDisplayName(component)})`;
+  ValidatedComponent.displayName = `ValidatedComponent(${getDisplayName(component)})`;
 
-  return validatedComponent;
+  return ValidatedComponent;
 };

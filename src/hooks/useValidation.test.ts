@@ -1,6 +1,6 @@
 import { renderHook, cleanup, act } from 'react-hooks-testing-library';
 
-import { IValidationWrapperProps, IFormContext, IValidationProp } from '../components';
+import { IFormContext, IValidationProp, IValidatedComponentProps } from '../components';
 import { createMockFormContext } from '../test-utils/enzymeFormContext';
 import { TValidator, validators as defaultValidators } from '../validators';
 
@@ -14,7 +14,7 @@ describe('useValidation', () => {
   const fieldName = 'unitField';
 
   interface ISetupArgs {
-    props?: Partial<IValidationWrapperProps>;
+    props?: Partial<IValidatedComponentProps>;
     contextOverrides?: Partial<IFormContext>;
   }
 

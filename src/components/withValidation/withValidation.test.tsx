@@ -2,11 +2,12 @@ import React from 'react';
 
 import { shallow, ShallowWrapper } from 'enzyme';
 
-import { createMockFormContext, createMockValidation } from '../../test-utils/enzymeFormContext';
-import { IFormContext } from '../FormContext';
-import { IValidationProp } from '../ValidationWrapper';
+import { createMockValidation } from '../../test-utils/enzymeFormContext';
+import { useValidation, useFullName } from '../../hooks';
 import { withValidation } from './withValidation';
 import { IValidationProps } from './withValidation.types';
+
+jest.mock('../../hooks');
 
 describe('withValidation', () => {
   interface ISetupArgs {
@@ -15,12 +16,25 @@ describe('withValidation', () => {
 
   interface ISetupResult {
     wrapper: ShallowWrapper;
-    renderProp(fullName: string, validation: IValidationProp, context: IFormContext): JSX.Element;
   }
 
   const setup = ({
     props,
   }: Partial<ISetupArgs> = {}): ISetupResult => {
+    (useFullName as jest.Mock).mockImplementation((name: string) => name);
+    const validation = createMockValidation();
+    (useValidation as jest.Mock).mockReturnValue({
+      validationState: {
+        isValidating: validation.isValidating,
+        valid: validation.valid,
+        error: validation.error,
+        isRequired: validation.isRequired,
+      },
+      validate: validation.validate,
+      resetValidation: validation.reset,
+      updateValidationState: validation.update,
+    });
+
     const TestComponent = (): JSX.Element => (<div id="test-component" />);
     const WrappedComponent = withValidation(TestComponent);
 
@@ -31,30 +45,13 @@ describe('withValidation', () => {
       />
     ));
 
-    const renderProp = wrapper.prop('render') as ((fullName: string, validation: IValidationProp, context: IFormContext) => JSX.Element);
-
     return {
       wrapper,
-      renderProp,
     };
   };
 
   it('should render without error', () => {
     const { wrapper } = setup();
     expect(wrapper).toMatchSnapshot();
-  });
-
-  describe('render prop', () => {
-    it('should render without error', () => {
-      const { renderProp } = setup();
-      const wrapper = shallow(
-        renderProp(
-          'fullName',
-          createMockValidation(),
-          createMockFormContext(),
-        ),
-      );
-      expect(wrapper).toMatchSnapshot();
-    });
   });
 });

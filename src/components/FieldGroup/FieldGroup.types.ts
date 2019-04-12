@@ -6,7 +6,7 @@
  */
 import { IValidationState } from '../../hooks';
 import { IFieldValues } from '../FormContext';
-import { IValidatedComponentProps } from '../ValidationWrapper';
+import { IValidatedComponentProps } from '../withValidation';
 
 /**
  * Meta information about the group

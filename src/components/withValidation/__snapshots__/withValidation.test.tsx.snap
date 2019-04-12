@@ -1,14 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`withValidation render prop should render without error 1`] = `
-<div
-  id="test-component"
-/>
-`;
-
 exports[`withValidation should render without error 1`] = `
-<Component
-  name="mock-item"
-  render={[Function]}
+<TestComponent
+  fullName="mock-item"
+  validation={
+    Object {
+      "error": null,
+      "isRequired": false,
+      "isValidating": false,
+      "reset": [MockFunction],
+      "update": [MockFunction],
+      "valid": true,
+      "validate": [MockFunction],
+    }
+  }
 />
 `;

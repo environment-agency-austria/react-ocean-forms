@@ -3,7 +3,7 @@ import { renderHook, cleanup } from 'react-hooks-testing-library';
 import { createMockFormContext, createMockValidation } from '../../../test-utils/enzymeFormContext';
 import { useFormContext, useFullName, useValidation, useFieldRegistration } from '../../../hooks';
 import { IFormContext, IFieldState } from '../../FormContext';
-import { IValidationProp } from '../../ValidationWrapper';
+import { IValidationProp } from '../../withValidation';
 
 import { IFieldGroupRenderParams, IFieldGroupProps } from '../FieldGroup.types';
 import { useFieldGroup } from './useFieldGroup';

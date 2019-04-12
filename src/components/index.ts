@@ -13,7 +13,6 @@ export * from './FormContext';
 export * from './FormText';
 export * from './Input';
 export * from './ValidationSummary';
-export * from './ValidationWrapper';
 export * from './withField';
 export * from './withForm';
 export * from './withValidation';
