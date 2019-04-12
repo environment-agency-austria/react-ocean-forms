@@ -110,14 +110,15 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
 
   const handleFieldChanged = useCallback(
     (event: IFieldChangedEvent) => {
+      const updatedValue = event.target.value;
       setFieldState({
-        value: event.target.value,
+        value: updatedValue,
         touched: true,
         dirty: true,
       });
 
       const submitValue = getSubmitValue(
-        fieldState.value,
+        updatedValue,
         {
           disabled: isDisabled,
           plaintext: isPlaintext,
@@ -132,7 +133,7 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
       formContext.notifyFieldEvent(fullName, 'change', submitValue);
       onChange(submitValue);
     },
-    [asyncValidateOnChange, fieldState.value, formContext, fullName, getSubmitValue, isDisabled, isPlaintext, onChange, validate],
+    [asyncValidateOnChange, formContext, fullName, getSubmitValue, isDisabled, isPlaintext, onChange, validate],
   );
 
   const handleFieldBlur = useCallback(
