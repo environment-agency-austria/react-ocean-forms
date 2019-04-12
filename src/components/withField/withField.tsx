@@ -7,8 +7,9 @@
 import React from 'react';
 
 import { getDisplayName, PropsOf, Subtract } from '../../utils';
+import { useField } from '../../hooks';
 import { IValidatedComponentProps } from '../ValidationWrapper';
-import { Field, IBaseFieldProps, IFieldComponentFieldProps, IFieldComponentMeta, IFieldComponentProps } from '../Field';
+import { IBaseFieldProps, IFieldComponentProps } from '../Field';
 
 type WrappedValidatedComponentProps<TComp> =
   Subtract<JSX.LibraryManagedAttributes<TComp, PropsOf<TComp>>, IFieldComponentProps> & IBaseFieldProps & IValidatedComponentProps;
@@ -23,20 +24,15 @@ export const withField = <TComp extends React.ComponentType<TProps>, TProps exte
 
   type IWrappedProps = WrappedValidatedComponentProps<TComp>;
 
-  const validatedComponent: React.SFC<IWrappedProps> = (props: IWrappedProps): JSX.Element => {
-    const renderComponent = (field: IFieldComponentFieldProps, meta: IFieldComponentMeta): JSX.Element => {
-      // @ts-ignore
-      return <CastedComponent field={field} meta={meta} {...props} />;
-    };
+  const ValidatedComponent: React.SFC<IWrappedProps> = (props: IWrappedProps): JSX.Element => {
+    const { fieldProps, metaProps } = useField(props);
 
     return (
-      <Field
-        {...props}
-        render={renderComponent}
-      />
+      // @ts-ignore
+      <CastedComponent field={fieldProps} meta={metaProps} {...props} />
     );
   };
-  validatedComponent.displayName = `withField(${getDisplayName(component)})`;
+  ValidatedComponent.displayName = `withField(${getDisplayName(component)})`;
 
-  return validatedComponent;
+  return ValidatedComponent;
 };

@@ -1,15 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`withField render prop should render without error 1`] = `
-<div
-  id="test-component"
-/>
-`;
-
 exports[`withField should render without error 1`] = `
-<Component
+<TestComponent
+  field={
+    Object {
+      "disabled": false,
+      "id": "mock-item",
+      "name": "mock-item",
+      "onBlur": [MockFunction],
+      "onChange": [MockFunction],
+      "value": "",
+    }
+  }
   label="Mock Item"
+  meta={
+    Object {
+      "error": null,
+      "isRequired": false,
+      "isValidating": false,
+      "plaintext": false,
+      "stringFormatter": [MockFunction],
+      "touched": false,
+      "valid": true,
+    }
+  }
   name="mock-item"
-  render={[Function]}
 />
 `;

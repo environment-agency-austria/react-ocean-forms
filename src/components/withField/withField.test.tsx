@@ -2,8 +2,11 @@ import React from 'react';
 
 import { shallow, ShallowWrapper } from 'enzyme';
 
-import { IFieldComponentFieldProps, IFieldComponentMeta, IFieldComponentProps } from '../Field';
+import { IFieldComponentProps } from '../Field';
 import { withField } from './withField';
+import { useField } from '../../hooks';
+
+jest.mock('../../hooks');
 
 describe('withField', () => {
   interface ISetupArgs {
@@ -12,12 +15,31 @@ describe('withField', () => {
 
   interface ISetupResult {
     wrapper: ShallowWrapper;
-    renderProp(field: IFieldComponentFieldProps, meta: IFieldComponentMeta): JSX.Element;
   }
 
   const setup = ({
     props,
   }: Partial<ISetupArgs> = {}): ISetupResult => {
+    (useField as jest.Mock).mockReturnValue({
+      fieldProps: {
+        disabled: false,
+        id: 'mock-item',
+        name: 'mock-item',
+        value: '',
+        onChange: jest.fn(),
+        onBlur: jest.fn(),
+      },
+      metaProps: {
+        error: null,
+        isValidating: false,
+        isRequired: false,
+        plaintext: false,
+        stringFormatter: jest.fn(),
+        touched: false,
+        valid: true,
+      },
+    });
+
     const TestComponent = (): JSX.Element => (<div id="test-component" />);
     const WrappedComponent = withField(TestComponent);
 
@@ -29,44 +51,13 @@ describe('withField', () => {
       />
     ));
 
-    const renderProp = wrapper.prop('render') as ((field: IFieldComponentFieldProps, meta: IFieldComponentMeta) => JSX.Element);
-
     return {
       wrapper,
-      renderProp,
     };
   };
 
   it('should render without error', () => {
     const { wrapper } = setup();
     expect(wrapper).toMatchSnapshot();
-  });
-
-  describe('render prop', () => {
-    it('should render without error', () => {
-      const { renderProp } = setup();
-      const wrapper = shallow(
-        renderProp(
-          {
-            disabled: false,
-            id: 'mock-item',
-            name: 'mock-item',
-            value: '',
-            onChange: jest.fn(),
-            onBlur: jest.fn(),
-          },
-          {
-            error: null,
-            isValidating: false,
-            isRequired: false,
-            plaintext: false,
-            stringFormatter: jest.fn(),
-            touched: false,
-            valid: true,
-          },
-        ),
-      );
-      expect(wrapper).toMatchSnapshot();
-    });
   });
 });
