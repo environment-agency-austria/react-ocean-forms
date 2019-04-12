@@ -8,7 +8,7 @@ import { useFieldRegistration } from './useFieldRegistration';
 
 export interface IUseFieldProps extends IBaseFieldProps, IValidatedComponentProps { }
 
-interface IUseFieldResult {
+export interface IUseFieldResult {
   fieldProps: IFieldComponentFieldProps;
   metaProps: IFieldComponentMeta;
 }
