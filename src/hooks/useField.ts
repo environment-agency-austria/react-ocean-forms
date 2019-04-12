@@ -1,10 +1,11 @@
-import { useMemo, useState, useCallback } from 'react';
+import { useMemo, useState, useCallback, useEffect, useRef } from 'react';
 
 import { IBaseFieldProps, IValidatedComponentProps, IFieldComponentFieldProps, IFieldComponentMeta, TBasicFieldValue, IFieldChangedEvent } from '../components';
 import { useFormContext } from './useFormContext';
 import { useFullName } from './useFullName';
 import { useValidation, IValidationArgs, IBasicValidationState } from './useValidation';
 import { useFieldRegistration } from './useFieldRegistration';
+import { getDeepValue } from '../utils';
 
 export interface IUseFieldProps extends IBaseFieldProps, IValidatedComponentProps { }
 
@@ -33,8 +34,11 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
     onBlur = noopFunction,
   } = props;
 
-  const [ fieldState, setFieldState ] = useState<IUseFieldState>({ touched: false, dirty: false, value: '' })
   const formContext = useFormContext();
+  const isDisabled = props.disabled === undefined ? formContext.disabled : props.disabled;
+  const isPlaintext = props.plaintext === undefined ? formContext.plaintext : props.plaintext;
+
+  const [ fieldState, setFieldState ] = useState<IUseFieldState>({ touched: false, dirty: false, value: getDisplayValue('', { plaintext: isPlaintext, disabled: isDisabled }) })
   const fullName = useFullName(props.name);
   const { validationState, validate, resetValidation, updateValidationState } = useValidation(
     fullName,
@@ -42,9 +46,6 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
     props.asyncValidators,
     props.asyncValidationWait,
   );
-
-  const isDisabled = props.disabled === undefined ? formContext.disabled : props.disabled;
-  const isPlaintext = props.plaintext === undefined ? formContext.plaintext : props.plaintext;
 
   const getFieldValue = useCallback(
     () => {
@@ -62,7 +63,7 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
   const resetField = useCallback(
     () => {
       const displayValue = getDisplayValue(
-        fieldState.value === undefined ? '' : fieldState.value,
+        fieldState.value,
         {
           disabled: isDisabled,
           plaintext: isPlaintext,
@@ -105,6 +106,35 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
     resetField,
     getFieldValue,
   );
+
+  const propDefaultValue = props.defaultValue === undefined ? getDeepValue(fullName, formContext.defaultValues) : props.defaultValue;
+  const propValue = props.value === undefined ? getDeepValue(fullName, formContext.values) : props.value;
+  const oldPropValue = useRef(propValue);
+
+  useEffect(() => {
+    if (oldPropValue.current === propValue && fieldState.dirty) {
+      oldPropValue.current = propValue;
+      return;
+    }
+
+    oldPropValue.current = propValue;
+    const overridenValue = propValue === undefined ? propDefaultValue : propValue;
+    if (overridenValue === undefined) return;
+
+    const displayValue = getDisplayValue(
+      overridenValue,
+      {
+        disabled: isDisabled,
+        plaintext: isPlaintext,
+      },
+    );
+
+    setFieldState({
+      value: displayValue,
+      touched: false,
+      dirty: false,
+    });
+  }, [fieldState.dirty, getDisplayValue, isDisabled, isPlaintext, propDefaultValue, propValue]);
 
   const asyncValidateOnChange = props.asyncValidateOnChange === undefined ? formContext.asyncValidateOnChange : props.asyncValidateOnChange;
 
@@ -175,9 +205,9 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
       isRequired: validationState.isRequired,
       touched: fieldState.touched,
       stringFormatter: formContext.stringFormatter,
-      plaintext: props.plaintext === undefined ? formContext.plaintext : props.plaintext,
+      plaintext: isPlaintext,
     }),
-    [formContext.plaintext, formContext.stringFormatter, props.plaintext, fieldState.touched, validationState.error, validationState.isRequired, validationState.isValidating, validationState.valid],
+    [fieldState.touched, formContext.stringFormatter, isPlaintext, validationState.error, validationState.isRequired, validationState.isValidating, validationState.valid],
   );
 
   return {
