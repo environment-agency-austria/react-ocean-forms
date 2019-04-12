@@ -7,7 +7,7 @@
 
 import React from 'react';
 
-import { useField } from './useField';
+import { useField } from '../../hooks';
 import { IFieldProps } from './Field.types';
 
 export const Field: React.FC<IFieldProps> = ({ render, ...otherProps }) => {
