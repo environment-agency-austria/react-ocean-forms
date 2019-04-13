@@ -15,4 +15,3 @@ export * from './Input';
 export * from './ValidationSummary';
 export * from './withField';
 export * from './withForm';
-export * from './withValidation';
