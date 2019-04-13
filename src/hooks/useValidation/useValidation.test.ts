@@ -1,26 +1,28 @@
 import { renderHook, cleanup, act } from 'react-hooks-testing-library';
 
-import { IFormContext, IValidationProp, IValidatedComponentProps } from '../../components';
+import { IFormContext } from '../../components';
 import { createMockFormContext } from '../../test-utils/enzymeFormContext';
 import { TValidator, validators as defaultValidators } from '../../validators';
 
-import { useValidation, IBasicValidationState, IUseValidationResult } from './useValidation';
 import { useFormContext } from '../useFormContext';
+import { useFullName } from '../useFullName';
+import { useValidation } from './useValidation';
+import { IUseValidationArgs, IUseValidationResult } from './useValidation.types';
 
 jest.mock('../useFormContext');
+jest.mock('../useFullName');
 afterEach(cleanup);
 
 describe('useValidation', () => {
   const fieldName = 'unitField';
 
   interface ISetupArgs {
-    props?: Partial<IValidatedComponentProps>;
+    props?: Partial<IUseValidationArgs>;
     contextOverrides?: Partial<IFormContext>;
   }
 
   interface ISetupResult {
     formContext: IFormContext;
-    validation: IValidationProp;
 
     unmount(): boolean;
     rerender(): void;
@@ -28,33 +30,22 @@ describe('useValidation', () => {
     result: { current: IUseValidationResult };
   }
 
-  const setup = ({
-    props = { },
-    contextOverrides,
-  }: Partial<ISetupArgs> = {}): ISetupResult => {
+  const setup = ({ props, contextOverrides }: Partial<ISetupArgs> = {}): ISetupResult => {
+    (useFullName as jest.Mock).mockImplementation((name: string) => name);
     const formContext: IFormContext = {
       ...createMockFormContext(),
       ...contextOverrides,
     };
     (useFormContext as jest.Mock).mockReturnValue(formContext);
 
-    const { result, unmount, rerender, waitForNextUpdate } = renderHook(() => useValidation(
-      props.name === undefined ? fieldName : props.name,
-      props.validators,
-      props.asyncValidators,
-      props.asyncValidationWait,
-    ));
-
-    const validation: IValidationProp = {
-      ...result.current.validationState,
-      validate: result.current.validate,
-      reset: result.current.resetValidation,
-      update: result.current.updateValidationState,
+    const fullProps: IUseValidationArgs = {
+      name: fieldName,
+      ...props,
     };
+    const { result, unmount, rerender, waitForNextUpdate } = renderHook(() => useValidation(fullProps));
 
     return {
       formContext,
-      validation,
 
       unmount,
       rerender,
@@ -64,10 +55,10 @@ describe('useValidation', () => {
   };
 
   it('should return a valid state without validators', async () => {
-    const { validation } = setup();
+    const { result } = setup();
 
-    await act(async () => { validation.validate('foo') });
-    expect(validation).toMatchObject({
+    await act(async () => { result.current.validate('foo') });
+    expect(result.current.validationState).toMatchObject({
       error: null,
       isValidating: false,
       valid: true,
@@ -75,7 +66,7 @@ describe('useValidation', () => {
   });
 
   const mockValue = 'foobar';
-  const checkNotifyCalled = (formContext: IFormContext, state: IBasicValidationState): void => {
+  const checkNotifyCalled = (formContext: IFormContext, state: any): void => {
     expect(formContext.notifyFieldEvent).toHaveBeenLastCalledWith(
       fieldName,
       'validation',
@@ -87,12 +78,12 @@ describe('useValidation', () => {
     it('should call the sync validators and return a validation state', async () => {
       const validator = jest.fn().mockReturnValue(undefined);
 
-      const { validation, formContext } = setup({ props: {
+      const { result, formContext } = setup({ props: {
         validators: [validator],
       }});
 
       await act(async () => {
-        const state = await validation.validate(mockValue);
+        const state = await result.current.validate(mockValue);
         expect(state).toMatchObject({
           isValidating: false,
           valid: true,
@@ -111,12 +102,12 @@ describe('useValidation', () => {
         jest.fn().mockReturnValue(undefined),
       ];
 
-      const { validation } = setup({ props: {
+      const { result } = setup({ props: {
         validators,
       }});
 
       await act(async () => {
-        await validation.validate(mockValue);
+        await result.current.validate(mockValue);
       });
 
       expect(validators[0]).toHaveBeenCalledTimes(1);
@@ -128,13 +119,13 @@ describe('useValidation', () => {
       const validator = jest.fn().mockReturnValue('error');
       const asyncValidator = jest.fn().mockResolvedValue(undefined);
 
-      const { validation } = setup({ props: {
+      const { result } = setup({ props: {
         validators: [validator],
         asyncValidators: [asyncValidator],
       }});
 
       await act(async () => {
-        await validation.validate(mockValue);
+        await result.current.validate(mockValue);
       });
 
       expect(asyncValidator).not.toHaveBeenCalled();
@@ -177,11 +168,11 @@ describe('useValidation', () => {
       ];
 
       it.each(cases)('%s', (name: string, validators: undefined | TValidator[], expectedIsRequiredState: unknown) => {
-        const { validation } = setup({ props: {
+        const { result } = setup({ props: {
           validators,
         }});
 
-        expect(validation.isRequired).toEqual(expectedIsRequiredState);
+        expect(result.current.validationState.isRequired).toEqual(expectedIsRequiredState);
       });
     });
   });
@@ -200,12 +191,12 @@ describe('useValidation', () => {
     it('should ignore async validators if checkAsync is false', async () => {
       const asyncValidator = jest.fn().mockResolvedValue(undefined);
 
-      const { validation, formContext } = setup({ props: {
+      const { result, formContext } = setup({ props: {
         asyncValidators: [asyncValidator],
       }});
 
       await act(async () => {
-        const state = await validation.validate(mockValue, { checkAsync: false });
+        const state = await result.current.validate(mockValue, { checkAsync: false });
         expect(state).toMatchObject({
           isValidating: false,
           valid: true,
@@ -221,12 +212,12 @@ describe('useValidation', () => {
       const errorId = 'mockError';
       const asyncValidator = jest.fn().mockResolvedValue(errorId);
 
-      const { validation, formContext } = setup({ props: {
+      const { result, formContext } = setup({ props: {
         asyncValidators: [asyncValidator],
       }});
 
       await act(async () => {
-        const state = await validation.validate(mockValue, { immediateAsync: true });
+        const state = await result.current.validate(mockValue, { immediateAsync: true });
         expect(state).toMatchObject({
           isValidating: false,
           valid: false,
@@ -245,14 +236,14 @@ describe('useValidation', () => {
       const errorId = 'mockError';
       const asyncValidator = jest.fn().mockResolvedValue(errorId);
 
-      const { validation, formContext, result } = setup({ props: {
+      const { formContext, result } = setup({ props: {
         asyncValidators: [asyncValidator],
       }});
 
       const spiedTimeout = jest.spyOn(window, 'setTimeout');
 
       await act(async () => {
-        const state = await validation.validate(mockValue);
+        const state = await result.current.validate(mockValue);
 
         expect(state).toMatchObject({
           isValidating: true,
@@ -289,14 +280,14 @@ describe('useValidation', () => {
       const errorId = 'mockError';
       const asyncValidator = jest.fn().mockResolvedValue(errorId);
 
-      const { validation } = setup({ props: {
+      const { result } = setup({ props: {
         asyncValidators: [asyncValidator],
         asyncValidationWait: 42,
       }});
 
       await act(async () => {
         const spiedTimeout = jest.spyOn(window, 'setTimeout');
-        await validation.validate(mockValue);
+        await result.current.validate(mockValue);
 
         expect(spiedTimeout).toHaveBeenCalledWith(
           expect.any(Function),
@@ -309,12 +300,12 @@ describe('useValidation', () => {
       const errorId = 'mockError';
       const asyncValidator = jest.fn().mockResolvedValue(errorId);
 
-      const { validation } = setup({ props: {
+      const { result } = setup({ props: {
         asyncValidators: [asyncValidator],
       }});
 
       await act(async () => {
-        const state1 = await validation.validate(mockValue);
+        const state1 = await result.current.validate(mockValue);
         expect(state1).toMatchObject({
           isValidating: true,
         });
@@ -322,7 +313,7 @@ describe('useValidation', () => {
       expect(asyncValidator).toHaveBeenCalledTimes(0);
 
       await act(async () => {
-        const state2 = await validation.validate(mockValue);
+        const state2 = await result.current.validate(mockValue);
         expect(state2).toMatchObject({
           isValidating: true,
         });
@@ -337,12 +328,12 @@ describe('useValidation', () => {
     it('should set validationState.error to null if it is an empty array after filtering invalid errors out', async () => {
       const asyncValidator = jest.fn().mockResolvedValue({ foo: 'bar' });
 
-      const { validation } = setup({ props: {
+      const { result } = setup({ props: {
         asyncValidators: [asyncValidator],
       }});
 
       await act(async () => {
-        const state = await validation.validate(mockValue, { immediateAsync: true });
+        const state = await result.current.validate(mockValue, { immediateAsync: true });
         expect(state).toMatchObject({
           isValidating: false,
           valid: true,
@@ -354,7 +345,7 @@ describe('useValidation', () => {
 
   describe('form context callbacks', () => {
     it('should update the validation state if called for', () => {
-      const { formContext, validation } = setup();
+      const { formContext, result } = setup();
 
       const mockError = {
         message_id: 'dummy',
@@ -362,7 +353,7 @@ describe('useValidation', () => {
       };
 
       act(() => {
-        validation.update({
+        result.current.updateValidationState({
           valid: false,
           error: mockError,
         });
@@ -378,10 +369,10 @@ describe('useValidation', () => {
     });
 
     it('should correctly reset the validation state', async () => {
-      const { formContext, validation } = setup();
+      const { formContext, result } = setup();
 
       act(() => {
-        validation.reset();
+        result.current.resetValidation();
       });
       checkNotifyCalled(
         formContext,
@@ -395,12 +386,12 @@ describe('useValidation', () => {
   });
 
   it('should not update its state after unmounting', () => {
-    const { validation, formContext, unmount } = setup();
+    const { result, formContext, unmount } = setup();
 
     unmount();
 
     expect(() => {
-      validation.update({ isValidating: true });
+      result.current.updateValidationState({ isValidating: true });
     }).not.toThrowError();
     expect(formContext.notifyFieldEvent).not.toHaveBeenCalled();
   });

@@ -1,5 +1,6 @@
-import { IFieldState, IFormContext, TFormEventListener, IValidationProp } from '../components';
+import { IFieldState, IFormContext, TFormEventListener } from '../components';
 import { stringFormatter } from '../utils';
+import { IUseValidationResult } from '../hooks';
 
 /**
  * Components inside the form module require access to the form context.
@@ -48,13 +49,15 @@ export const createMockFormContext = (registerCallback?: Function): IFormContext
  * Creates a validation object mocking the
  * withValidation hoc
  */
-export const createMockValidation = (): IValidationProp => ({
+export const createMockValidationResult = (): IUseValidationResult => ({
   validate: jest.fn(),
-  reset: jest.fn(),
-  update: jest.fn(),
+  resetValidation: jest.fn(),
+  updateValidationState: jest.fn(),
 
-  isValidating: false,
-  isRequired: false,
-  valid: true,
-  error: null,
+  validationState: {
+    isValidating: false,
+    isRequired: false,
+    valid: true,
+    error: null,
+  },
 });

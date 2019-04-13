@@ -19,7 +19,7 @@ export interface IValueMeta {
 /**
  * Type that defines which values a field could hold
  */
-export type TBasicFieldValue = string | boolean | number | object;
+export type TBasicFieldValue = string | boolean | number | object | null | undefined;
 /**
  * Type definition for getDisplayValue and getSubmitValue callbacks
  */

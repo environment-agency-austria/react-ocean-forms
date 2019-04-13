@@ -1,14 +1,13 @@
 import { useMemo, useState, useCallback, useEffect, useRef } from 'react';
 
-import { IValidatedComponentProps } from '../../components';
 import { getDeepValue } from '../../utils';
 import { useFormContext } from '../useFormContext';
 import { useFullName } from '../useFullName';
-import { useValidation, IValidationArgs, IBasicValidationState } from '../useValidation';
+import { useValidation, IValidationArgs, IBasicValidationState, IUseValidationArgs } from '../useValidation';
 import { useFieldRegistration } from '../useFieldRegistration';
 import { IBaseFieldProps, TBasicFieldValue, IFieldComponentFieldProps, IFieldComponentMeta, IFieldChangedEvent } from './useField.types';
 
-export interface IUseFieldProps extends IBaseFieldProps, IValidatedComponentProps { }
+export interface IUseFieldProps extends IBaseFieldProps, IUseValidationArgs { }
 
 export interface IUseFieldResult {
   fieldProps: IFieldComponentFieldProps;
@@ -41,12 +40,7 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
 
   const [ fieldState, setFieldState ] = useState<IUseFieldState>({ touched: false, dirty: false, value: getDisplayValue('', { plaintext: isPlaintext, disabled: isDisabled }) })
   const fullName = useFullName(props.name);
-  const { validationState, validate, resetValidation, updateValidationState } = useValidation(
-    fullName,
-    props.validators,
-    props.asyncValidators,
-    props.asyncValidationWait,
-  );
+  const { validationState, validate, resetValidation, updateValidationState } = useValidation(props);
 
   const getFieldValue = useCallback(
     () => {

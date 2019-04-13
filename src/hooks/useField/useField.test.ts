@@ -1,10 +1,10 @@
 import { renderHook, cleanup, act } from 'react-hooks-testing-library';
 
-import { IFormContext, IValidationProp, IFieldState } from '../../components';
-import { createMockFormContext, createMockValidation } from '../../test-utils/enzymeFormContext';
+import { IFormContext, IFieldState } from '../../components';
+import { createMockFormContext, createMockValidationResult } from '../../test-utils/enzymeFormContext';
 import { useFullName } from '../useFullName';
 import { useFormContext } from '../useFormContext';
-import { useValidation } from '../useValidation';
+import { useValidation, IUseValidationResult } from '../useValidation';
 import { useFieldRegistration } from '../useFieldRegistration';
 import { useField, IUseFieldResult, IUseFieldProps } from './useField';
 import { TBasicFieldValue, IFieldComponentFieldProps } from './useField.types';
@@ -27,7 +27,7 @@ describe('useField', () => {
 
   interface ISetupResult {
     formContext: IFormContext;
-    validation: IValidationProp;
+    validation: IUseValidationResult;
     fieldState: IFieldState;
 
     usedFieldProps: IUseFieldProps;
@@ -49,18 +49,8 @@ describe('useField', () => {
     };
     (useFormContext as jest.Mock).mockReturnValue(formContext);
 
-    const validation = createMockValidation();
-    (useValidation as jest.Mock).mockReturnValue({
-      validationState: {
-        isValidating: validation.isValidating,
-        valid: validation.valid,
-        error: validation.error,
-        isRequired: validation.isRequired,
-      },
-      validate: validation.validate,
-      resetValidation: validation.reset,
-      updateValidationState: validation.update,
-    });
+    const validation = createMockValidationResult();
+    (useValidation as jest.Mock).mockReturnValue(validation);
 
     let fieldState = null;
     (useFieldRegistration as jest.Mock).mockImplementation((fullName, label, isGroup, updateValidation, validate, reset, getValue) => {
@@ -117,7 +107,7 @@ describe('useField', () => {
         mockName,
         mockLabel,
         false,
-        validation.update,
+        validation.updateValidationState,
         expect.any(Function),
         expect.any(Function),
         expect.any(Function),
@@ -641,7 +631,7 @@ describe('useField', () => {
         act(() => {
           fieldState.reset();
         });
-        expect(validation.reset).toHaveBeenCalled();
+        expect(validation.resetValidation).toHaveBeenCalled();
       });
 
       const cases = [

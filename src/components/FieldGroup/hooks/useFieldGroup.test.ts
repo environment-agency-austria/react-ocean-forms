@@ -1,9 +1,8 @@
 import { renderHook, cleanup } from 'react-hooks-testing-library';
 
-import { createMockFormContext, createMockValidation } from '../../../test-utils/enzymeFormContext';
-import { useFormContext, useFullName, useValidation, useFieldRegistration } from '../../../hooks';
+import { createMockFormContext, createMockValidationResult } from '../../../test-utils/enzymeFormContext';
+import { useFormContext, useFullName, useValidation, useFieldRegistration, IUseValidationResult } from '../../../hooks';
 import { IFormContext, IFieldState } from '../../FormContext';
-import { IValidationProp } from '../../withValidation';
 
 import { IFieldGroupRenderParams, IFieldGroupProps } from '../FieldGroup.types';
 import { useFieldGroup } from './useFieldGroup';
@@ -22,12 +21,12 @@ describe('useFieldGroup', () => {
   interface ISetupArgs {
     props?: Partial<IFieldGroupProps>;
     contextOverrides?: Partial<IFormContext>;
-    validationOverrides?: Partial<IValidationProp>;
+    validationOverrides?: Partial<IUseValidationResult>;
   }
 
   interface ISetupResult {
     formContext: IFormContext;
-    validation: IValidationProp;
+    validation: IUseValidationResult;
 
     fieldState: IFieldState;
     groupContext: IFormContext;
@@ -57,20 +56,10 @@ describe('useFieldGroup', () => {
     (useFormContext as jest.Mock).mockReturnValue(formContext);
 
     const validation = {
-      ...createMockValidation(),
+      ...createMockValidationResult(),
       ...validationOverrides,
     };
-    (useValidation as jest.Mock).mockReturnValue({
-      validationState: {
-        isValidating: validation.isValidating,
-        valid: validation.valid,
-        error: validation.error,
-        isRequired: validation.isRequired,
-      },
-      validate: validation.validate,
-      resetValidation: validation.reset,
-      updateValidationState: validation.update,
-    });
+    (useValidation as jest.Mock).mockReturnValue(validation);
 
     (useFieldRegistration as jest.Mock).mockImplementation((fullName, label, isGroup, updateValidation, validate, reset, getValue) => {
       fieldState = {
@@ -118,7 +107,7 @@ describe('useFieldGroup', () => {
         mockName,
         mockLabel,
         true,
-        validation.update,
+        validation.updateValidationState,
         expect.any(Function),
         expect.any(Function),
         expect.any(Function),
@@ -156,7 +145,7 @@ describe('useFieldGroup', () => {
         const { fieldState, validation } = setup();
 
         fieldState.reset();
-        expect(validation.reset).toHaveBeenCalled();
+        expect(validation.resetValidation).toHaveBeenCalled();
       });
     });
   });
@@ -225,7 +214,7 @@ describe('useFieldGroup', () => {
         const mockChangedFieldValue = 'mock-value';
         const eventName = 'change';
 
-        const assertValidateCalled = ({ validate }: IValidationProp, checkAsync: boolean): void => {
+        const assertValidateCalled = ({ validate }: IUseValidationResult, checkAsync: boolean): void => {
           expect(validate).toHaveBeenCalledWith(
             {
               ...mockValue,
@@ -411,10 +400,12 @@ describe('useFieldGroup', () => {
 
       const { renderParams } = setup({
         validationOverrides: {
-          isValidating: mockIsValidating,
-          isRequired: mockIsRequired,
-          valid: mockIsValid,
-          error: mockError,
+          validationState: {
+            isValidating: mockIsValidating,
+            isRequired: mockIsRequired,
+            valid: mockIsValid,
+            error: mockError,
+          }
         },
       });
       expect(renderParams).toMatchObject({

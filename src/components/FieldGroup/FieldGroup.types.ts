@@ -4,9 +4,8 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { IValidationState } from '../../hooks';
+import { IValidationState, IUseValidationArgs } from '../../hooks';
 import { IFieldValues } from '../FormContext';
-import { IValidatedComponentProps } from '../withValidation';
 
 /**
  * Meta information about the group
@@ -22,7 +21,7 @@ export interface IFieldGroupRenderParams extends IValidationState {
 /**
  * Props for the field group component
  */
-export interface IFieldGroupProps<TFieldValues = IFieldValues> extends IValidatedComponentProps {
+export interface IFieldGroupProps<TFieldValues = IFieldValues> extends IUseValidationArgs {
   /**
    * Label of the group
    */

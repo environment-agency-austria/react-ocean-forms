@@ -41,12 +41,12 @@ export function useFieldGroup(
     validate,
     resetValidation,
     updateValidationState,
-  } = useValidation(
-    fullName,
+  } = useValidation({
+    name,
     validators,
     asyncValidators,
     asyncValidationWait
-  );
+  });
 
   /**
    * Triggers the validation of the group

@@ -7,12 +7,11 @@
 import React from 'react';
 
 import { getDisplayName, PropsOf, Subtract } from '../../utils';
-import { useField, IBaseFieldProps } from '../../hooks';
+import { useField, IBaseFieldProps, IUseValidationArgs } from '../../hooks';
 import { IFieldComponentProps } from './withField.types';
-import { IValidatedComponentProps } from '../withValidation';
 
 type WrappedValidatedComponentProps<TComp> =
-  Subtract<JSX.LibraryManagedAttributes<TComp, PropsOf<TComp>>, IFieldComponentProps> & IBaseFieldProps & IValidatedComponentProps;
+  Subtract<JSX.LibraryManagedAttributes<TComp, PropsOf<TComp>>, IFieldComponentProps> & IBaseFieldProps & IUseValidationArgs;
 
 /**
  * Higher order component for validation
