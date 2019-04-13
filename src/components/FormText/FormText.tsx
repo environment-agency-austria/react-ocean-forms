@@ -20,7 +20,6 @@ export const FormText: React.SFC<IFormTextProps> = ({ text, values }: IFormTextP
   return (
     <React.Fragment>
       {context.stringFormatter(text, values)}
-      <button disabled={true} />
     </React.Fragment>
   );
 };
