@@ -1,13 +1,13 @@
 import { renderHook, cleanup, act } from 'react-hooks-testing-library';
 
-import { IFormContext, IValidationProp, IValidatedComponentProps } from '../components';
-import { createMockFormContext } from '../test-utils/enzymeFormContext';
-import { TValidator, validators as defaultValidators } from '../validators';
+import { IFormContext, IValidationProp, IValidatedComponentProps } from '../../components';
+import { createMockFormContext } from '../../test-utils/enzymeFormContext';
+import { TValidator, validators as defaultValidators } from '../../validators';
 
 import { useValidation, IBasicValidationState, IUseValidationResult } from './useValidation';
-import { useFormContext } from './useFormContext';
+import { useFormContext } from '../useFormContext';
 
-jest.mock('./useFormContext');
+jest.mock('../useFormContext');
 afterEach(cleanup);
 
 describe('useValidation', () => {
