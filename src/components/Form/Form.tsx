@@ -226,7 +226,7 @@ export class Form<TFieldValues = IFieldValues, TSubmitArgs = unknown>
     // field states.
     let allFieldsValid = true;
     this.fields.forEach((state, name) => {
-      const fieldError = parseValidationError(name, getDeepValue(name, result));
+      const fieldError = parseValidationError(getDeepValue(name, result));
       const isValid = fieldError === null || typeof fieldError !== 'object';
 
       if (isValid) { return; }
