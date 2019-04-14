@@ -6,7 +6,7 @@
  */
 import { useContext } from 'react';
 
-import { IFieldValues, IFormContext, FormContext } from '../../components';
+import { IFieldValues, IFormContext, FormContext } from '../../components/FormContext';
 
 /**
  * Returns the FormContext of the current closure.
