@@ -6,8 +6,8 @@ import { useFullName } from '../useFullName';
 import { useFormContext } from '../useFormContext';
 import { useValidation, IUseValidationResult } from '../useValidation';
 import { useFieldRegistration } from '../useFieldRegistration';
-import { useField, IUseFieldResult, IUseFieldProps } from './useField';
-import { TBasicFieldValue, IFieldComponentFieldProps } from './useField.types';
+import { useField } from './useField';
+import { TBasicFieldValue, IFieldComponentFieldProps, IUseFieldProps, IUseFieldResult } from './useField.types';
 
 jest.mock('../useFormContext');
 jest.mock('../useFullName');
@@ -432,19 +432,10 @@ describe('useField', () => {
       return setupResult;
     };
 
-    it('should call the Field.getSubmitValue function', () => {
+    it('should call the validate function with the value from Field.getSubmitValue', () => {
       const mockGetSubmitValue = jest.fn().mockImplementation((value: TBasicFieldValue): TBasicFieldValue => value);
-      setupOnBlur({ getSubmitValue: mockGetSubmitValue });
-
-      expect(mockGetSubmitValue).toHaveBeenCalledWith(
-        mockValue,
-        { disabled: false, plaintext: false },
-      );
-    });
-
-    it('should call the validate function', () => {
       const mockChangeValue = 'foo';
-      const { result, validation } = setupLocal();
+      const { result, validation } = setupLocal({ getSubmitValue: mockGetSubmitValue });
 
       simulateChange(result.current.fieldProps, mockChangeValue);
 
@@ -454,11 +445,23 @@ describe('useField', () => {
         result.current.fieldProps.onBlur();
       });
       expect(validation.validate).toHaveBeenCalledWith(mockChangeValue);
+      expect(mockGetSubmitValue).toHaveBeenCalledWith(
+        mockChangeValue,
+        { disabled: false, plaintext: false },
+      );
     });
 
     it('should not call the validate function if the field is not dirty', () => {
       const { validation } = setupOnBlur();
       expect(validation.validate).not.toHaveBeenCalledWith(mockValue);
+    });
+
+    it('should not call the Field.getSubmitValue function if the field is not dirty', () => {
+      const mockGetSubmitValue = jest.fn().mockImplementation((value: TBasicFieldValue): TBasicFieldValue => value);
+      const { validation } = setupOnBlur({ getSubmitValue: mockGetSubmitValue });
+
+      expect(validation.validate).not.toHaveBeenCalledWith(mockValue);
+      expect(mockGetSubmitValue).not.toHaveBeenCalled();
     });
 
     it('should notify the form context', () => {

@@ -3,66 +3,69 @@ import { useMemo, useState, useCallback, useEffect, useRef } from 'react';
 import { getDeepValue } from '../../utils';
 import { useFormContext } from '../useFormContext';
 import { useFullName } from '../useFullName';
-import { useValidation, IValidationArgs, IBasicValidationState, IUseValidationArgs } from '../useValidation';
+import { useValidation, IValidationArgs, IBasicValidationState } from '../useValidation';
 import { useFieldRegistration } from '../useFieldRegistration';
-import { IBaseFieldProps, TBasicFieldValue, IFieldComponentFieldProps, IFieldComponentMeta, IFieldChangedEvent } from './useField.types';
+import { IFieldComponentFieldProps, IFieldComponentMeta, IFieldChangedEvent, IUseFieldProps, IUseFieldResult, IUseFieldState, TBasicFieldValue, IValueMeta } from './useField.types';
+import { noopFieldValueFunction, noopFunction } from './useField.utils';
 
-export interface IUseFieldProps extends IBaseFieldProps, IUseValidationArgs { }
-
-export interface IUseFieldResult {
-  fieldProps: IFieldComponentFieldProps;
-  metaProps: IFieldComponentMeta;
-}
-
-interface IUseFieldState {
-  touched: boolean;
-  dirty: boolean;
-  value: TBasicFieldValue;
-}
-
-function noopFunction(): void { }
-
-function noopFieldValueFunction(value: TBasicFieldValue): TBasicFieldValue {
-  return value;
-}
-
+/**
+ * Hook for writing custom fields. Will handle the internal state
+ * of the field, the validation and all communication with the
+ * form context.
+ * @param props Field props @see IUseFieldProps
+ */
 export function useField(props: IUseFieldProps): IUseFieldResult {
+  const formContext = useFormContext();
+  const fullName = useFullName(props.name);
+
   const {
     getSubmitValue = noopFieldValueFunction,
     getDisplayValue = noopFieldValueFunction,
     onChange = noopFunction,
     onBlur = noopFunction,
+    asyncValidateOnChange = formContext.asyncValidateOnChange,
+    defaultValue = getDeepValue(fullName, formContext.defaultValues),
+    value = getDeepValue(fullName, formContext.values),
+    disabled = formContext.disabled,
+    plaintext = formContext.plaintext,
   } = props;
 
-  const formContext = useFormContext();
-  const isDisabled = props.disabled === undefined ? formContext.disabled : props.disabled;
-  const isPlaintext = props.plaintext === undefined ? formContext.plaintext : props.plaintext;
-
-  const [ fieldState, setFieldState ] = useState<IUseFieldState>({ touched: false, dirty: false, value: getDisplayValue('', { plaintext: isPlaintext, disabled: isDisabled }) })
-  const fullName = useFullName(props.name);
+  const [ fieldState, setFieldState ] = useState<IUseFieldState>(
+    // Initialize the field state with an empty string provided to getDisplayValue
+    // Note: the correct defaultValue / value from props will be overriden in an
+    // effect later on
+    () => ({ touched: false, dirty: false, value: getDisplayValue('', { plaintext, disabled }) })
+  );
   const { validationState, validate, resetValidation, updateValidationState } = useValidation(props);
 
-  const getFieldValue = useCallback(
-    () => {
-      return getSubmitValue(
-        fieldState.value,
-        {
-          disabled: isDisabled,
-          plaintext: isPlaintext,
-        },
-      );
-    },
-    [fieldState.value, isDisabled, isPlaintext, getSubmitValue],
-  );
+  /**
+   * Contains the memoized value meta for passing to
+   * getSubmitValue and getDisplayValue
+   */
+  const valueMeta: IValueMeta = useMemo(() => ({
+    disabled,
+    plaintext,
+  }), [disabled, plaintext]);
 
+  /**
+   * Returns the current submit value using the getSubmitValue
+   * callback and the correct value and value meta parameters
+   */
+  const getFieldValue = useCallback((valueOverride?: TBasicFieldValue) => {
+    return getSubmitValue(
+      valueOverride !== undefined ? valueOverride : fieldState.value,
+      valueMeta,
+    );
+  }, [getSubmitValue, fieldState.value, valueMeta]);
+
+  /**
+   * Resets the field to its initial state.
+   */
   const resetField = useCallback(
     () => {
       const displayValue = getDisplayValue(
         fieldState.value,
-        {
-          disabled: isDisabled,
-          plaintext: isPlaintext,
-        },
+        valueMeta,
       );
 
       setFieldState({
@@ -73,25 +76,25 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
       resetValidation();
       onChange(displayValue);
     },
-    [fieldState.value, getDisplayValue, isDisabled, isPlaintext, onChange, resetValidation],
+    [getDisplayValue, fieldState.value, valueMeta, resetValidation, onChange],
   );
 
+  /**
+   * Calls the validation method with the current field value
+   */
   const validateField = useCallback(
     async (args?: Partial<IValidationArgs>): Promise<IBasicValidationState> => {
       return validate(
-        getSubmitValue(
-          fieldState.value,
-          {
-            disabled: isDisabled,
-            plaintext: isPlaintext,
-          },
-        ),
+        getFieldValue(),
         args,
       );
     },
-    [fieldState.value, getSubmitValue, isDisabled, isPlaintext, validate],
+    [getFieldValue, validate],
   );
 
+  /**
+   * Register / unregister the field in the form context
+   */
   useFieldRegistration(
     fullName,
     props.label,
@@ -102,37 +105,39 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
     getFieldValue,
   );
 
-  const propDefaultValue = props.defaultValue === undefined ? getDeepValue(fullName, formContext.defaultValues) : props.defaultValue;
-  const propValue = props.value === undefined ? getDeepValue(fullName, formContext.values) : props.value;
-  const oldPropValue = useRef(propValue);
-
+  /**
+   * Effect for overwriting the current field value with either
+   * defaultValue or value provided through the props / form context
+   */
+  const oldPropValue = useRef(value);
   useEffect(() => {
-    if (oldPropValue.current === propValue && fieldState.dirty) {
-      oldPropValue.current = propValue;
+    // If the Field.value / FormContext.value did not change and
+    // the field is dirty, do nothing
+    if (oldPropValue.current === value && fieldState.dirty) {
+      oldPropValue.current = value;
       return;
     }
 
-    oldPropValue.current = propValue;
-    const overridenValue = propValue === undefined ? propDefaultValue : propValue;
+    // Remember the prop value for later change checks
+    oldPropValue.current = value;
+
+    // Check if we have either a defaultValue or a value
+    const overridenValue = value === undefined ? defaultValue : value;
     if (overridenValue === undefined) return;
 
-    const displayValue = getDisplayValue(
-      overridenValue,
-      {
-        disabled: isDisabled,
-        plaintext: isPlaintext,
-      },
-    );
-
+    // Update the field state with the overriden values
     setFieldState({
-      value: displayValue,
+      value: getDisplayValue(overridenValue, valueMeta),
       touched: false,
       dirty: false,
     });
-  }, [fieldState.dirty, getDisplayValue, isDisabled, isPlaintext, propDefaultValue, propValue]);
+  }, [defaultValue, fieldState.dirty, getDisplayValue, value, valueMeta]);
 
-  const asyncValidateOnChange = props.asyncValidateOnChange === undefined ? formContext.asyncValidateOnChange : props.asyncValidateOnChange;
-
+  /**
+   * Handles the field change event - will run any validations,
+   * notify the form context about the change and update its
+   * internal state
+   */
   const handleFieldChanged = useCallback(
     (event: IFieldChangedEvent) => {
       const updatedValue = event.target.value;
@@ -142,13 +147,7 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
         dirty: true,
       });
 
-      const submitValue = getSubmitValue(
-        updatedValue,
-        {
-          disabled: isDisabled,
-          plaintext: isPlaintext,
-        },
-      );
+      const submitValue = getFieldValue(updatedValue);
 
       validate(
         submitValue,
@@ -158,40 +157,50 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
       formContext.notifyFieldEvent(fullName, 'change', submitValue);
       onChange(submitValue);
     },
-    [asyncValidateOnChange, formContext, fullName, getSubmitValue, isDisabled, isPlaintext, onChange, validate],
+    [asyncValidateOnChange, formContext, fullName, getFieldValue, onChange, validate],
   );
 
+  /**
+   * Handles the field blur event - will run validations if the
+   * field is dirty and the asyncValidateOnChange prop is false
+   * (otherwise the async validators would never be called).
+   * Notifies the form context and calls the onBlur callback
+   */
   const handleFieldBlur = useCallback(
     () => {
-      const submitValue = getSubmitValue(
-        fieldState.value,
-        {
-          disabled: isDisabled,
-          plaintext: isPlaintext,
-        },
-      );
-
       if (fieldState.dirty && !asyncValidateOnChange) {
-        validate(submitValue);
+        validate(getFieldValue());
       }
       formContext.notifyFieldEvent(fullName, 'blur');
       onBlur();
     },
-    [asyncValidateOnChange, fieldState.dirty, fieldState.value, formContext, fullName, getSubmitValue, isDisabled, isPlaintext, onBlur, validate],
+    [asyncValidateOnChange, fieldState.dirty, formContext, fullName, getFieldValue, onBlur, validate],
   );
 
+  /**
+   * Memoize the field props which are designed to be used directly
+   * in an input like that:
+   * ```jsx
+   * <Input {...fieldProps} />
+   * ```
+   * @see IFieldComponentFieldProps
+   */
   const fieldProps = useMemo(
     (): IFieldComponentFieldProps => ({
       value: fieldState.value,
-      disabled: isDisabled,
+      disabled,
       id: fullName,
       name: fullName,
       onChange: handleFieldChanged,
       onBlur: handleFieldBlur,
     }),
-    [fieldState.value, isDisabled, fullName, handleFieldChanged, handleFieldBlur],
+    [fieldState.value, disabled, fullName, handleFieldChanged, handleFieldBlur],
   );
 
+  /**
+   * Memoize various meta informations
+   * @see IFieldComponentMeta for further details
+   */
   const metaProps = useMemo(
     (): IFieldComponentMeta => ({
       valid: validationState.valid,
@@ -200,9 +209,9 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
       isRequired: validationState.isRequired,
       touched: fieldState.touched,
       stringFormatter: formContext.stringFormatter,
-      plaintext: isPlaintext,
+      plaintext,
     }),
-    [fieldState.touched, formContext.stringFormatter, isPlaintext, validationState.error, validationState.isRequired, validationState.isValidating, validationState.valid],
+    [fieldState.touched, formContext.stringFormatter, plaintext, validationState.error, validationState.isRequired, validationState.isValidating, validationState.valid],
   );
 
   return {

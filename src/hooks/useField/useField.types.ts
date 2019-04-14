@@ -1,4 +1,4 @@
-import { IValidationState } from '../useValidation';
+import { IValidationState, IUseValidationArgs } from '../useValidation';
 import { TSTringFormatter } from '../../utils';
 
 /**
@@ -137,4 +137,17 @@ export interface IFieldComponentMeta extends IValidationState {
    * True if the field is in plaintext mode
    */
   plaintext: boolean;
+}
+
+export interface IUseFieldProps extends IBaseFieldProps, IUseValidationArgs { }
+
+export interface IUseFieldResult {
+  fieldProps: IFieldComponentFieldProps;
+  metaProps: IFieldComponentMeta;
+}
+
+export interface IUseFieldState {
+  touched: boolean;
+  dirty: boolean;
+  value: TBasicFieldValue;
 }
