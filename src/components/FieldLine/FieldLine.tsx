@@ -49,7 +49,6 @@ export const FieldLine: React.SFC<IFieldLineProps> = (props: IFieldLineProps): J
           id={`${field.id}_errors`}
           invalid={!meta.valid}
           error={meta.error}
-          stringFormatter={meta.stringFormatter}
         />
       </div>
     </div>

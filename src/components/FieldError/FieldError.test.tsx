@@ -2,15 +2,18 @@ import React from 'react';
 
 import { shallow, ShallowWrapper } from 'enzyme';
 
+import { useFormContext } from '../../hooks';
 import { FieldError } from './FieldError';
 import { IFieldErrorProps } from './FieldError.types';
 
+jest.mock('../../hooks');
+
 describe('<FieldError />', () => {
   const mockStringFormatter = jest.fn().mockReturnValue('string');
+  (useFormContext as jest.Mock).mockReturnValue({ stringFormatter: mockStringFormatter });
   const setup = (props?: Partial<IFieldErrorProps>): ShallowWrapper => shallow((
     <FieldError
       id="unitError"
-      stringFormatter={mockStringFormatter}
       invalid={false}
       error={null}
       {...props}

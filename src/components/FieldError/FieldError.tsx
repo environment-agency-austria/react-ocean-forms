@@ -8,6 +8,7 @@
 import React from 'react';
 
 import { toArray } from '../../utils';
+import { useFormContext } from '../../hooks';
 import { IFieldErrorProps } from './FieldError.types';
 
 /**
@@ -19,8 +20,9 @@ export const FieldError: React.SFC<IFieldErrorProps> = (props: IFieldErrorProps)
     id,
     invalid,
     error,
-    stringFormatter,
   } = props;
+
+  const { stringFormatter } = useFormContext();
 
   // If the field isn't invalid do nothing
   if (invalid !== true || error === null) { return null; }
