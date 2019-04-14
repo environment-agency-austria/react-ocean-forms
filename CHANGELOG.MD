@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 ### New features
 - Added `useValidation` hook as replacement for `withValidation`
 - Added `useField` hook as replacement for `withField`
+- Added `useFormEventListener` hook for easy access to form events
 - Added `reset` to `FormContext`
 
 ## [2.2.0] # 2019-02-19
