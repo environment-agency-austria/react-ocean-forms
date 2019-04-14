@@ -41,6 +41,7 @@ describe('useValidation', () => {
 
     const fullProps: IUseValidationArgs = {
       name: fieldName,
+      label: fieldName,
       ...props,
     };
     const { result, unmount, rerender, waitForNextUpdate } = renderHook(() => useValidation(fullProps));
@@ -71,7 +72,10 @@ describe('useValidation', () => {
     expect(formContext.notifyFieldEvent).toHaveBeenLastCalledWith(
       fieldName,
       'validation',
-      state,
+      {
+        ...state,
+        label: fieldName,
+      },
     );
   };
 

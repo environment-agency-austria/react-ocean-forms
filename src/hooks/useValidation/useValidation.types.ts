@@ -93,6 +93,10 @@ export interface IUseValidationArgs {
    */
   name: string;
   /**
+   * Field label
+   */
+  label: string;
+  /**
    * Synchronous validators
    */
   validators?: TValidator[];

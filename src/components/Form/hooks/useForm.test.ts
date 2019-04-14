@@ -1,10 +1,12 @@
 import { renderHook, cleanup, act } from 'react-hooks-testing-library';
 
 import { IFormProps } from '../Form.types';
-import { IFormContext, IFieldState, TFormEventListener, IFieldValues } from '../../FormContext';
+import { IFormContext, IFieldState, IFieldValues } from '../../FormContext';
 
 import { useForm } from './useForm';
+import { useFieldEvents, IUseFieldEventsResult } from '../../../hooks/internal';
 
+jest.mock('../../../hooks/internal');
 afterEach(cleanup);
 
 describe('useForm', () => {
@@ -18,15 +20,20 @@ describe('useForm', () => {
 
   interface ISetupResult {
     result: IMockResult;
+    fieldEventResult: IUseFieldEventsResult;
   }
 
-  const setup = ({
-    props = { },
-  }: Partial<ISetupArgs> = {}): ISetupResult => {
-    const { result } = renderHook(() => useForm(props));
+  const setup = ({ props = { } }: Partial<ISetupArgs> = {}): ISetupResult => {
+    const fieldEventResult: IUseFieldEventsResult = {
+      notifyListeners: jest.fn(),
+      registerListener: jest.fn(),
+      unregisterListener: jest.fn(),
+    };
+    (useFieldEvents as jest.Mock).mockReturnValue(fieldEventResult);
 
     return {
-      result,
+      fieldEventResult,
+      ...renderHook(() => useForm(props)),
     };
   };
 
@@ -57,25 +64,6 @@ describe('useForm', () => {
     fields.forEach(field => {
       formContext.registerField(field.name, field.state);
     });
-  };
-
-  interface IMockListener {
-    id: string;
-    state: TFormEventListener;
-  }
-
-  const createMockListener = (id?: string): IMockListener => ({
-    id: id === undefined ? 'listener' : id,
-    state: jest.fn(),
-  });
-
-  const createMockListeners = (count: number): IMockListener[] => {
-    const result = [];
-    for (let i = 0; i < count; i += 1) {
-      result.push(createMockListener(`listener${i}`));
-    }
-
-    return result;
   };
 
   it('should create a valid form context', () => {
@@ -240,83 +228,6 @@ describe('useForm', () => {
     });
   });
 
-  describe('listener / notify system', () => {
-    interface ISetupListenerResult extends ISetupResult {
-      unitField: IMockField;
-      mockListeners: IMockListener[];
-    }
-
-    const setupListener = (count: number): ISetupListenerResult => {
-      const setupResult = setup();
-
-      const unitField = createMockField('unitField', 'Unit field');
-      setupResult.result.current.registerField(unitField.name, unitField.state);
-
-      const mockListeners = createMockListeners(count);
-      mockListeners.forEach(item => {
-        setupResult.result.current.registerListener(item.id, item.state);
-      });
-
-      return {
-        ...setupResult,
-        mockListeners,
-        unitField,
-      };
-    };
-
-    it('should register new listeners without crashing', () => {
-      const mockListeners = createMockListeners(3);
-      const { result } = setup();
-      mockListeners.forEach((item) => {
-        expect(() => {
-          result.current.registerListener(item.id, item.state);
-        }).not.toThrowError();
-      });
-    });
-
-    it('should unregister new listeners without crashing', () => {
-      const mockListeners = createMockListeners(3);
-      const { result } = setup();
-      mockListeners.forEach((item) => {
-        result.current.registerListener(item.id, item.state);
-        expect(() => {
-          result.current.unregisterListener(item.id);
-        }).not.toThrowError();
-      });
-    });
-
-    it('should pass the validation notification to all listeners', () => {
-      const eventName = 'validation';
-      const eventArgs = { foo: 'bar' };
-
-      const { result, unitField, mockListeners } = setupListener(3);
-
-      result.current.notifyFieldEvent(unitField.name, eventName, eventArgs);
-      mockListeners.forEach(item => expect(item.state).toHaveBeenLastCalledWith(
-        unitField.name,
-        eventName,
-        {
-          label: unitField.state.label,
-          ...eventArgs,
-        },
-      ));
-    });
-
-    it('should call the listeners', () => {
-      const eventName = 'change';
-      const eventArgs = 'myNewValue';
-
-      const { result, unitField, mockListeners } = setupListener(3);
-
-      result.current.notifyFieldEvent(unitField.name, eventName, eventArgs);
-      mockListeners.forEach(item => expect(item.state).toHaveBeenLastCalledWith(
-        unitField.name,
-        eventName,
-        eventArgs,
-      ));
-    });
-  });
-
   describe('onSubmit handling', () => {
     const simulateSubmitEvent = async (context: IFormContext): Promise<void> => {
       return act(async () => {
@@ -325,23 +236,17 @@ describe('useForm', () => {
     };
 
     interface ISetupSubmitArgs extends ISetupArgs {
-      addListeners: boolean;
       customField: IMockField;
     }
 
     interface ISetupSubmitResult extends ISetupResult {
       expectedFormValues: IFieldValues;
       mockFields: IMockField[];
-      mockListeners?: IMockListener[];
     }
 
     const unitFieldName = 'unitField';
 
-    const setupSubmit = async ({
-      props,
-      customField,
-      addListeners = false,
-    }: Partial<ISetupSubmitArgs> = {}): Promise<ISetupSubmitResult> => {
+    const setupSubmit = async ({ props, customField, }: Partial<ISetupSubmitArgs> = {}): Promise<ISetupSubmitResult> => {
       const result = setup({ props });
 
       const unitField = createMockField(unitFieldName, 'Unit field');
@@ -354,15 +259,6 @@ describe('useForm', () => {
       }
 
       registerUnitField(mockFields, result.result.current);
-
-      let mockListeners;
-
-      if (addListeners) {
-        mockListeners = createMockListeners(3);
-        mockListeners.forEach(item => {
-          result.result.current.registerListener(item.id, item.state);
-        });
-      }
 
       await simulateSubmitEvent(result.result.current);
 
@@ -378,7 +274,6 @@ describe('useForm', () => {
         ...result,
         expectedFormValues,
         mockFields,
-        mockListeners,
       };
     };
 
@@ -440,12 +335,8 @@ describe('useForm', () => {
       });
 
       it('should trigger a submit-invalid event', async () => {
-        const { mockListeners } = await setupSubmit({ props: { onValidate: createInvalidValidator() }, addListeners: true});
-        mockListeners!.forEach(item => expect(item.state).toHaveBeenLastCalledWith(
-          '_form',
-          'submit-invalid',
-          undefined,
-        ));
+        const { fieldEventResult } = await setupSubmit({ props: { onValidate: createInvalidValidator() } });
+        expect(fieldEventResult.notifyListeners).toHaveBeenCalledWith('_form', 'submit-invalid');
       });
 
       it('should not call the onSubmit prop', async () => {
@@ -471,13 +362,8 @@ describe('useForm', () => {
       };
 
       it('should trigger a submit-invalid event', async () => {
-        const { mockListeners } = await setupSubmit({ customField: createInvalidField(), addListeners: true});
-
-        mockListeners!.forEach(item => expect(item.state).toHaveBeenLastCalledWith(
-          '_form',
-          'submit-invalid',
-          undefined,
-        ));
+        const { fieldEventResult } = await setupSubmit({ customField: createInvalidField() });
+        expect(fieldEventResult.notifyListeners).toHaveBeenCalledWith('_form', 'submit-invalid');
       });
 
       it('should not call the onSubmit prop', async () => {

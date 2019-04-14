@@ -22,6 +22,7 @@ export function useValidation(args: IUseValidationArgs): IUseValidationResult {
   const fullName = useFullName(args.name);
 
   const {
+    label,
     validators,
     asyncValidators,
     asyncValidationWait = formContext.asyncValidationWait,
@@ -41,11 +42,11 @@ export function useValidation(args: IUseValidationArgs): IUseValidationResult {
           ...newState,
         };
 
-        formContext.notifyFieldEvent(fullName, 'validation', fullNewState);
+        formContext.notifyFieldEvent(fullName, 'validation', { ...fullNewState, label });
         return fullNewState;
       });
     },
-    [isUnmounted, formContext, fullName],
+    [isUnmounted, formContext, fullName, label],
   );
 
   /**

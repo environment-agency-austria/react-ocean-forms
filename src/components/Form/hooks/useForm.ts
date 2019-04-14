@@ -2,13 +2,13 @@ import { useMemo, useState, useRef, useCallback } from 'react';
 
 import { stringFormatter as defaultStringFormatter, noopFunction, parseValidationError, getDeepValue } from '../../../utils';
 import { IBasicValidationState } from '../../../hooks';
-import { IFormContext, IFieldState, IFieldValues, TFormEventListener } from '../../FormContext';
+import { IFormContext, IFieldState, IFieldValues } from '../../FormContext';
 import { IFormProps } from '../Form.types';
+import { useFieldEvents } from '../../../hooks/internal';
 
 export function useForm(props: IFormProps): IFormContext {
   const [ busyState, setBusyState ] = useState(false);
   const fields = useRef(new Map<string, IFieldState>());
-  const eventListeners = useRef(new Map<string, TFormEventListener>());
 
   const {
     defaultValues = { },
@@ -25,6 +25,8 @@ export function useForm(props: IFormProps): IFormContext {
     onValidate = noopFunction,
   } = props;
 
+  const { registerListener, unregisterListener, notifyListeners } = useFieldEvents();
+
   /**
    * Returns the current state of the given field
    * @param name Field name
@@ -38,36 +40,6 @@ export function useForm(props: IFormProps): IFormContext {
 
     return fieldState;
   }, []);
-
-  const registerListener = useCallback((name: string, callback: TFormEventListener): void => { eventListeners.current.set(name, callback); }, []);
-  const unregisterListener = useCallback((name: string): void => { eventListeners.current.delete(name); }, []);
-
-  /**
-   * Notifies the event listeners about an event
-   * @param name Field name
-   * @param event Event name
-   * @param args Event args
-   */
-  const notifyListeners = useCallback((name: string, event: string, args?: unknown): void => {
-    eventListeners.current.forEach((callback) => {
-      callback(name, event, args);
-    });
-  }, []);
-
-  /**
-   * Gets called when a field triggers an event
-   * @param name Field name
-   * @param event Event name
-   * @param args Event args
-   */
-  const notifyFieldEvent = useCallback((name: string, event: string, args?: unknown): void => {
-    if (event === 'validation') {
-      const { label } = getFieldState(name);
-      notifyListeners(name, event, { ...args, label });
-    } else {
-      notifyListeners(name, event, args);
-    }
-  }, [getFieldState, notifyListeners]);
 
   /**
    * Generates and returns an object that contains
@@ -205,7 +177,7 @@ export function useForm(props: IFormProps): IFormContext {
     // Check if all fields are valid
     const allValid = validationStates.every(state => state.valid === true);
     if (allValid === false) {
-      notifyFieldEvent('_form', 'submit-invalid');
+      notifyListeners('_form', 'submit-invalid');
       setBusyState(false);
 
       return;
@@ -214,7 +186,7 @@ export function useForm(props: IFormProps): IFormContext {
     // Call the form wide validation
     const formValid = triggerFormValidation();
     if (formValid === false) {
-      notifyFieldEvent('_form', 'submit-invalid');
+      notifyListeners('_form', 'submit-invalid');
       setBusyState(false);
 
       return;
@@ -235,7 +207,7 @@ export function useForm(props: IFormProps): IFormContext {
     } else {
       cleanup(resetOnSubmit);
     }
-  }, [getValues, notifyFieldEvent, onSubmit, reset, resetOnSubmit, triggerFormValidation]);
+  }, [getValues, notifyListeners, onSubmit, reset, resetOnSubmit, triggerFormValidation]);
 
   const formContext: IFormContext = useMemo(() => ({
     fieldPrefix: null,
@@ -251,7 +223,7 @@ export function useForm(props: IFormProps): IFormContext {
     registerField,
     unregisterField,
 
-    notifyFieldEvent,
+    notifyFieldEvent: notifyListeners,
     registerListener,
     unregisterListener,
 
@@ -269,7 +241,7 @@ export function useForm(props: IFormProps): IFormContext {
     formatString,
     getFieldState,
     getValues,
-    notifyFieldEvent,
+    notifyListeners,
     plaintext,
     registerField,
     registerListener,
