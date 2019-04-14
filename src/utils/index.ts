@@ -12,3 +12,4 @@ export * from './parseValidationError';
 export * from './stringFormatter';
 export * from './stringHasValue';
 export * from './Types';
+export * from './noopFunction';

@@ -1,12 +1,12 @@
 import { useMemo, useState, useCallback, useEffect, useRef } from 'react';
 
-import { getDeepValue } from '../../utils';
+import { getDeepValue, noopFunction } from '../../utils';
 import { useFormContext } from '../useFormContext';
 import { useValidation, IValidationArgs, IBasicValidationState } from '../useValidation';
 import { useFullName, useFieldRegistration } from '../internal';
 
 import { IFieldComponentFieldProps, IFieldComponentMeta, IFieldChangedEvent, IUseFieldProps, IUseFieldResult, IUseFieldState, TBasicFieldValue, IValueMeta } from './useField.types';
-import { noopFieldValueFunction, noopFunction } from './useField.utils';
+import { noopFieldValueFunction } from './useField.utils';
 
 /**
  * Hook for writing custom fields. Will handle the internal state
