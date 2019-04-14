@@ -64,8 +64,9 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
    */
   const resetField = useCallback(
     () => {
+      const overridenValue = value === undefined ? defaultValue : value;
       const displayValue = getDisplayValue(
-        fieldState.value,
+        overridenValue === undefined ? '' : overridenValue,
         valueMeta,
       );
 
@@ -77,7 +78,7 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
       resetValidation();
       onChange(displayValue);
     },
-    [getDisplayValue, fieldState.value, valueMeta, resetValidation, onChange],
+    [value, defaultValue, getDisplayValue, valueMeta, resetValidation, onChange],
   );
 
   /**
