@@ -30,9 +30,3 @@ function Example({ logMessage }) {
 
 <Example />
 ```
-
-```jsx
-import ALLES from 'react-ocean-forms';
-
-console.log(ALLES);
-```

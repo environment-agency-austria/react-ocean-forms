@@ -4,9 +4,10 @@ import { shallow, ShallowWrapper } from 'enzyme';
 
 import { mockEvent } from '../../test-utils/enzymeEventUtils';
 import { createMockFormContext } from '../../test-utils/enzymeFormContext';
-import { IFormContext, TFormEventListener } from '../FormContext';
-import { BaseValidationSummary } from './ValidationSummary';
+import { IFormContext } from '../FormContext';
+import { ValidationSummary } from './ValidationSummary';
 import { IValidationSummaryProps } from './ValidationSummary.types';
+import { TFormEventListener } from '../../hooks/internal';
 
 describe('<ValidationSummary />', () => {
   interface ISetupArgs {
@@ -30,9 +31,8 @@ describe('<ValidationSummary />', () => {
     const summaryId = 'unitSummary';
 
     const wrapper = shallow((
-      <BaseValidationSummary
+      <ValidationSummary
         id={summaryId}
-        context={formContext}
         {...props}
       />
     ));
