@@ -9,12 +9,10 @@ import { useCallback, useState, useMemo } from 'react';
 
 import { useFormContext } from '../useFormContext';
 import { TBasicFieldValue } from '../useField';
-import { useIsUnmounted } from '../useIsUnmounted';
-import { useTimeout } from '../useTimeout';
+import { useIsUnmounted, useTimeout, useFullName } from '../internal';
 
 import { IBasicValidationState, IUseValidationResult, IValidationArgs, IUseValidationArgs } from './useValidation.types';
 import { createInitialValidationState, isRequired, runSyncValidators, runAsyncValidators } from './useValidation.utils';
-import { useFullName } from '../useFullName';
 
 export function useValidation(args: IUseValidationArgs): IUseValidationResult {
   const formContext = useFormContext();

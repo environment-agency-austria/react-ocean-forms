@@ -2,9 +2,9 @@ import { useMemo, useState, useCallback, useEffect, useRef } from 'react';
 
 import { getDeepValue } from '../../utils';
 import { useFormContext } from '../useFormContext';
-import { useFullName } from '../useFullName';
 import { useValidation, IValidationArgs, IBasicValidationState } from '../useValidation';
-import { useFieldRegistration } from '../useFieldRegistration';
+import { useFullName, useFieldRegistration } from '../internal';
+
 import { IFieldComponentFieldProps, IFieldComponentMeta, IFieldChangedEvent, IUseFieldProps, IUseFieldResult, IUseFieldState, TBasicFieldValue, IValueMeta } from './useField.types';
 import { noopFieldValueFunction, noopFunction } from './useField.utils';
 

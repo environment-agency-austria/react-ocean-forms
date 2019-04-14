@@ -5,12 +5,13 @@ import { createMockFormContext } from '../../test-utils/enzymeFormContext';
 import { TValidator, validators as defaultValidators } from '../../validators';
 
 import { useFormContext } from '../useFormContext';
-import { useFullName } from '../useFullName';
+import { useFullName } from '../internal/useFullName';
+
 import { useValidation } from './useValidation';
 import { IUseValidationArgs, IUseValidationResult } from './useValidation.types';
 
 jest.mock('../useFormContext');
-jest.mock('../useFullName');
+jest.mock('../internal/useFullName');
 afterEach(cleanup);
 
 describe('useValidation', () => {

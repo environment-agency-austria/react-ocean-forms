@@ -6,8 +6,8 @@
  */
 import { useEffect } from 'react';
 
-import { useFormContext } from './useFormContext';
-import { IFieldState } from '../components';
+import { useFormContext } from '../useFormContext';
+import { IFieldState } from '../../components';
 
 /**
  * Hook for registering fields to the form context. Will automatically

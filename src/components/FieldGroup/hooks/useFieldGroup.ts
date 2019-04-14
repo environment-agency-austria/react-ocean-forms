@@ -1,8 +1,10 @@
 import { useCallback, useMemo } from 'react';
 
-import { useFormContext, useFullName, useValidation, IValidationArgs, IBasicValidationState, useFieldRegistration } from '../../../hooks';
-import { IFieldValues, IFormContext } from '../../FormContext';
+import { useFormContext, useValidation, IValidationArgs, IBasicValidationState } from '../../../hooks';
+import { useFullName, useFieldRegistration } from '../../../hooks/internal';
 import { TValidator, TAsyncValidator } from '../../../validators';
+import { IFieldValues, IFormContext } from '../../FormContext';
+
 import { IFieldGroupRenderParams } from '../FieldGroup.types';
 
 /**

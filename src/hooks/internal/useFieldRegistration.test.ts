@@ -1,8 +1,8 @@
 import { renderHook, cleanup } from 'react-hooks-testing-library';
 import { useFieldRegistration } from './useFieldRegistration';
-import { useFormContext } from './useFormContext';
+import { useFormContext } from '../useFormContext';
 
-jest.mock('./useFormContext');
+jest.mock('../useFormContext');
 afterEach(cleanup);
 
 interface IRegistrationValues {

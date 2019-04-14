@@ -1,13 +1,15 @@
 import { renderHook, cleanup } from 'react-hooks-testing-library';
 
 import { createMockFormContext, createMockValidationResult } from '../../../test-utils/enzymeFormContext';
-import { useFormContext, useFullName, useValidation, useFieldRegistration, IUseValidationResult } from '../../../hooks';
+import { useFormContext, useValidation, IUseValidationResult } from '../../../hooks';
+import { useFullName, useFieldRegistration } from '../../../hooks/internal';
 import { IFormContext, IFieldState } from '../../FormContext';
 
 import { IFieldGroupRenderParams, IFieldGroupProps } from '../FieldGroup.types';
 import { useFieldGroup } from './useFieldGroup';
 
 jest.mock('../../../hooks');
+jest.mock('../../../hooks/internal');
 afterEach(cleanup);
 
 describe('useFieldGroup', () => {

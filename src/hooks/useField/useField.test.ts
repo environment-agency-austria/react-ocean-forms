@@ -2,17 +2,16 @@ import { renderHook, cleanup, act } from 'react-hooks-testing-library';
 
 import { IFormContext, IFieldState } from '../../components';
 import { createMockFormContext, createMockValidationResult } from '../../test-utils/enzymeFormContext';
-import { useFullName } from '../useFullName';
 import { useFormContext } from '../useFormContext';
 import { useValidation, IUseValidationResult } from '../useValidation';
-import { useFieldRegistration } from '../useFieldRegistration';
+import { useFullName, useFieldRegistration } from '../internal';
+
 import { useField } from './useField';
 import { TBasicFieldValue, IFieldComponentFieldProps, IUseFieldProps, IUseFieldResult } from './useField.types';
 
 jest.mock('../useFormContext');
-jest.mock('../useFullName');
 jest.mock('../useValidation');
-jest.mock('../useFieldRegistration');
+jest.mock('../internal');
 
 afterEach(cleanup);
 
