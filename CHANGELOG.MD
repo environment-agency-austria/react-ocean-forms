@@ -3,10 +3,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Breaking changes
-- `withValidation` does not provide a `formContext` anymore and is **deprecated**
+- `withValidation` has been removed, use the new hook `useValiation` instead
+- `withField` has been deprecated, use the new hook `useField` instead
 
 ### New features
 - Added `useValidation` hook as replacement for `withValidation`
+- Added `useField` hook as replacement for `withField`
+- Added `reset` to `FormContext`
 
 ## [2.2.0] # 2019-02-19
 ### New features
