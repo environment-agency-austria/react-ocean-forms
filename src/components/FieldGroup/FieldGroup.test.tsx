@@ -6,8 +6,9 @@ import { createMockFormContext, createMockValidationResult } from '../../test-ut
 import { IFormContext } from '../FormContext';
 
 import { FieldGroup } from './FieldGroup';
-import { IFieldGroupProps, IFieldGroupRenderParams } from './FieldGroup.types';
+import { IFieldGroupProps } from './FieldGroup.types';
 import { useFieldGroup } from './hooks/useFieldGroup';
+import { IFieldGroupRenderParams } from './hooks/useFieldGroup.types';
 
 jest.mock('./hooks/useFieldGroup');
 
@@ -47,10 +48,10 @@ describe('<FieldGroup />', () => {
       ...validationOverrides,
     };
 
-    (useFieldGroup as jest.Mock).mockReturnValue([
-      formContext,
-      validation,
-    ]);
+    (useFieldGroup as jest.Mock).mockReturnValue({
+      groupFormContext: formContext,
+      renderParams: validation,
+    });
 
     const wrapper = shallow((
       <FieldGroup

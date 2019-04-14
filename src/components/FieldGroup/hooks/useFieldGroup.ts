@@ -2,53 +2,26 @@ import { useCallback, useMemo } from 'react';
 
 import { useFormContext, useValidation, IValidationArgs, IBasicValidationState } from '../../../hooks';
 import { useFullName, useFieldRegistration } from '../../../hooks/internal';
-import { TValidator, TAsyncValidator } from '../../../validators';
 import { IFieldValues, IFormContext } from '../../FormContext';
 
-import { IFieldGroupRenderParams } from '../FieldGroup.types';
+import { getGroupValue } from './useFieldGroup.utils';
+import { IUseFieldGroupArgs, IUseFieldGroupResult } from './useFieldGroup.types';
 
-/**
- * Helper function to get the correct value
- * of the group (including all values of the nested fields)
- * @param formContext Form context
- * @param fullName Full name of the field group
- */
-function getGroupValue(formContext: IFormContext, fullName: string): IFieldValues | undefined {
-  const formValues = formContext.getValues();
-
-  const formValue = formValues[fullName];
-  if (formValue === '' || formValue === undefined) {
-    return undefined;
-  }
-
-  return formValue as IFieldValues;
-}
-
-export function useFieldGroup(
-  name: string,
-  label: string,
-  validators: TValidator[] | undefined,
-  asyncValidators: TAsyncValidator[] | undefined,
-  asyncValidationWait: number | undefined,
-  disabled: boolean | undefined,
-  plaintext: boolean | undefined,
-  asyncValidateOnChange: boolean | undefined,
-  defaultValues: IFieldValues | undefined,
-  values: IFieldValues | undefined,
-): [ IFormContext, IFieldGroupRenderParams ] {
+export function useFieldGroup(props: IUseFieldGroupArgs): IUseFieldGroupResult {
   const formContext = useFormContext();
-  const fullName = useFullName(name);
+
   const {
-    validationState,
-    validate,
-    resetValidation,
-    updateValidationState,
-  } = useValidation({
     name,
-    validators,
-    asyncValidators,
-    asyncValidationWait
-  });
+    label,
+    defaultValues,
+    values,
+    disabled = formContext.disabled,
+    plaintext = formContext.plaintext,
+    asyncValidateOnChange = formContext.asyncValidateOnChange,
+  } = props;
+
+  const fullName = useFullName(name);
+  const { validationState, validate, resetValidation, updateValidationState } = useValidation(props);
 
   /**
    * Triggers the validation of the group
@@ -86,7 +59,6 @@ export function useFieldGroup(
 
       if (event !== 'change' && event !== 'blur') { return; }
 
-      const localValidateOnChange = asyncValidateOnChange === undefined ? formContext.asyncValidateOnChange : asyncValidateOnChange;
       if (event === 'change') {
         const localName = name.substring(fullName.length + 1);
 
@@ -103,9 +75,9 @@ export function useFieldGroup(
 
         void validate(
           intermediateGroupValue as IFieldValues,
-          { checkAsync: localValidateOnChange },
+          { checkAsync: asyncValidateOnChange },
         );
-      } else if (!localValidateOnChange) {
+      } else if (!asyncValidateOnChange) {
         void validate(getGroupValue(formContext, fullName));
       }
     },
@@ -116,8 +88,8 @@ export function useFieldGroup(
     ...formContext,
     fieldPrefix: fullName,
     notifyFieldEvent,
-    disabled: disabled === undefined ? formContext.disabled : disabled,
-    plaintext: plaintext === undefined ? formContext.plaintext : plaintext,
+    disabled,
+    plaintext,
     defaultValues: defaultValues === undefined ? formContext.defaultValues : { ...formContext.defaultValues, ... { [fullName]: defaultValues }},
     values: values === undefined ? formContext.values : { ...formContext.values, ... { [fullName]: values }},
   }), [defaultValues, disabled, formContext, fullName, notifyFieldEvent, plaintext, values]);
@@ -136,5 +108,8 @@ export function useFieldGroup(
     ],
   );
 
-  return [ subContext, groupState ];
+  return {
+    groupFormContext: subContext,
+    renderParams: groupState,
+  };
 }

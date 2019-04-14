@@ -5,8 +5,8 @@ import { useFormContext, useValidation, IUseValidationResult } from '../../../ho
 import { useFullName, useFieldRegistration } from '../../../hooks/internal';
 import { IFormContext, IFieldState } from '../../FormContext';
 
-import { IFieldGroupRenderParams, IFieldGroupProps } from '../FieldGroup.types';
 import { useFieldGroup } from './useFieldGroup';
+import { IUseFieldGroupArgs, IUseFieldGroupResult } from './useFieldGroup.types';
 
 jest.mock('../../../hooks');
 jest.mock('../../../hooks/internal');
@@ -21,7 +21,7 @@ describe('useFieldGroup', () => {
   };
 
   interface ISetupArgs {
-    props?: Partial<IFieldGroupProps>;
+    props?: Partial<IUseFieldGroupArgs>;
     contextOverrides?: Partial<IFormContext>;
     validationOverrides?: Partial<IUseValidationResult>;
   }
@@ -31,9 +31,8 @@ describe('useFieldGroup', () => {
     validation: IUseValidationResult;
 
     fieldState: IFieldState;
-    groupContext: IFormContext;
-    renderParams: IFieldGroupRenderParams;
 
+    result: { current: IUseFieldGroupResult };
     unmount(): boolean;
   }
 
@@ -76,18 +75,13 @@ describe('useFieldGroup', () => {
       };
     });
 
-    const { result, unmount } = renderHook(() => useFieldGroup(
-      mockName,
-      mockLabel,
-      props.validators,
-      props.asyncValidators,
-      props.asyncValidationWait,
-      props.disabled,
-      props.plaintext,
-      props.asyncValidateOnChange,
-      props.defaultValues,
-      props.values,
-    ));
+    const fieldGroupProps = {
+      name: mockName,
+      label: mockLabel,
+      ...props,
+    };
+
+    const { result, unmount } = renderHook(() => useFieldGroup(fieldGroupProps));
 
     return {
       formContext,
@@ -95,9 +89,8 @@ describe('useFieldGroup', () => {
 
       // @ts-ignore
       fieldState,
-      groupContext: result.current[0],
-      renderParams: result.current[1],
 
+      result,
       unmount,
     };
   };
@@ -154,8 +147,8 @@ describe('useFieldGroup', () => {
 
   describe('Context overrides', () => {
     it('should create a valid form context', () => {
-      const { formContext, groupContext } = setup();
-      expect(groupContext).toMatchObject({
+      const { formContext, result } = setup();
+      expect(result.current.groupFormContext).toMatchObject({
         fieldPrefix: mockName,
         registerField: formContext.registerField,
         unregisterField: formContext.unregisterField,
@@ -178,8 +171,8 @@ describe('useFieldGroup', () => {
 
     describe('Context.fieldPrefix behaviour', () => {
       it('should override the fieldPrefix with the FieldGroup fullName', () => {
-        const { groupContext } = setup();
-        expect(groupContext.fieldPrefix).toBe(mockName);
+        const { result } = setup();
+        expect(result.current.groupFormContext.fieldPrefix).toBe(mockName);
       });
     });
 
@@ -194,8 +187,8 @@ describe('useFieldGroup', () => {
 
       const checkEventPassing = (eventName: string, eventArgs?: unknown): void => {
         it('should pass the event to the parent form context', () => {
-          const { groupContext, formContext } = setup();
-          triggerNotification(groupContext, eventName, eventArgs);
+          const { result, formContext } = setup();
+          triggerNotification(result.current.groupFormContext, eventName, eventArgs);
           expect(formContext.notifyFieldEvent).toHaveBeenCalledWith(
             mockSender,
             eventName,
@@ -229,35 +222,35 @@ describe('useFieldGroup', () => {
         checkEventPassing(eventName, { foo: 'bar' });
 
         it('should call the validate function correctly', () => {
-          const { groupContext, validation } = setup();
-          triggerNotification(groupContext, eventName, mockChangedFieldValue);
+          const { result, validation } = setup();
+          triggerNotification(result.current.groupFormContext, eventName, mockChangedFieldValue);
           assertValidateCalled(validation, false);
         });
 
         it('should respect the Form.asyncValidateOnChange configuration', () => {
           const mockCheckAsync = true;
-          const { groupContext, validation } = setup({
+          const { result, validation } = setup({
             contextOverrides: {
               asyncValidateOnChange: mockCheckAsync,
             },
           });
-          triggerNotification(groupContext, eventName, mockChangedFieldValue);
+          triggerNotification(result.current.groupFormContext, eventName, mockChangedFieldValue);
           assertValidateCalled(validation, mockCheckAsync);
         });
 
         it('should respect the FieldGroup.asyncValidateOnChange configuration', () => {
           const mockCheckAsync = true;
-          const { groupContext, validation } = setup({
+          const { result, validation } = setup({
             props: {
               asyncValidateOnChange: mockCheckAsync,
             },
           });
-          triggerNotification(groupContext, eventName, mockChangedFieldValue);
+          triggerNotification(result.current.groupFormContext, eventName, mockChangedFieldValue);
           assertValidateCalled(validation, mockCheckAsync);
         });
 
         it('should use an empty object as the current state if the form does not provide one', () => {
-          const { groupContext, validation } = setup({
+          const { result, validation } = setup({
             contextOverrides: {
               getValues: jest.fn().mockReturnValue({
                 foo: 'bar',
@@ -265,7 +258,7 @@ describe('useFieldGroup', () => {
             },
           });
 
-          triggerNotification(groupContext, eventName, mockChangedFieldValue);
+          triggerNotification(result.current.groupFormContext, eventName, mockChangedFieldValue);
           expect(validation.validate).toHaveBeenCalledWith(
             {
               [mockSenderLocal]: mockChangedFieldValue,
@@ -287,23 +280,23 @@ describe('useFieldGroup', () => {
         describe.each(cases)('should respect the %s configuration', (name, config) => {
           it('should not trigger a validation if validateOnChange is true', () => {
             const mockCheckAsync = true;
-            const { groupContext, validation } = setup({
+            const { result, validation } = setup({
               [config]: {
                 asyncValidateOnChange: mockCheckAsync,
               },
             });
-            triggerNotification(groupContext, eventName);
+            triggerNotification(result.current.groupFormContext, eventName);
             expect(validation.validate).not.toHaveBeenCalled();
           });
 
           it('should trigger a validation if validateOnChange is true', () => {
             const mockCheckAsync = false;
-            const { groupContext, validation } = setup({
+            const { result, validation } = setup({
               [config]: {
                 asyncValidateOnChange: mockCheckAsync,
               },
             });
-            triggerNotification(groupContext, eventName);
+            triggerNotification(result.current.groupFormContext, eventName);
             expect(validation.validate).toHaveBeenCalledWith(mockValue);
           });
         });
@@ -329,7 +322,7 @@ describe('useFieldGroup', () => {
       it.each(formStates)(`should correctly override %s Context.${prop}`, (stateName, formState) => {
         const mockGroupValue = { foo: 'bar' };
 
-        const { groupContext } = setup({
+        const { result } = setup({
           props: {
             [prop]: mockGroupValue,
           },
@@ -339,7 +332,7 @@ describe('useFieldGroup', () => {
         });
 
         // @ts-ignore any is OK here
-        expect(groupContext[prop]).toEqual({
+        expect(result.current.groupFormContext[prop]).toEqual({
           ...formState,
           ...{
             [mockName]: mockGroupValue,
@@ -366,7 +359,7 @@ describe('useFieldGroup', () => {
       it.each(cases)(
         `${prop} should be %s if Field.${prop} is %s and FormContext.${prop} is %s`,
         (expectedValue: boolean, propValue: boolean | undefined, contextValue: boolean) => {
-          const { groupContext } = setup({
+          const { result } = setup({
             props: {
               [prop]: propValue,
             },
@@ -376,7 +369,7 @@ describe('useFieldGroup', () => {
           });
 
           // @ts-ignore any is OK here
-          expect(groupContext[prop]).toEqual(expectedValue);
+          expect(result.current.groupFormContext[prop]).toEqual(expectedValue);
         },
       );
     });
@@ -384,8 +377,8 @@ describe('useFieldGroup', () => {
 
   describe('render params', () => {
     it('should create the correct parameters', () => {
-      const { renderParams } = setup();
-      expect(renderParams).toMatchObject({
+      const { result } = setup();
+      expect(result.current.renderParams).toMatchObject({
         fullName: mockName,
         isValidating: false,
         isRequired: false,
@@ -400,7 +393,7 @@ describe('useFieldGroup', () => {
       const mockIsValid = false;
       const mockError = { message_id: 'bar', params: {} };
 
-      const { renderParams } = setup({
+      const { result } = setup({
         validationOverrides: {
           validationState: {
             isValidating: mockIsValidating,
@@ -410,7 +403,7 @@ describe('useFieldGroup', () => {
           }
         },
       });
-      expect(renderParams).toMatchObject({
+      expect(result.current.renderParams).toMatchObject({
         fullName: mockName,
         isValidating: mockIsValidating,
         isRequired: mockIsRequired,

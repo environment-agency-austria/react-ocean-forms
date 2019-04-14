@@ -15,18 +15,12 @@ import { useFieldGroup } from './hooks/useFieldGroup';
  * Wrapper for groups of input fields
  * managed by the form component
  */
-export const FieldGroup: React.FC<IFieldGroupProps> = ({
-  name, validators, asyncValidators, asyncValidationWait, render,
-  disabled, plaintext, label, asyncValidateOnChange, defaultValues, values,
-}): JSX.Element => {
-  const [ subContext, groupState ] = useFieldGroup(
-    name, label, validators, asyncValidators, asyncValidationWait,
-    disabled, plaintext, asyncValidateOnChange, defaultValues, values,
-  );
+export const FieldGroup: React.FC<IFieldGroupProps> = ({ render, ...props }): JSX.Element => {
+  const { groupFormContext, renderParams } = useFieldGroup(props);
 
   return (
-    <FormContext.Provider value={subContext}>
-      {render(groupState)}
+    <FormContext.Provider value={groupFormContext}>
+      {render(renderParams)}
     </FormContext.Provider>
   );
 }
