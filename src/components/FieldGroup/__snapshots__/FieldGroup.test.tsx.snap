@@ -16,6 +16,7 @@ exports[`<FieldGroup /> Render should render without crashing 1`] = `
       "plaintext": false,
       "registerField": [MockFunction],
       "registerListener": [MockFunction],
+      "reset": [MockFunction],
       "stringFormatter": [MockFunction],
       "submit": [MockFunction],
       "unregisterField": [MockFunction],
