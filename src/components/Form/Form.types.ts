@@ -16,7 +16,7 @@ export interface IFormProps<TFieldValues = IFieldValues, TSubmitArgs = unknown> 
    * Contains the default values of the form. Those values will be
    * put into the according fields when the form initializes.
    */
-  defaultValues: Partial<TFieldValues>;
+  defaultValues?: Partial<TFieldValues>;
   /**
    * Contains the values of the form. Changing this property will
    * update all Field values, overwriting their default values but also
@@ -29,22 +29,22 @@ export interface IFormProps<TFieldValues = IFieldValues, TSubmitArgs = unknown> 
    * is that the fields will only async validate when they loose focus.
    * Can be overriden per field.
    */
-  asyncValidateOnChange: boolean;
+  asyncValidateOnChange?: boolean;
   /**
    * Configures the wait time before the async validators will be called.
    * Per default the form will call the async validators only 400ms after
    * the last value change. Can be overriden per field.
    */
-  asyncValidationWait: number;
+  asyncValidationWait?: number;
   /**
    * If set every text output will be put through this function.
    * Per default an internal implementation is used.
    */
-  formatString: TSTringFormatter;
+  formatString?: TSTringFormatter;
   /**
    * If set to true the form will disable all Fields and FormButtons.
    */
-  disabled: boolean;
+  disabled?: boolean;
   /**
    * Sets the className of the html form.
    */
@@ -53,7 +53,7 @@ export interface IFormProps<TFieldValues = IFieldValues, TSubmitArgs = unknown> 
    * If set to true, all the fields will display only text instead of an
    * input element. This is useful to re-use Fields in a check page.
    */
-  plaintext: boolean;
+  plaintext?: boolean;
   /**
    * If set to true, all fields will be reset on an successful form submit
    */
