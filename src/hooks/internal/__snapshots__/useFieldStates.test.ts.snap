@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useFieldStates invalid field registration case 1 of 5 props 1`] = `"[Form] registerField: invalid field state given"`;
+
+exports[`useFieldStates invalid field registration case 2 of 5 props 1`] = `"[Form] registerField: invalid field state given"`;
+
+exports[`useFieldStates invalid field registration case 3 of 5 props 1`] = `"[Form] registerField: invalid field state given"`;
+
+exports[`useFieldStates invalid field registration case 4 of 5 props 1`] = `"[Form] registerField: invalid field state given"`;
+
+exports[`useFieldStates invalid field registration case empty state 1`] = `"[Form] registerField: invalid field state given"`;
+
+exports[`useFieldStates invalid field registration case invalid field name 1`] = `"[Form] registerField: name is required"`;
+
+exports[`useFieldStates invalid field registration case no parameters 1`] = `"[Form] registerField: name is required"`;
+
+exports[`useFieldStates invalid field registration case no state 1`] = `"[Form] registerField: field state is required"`;

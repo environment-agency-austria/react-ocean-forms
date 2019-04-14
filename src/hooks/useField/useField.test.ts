@@ -1,10 +1,10 @@
 import { renderHook, cleanup, act } from 'react-hooks-testing-library';
 
-import { IFormContext, IFieldState } from '../../components';
+import { IFormContext } from '../../components';
 import { createMockFormContext, createMockValidationResult } from '../../test-utils/enzymeFormContext';
 import { useFormContext } from '../useFormContext';
 import { useValidation, IUseValidationResult } from '../useValidation';
-import { useFullName, useFieldRegistration } from '../internal';
+import { useFullName, useFieldRegistration, IFieldState } from '../internal';
 
 import { useField } from './useField';
 import { TBasicFieldValue, IFieldComponentFieldProps, IUseFieldProps, IUseFieldResult } from './useField.types';

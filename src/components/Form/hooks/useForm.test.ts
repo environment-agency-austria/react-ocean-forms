@@ -1,10 +1,10 @@
 import { renderHook, cleanup, act } from 'react-hooks-testing-library';
 
 import { IFormProps } from '../Form.types';
-import { IFormContext, IFieldState, IFieldValues } from '../../FormContext';
+import { IFormContext, IFieldValues } from '../../FormContext';
 
 import { useForm } from './useForm';
-import { useFieldEvents, IUseFieldEventsResult } from '../../../hooks/internal';
+import { useFieldEvents, IUseFieldEventsResult, IUseFieldStatesResult, useFieldStates, IFieldState } from '../../../hooks/internal';
 
 jest.mock('../../../hooks/internal');
 afterEach(cleanup);
@@ -12,6 +12,7 @@ afterEach(cleanup);
 describe('useForm', () => {
   interface ISetupArgs {
     props?: IFormProps;
+    fieldStatesOverride?: Partial<IUseFieldStatesResult>;
   }
 
   interface IMockResult {
@@ -21,9 +22,10 @@ describe('useForm', () => {
   interface ISetupResult {
     result: IMockResult;
     fieldEventResult: IUseFieldEventsResult;
+    fieldStatesResult: IUseFieldStatesResult;
   }
 
-  const setup = ({ props = { } }: Partial<ISetupArgs> = {}): ISetupResult => {
+  const setup = ({ props = { }, fieldStatesOverride }: Partial<ISetupArgs> = {}): ISetupResult => {
     const fieldEventResult: IUseFieldEventsResult = {
       notifyListeners: jest.fn(),
       registerListener: jest.fn(),
@@ -31,8 +33,18 @@ describe('useForm', () => {
     };
     (useFieldEvents as jest.Mock).mockReturnValue(fieldEventResult);
 
+    const fieldStatesResult: IUseFieldStatesResult = {
+      registerField: jest.fn(),
+      unregisterField: jest.fn(),
+      getFieldState: jest.fn(),
+      forEachFieldState: jest.fn(),
+      ...fieldStatesOverride,
+    };
+    (useFieldStates as jest.Mock).mockReturnValue(fieldStatesResult);
+
     return {
       fieldEventResult,
+      fieldStatesResult,
       ...renderHook(() => useForm(props)),
     };
   };
@@ -59,12 +71,6 @@ describe('useForm', () => {
     name,
     state: createMockFieldState(label, isGroup),
   });
-
-  const registerUnitField = (fields: IMockField[], formContext: IFormContext): void => {
-    fields.forEach(field => {
-      formContext.registerField(field.name, field.state);
-    });
-  };
 
   it('should create a valid form context', () => {
     const { result } = setup();
@@ -105,126 +111,57 @@ describe('useForm', () => {
     });
   });
 
-  describe('invalid field registration', () => {
-    const mf = (): void => {};
-    const cases: any[] = [
-      ['no parameters', undefined, undefined],
-      ['invalid field name', '', undefined],
-      ['no state', 'foo', undefined],
-      ['empty state', 'foo', {}],
-      ['1 of 5 props', 'foo', { label: 'hey' }],
-      ['2 of 5 props', 'foo', { label: 'hey', validate: mf }],
-      ['3 of 5 props', 'foo', { label: 'hey', validate: mf, updateValidation: mf }],
-      ['4 of 5 props', 'foo', {
-        label: 'hey',
-        validate: mf,
-        updateValidation: mf,
-        reset: mf,
-      }],
-    ];
+  describe('formContext.getValues - form values', () => {
+    const unitField = createMockField('unitField', 'Unit field');
+    const unitGroup = createMockField('unitGroup', 'Unit group', true);
+    const unitSubField = createMockField(`${unitGroup.name}.subField`, 'Sub field');
+    const unitSubField2 = createMockField(`${unitGroup.name}.subField2`, 'Sub field 2');
 
-    test.each(cases)('case %s', (testName: string, fieldName: string, fieldState: IFieldState) => {
-      const { result } = setup();
+    const mockFields = new Map<string, IFieldState>([
+      [ unitField.name, unitField.state ],
+      [ unitGroup.name, unitGroup.state ],
+      [ unitSubField.name, unitSubField.state ],
+      [ unitSubField2.name, unitSubField2.state ],
+    ]);
+
+    const forEachFieldState = jest.fn().mockImplementation((cb) => {
+      mockFields.forEach(cb);
+    });
+    const { result } = setup({ fieldStatesOverride: { forEachFieldState }});
+
+    let formValues: IFieldValues;
+    it('should return the values without crashing', () => {
       expect(() => {
-        result.current.registerField(fieldName, fieldState);
-      }).toThrowErrorMatchingSnapshot();
-    });
-  });
-
-  describe('field states and values', () => {
-    const createCases = (): [string, IMockField, boolean?][] => {
-      return [
-        ['field', createMockField('unitField', 'Unit field')],
-        ['group', createMockField('unitGroup', 'Unit group', true)],
-        ['sub field', createMockField('unitGroup.subField', 'Sub field', true)],
-      ];
-    };
-
-    describe('formContext.registerField - field registration', () => {
-      const cases = createCases();
-
-      test.each(cases)('should register a new %s without crashing', (testName, field: IMockField) => {
-        const { result } = setup();
-        expect(() => {
-          registerUnitField([field], result.current);
-        }).not.toThrowError();
-      });
+        formValues = result.current.getValues();
+      }).not.toThrowError();
     });
 
-    describe('formContext.unregisterField - field cleanup', () => {
-      const cases = createCases();
-
-      test.each(cases)('should unregister %s without crashing', (testName, field: IMockField) => {
-        const { result } = setup();
-        result.current.registerField(field.name, field.state);
-        result.current.unregisterField(field.name);
-      });
+    it('should call unitField.getValue', () => {
+      expect(unitField.state.getValue).toHaveBeenCalled();
     });
 
-    describe('formContext.getFieldState - field states', () => {
-      const cases = createCases();
-
-      test.each(cases)('should return the correct field state of a %s', (testName, field: IMockField) => {
-        const { result } = setup();
-        registerUnitField([field], result.current);
-        expect(result.current.getFieldState(field.name)).toBe(field.state);
-      });
-
-      it('should throw an error when trying to access an non-existing field state', () => {
-        const { result } = setup();
-        const mockFieldName = 'mock-test';
-
-        expect(
-          () => result.current.getFieldState(mockFieldName),
-        ).toThrowError(`[Form] getFieldState: Could not find state of field '${mockFieldName}'`);
-      });
+    it('should call subField.getValue', () => {
+      expect(unitSubField.state.getValue).toHaveBeenCalled();
     });
 
-    describe('formContext.getValues - form values', () => {
-      const { result } = setup();
+    it('should not call group.getValue', () => {
+      // The value of fieldGroups is computed by its children
+      expect(unitGroup.state.getValue).not.toHaveBeenCalled();
+    });
 
-      const unitField = createMockField('unitField', 'Unit field');
-      const unitGroup = createMockField('unitGroup', 'Unit group', true);
-      const unitSubField = createMockField(`${unitGroup.name}.subField`, 'Sub field');
-      const unitSubField2 = createMockField(`${unitGroup.name}.subField2`, 'Sub field 2');
+    it('should return the correct form values', () => {
+      const subFieldLocalName = unitSubField.name.substring(unitGroup.name.length + 1);
+      const subFieldLocalName2 = unitSubField2.name.substring(unitGroup.name.length + 1);
 
-      const mockFields = [unitField, unitGroup, unitSubField, unitSubField2];
-      registerUnitField(mockFields, result.current);
+      const expectedFormValues = {
+        [unitField.name]: unitField.state.label,
+        [unitGroup.name]: {
+          [subFieldLocalName]: unitSubField.state.label,
+          [subFieldLocalName2]: unitSubField2.state.label,
+        },
+      };
 
-      let formValues: IFieldValues;
-      it('should return the values without crashing', () => {
-        expect(() => {
-          formValues = result.current.getValues();
-        }).not.toThrowError();
-      });
-
-      it('should call unitField.getValue', () => {
-        expect(unitField.state.getValue).toHaveBeenCalled();
-      });
-
-      it('should call subField.getValue', () => {
-        expect(unitSubField.state.getValue).toHaveBeenCalled();
-      });
-
-      it('should not call group.getValue', () => {
-        // The value of fieldGroups is computed by its children
-        expect(unitGroup.state.getValue).not.toHaveBeenCalled();
-      });
-
-      it('should return the correct form values', () => {
-        const subFieldLocalName = unitSubField.name.substring(unitGroup.name.length + 1);
-        const subFieldLocalName2 = unitSubField2.name.substring(unitGroup.name.length + 1);
-
-        const expectedFormValues = {
-          [unitField.name]: unitField.state.label,
-          [unitGroup.name]: {
-            [subFieldLocalName]: unitSubField.state.label,
-            [subFieldLocalName2]: unitSubField2.state.label,
-          },
-        };
-
-        expect(formValues).toMatchObject(expectedFormValues);
-      });
+      expect(formValues).toMatchObject(expectedFormValues);
     });
   });
 
@@ -241,24 +178,31 @@ describe('useForm', () => {
 
     interface ISetupSubmitResult extends ISetupResult {
       expectedFormValues: IFieldValues;
-      mockFields: IMockField[];
+      mockFields: Map<string, IFieldState>;
     }
 
     const unitFieldName = 'unitField';
 
     const setupSubmit = async ({ props, customField, }: Partial<ISetupSubmitArgs> = {}): Promise<ISetupSubmitResult> => {
-      const result = setup({ props });
-
       const unitField = createMockField(unitFieldName, 'Unit field');
       const unitGroup = createMockField('unitGroup', 'Unit group', true);
       const unitSubField = createMockField(`${unitGroup.name}.subField`, 'Sub field');
 
-      const mockFields = [unitField, unitGroup, unitSubField];
+      const mockFields = new Map<string, IFieldState>([
+        [ unitField.name, unitField.state ],
+        [ unitGroup.name, unitGroup.state ],
+        [ unitSubField.name, unitSubField.state ],
+      ]);
+
       if (customField) {
-        mockFields.push(customField);
+        mockFields.set(customField.name, customField.state);
       }
 
-      registerUnitField(mockFields, result.result.current);
+      const forEachFieldState = jest.fn().mockImplementation((cb) => {
+        mockFields.forEach(cb);
+      });
+
+      const result = setup({ props, fieldStatesOverride: { forEachFieldState } });
 
       await simulateSubmitEvent(result.result.current);
 
@@ -281,7 +225,7 @@ describe('useForm', () => {
       it('should call all the validation functions', async () => {
         const { mockFields } = await setupSubmit();
 
-        mockFields.forEach(item => expect(item.state.validate).toHaveBeenLastCalledWith({
+        mockFields.forEach(item => expect(item.validate).toHaveBeenLastCalledWith({
           checkAsync: true,
           immediateAsync: true,
         }));
@@ -322,9 +266,9 @@ describe('useForm', () => {
       it('should update the validation state of the field', async () => {
         const { mockFields } = await setupSubmit({ props: { onValidate: createInvalidValidator() }});
 
-        mockFields.forEach(item => {
-          if (item.name !== unitFieldName) { return; }
-          expect(item.state.updateValidation).toHaveBeenCalledWith({
+        mockFields.forEach((item, name) => {
+          if (name !== unitFieldName) { return; }
+          expect(item.updateValidation).toHaveBeenCalledWith({
             valid: false,
             error: {
               message_id: 'error',
@@ -479,16 +423,23 @@ describe('useForm', () => {
     };
 
     it('should reset all fields', () => {
-      const { result } = setup();
-
       const unitField = createMockField('unitField', 'Unit field');
       const unitGroup = createMockField('unitGroup', 'Unit group', true);
       const unitSubField = createMockField(`${unitGroup.name}.subField`, 'Sub field');
-      const mockFields = [unitField, unitGroup, unitSubField];
-      registerUnitField(mockFields, result.current);
+      const mockFields = new Map<string, IFieldState>([
+        [ unitField.name, unitField.state ],
+        [ unitGroup.name, unitGroup.state ],
+        [ unitSubField.name, unitSubField.state ],
+      ]);
+
+      const forEachFieldState = jest.fn().mockImplementation((cb) => {
+        mockFields.forEach(cb);
+      });
+
+      const { result } = setup({ fieldStatesOverride: { forEachFieldState }});
 
       simulateResetEvent(result.current);
-      mockFields.forEach(item => expect(item.state.reset).toHaveBeenCalled());
+      mockFields.forEach(item => expect(item.reset).toHaveBeenCalled());
     });
 
     it('should call the onReset prop', () => {

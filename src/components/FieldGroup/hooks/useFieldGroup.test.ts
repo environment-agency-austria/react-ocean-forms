@@ -2,8 +2,8 @@ import { renderHook, cleanup } from 'react-hooks-testing-library';
 
 import { createMockFormContext, createMockValidationResult } from '../../../test-utils/enzymeFormContext';
 import { useFormContext, useValidation, IUseValidationResult } from '../../../hooks';
-import { useFullName, useFieldRegistration } from '../../../hooks/internal';
-import { IFormContext, IFieldState } from '../../FormContext';
+import { useFullName, useFieldRegistration, IFieldState } from '../../../hooks/internal';
+import { IFormContext } from '../../FormContext';
 
 import { useFieldGroup } from './useFieldGroup';
 import { IUseFieldGroupArgs, IUseFieldGroupResult } from './useFieldGroup.types';

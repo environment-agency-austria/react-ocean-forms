@@ -5,40 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { TSTringFormatter } from '../../utils/stringFormatter';
-import { TFormEventListener } from '../../hooks/internal';
-import { TUpdateMethod, IValidationArgs, IBasicValidationState, TBasicFieldValue } from '../../hooks';
-
-/**
- * Interface describing field states
- */
-export interface IFieldState {
-  /**
-   * Label of the field
-   */
-  label: string;
-  /**
-   * True if the field is actually a FieldGroup
-   */
-  isGroup?: boolean;
-  /**
-   * Triggers the validation of this field
-   * @param args Validation args
-   */
-  validate(args?: Partial<IValidationArgs>): Promise<IBasicValidationState>;
-  /**
-   * Returns the current value of the field
-   */
-  getValue(): TBasicFieldValue;
-  /**
-   * Resets the field to its initial state
-   */
-  reset(): void;
-  /**
-   * Updates the validation state of the field
-   * @param state New validation state
-   */
-  updateValidation: TUpdateMethod;
-}
+import { TFormEventListener, IFieldState } from '../../hooks/internal';
+import { TBasicFieldValue } from '../../hooks';
 
 /**
  * Type describing a collection of field values

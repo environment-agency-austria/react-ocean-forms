@@ -1,8 +1,8 @@
 import { renderHook, cleanup } from 'react-hooks-testing-library';
 
-import { IFieldState } from '../../components';
 import { useFieldRegistration } from './useFieldRegistration';
 import { useFormContext } from '../useFormContext';
+import { IFieldState } from './useFieldStates';
 
 jest.mock('../useFormContext');
 afterEach(cleanup);

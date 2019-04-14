@@ -1,6 +1,7 @@
-import { IFieldState, IFormContext, TFormEventListener } from '../components';
+import { IFormContext } from '../components';
 import { stringFormatter } from '../utils';
 import { IUseValidationResult } from '../hooks';
+import { IFieldState, TFormEventListener } from '../hooks/internal';
 
 /**
  * Components inside the form module require access to the form context.
