@@ -25,8 +25,49 @@ Object {
         "valid": true,
       }
     }
-    type="text"
+    name="unitInput"
   />,
+}
+`;
+
+exports[`<Input /> should properly pass the type prop 1`] = `
+Object {
+  "wrapper": <FieldLine
+    field={
+      Object {
+        "disabled": false,
+        "id": "unitInput",
+        "name": "unitInput",
+        "onBlur": [MockFunction],
+        "onChange": [MockFunction],
+        "value": "",
+      }
+    }
+    label="unitLabel"
+    meta={
+      Object {
+        "error": null,
+        "isRequired": false,
+        "isValidating": false,
+        "plaintext": false,
+        "stringFormatter": [MockFunction],
+        "touched": false,
+        "valid": true,
+      }
+    }
+    name="unitInput"
+    type="number"
+  >
+    <input
+      disabled={false}
+      id="unitInput"
+      name="unitInput"
+      onBlur={[MockFunction]}
+      onChange={[MockFunction]}
+      type="number"
+      value=""
+    />
+  </FieldLine>,
 }
 `;
 
@@ -55,7 +96,7 @@ Object {
         "valid": true,
       }
     }
-    type="text"
+    name="unitInput"
   >
     <input
       disabled={false}

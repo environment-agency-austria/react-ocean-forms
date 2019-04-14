@@ -2,9 +2,11 @@ import React from 'react';
 
 import { shallow, ShallowWrapper } from 'enzyme';
 
-import { IFieldComponentMeta, IFieldComponentFieldProps } from '../../hooks';
-import { BaseInput } from './Input';
+import { IFieldComponentMeta, IFieldComponentFieldProps, useField } from '../../hooks';
+import { Input } from './Input';
 import { IInputProps } from './Input.types';
+
+jest.mock('../../hooks');
 
 describe('<Input />', () => {
   interface ISetupArgs {
@@ -42,11 +44,15 @@ describe('<Input />', () => {
       ...fieldOverrides,
     };
 
+    (useField as jest.Mock).mockReturnValue({
+      fieldProps: field,
+      metaProps: meta,
+    });
+
     const wrapper = shallow((
-      <BaseInput
+      <Input
+        name="unitInput"
         label="unitLabel"
-        meta={meta}
-        field={field}
         {...props}
       />
     ));
@@ -63,6 +69,11 @@ describe('<Input />', () => {
 
   it('should only display the value if plaintext is set', () => {
     const wrapper = setup({ metaOverrides: { plaintext: true }});
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should properly pass the type prop', () => {
+    const wrapper = setup({ props: { type: 'number' }});
     expect(wrapper).toMatchSnapshot();
   });
 

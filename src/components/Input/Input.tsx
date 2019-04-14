@@ -7,43 +7,34 @@
 
 import React from 'react';
 
+import { useField } from '../../hooks';
 import { FieldLine } from '../FieldLine';
-import { withField } from '../withField';
 import { IInputProps } from './Input.types';
 
 /**
- * Component for displaying bootstrap
- * form groups with an html input and
- * oForm support
+ * Defines a form line containing a label and an input. Additionally it
+ * will render validation messages. If the user adds the required validator
+ * then it will mark the field as required as well.
  */
-export class BaseInput extends React.Component<IInputProps> {
-  public static displayName: string = 'Input';
+export const Input: React.FC<IInputProps> = (props) => {
+  const {
+    type = 'text',
+    ...rest
+  } = props;
 
-  public static defaultProps = {
-    type: 'text',
-  };
+  const { fieldProps, metaProps } = useField(rest);
 
-  public render(): JSX.Element {
-    const {
-      field,
-      type,
-      meta,
-    } = this.props;
-
-    const fieldValue = field.value;
-    if (typeof fieldValue !== 'string' && fieldValue !== undefined) {
-      throw new Error(
-        'Incompatible field value supplied for input component '
-        + `${field.id}. Only values with type string or undefined are allowed.`,
-      );
-    }
-
-    return (
-      <FieldLine {...this.props}>
-        {meta.plaintext ? field.value : <input type={type} {...field} value={fieldValue} />}
-      </FieldLine>
+  const fieldValue = fieldProps.value;
+  if (typeof fieldValue !== 'string' && fieldValue !== undefined) {
+    throw new Error(
+      'Incompatible field value supplied for input component '
+      + `${fieldProps.id}. Only values with type string or undefined are allowed.`,
     );
   }
-}
 
-export const Input = withField(BaseInput);
+  return (
+    <FieldLine {...props} field={fieldProps} meta={metaProps}>
+      {metaProps.plaintext ? fieldProps.value : <input type={type} {...fieldProps} value={fieldValue} />}
+    </FieldLine>
+  );
+}
