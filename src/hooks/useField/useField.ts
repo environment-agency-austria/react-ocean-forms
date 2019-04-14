@@ -19,6 +19,7 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
   const fullName = useFullName(props.name);
 
   const {
+    label,
     getSubmitValue = noopFieldValueFunction,
     getDisplayValue = noopFieldValueFunction,
     onChange = noopFunction,
@@ -95,14 +96,17 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
   /**
    * Register / unregister the field in the form context
    */
+  const registerFieldState = useMemo(() => ({
+    label,
+    isGroup: false,
+    updateValidation: updateValidationState,
+    validate: validateField,
+    reset: resetField,
+    getValue: getFieldValue,
+  }), [getFieldValue, label, resetField, updateValidationState, validateField]);
   useFieldRegistration(
     fullName,
-    props.label,
-    false,
-    updateValidationState,
-    validateField,
-    resetField,
-    getFieldValue,
+    registerFieldState,
   );
 
   /**

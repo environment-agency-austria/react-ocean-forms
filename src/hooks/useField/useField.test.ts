@@ -52,17 +52,8 @@ describe('useField', () => {
     (useValidation as jest.Mock).mockReturnValue(validation);
 
     let fieldState = null;
-    (useFieldRegistration as jest.Mock).mockImplementation((fullName, label, isGroup, updateValidation, validate, reset, getValue) => {
-      fieldState = {
-        label,
-
-        updateValidation,
-        validate,
-        reset,
-        getValue,
-
-        isGroup,
-      };
+    (useFieldRegistration as jest.Mock).mockImplementation((fullName, state) => {
+      fieldState = state;
     });
 
     const useFieldParams = {
@@ -101,15 +92,10 @@ describe('useField', () => {
 
   describe('Form registration', () => {
     it('should register itself in the form context', () => {
-      const { validation } = setup();
+      const { fieldState } = setup();
       expect((useFieldRegistration as jest.Mock)).toHaveBeenCalledWith(
         mockName,
-        mockLabel,
-        false,
-        validation.updateValidationState,
-        expect.any(Function),
-        expect.any(Function),
-        expect.any(Function),
+        fieldState,
       );
     });
   });

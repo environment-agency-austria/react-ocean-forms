@@ -36,14 +36,17 @@ export function useFieldGroup(props: IUseFieldGroupArgs): IUseFieldGroupResult {
 
   // Register the group in the formContext, so the group
   // validation can be called on form submit.
+  const registerFieldState = useMemo(() => ({
+    label,
+    isGroup: true,
+    updateValidation: updateValidationState,
+    validate: validateGroup,
+    reset: resetValidation,
+    getValue: () => ({}),
+  }), [label, resetValidation, updateValidationState, validateGroup]);
   useFieldRegistration(
     fullName,
-    label,
-    true,
-    updateValidationState,
-    validateGroup,
-    resetValidation,
-    useCallback(() => ({}), []),
+    registerFieldState,
   );
 
   /**
