@@ -4,14 +4,15 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { IFieldComponentProps } from '../withField';
+import { IUseFieldProps } from '../../hooks';
 
 /**
  * Props for the Input component
  */
-export interface IInputProps extends IFieldComponentProps {
+export interface IInputProps extends IUseFieldProps {
   /**
-   * Input type (e.g. text, number, ...)
+   * HTML5 input type of the input element.
+   * @default 'text'
    */
-  type: string;
+  type?: string;
 }

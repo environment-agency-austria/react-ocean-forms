@@ -14,7 +14,8 @@ import { IFieldValues } from '../FormContext';
 export interface IFormProps<TFieldValues = IFieldValues, TSubmitArgs = unknown> {
   /**
    * Contains the default values of the form. Those values will be
-   * put into the according fields when the form initializes.
+   * put into the according fields when the form initializes. Those
+   * values will be put into the according fields when the form initializes.
    */
   defaultValues?: Partial<TFieldValues>;
   /**
@@ -28,12 +29,14 @@ export interface IFormProps<TFieldValues = IFieldValues, TSubmitArgs = unknown> 
    * Fields whenever they change (e.g. on key press). Default behaviour
    * is that the fields will only async validate when they loose focus.
    * Can be overriden per field.
+   * @default false
    */
   asyncValidateOnChange?: boolean;
   /**
    * Configures the wait time before the async validators will be called.
    * Per default the form will call the async validators only 400ms after
    * the last value change. Can be overriden per field.
+   * @default 400
    */
   asyncValidationWait?: number;
   /**
@@ -43,6 +46,7 @@ export interface IFormProps<TFieldValues = IFieldValues, TSubmitArgs = unknown> 
   formatString?: TSTringFormatter;
   /**
    * If set to true the form will disable all Fields and FormButtons.
+   * @default false
    */
   disabled?: boolean;
   /**
@@ -52,22 +56,28 @@ export interface IFormProps<TFieldValues = IFieldValues, TSubmitArgs = unknown> 
   /**
    * If set to true, all the fields will display only text instead of an
    * input element. This is useful to re-use Fields in a check page.
+   * @default false
    */
   plaintext?: boolean;
   /**
    * If set to true, all fields will be reset on an successful form submit
+   * @default false
    */
   resetOnSubmit?: boolean;
   /**
    * If set to true, the form will be forced into a busy state and thus disabling
    * any form buttons.
+   * @default false
    */
   busy?: true;
 
   /**
    * Triggered when the form has been validated successfully and is ready to be submitted.
+   * If the passed function is an async function / returns a promise, then the form context
+   * will stay in a busy state until the function resolves.
    * @param values Contains the form values. The name of the fields are
    * used as property names for the values object. FieldGroups result in a nested object.
+   * <br />
    * @param submitArgs By default undefined. Can be set by FormButton or
    * any other manual way of calling the submit method of the form context.
    */
@@ -78,6 +88,7 @@ export interface IFormProps<TFieldValues = IFieldValues, TSubmitArgs = unknown> 
    * inside those properties.
    * @param values Contains the form values. The name of the fields are used as property
    * names for the values object. FieldGroups result in a nested object.
+   * @returns: should return null if the values are valid, otherwise an error object.
    */
   onValidate?(values: TFieldValues): TFormValidationResult;
   /**

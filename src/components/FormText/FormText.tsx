@@ -10,8 +10,11 @@ import { useFormContext } from '../../hooks';
 import { IFormTextProps } from './FormText.types';
 
 /**
- * Wrapper component for passing strings to the
- * context.stringFormatter method
+ * Wrapper for text output. It will use the Form.stringFormatter function to
+ * output the message passed through the props. Best practice for custom input
+ * component development is to pass every text output through the stringFormatter.
+ * This enables the user of the form to add the react-ocean-forms-react-intl package
+ * and get i18n support out of the box.
  */
 export const FormText: React.SFC<IFormTextProps> = ({ text, values }: IFormTextProps): JSX.Element | null => {
   const context = useFormContext();

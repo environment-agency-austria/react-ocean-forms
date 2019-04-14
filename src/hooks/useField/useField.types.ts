@@ -30,42 +30,59 @@ export type TValueCallback = ((value: TBasicFieldValue, meta: IValueMeta) => TBa
  */
 export interface IBaseFieldProps {
   /**
-   * Field name
+   * Name of this input. Will be used as the unique identifier of this value.
+   * **Must be unique inside its context (e.g. form wide or form group wide)!**
    */
   name: string;
   /**
-   * Label (string or message id)
+   * Message id of the label that will be displayed along the input. If you
+   * don't want to use any i18n features you can pass a raw message instead.
    */
   label: string;
   /**
-   * Optional default value
+   * Overwrites the Form default values for this field. This value will be
+   * used during form initialization.
    */
   defaultValue?: TBasicFieldValue;
   /**
-   * Optional value
+   * Overwrites the Form value for this field. Changing this property will
+   * update the Field value, overwriting its default value but also any
+   * value the user put in.
    */
   value?: TBasicFieldValue;
   /**
-   * True, if the async validators should be triggered
-   * on a change event
+   * If set to true the form will trigger asynchronous validation on this field whenever
+   * it changes (e.g. on key press). Default behaviour is that the fields will only async
+   * validate when they loose focus.
+   * @default Form.asyncValidateOnChange
    */
   asyncValidateOnChange?: boolean;
   /**
    * Called, when the field is loading its value from the forms
    * default values. Must return the value to display.
+   * @param value Contains the current field value.
+   * <br />
+   * @param meta Contains the properties disabled and plaintext, representing the current Form setup.
+   * @returns: the function should return the value that should be displayed.
    */
   getDisplayValue?: TValueCallback;
   /**
    * Called, when the field is submitting its value to the form.
    * Must return the value to submit.
+   * @param value Contains the current field value.
+   * <br />
+   * @param meta Contains the properties disabled and plaintext, representing the current Form setup.
+   * @returns: the function should return the value that should be submitted.
    */
   getSubmitValue?: TValueCallback;
   /**
-   * Disables this field.
+   * Overwrites the disabled state for this field.
+   * @default Form.disabled
    */
   disabled?: boolean;
   /**
-   * Puts the field in plaintext mode.
+   * Overwrites the plaintext state for this field.
+   * @default Form.plaintext
    */
   plaintext?: boolean;
   /**

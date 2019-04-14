@@ -11,8 +11,9 @@ import { IUseFieldGroupArgs, IFieldGroupRenderParams } from './hooks/useFieldGro
  */
 export interface IFieldGroupProps extends IUseFieldGroupArgs {
   /**
-   * Render prop
-   * @param params Meta information about the group
+   * Gets called to render its children (see render prop pattern).
+   * @param params Contains the group state consisting of fullName,
+   * isValidating,valid, error which can be used to display those informations.
    */
   render(params: IFieldGroupRenderParams): JSX.Element;
 }

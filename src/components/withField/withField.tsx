@@ -15,6 +15,7 @@ type WrappedValidatedComponentProps<TComp> =
 
 /**
  * Higher order component for validation
+ * @deprecated Deprecated in favour of `useField` hook
  */
 export const withField = <TComp extends React.ComponentType<TProps>, TProps extends IFieldComponentProps = PropsOf<TComp>>
 (component: TComp): React.ComponentType<WrappedValidatedComponentProps<TComp>> => {

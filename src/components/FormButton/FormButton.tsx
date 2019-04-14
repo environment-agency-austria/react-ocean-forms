@@ -10,9 +10,9 @@ import { useFormContext } from '../../hooks';
 import { IFormButtonProps } from './FormButton.types';
 
 /**
- * Wrapper for a button that will
- * automatically disable the button if the
- * form is busy
+ * Defines a button that integrates into the form context. It will
+ * be disabled when the form is busy or disabled. You can also pass
+ * submitArgs to the onSubmit handler this way.
  */
 export const FormButton: React.FunctionComponent<IFormButtonProps> = (props: IFormButtonProps): JSX.Element => {
   const {

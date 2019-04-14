@@ -6,28 +6,36 @@ import { IFieldValues, IFormContext } from '../../FormContext';
  */
 export interface IUseFieldGroupArgs extends IUseValidationArgs {
   /**
-   * Label of the group
+   * Message id of the label that will be displayed along the input.
+   * If you don't want to use any i18n features you can pass a raw message instead.
    */
   label: string;
   /**
-   * True, if the async validators should be triggered
-   * on a change event
+   * If set to true the form will trigger asynchronous validation on Fields whenever
+   * they change (e.g. on key press). Default behaviour is that the fields will only
+   * async validate when they loose focus.
+   * @default Form.asyncValidateOnChange
    */
   asyncValidateOnChange?: boolean;
   /**
-   * Optional default values
+   * Overwrites the Form default values for the child fields of this field group.
+   * Those values will be put into the according fields when the form initializes.
    */
   defaultValues?: IFieldValues;
   /**
-   * Optional values
+   * Overwrites the Form values for the child fields of this field group. Changing
+   * this property will update all Field values, overwriting their default values
+   * but also any value the user put in.
    */
   values?: IFieldValues;
   /**
-   * Disables this field group and all its fields.
+   * Overwrites the disabled state for this field group.
+   * @default Form.disabled
    */
   disabled?: boolean;
   /**
-   * Puts the field group and all its fields in plaintext mode.
+   * Overwrites the plaintext state for this field group.
+   * @default Form.plaintext
    */
   plaintext?: boolean;
 }

@@ -12,8 +12,8 @@ import { IFieldGroupProps } from './FieldGroup.types';
 import { useFieldGroup } from './hooks/useFieldGroup';
 
 /**
- * Wrapper for groups of input fields
- * managed by the form component
+ * Defines a collection of fields. It combines its values to a
+ * sub-object and provides the possibility to attach validators to the group.
  */
 export const FieldGroup: React.FC<IFieldGroupProps> = ({ render, ...props }): JSX.Element => {
   const { groupFormContext, renderParams } = useFieldGroup(props);
@@ -23,4 +23,4 @@ export const FieldGroup: React.FC<IFieldGroupProps> = ({ render, ...props }): JS
       {render(renderParams)}
     </FormContext.Provider>
   );
-}
+};

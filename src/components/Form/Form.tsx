@@ -10,6 +10,10 @@ import { FormContext } from '../FormContext';
 import { IFormProps } from './Form.types';
 import { useForm } from './hooks/useForm';
 
+/**
+ * The form is the main component. It glues together all the Form logic through the context api.
+ * All form specific components must be wrapped by a form.
+ */
 export const Form: React.FC<IFormProps> = ({ children, className, ...rest }) => {
   const formContext = useForm(rest);
 
