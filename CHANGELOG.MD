@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 ### Breaking changes
 - `withValidation` has been removed, use the new hook `useValiation` instead
 - `withField` has been deprecated, use the new hook `useField` instead
-- removed `toArray` util as it was never intended to be public
+- removed some utils that were not intended for public use
 
 ### New features
 - Added `useValidation` hook as replacement for `withValidation`
