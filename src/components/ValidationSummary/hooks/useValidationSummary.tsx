@@ -7,14 +7,14 @@ interface IValidationEventArgs extends IValidationState {
   label: string;
 }
 
-interface IInvalidField {
+export interface IInvalidField {
   id: string;
   name: string;
   error: JSX.Element;
   linkCallback(event: React.MouseEvent): void;
 }
 
-interface IUseValidationSummaryResult {
+export interface IUseValidationSummaryResult {
   headerRef: React.MutableRefObject<HTMLHeadingElement | null>;
   errorList: [string, IInvalidField][];
 }
