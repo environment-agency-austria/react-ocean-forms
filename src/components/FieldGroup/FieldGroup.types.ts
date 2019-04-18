@@ -4,6 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import React from 'react';
 import { IUseFieldGroupArgs, IFieldGroupRenderParams } from './hooks/useFieldGroup.types';
 
 /**
@@ -15,5 +16,5 @@ export interface IFieldGroupProps extends IUseFieldGroupArgs {
    * @param params Contains the group state consisting of fullName,
    * isValidating,valid, error which can be used to display those informations.
    */
-  render(params: IFieldGroupRenderParams): JSX.Element;
+  render(params: IFieldGroupRenderParams): React.ReactNode;
 }

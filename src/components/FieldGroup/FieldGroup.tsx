@@ -15,7 +15,7 @@ import { useFieldGroup } from './hooks/useFieldGroup';
  * Defines a collection of fields. It combines its values to a
  * sub-object and provides the possibility to attach validators to the group.
  */
-export const FieldGroup: React.FC<IFieldGroupProps> = ({ render, ...props }): JSX.Element => {
+export const FieldGroup: React.FC<IFieldGroupProps> = ({ render, ...props }) => {
   const { groupFormContext, renderParams } = useFieldGroup(props);
 
   return (
