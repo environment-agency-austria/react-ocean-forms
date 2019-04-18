@@ -16,7 +16,7 @@ import { IFormTextProps } from './FormText.types';
  * This enables the user of the form to add the react-ocean-forms-react-intl package
  * and get i18n support out of the box.
  */
-export const FormText: React.SFC<IFormTextProps> = ({ text, values }: IFormTextProps): JSX.Element | null => {
+export const FormText: React.FC<IFormTextProps> = ({ text, values }) => {
   const context = useFormContext();
   if (text === '' || text === null) { return null; }
 
