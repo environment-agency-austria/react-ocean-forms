@@ -5,6 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 export * from './components';
-export * from './utils';
+export { addCustomMessages, stringFormatter, parseValidationError } from './utils';
 export * from './validators';
 export * from './hooks';
