@@ -11,7 +11,7 @@ import { FormText } from '../FormText';
  * @param errors Field errors
  * @param linkCallback Callback for the error click
  */
-function defaultRenderFieldError(id: string, fieldName: string, errors: JSX.Element[], linkCallback: React.MouseEventHandler): JSX.Element {
+function defaultRenderFieldError(id: string, fieldName: string, errors: React.ReactNode, linkCallback: React.MouseEventHandler): React.ReactNode {
   return (
     <li key={id}>
       <a href={`#${id}`} onClick={linkCallback}>

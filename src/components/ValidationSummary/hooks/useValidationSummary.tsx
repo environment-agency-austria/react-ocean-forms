@@ -10,7 +10,7 @@ interface IValidationEventArgs extends IValidationState {
 export interface IInvalidField {
   id: string;
   name: string;
-  error: JSX.Element;
+  error: React.ReactNode;
   linkCallback(event: React.MouseEvent): void;
 }
 
