@@ -14,7 +14,7 @@ import { IFormButtonProps } from './FormButton.types';
  * be disabled when the form is busy or disabled. You can also pass
  * submitArgs to the onSubmit handler this way.
  */
-export const FormButton: React.FunctionComponent<IFormButtonProps> = (props: IFormButtonProps): JSX.Element => {
+export const FormButton: React.FC<IFormButtonProps> = (props) => {
   const {
     disabled = false,
     type = 'submit',
@@ -49,6 +49,5 @@ export const FormButton: React.FunctionComponent<IFormButtonProps> = (props: IFo
     onClick(event);
   };
 
-  // @ts-ignore Waiting for https://github.com/Microsoft/TypeScript/issues/28768 to be fixed
   return <Component type={type} disabled={buttonDisabled} onClick={handleClick} {...rest} />;
 };
