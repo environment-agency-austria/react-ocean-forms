@@ -46,4 +46,22 @@ describe('<FieldError />', () => {
       errorParams,
     );
   });
+
+  it('should render multiple errors', () => {
+    const wrapper = setup({
+      invalid: true,
+      error: [
+        {
+          message_id: errorId,
+          params: errorParams,
+        },
+        {
+          message_id: 'foo2',
+          params: { },
+        }
+      ],
+    });
+
+    expect(wrapper).toMatchSnapshot();
+  });
 });

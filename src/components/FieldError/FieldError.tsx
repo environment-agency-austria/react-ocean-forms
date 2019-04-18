@@ -7,7 +7,6 @@
 
 import React from 'react';
 
-import { toArray } from '../../utils';
 import { useFormContext } from '../../hooks';
 import { IFieldErrorProps } from './FieldError.types';
 
@@ -15,7 +14,7 @@ import { IFieldErrorProps } from './FieldError.types';
  * Component for displaying bootstrap
  * form feedbacks if there are any errors
  */
-export const FieldError: React.SFC<IFieldErrorProps> = (props: IFieldErrorProps): JSX.Element | null => {
+export const FieldError: React.FC<IFieldErrorProps> = (props) => {
   const {
     id,
     invalid,
@@ -28,16 +27,16 @@ export const FieldError: React.SFC<IFieldErrorProps> = (props: IFieldErrorProps)
   if (invalid !== true || error === null) { return null; }
 
   // Error could be either an string or an array of strings
-  const errorArray = toArray(error);
+  const errorArray = Array.isArray(error) ? error : [error];
 
   return (
-    <React.Fragment>
+    <>
       {errorArray.map((item) => {
         const errorString = stringFormatter(item.message_id, item.params);
 
         return <span key={`${id}_${item.message_id}`}>{errorString}</span>;
       })}
-    </React.Fragment>
+    </>
   );
 };
 FieldError.displayName = 'FieldError';

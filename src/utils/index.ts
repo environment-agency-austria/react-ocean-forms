@@ -7,7 +7,6 @@
 
 export * from './getDisplayName';
 export * from './getDeepValue';
-export * from './toArray';
 export * from './parseValidationError';
 export * from './stringFormatter';
 export * from './stringHasValue';

@@ -11,3 +11,18 @@ exports[`<FieldError /> should render an error 1`] = `
   </span>
 </Fragment>
 `;
+
+exports[`<FieldError /> should render multiple errors 1`] = `
+<Fragment>
+  <span
+    key="unitError_foo"
+  >
+    string
+  </span>
+  <span
+    key="unitError_foo2"
+  >
+    string
+  </span>
+</Fragment>
+`;
