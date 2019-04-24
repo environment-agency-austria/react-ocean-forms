@@ -10,6 +10,8 @@ import { getDisplayName, PropsOf, Subtract } from '../../utils';
 import { useField, IBaseFieldProps, IUseValidationArgs } from '../../hooks';
 import { IFieldComponentProps } from './withField.types';
 
+export type IValidatedComponentProps = IUseValidationArgs;
+
 type WrappedValidatedComponentProps<TComp> =
   Subtract<JSX.LibraryManagedAttributes<TComp, PropsOf<TComp>>, IFieldComponentProps> & IBaseFieldProps & IUseValidationArgs;
 
