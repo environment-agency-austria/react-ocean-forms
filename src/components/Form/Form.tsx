@@ -6,7 +6,7 @@
  */
 import React from 'react';
 
-import { FormContext } from '../FormContext';
+import { FormContext, IFieldValues } from '../FormContext';
 import { IFormProps } from './Form.types';
 import { useForm } from './hooks/useForm';
 
@@ -14,7 +14,8 @@ import { useForm } from './hooks/useForm';
  * The form is the main component. It glues together all the Form logic through the context api.
  * All form specific components must be wrapped by a form.
  */
-export const Form: React.FC<IFormProps> = ({ children, className, ...rest }) => {
+export const Form = <TFieldValues extends {} = IFieldValues, TSubmitArgs = unknown>({ children, className, ...rest }:
+React.PropsWithChildren<IFormProps<TFieldValues, TSubmitArgs>>): React.ReactElement | null => {
   const formContext = useForm(rest);
 
   let formClass = className === undefined ? '' : className;
