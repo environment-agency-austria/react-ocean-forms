@@ -83,6 +83,10 @@ export function useFieldStates(): IUseFieldStatesResult {
       throw new Error('[Form] registerField: invalid field state given');
     }
 
+    if (fields.current.has(name)) {
+      throw new Error(`[Form] registerField: Could not register field with name '${name}'. A field with this name already exists inside this form.`);
+    }
+
     fields.current.set(name, fieldState);
   }, []);
 

@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`useFieldStates field registration and values registerField - field registration should throw an error if a field with the given name is already registered 1`] = `"[Form] registerField: Could not register field with name 'doubleField'. A field with this name already exists inside this form."`;
+
 exports[`useFieldStates invalid field registration case 1 of 5 props 1`] = `"[Form] registerField: invalid field state given"`;
 
 exports[`useFieldStates invalid field registration case 2 of 5 props 1`] = `"[Form] registerField: invalid field state given"`;
