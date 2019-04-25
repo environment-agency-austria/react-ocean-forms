@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { IFormContext } from '../components/FormContext';
-import { TBasicFieldValue } from '../components/withField';
+import { IFormContext } from '../components';
+import { TBasicFieldValue } from '../hooks';
 import { FieldErrorMessageId, TAsyncValidator, TFieldError, TValidator } from './validators.types';
 
 /**

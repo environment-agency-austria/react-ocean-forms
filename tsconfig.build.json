@@ -13,6 +13,7 @@
     "**/*.test.tsx",
     "**/*.test.js",
     "**/*.test.jsx",
-    "config/**"
+    "config/**",
+    "src/test-utils/**"
   ]
 }

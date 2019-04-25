@@ -5,7 +5,8 @@ describe('Index', () => {
     const components = [
       'withField', 'FieldError', 'FieldGroup', 'FieldLine',
       'Form', 'FormButton', 'FormContext', 'FormText',
-      'Input', 'ValidationSummary', 'withForm', 'withValidation',
+      'Input', 'ValidationSummary', 'withForm',
+      'useField', 'useFormContext', 'useValidation',
     ];
 
     components.forEach((component) => {

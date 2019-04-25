@@ -22,7 +22,6 @@ exports[`<FieldLine /> should display invalid correctly 1`] = `
       error={null}
       id="unitInput_errors"
       invalid={true}
-      stringFormatter={[MockFunction]}
     />
   </div>
 </div>
@@ -50,7 +49,6 @@ exports[`<FieldLine /> should render without crashing 1`] = `
       error={null}
       id="unitInput_errors"
       invalid={false}
-      stringFormatter={[MockFunction]}
     />
   </div>
 </div>
@@ -83,7 +81,6 @@ exports[`<FieldLine /> should show a required marker 1`] = `
       error={null}
       id="unitInput_errors"
       invalid={true}
-      stringFormatter={[MockFunction]}
     />
   </div>
 </div>

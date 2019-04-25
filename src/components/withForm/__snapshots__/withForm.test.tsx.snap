@@ -22,6 +22,7 @@ exports[`withForm should render without error 1`] = `
       "plaintext": false,
       "registerField": [MockFunction],
       "registerListener": [MockFunction],
+      "reset": [MockFunction],
       "stringFormatter": [MockFunction],
       "submit": [MockFunction],
       "unregisterField": [MockFunction],

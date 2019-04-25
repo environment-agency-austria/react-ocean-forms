@@ -7,14 +7,17 @@
 import React from 'react';
 
 import { getDisplayName, PropsOf, Subtract } from '../../utils';
-import { IValidatedComponentProps } from '../withValidation';
-import { Field, IBaseFieldProps, IFieldComponentFieldProps, IFieldComponentMeta, IFieldComponentProps } from './Field';
+import { useField, IBaseFieldProps, IUseValidationArgs } from '../../hooks';
+import { IFieldComponentProps } from './withField.types';
+
+export type IValidatedComponentProps = IUseValidationArgs;
 
 type WrappedValidatedComponentProps<TComp> =
-  Subtract<JSX.LibraryManagedAttributes<TComp, PropsOf<TComp>>, IFieldComponentProps> & IBaseFieldProps & IValidatedComponentProps;
+  Subtract<JSX.LibraryManagedAttributes<TComp, PropsOf<TComp>>, IFieldComponentProps> & IBaseFieldProps & IUseValidationArgs;
 
 /**
  * Higher order component for validation
+ * @deprecated Deprecated in favour of `useField` hook
  */
 export const withField = <TComp extends React.ComponentType<TProps>, TProps extends IFieldComponentProps = PropsOf<TComp>>
 (component: TComp): React.ComponentType<WrappedValidatedComponentProps<TComp>> => {
@@ -23,20 +26,15 @@ export const withField = <TComp extends React.ComponentType<TProps>, TProps exte
 
   type IWrappedProps = WrappedValidatedComponentProps<TComp>;
 
-  const validatedComponent: React.SFC<IWrappedProps> = (props: IWrappedProps): JSX.Element => {
-    const renderComponent = (field: IFieldComponentFieldProps, meta: IFieldComponentMeta): JSX.Element => {
-      // @ts-ignore
-      return <CastedComponent field={field} meta={meta} {...props} />;
-    };
+  const ValidatedComponent: React.FC<IWrappedProps> = (props) => {
+    const { fieldProps, metaProps } = useField(props);
 
     return (
-      <Field
-        {...props}
-        render={renderComponent}
-      />
+      // @ts-ignore
+      <CastedComponent field={fieldProps} meta={metaProps} {...props} />
     );
   };
-  validatedComponent.displayName = `withField(${getDisplayName(component)})`;
+  ValidatedComponent.displayName = `withField(${getDisplayName(component)})`;
 
-  return validatedComponent;
+  return ValidatedComponent;
 };

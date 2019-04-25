@@ -1,4 +1,4 @@
-import { TBasicFieldValue } from '../components/withField';
+import { TBasicFieldValue } from '../hooks';
 import { createMockFormContext } from '../test-utils/enzymeFormContext';
 import { validators } from './validators';
 import { FieldErrorMessageId } from './validators.types';

@@ -15,7 +15,7 @@ import { IFieldLineProps } from './FieldLine.types';
  * Create a required *
  * @param validators Validator array
  */
-function createRequiredMarker(isRequired: boolean): JSX.Element | null {
+function createRequiredMarker(isRequired: boolean): React.ReactNode {
   if (isRequired) {
     return <span className="field-required"> *</span>;
   }
@@ -27,7 +27,7 @@ function createRequiredMarker(isRequired: boolean): JSX.Element | null {
  * Component for displaying bootstrap
  * form groups with any children
  */
-export const FieldLine: React.SFC<IFieldLineProps> = (props: IFieldLineProps): JSX.Element => {
+export const FieldLine: React.FC<IFieldLineProps> = (props) => {
   const {
     field,
     meta,
@@ -49,7 +49,6 @@ export const FieldLine: React.SFC<IFieldLineProps> = (props: IFieldLineProps): J
           id={`${field.id}_errors`}
           invalid={!meta.valid}
           error={meta.error}
-          stringFormatter={meta.stringFormatter}
         />
       </div>
     </div>

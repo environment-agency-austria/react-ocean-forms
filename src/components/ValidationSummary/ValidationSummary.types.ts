@@ -4,36 +4,39 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { IFormContextProps } from '../withForm';
+import React from 'react';
 
 /**
  * Properties for the ValidationSummary
  */
-export interface IValidationSummaryProps extends IFormContextProps {
+export interface IValidationSummaryProps {
   /**
-   * (html) id for the validation summary container div
+   * Id of this input. Will be used as the unique identifier of the div.
+   * **Must be unique form wide!**
    */
   id: string;
   /**
-   * Optional title text / message id
+   * Message that will be used as the title, wrapped in a h4.
    */
-  title: string;
+  title?: string;
   /**
-   * If true, then the validation summary won't try to sroll
-   * itself into view if the user submits an invalid form
+   * If set to true the validation summary will stop automatically scrolling
+   * to itself when the user clicks on a submit button and the form is invalid.
+   * @default false
    */
-  disableFocusOnSubmit: boolean;
+  disableFocusOnSubmit?: boolean;
   /**
-   * Render prop for drawing single field errors
+   * Optional function that can be used to customize the output of each error.
    * @param id Id of the failing field
    * @param fieldName Display name of the failing field
-   * @param errors Rendered error messages
-   * @param linkCallback Callback that will focus the failed field
+   * @param errors Object / Array of objects with the rendered error messages
+   * @param linkCallback Function that should be called on click, will focus on the input element.
    */
-  renderFieldError?(id: string, fieldName: string, errors: React.ReactNode, linkCallback: React.MouseEventHandler): JSX.Element;
+  renderFieldError?(id: string, fieldName: string, errors: React.ReactNode, linkCallback: React.MouseEventHandler): React.ReactNode;
   /**
-   * Render prop for customizing the validation summary
+   * Optional function that can be used to customize the ValidationSummary rendering.
+   * Note: This function will only be called when there are errors to be displayed.
    * @param children Validation summary content (header + rendered field errors)
    */
-  render?(children: JSX.Element): JSX.Element;
+  render?(children: React.ReactNode): React.ReactElement | null;
 }

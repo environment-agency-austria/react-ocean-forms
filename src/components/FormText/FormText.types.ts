@@ -15,7 +15,7 @@ export interface IFormTextProps {
    */
   text: string | null;
   /**
-   * Optional values for the stringFormatter
+   * Optional parameters that should be replaced in the message.
    */
   values?: IMessageValues;
 }

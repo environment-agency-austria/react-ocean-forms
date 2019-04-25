@@ -1,6 +1,18 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+### Breaking changes
+- `withValidation` has been removed, use the new hook `useValiation` instead
+- `withField` has been deprecated, use the new hook `useField` instead
+- removed some utils that were not intended for public use
+
+### New features
+- Added `useValidation` hook as replacement for `withValidation`
+- Added `useField` hook as replacement for `withField`
+- Added `useFormEventListener` hook for easy access to form events
+- Added `reset` to `FormContext`
+
 ## [2.2.0] # 2019-02-19
 ### New features
 - Added `useFormContext` hook for easy access to the form context

@@ -4,10 +4,11 @@ import { shallow, ShallowWrapper } from 'enzyme';
 
 import { createMockFormContext } from '../../test-utils/enzymeFormContext';
 import { IMessageValues } from '../../utils';
-import { IFormContext, useFormContext } from '../FormContext';
+import { useFormContext } from '../../hooks';
+import { IFormContext } from '../FormContext';
 import { FormText } from './FormText';
 
-jest.mock('../FormContext');
+jest.mock('../../hooks');
 
 describe('<FormText />', () => {
   const mockContext: IFormContext = createMockFormContext();

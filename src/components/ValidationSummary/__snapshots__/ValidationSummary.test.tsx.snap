@@ -1,5 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<ValidationSummary /> basic rendering should render correctly if there is an error 1`] = `
+<div
+  className="validation-summary"
+  id="unitSummary"
+>
+  <h4
+    className="alert-heading"
+  >
+    <FormText
+      text="mock-title"
+    />
+  </h4>
+  <ul>
+    <li
+      key="mock-error"
+    >
+      <a
+        href="#mock-error"
+        onClick={[MockFunction]}
+      >
+        mock-label
+        :
+         
+        <span>
+          Error
+        </span>
+      </a>
+    </li>
+  </ul>
+</div>
+`;
+
 exports[`<ValidationSummary /> render props render prop should be called with the basic summary render if the form is invalid 1`] = `
 <div
   className="validation-summary"
@@ -8,26 +40,57 @@ exports[`<ValidationSummary /> render props render prop should be called with th
   <h4
     className="alert-heading"
   >
-    Errors
+    <FormText
+      text="ojs_form_validationSummaryHeader"
+    />
   </h4>
   <ul>
     <li
-      key="unitField"
+      key="mock-error"
     >
       <a
-        href="#unitField"
-        onClick={[Function]}
+        href="#mock-error"
+        onClick={[MockFunction]}
       >
-        Unit field
+        mock-label
         :
          
-        <span
-          key="unitField_test"
-        >
-          test
+        <span>
+          Error
         </span>
       </a>
     </li>
+  </ul>
+</div>
+`;
+
+exports[`<ValidationSummary /> render props render prop should render the result of the render prop 1`] = `
+<div
+  id="mock-renderer"
+>
+  mock renderer
+</div>
+`;
+
+exports[`<ValidationSummary /> render props renderFieldError prop should render the result of the render prop 1`] = `
+<div
+  className="validation-summary"
+  id="unitSummary"
+>
+  <h4
+    className="alert-heading"
+  >
+    <FormText
+      text="ojs_form_validationSummaryHeader"
+    />
+  </h4>
+  <ul>
+    <div
+      id="mock-renderer"
+      key="mock-render"
+    >
+      mock renderer
+    </div>
   </ul>
 </div>
 `;

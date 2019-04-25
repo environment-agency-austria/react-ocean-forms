@@ -7,7 +7,7 @@
 
 import React from 'react';
 import { getDisplayName, PropsOf, Subtract } from '../../utils';
-import { useFormContext } from '../FormContext';
+import { useFormContext } from '../../hooks';
 import { IFormContextProps } from './withForm.types';
 
 /**
@@ -35,7 +35,7 @@ React.ComponentType<FormComponentProps<TComp>> => {
    * Component that injects the form context prop
    * to the wrapped component
    */
-  const FormComponent: React.SFC<FormComponentProps<TComp>> = (props: FormComponentProps<TComp>): JSX.Element => {
+  const FormComponent: React.FC<FormComponentProps<TComp>> = (props) => {
     const context = useFormContext();
 
     // @ts-ignore

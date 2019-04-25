@@ -5,49 +5,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { TSTringFormatter } from '../../utils/stringFormatter';
-import { TBasicFieldValue } from '../withField';
-import { IValidationArgs, IValidationState } from '../withValidation';
-
-export type TFormEventListener = ((name: string, event: string, args?: unknown) => void);
-
-/**
- * Interface describing field states
- */
-export interface IFieldState {
-  /**
-   * Label of the field
-   */
-  label: string;
-  /**
-   * True if the field is actually a FieldGroup
-   */
-  isGroup?: boolean;
-  /**
-   * Triggers the validation of this field
-   * @param args Validation args
-   */
-  validate(args?: Partial<IValidationArgs>): Promise<IValidationState>;
-  /**
-   * Returns the current value of the field
-   */
-  getValue(): TBasicFieldValue;
-  /**
-   * Resets the field to its initial state
-   */
-  reset(): void;
-  /**
-   * Updates the validation state of the field
-   * @param state New validation state
-   */
-  updateValidation(state: Partial<IValidationState>): void;
-}
+import { TFormEventListener, IFieldState } from '../../hooks/internal';
+import { TBasicFieldValue } from '../../hooks';
 
 /**
  * Type describing a collection of field values
  */
-export type IFieldValues = {
+export interface IFieldValues {
   [prop: string]: TBasicFieldValue | IFieldValues;
-};
+}
 
 /**
  * Base interface for the form context
@@ -111,6 +77,10 @@ export interface IBaseFormContext<TFieldValues = IFieldValues> {
    * @param submitArgs Optional submit args
    */
   submit(submitArgs?: unknown): Promise<void>;
+  /**
+   * Resets the form
+   */
+  reset(): void;
 }
 
 /**

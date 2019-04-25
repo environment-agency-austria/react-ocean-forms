@@ -12,35 +12,15 @@ exports[`<FieldGroup /> Render should render without crashing 1`] = `
       "fieldPrefix": "unitGroup",
       "getFieldState": [MockFunction],
       "getValues": [MockFunction],
-      "notifyFieldEvent": [Function],
+      "notifyFieldEvent": [MockFunction],
       "plaintext": false,
-      "registerField": [MockFunction] {
-        "calls": Array [
-          Array [
-            "unitGroup",
-            Object {
-              "getValue": [Function],
-              "isGroup": true,
-              "label": "Unit group",
-              "reset": [Function],
-              "updateValidation": [MockFunction],
-              "validate": [Function],
-            },
-          ],
-        ],
-        "results": Array [
-          Object {
-            "type": "return",
-            "value": undefined,
-          },
-        ],
-      },
+      "registerField": [MockFunction],
       "registerListener": [MockFunction],
+      "reset": [MockFunction],
       "stringFormatter": [MockFunction],
       "submit": [MockFunction],
       "unregisterField": [MockFunction],
       "unregisterListener": [MockFunction],
-      "values": undefined,
     }
   }
 />

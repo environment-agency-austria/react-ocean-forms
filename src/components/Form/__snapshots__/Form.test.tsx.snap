@@ -1,21 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Form /> invalid field registration case 1 of 5 props 1`] = `"[Form] registerField: invalid field state given"`;
-
-exports[`<Form /> invalid field registration case 2 of 5 props 1`] = `"[Form] registerField: invalid field state given"`;
-
-exports[`<Form /> invalid field registration case 3 of 5 props 1`] = `"[Form] registerField: invalid field state given"`;
-
-exports[`<Form /> invalid field registration case 4 of 5 props 1`] = `"[Form] registerField: invalid field state given"`;
-
-exports[`<Form /> invalid field registration case empty state 1`] = `"[Form] registerField: invalid field state given"`;
-
-exports[`<Form /> invalid field registration case invalid field name 1`] = `"[Form] registerField: name is required"`;
-
-exports[`<Form /> invalid field registration case no parameters 1`] = `"[Form] registerField: name is required"`;
-
-exports[`<Form /> invalid field registration case no state 1`] = `"[Form] registerField: field state is required"`;
-
 exports[`<Form /> should render without error 1`] = `
 <ContextProvider
   value={
@@ -26,17 +10,17 @@ exports[`<Form /> should render without error 1`] = `
       "defaultValues": Object {},
       "disabled": false,
       "fieldPrefix": null,
-      "getFieldState": [Function],
-      "getValues": [Function],
-      "notifyFieldEvent": [Function],
+      "getFieldState": [MockFunction],
+      "getValues": [MockFunction],
+      "notifyFieldEvent": [MockFunction],
       "plaintext": false,
-      "registerField": [Function],
-      "registerListener": [Function],
-      "stringFormatter": [Function],
-      "submit": [Function],
-      "unregisterField": [Function],
-      "unregisterListener": [Function],
-      "values": undefined,
+      "registerField": [MockFunction],
+      "registerListener": [MockFunction],
+      "reset": [MockFunction],
+      "stringFormatter": [MockFunction],
+      "submit": [MockFunction],
+      "unregisterField": [MockFunction],
+      "unregisterListener": [MockFunction],
     }
   }
 >

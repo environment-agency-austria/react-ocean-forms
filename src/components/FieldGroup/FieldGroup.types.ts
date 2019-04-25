@@ -4,56 +4,17 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { IFieldValues } from '../FormContext';
-import { IValidationProps, IValidationState } from '../withValidation';
-
-/**
- * Meta information about the group
- * for the render prop
- */
-export interface IFieldGroupRenderParams extends IValidationState {
-  /**
-   * Full name of the group
-   */
-  fullName: string;
-}
+import React from 'react';
+import { IUseFieldGroupArgs, IFieldGroupRenderParams } from './hooks/useFieldGroup.types';
 
 /**
  * Props for the field group component
  */
-export interface IFieldGroupProps<TFieldValues = IFieldValues> extends IValidationProps<TFieldValues> {
+export interface IFieldGroupProps extends IUseFieldGroupArgs {
   /**
-   * Field name
+   * Gets called to render its children (see render prop pattern).
+   * @param params Contains the group state consisting of fullName,
+   * isValidating,valid, error which can be used to display those informations.
    */
-  name: string;
-  /**
-   * Label of the group
-   */
-  label: string;
-  /**
-   * True, if the async validators should be triggered
-   * on a change event
-   */
-  asyncValidateOnChange?: boolean;
-  /**
-   * Optional default values
-   */
-  defaultValues?: TFieldValues;
-  /**
-   * Optional values
-   */
-  values?: TFieldValues;
-  /**
-   * Disables this field group and all its fields.
-   */
-  disabled?: boolean;
-  /**
-   * Puts the field group and all its fields in plaintext mode.
-   */
-  plaintext?: boolean;
-  /**
-   * Render prop
-   * @param params Meta information about the group
-   */
-  render(params: IFieldGroupRenderParams): JSX.Element;
+  render(params: IFieldGroupRenderParams): React.ReactNode;
 }

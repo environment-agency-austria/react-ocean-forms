@@ -2,15 +2,18 @@ import React from 'react';
 
 import { shallow, ShallowWrapper } from 'enzyme';
 
+import { useFormContext } from '../../hooks';
 import { FieldError } from './FieldError';
 import { IFieldErrorProps } from './FieldError.types';
 
+jest.mock('../../hooks');
+
 describe('<FieldError />', () => {
   const mockStringFormatter = jest.fn().mockReturnValue('string');
+  (useFormContext as jest.Mock).mockReturnValue({ stringFormatter: mockStringFormatter });
   const setup = (props?: Partial<IFieldErrorProps>): ShallowWrapper => shallow((
     <FieldError
       id="unitError"
-      stringFormatter={mockStringFormatter}
       invalid={false}
       error={null}
       {...props}
@@ -42,5 +45,23 @@ describe('<FieldError />', () => {
       errorId,
       errorParams,
     );
+  });
+
+  it('should render multiple errors', () => {
+    const wrapper = setup({
+      invalid: true,
+      error: [
+        {
+          message_id: errorId,
+          params: errorParams,
+        },
+        {
+          message_id: 'foo2',
+          params: { },
+        }
+      ],
+    });
+
+    expect(wrapper).toMatchSnapshot();
   });
 });
