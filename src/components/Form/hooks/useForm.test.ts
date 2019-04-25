@@ -1,4 +1,4 @@
-import { renderHook, cleanup, act } from 'react-hooks-testing-library';
+import { renderHook, act } from 'react-hooks-testing-library';
 
 import { IFormProps } from '../Form.types';
 import { IFormContext, IFieldValues } from '../../FormContext';
@@ -7,7 +7,6 @@ import { useForm } from './useForm';
 import { useFieldEvents, IUseFieldEventsResult, IUseFieldStatesResult, useFieldStates, IFieldState } from '../../../hooks/internal';
 
 jest.mock('../../../hooks/internal');
-afterEach(cleanup);
 
 describe('useForm', () => {
   interface ISetupArgs {

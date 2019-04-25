@@ -1,10 +1,9 @@
-import { renderHook, cleanup } from 'react-hooks-testing-library';
+import { renderHook } from 'react-hooks-testing-library';
 
 import { useFormContext } from '../useFormContext';
 import { useFormEventListener } from './useFormEventListener';
 
 jest.mock('../useFormContext');
-afterEach(cleanup);
 
 interface ISetupResult {
   registerListener: jest.Mock;
@@ -12,6 +11,7 @@ interface ISetupResult {
   fullName: string;
   mockListener: jest.Mock;
   rerender(): void;
+  unmount(): boolean;
 }
 
 function setup(): ISetupResult {
@@ -26,7 +26,7 @@ function setup(): ISetupResult {
 
   const fullName = 'mock-name';
 
-  const { rerender } = renderHook(() => useFormEventListener(
+  const { rerender, unmount } = renderHook(() => useFormEventListener(
     fullName,
     mockListener,
   ));
@@ -37,6 +37,7 @@ function setup(): ISetupResult {
     mockListener,
     fullName,
     rerender,
+    unmount,
   }
 }
 
@@ -50,9 +51,9 @@ describe('useFormEventListener', () => {
   });
 
   it('should call formContext.unregisterField on unmount', () => {
-    const { unregisterListener, fullName } = setup();
+    const { unregisterListener, fullName, unmount } = setup();
 
-    cleanup();
+    unmount();
 
     expect(unregisterListener).toHaveBeenCalledTimes(1);
     expect(unregisterListener).toHaveBeenCalledWith(fullName);

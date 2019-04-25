@@ -1,7 +1,5 @@
-import { renderHook, cleanup } from 'react-hooks-testing-library';
+import { renderHook } from 'react-hooks-testing-library';
 import { useIsUnmounted } from './useIsUnmounted';
-
-afterEach(cleanup);
 
 describe('useIsUnmounted', () => {
   const { result, rerender, unmount } = renderHook(() => useIsUnmounted());

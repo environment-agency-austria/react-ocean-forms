@@ -1,4 +1,4 @@
-import { renderHook, cleanup } from 'react-hooks-testing-library';
+import { renderHook } from 'react-hooks-testing-library';
 
 import { createMockFormContext, createMockValidationResult } from '../../../test-utils/enzymeFormContext';
 import { useFormContext, useValidation, IUseValidationResult } from '../../../hooks';
@@ -10,7 +10,6 @@ import { IUseFieldGroupArgs, IUseFieldGroupResult } from './useFieldGroup.types'
 
 jest.mock('../../../hooks');
 jest.mock('../../../hooks/internal');
-afterEach(cleanup);
 
 describe('useFieldGroup', () => {
   const mockName = 'unitGroup';

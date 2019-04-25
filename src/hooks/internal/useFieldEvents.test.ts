@@ -1,8 +1,6 @@
-import { renderHook, cleanup } from 'react-hooks-testing-library';
+import { renderHook } from 'react-hooks-testing-library';
 
 import { useFieldEvents, TFormEventListener } from './useFieldEvents';
-
-afterEach(cleanup);
 
 describe('useFieldEvents', () => {
   interface IMockListener {

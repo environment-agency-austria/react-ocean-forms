@@ -1,8 +1,6 @@
-import { renderHook, cleanup } from 'react-hooks-testing-library';
+import { renderHook } from 'react-hooks-testing-library';
 
 import { useFieldStates, IFieldState, IUseFieldStatesResult } from './useFieldStates';
-
-afterEach(cleanup);
 
 const createMockFieldState = (label: string, isGroup?: boolean): IFieldState => ({
   label,

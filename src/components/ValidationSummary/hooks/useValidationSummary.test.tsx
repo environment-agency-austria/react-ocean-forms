@@ -1,5 +1,5 @@
 import React from 'react';
-import { renderHook, cleanup, act } from 'react-hooks-testing-library';
+import { renderHook, act } from 'react-hooks-testing-library';
 import { shallow } from 'enzyme';
 
 import { useFormContext, useFormEventListener } from '../../../hooks';
@@ -9,8 +9,6 @@ import { useValidationSummary, IUseValidationSummaryResult, IInvalidField } from
 import { mockEvent } from '../../../test-utils/enzymeEventUtils';
 
 jest.mock('../../../hooks');
-
-afterEach(cleanup);
 
 describe('useValidationSummary', () => {
   const mockId = 'test-vs';

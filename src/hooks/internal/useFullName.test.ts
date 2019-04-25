@@ -1,9 +1,8 @@
-import { renderHook, cleanup } from 'react-hooks-testing-library';
+import { renderHook } from 'react-hooks-testing-library';
 import { useFullName } from './useFullName';
 import { useFormContext } from '../useFormContext';
 
 jest.mock('../useFormContext');
-afterEach(cleanup);
 
 describe('useFullName', () => {
   it('should return the raw name if formContext.fieldPrefix is null', () => {

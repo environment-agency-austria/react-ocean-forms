@@ -1,11 +1,10 @@
-import { renderHook, cleanup } from 'react-hooks-testing-library';
+import { renderHook } from 'react-hooks-testing-library';
 
 import { useFieldRegistration } from './useFieldRegistration';
 import { useFormContext } from '../useFormContext';
 import { IFieldState } from './useFieldStates';
 
 jest.mock('../useFormContext');
-afterEach(cleanup);
 
 function getMockFieldState(): IFieldState {
   return {
@@ -24,6 +23,7 @@ interface ISetupResult {
   fullName: string;
   fieldState: IFieldState;
   rerender(): void;
+  unmount(): boolean;
 }
 
 function setup(): ISetupResult {
@@ -39,7 +39,7 @@ function setup(): ISetupResult {
 
   const fullName = 'mock-name';
 
-  const { rerender } = renderHook(() => useFieldRegistration(
+  const { rerender, unmount } = renderHook(() => useFieldRegistration(
     fullName,
     fieldState,
   ));
@@ -50,6 +50,7 @@ function setup(): ISetupResult {
     fieldState,
     fullName,
     rerender,
+    unmount,
   }
 }
 
@@ -63,9 +64,9 @@ describe('useFieldRegistration', () => {
   });
 
   it('should call formContext.unregisterField on unmount', () => {
-    const { unregisterField, fullName } = setup();
+    const { unregisterField, fullName, unmount } = setup();
 
-    cleanup();
+    unmount();
 
     expect(unregisterField).toHaveBeenCalledTimes(1);
     expect(unregisterField).toHaveBeenCalledWith(fullName);

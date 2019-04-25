@@ -1,4 +1,4 @@
-import { renderHook, cleanup, act } from 'react-hooks-testing-library';
+import { renderHook, act } from 'react-hooks-testing-library';
 
 import { IFormContext } from '../../components';
 import { createMockFormContext, createMockValidationResult } from '../../test-utils/enzymeFormContext';
@@ -12,8 +12,6 @@ import { TBasicFieldValue, IFieldComponentFieldProps, IUseFieldProps, IUseFieldR
 jest.mock('../useFormContext');
 jest.mock('../useValidation');
 jest.mock('../internal');
-
-afterEach(cleanup);
 
 describe('useField', () => {
   const mockName = 'unitField';
