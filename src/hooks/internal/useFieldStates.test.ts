@@ -89,6 +89,19 @@ describe('useFieldStates', () => {
           result.current.registerField(field.name, field.state);
         }).not.toThrowError();
       });
+
+      it('should throw an error if a field with the given name is already registered', () => {
+        const { result } = setup();
+
+        const mockName = 'doubleField';
+        const { state: mockState } = createMockField(mockName, mockName);
+
+        result.current.registerField(mockName, mockState);
+
+        expect(() => {
+          result.current.registerField(mockName, mockState);
+        }).toThrowErrorMatchingSnapshot();
+      });
     });
 
     describe('unregisterField - field cleanup', () => {
