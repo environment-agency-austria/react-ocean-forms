@@ -13,7 +13,7 @@ import { useIsUnmounted, useTimeout, useFullName } from '../internal';
 import { IBasicValidationState, IUseValidationResult, IValidationArgs, IUseValidationArgs } from './useValidation.types';
 import { createInitialValidationState, isRequired, runSyncValidators, runAsyncValidators } from './useValidation.utils';
 
-export function useValidation<TFieldValue = unknown>(args: IUseValidationArgs): IUseValidationResult<TFieldValue> {
+export function useValidation<TFieldValue = unknown>(args: IUseValidationArgs<TFieldValue>): IUseValidationResult<TFieldValue> {
   const formContext = useFormContext();
   const isUnmounted = useIsUnmounted();
   const [validationState, setValidationState] = useState<IBasicValidationState>(createInitialValidationState());
