@@ -8,13 +8,12 @@
 import { useCallback, useState, useMemo } from 'react';
 
 import { useFormContext } from '../useFormContext';
-import { TBasicFieldValue } from '../useField';
 import { useIsUnmounted, useTimeout, useFullName } from '../internal';
 
 import { IBasicValidationState, IUseValidationResult, IValidationArgs, IUseValidationArgs } from './useValidation.types';
 import { createInitialValidationState, isRequired, runSyncValidators, runAsyncValidators } from './useValidation.utils';
 
-export function useValidation(args: IUseValidationArgs): IUseValidationResult {
+export function useValidation<TFieldValue = unknown>(args: IUseValidationArgs): IUseValidationResult<TFieldValue> {
   const formContext = useFormContext();
   const isUnmounted = useIsUnmounted();
   const [validationState, setValidationState] = useState<IBasicValidationState>(createInitialValidationState());
@@ -65,7 +64,7 @@ export function useValidation(args: IUseValidationArgs): IUseValidationResult {
    * Performs the sync and async validation logic
    */
   const validate = useCallback(
-    async (value: TBasicFieldValue, {
+    async (value: TFieldValue | undefined, {
       checkAsync = true,
       immediateAsync = false,
     }: Partial<IValidationArgs> = {} ):
@@ -121,7 +120,7 @@ export function useValidation(args: IUseValidationArgs): IUseValidationResult {
     [clearAsyncTimeout, validators, asyncValidators, setAsyncTimeout, asyncValidationWait, updateAndNotify, formContext],
   );
 
-  const validationResult = useMemo<IUseValidationResult>(() => ({
+  const validationResult = useMemo<IUseValidationResult<TFieldValue>>(() => ({
     validationState: {
       ...validationState,
       isRequired: isRequired(validators),

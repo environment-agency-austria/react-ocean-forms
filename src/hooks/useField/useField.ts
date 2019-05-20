@@ -5,7 +5,7 @@ import { useFormContext } from '../useFormContext';
 import { useValidation, IValidationArgs, IBasicValidationState } from '../useValidation';
 import { useFullName, useFieldRegistration } from '../internal';
 
-import { IFieldComponentFieldProps, IFieldComponentMeta, IFieldChangedEvent, IUseFieldProps, IUseFieldResult, IUseFieldState, TBasicFieldValue, IValueMeta } from './useField.types';
+import { IFieldComponentFieldProps, IFieldComponentMeta, IFieldChangedEvent, IUseFieldProps, IUseFieldResult, IUseFieldState, IValueMeta } from './useField.types';
 import { noopFieldValueFunction } from './useField.utils';
 
 /**
@@ -14,7 +14,7 @@ import { noopFieldValueFunction } from './useField.utils';
  * form context.
  * @param props Field props @see IUseFieldProps
  */
-export function useField(props: IUseFieldProps): IUseFieldResult {
+export function useField<TFieldValue = unknown>(props: IUseFieldProps<TFieldValue>): IUseFieldResult<TFieldValue> {
   const formContext = useFormContext();
   const fullName = useFullName(props.name);
 
@@ -25,17 +25,21 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
     onChange = noopFunction,
     onBlur = noopFunction,
     asyncValidateOnChange = formContext.asyncValidateOnChange,
-    defaultValue = getDeepValue(fullName, formContext.defaultValues),
-    value = getDeepValue(fullName, formContext.values),
+    defaultValue = getDeepValue<TFieldValue>(fullName, formContext.defaultValues),
+    value = getDeepValue<TFieldValue>(fullName, formContext.values),
     disabled = formContext.disabled,
     plaintext = formContext.plaintext,
   } = props;
 
-  const [ fieldState, setFieldState ] = useState<IUseFieldState>(
+  const [ fieldState, setFieldState ] = useState<IUseFieldState<TFieldValue>>(
     // Initialize the field state with an empty string provided to getDisplayValue
     // Note: the correct defaultValue / value from props will be overriden in an
     // effect later on
-    () => ({ touched: false, dirty: false, value: getDisplayValue('', { plaintext, disabled }) })
+    () => ({
+      touched: false,
+      dirty: false,
+      value: getDisplayValue(defaultValue, { plaintext, disabled })
+    })
   );
   const { validationState, validate, resetValidation, updateValidationState } = useValidation(props);
 
@@ -52,7 +56,7 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
    * Returns the current submit value using the getSubmitValue
    * callback and the correct value and value meta parameters
    */
-  const getFieldValue = useCallback((valueOverride?: TBasicFieldValue) => {
+  const getFieldValue = useCallback((valueOverride?: TFieldValue) => {
     return getSubmitValue(
       valueOverride !== undefined ? valueOverride : fieldState.value,
       valueMeta,
@@ -66,7 +70,7 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
     () => {
       const overridenValue = value === undefined ? defaultValue : value;
       const displayValue = getDisplayValue(
-        overridenValue === undefined ? '' : overridenValue,
+        overridenValue,
         valueMeta,
       );
 
@@ -144,7 +148,7 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
    * internal state
    */
   const handleFieldChanged = useCallback(
-    (event: IFieldChangedEvent) => {
+    (event: IFieldChangedEvent<TFieldValue>) => {
       const updatedValue = event.target.value;
       setFieldState({
         value: updatedValue,
@@ -191,7 +195,7 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
    * @see IFieldComponentFieldProps
    */
   const fieldProps = useMemo(
-    (): IFieldComponentFieldProps => ({
+    (): IFieldComponentFieldProps<TFieldValue> => ({
       value: fieldState.value,
       disabled,
       id: fullName,

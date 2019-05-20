@@ -6,8 +6,7 @@
  */
 
 import { IFormContext } from '../components';
-import { TBasicFieldValue } from '../hooks';
-import { FieldErrorMessageId, TAsyncValidator, TFieldError, TValidator } from './validators.types';
+import { FieldErrorMessageId, TAsyncValidator, TFieldError, TValidator, IDefaultValidator } from './validators.types';
 
 /**
  * Wrapper function to call validators with parameters
@@ -16,7 +15,7 @@ import { FieldErrorMessageId, TAsyncValidator, TFieldError, TValidator } from '.
  * @param args parameters for the validator
  */
 const withParam = (validator: TValidator, ...args: unknown[]): TValidator => {
-  return (value: TBasicFieldValue, context: IFormContext): TFieldError => validator(value, context, args);
+  return (value: unknown, context: IFormContext): TFieldError => validator(value, context, args);
 };
 /**
  * Wrapper function to call async validators with parameters
@@ -25,14 +24,14 @@ const withParam = (validator: TValidator, ...args: unknown[]): TValidator => {
  * @param args parameters for the validator
  */
 const withAsyncParam = (validator: TAsyncValidator, ...args: unknown[]): TAsyncValidator => {
-  return async (value: TBasicFieldValue, context: IFormContext): Promise<TFieldError> => validator(value, context, args);
+  return async (value: unknown, context: IFormContext): Promise<TFieldError> => validator(value, context, args);
 };
 
 /**
  * Checks if there is any value
  * @param value field value
  */
-const required = (value: TBasicFieldValue): TFieldError => {
+const required: IDefaultValidator = (value: unknown): TFieldError => {
   // Special check for empty arrays
   if (Array.isArray(value)) {
     return value.length === 0 ? FieldErrorMessageId.Required : undefined;
@@ -52,12 +51,12 @@ const required = (value: TBasicFieldValue): TFieldError => {
 
   return value !== null && value !== undefined ? undefined : FieldErrorMessageId.Required;
 };
-required.isDefaultValidator = true;
+required.isDefaultValidator = true as const;
 
 /**
  * Checks if the value is alpha numeric
  */
-const alphaNumeric = (value: TBasicFieldValue): TFieldError => {
+const alphaNumeric = (value: unknown): TFieldError => {
   if (typeof value !== 'string') { return undefined; }
 
   return /[^a-zA-Z0-9 ]/i.test(value) ? FieldErrorMessageId.AlphaNumeric : undefined;
@@ -78,7 +77,7 @@ function isILength(object: any): object is ILength {
  * @param context form context
  * @param length minimum length
  */
-const minLength = (value: TBasicFieldValue, context: IFormContext, [length]: [number]): TFieldError => {
+const minLength = (value: unknown, context: IFormContext, [length]: [number]): TFieldError => {
   if (!isILength(value)) { return undefined; }
   if (value.length >= length) { return undefined; }
 
@@ -97,7 +96,7 @@ const minLength = (value: TBasicFieldValue, context: IFormContext, [length]: [nu
  * @param context form context
  * @param length maximum length
  */
-const maxLength = (value: TBasicFieldValue, context: IFormContext, [length]: [number]): TFieldError => {
+const maxLength = (value: unknown, context: IFormContext, [length]: [number]): TFieldError => {
   if (!isILength(value)) { return undefined; }
   if (value.length <= length) { return undefined; }
 
