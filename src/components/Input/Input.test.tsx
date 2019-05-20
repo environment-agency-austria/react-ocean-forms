@@ -12,7 +12,7 @@ describe('<Input />', () => {
   interface ISetupArgs {
     props?: Partial<IInputProps>;
     metaOverrides?: Partial<IFieldComponentMeta>;
-    fieldOverrides?: Partial<IFieldComponentFieldProps>;
+    fieldOverrides?: Partial<IFieldComponentFieldProps<unknown>>;
   }
 
   interface ISetupResult {

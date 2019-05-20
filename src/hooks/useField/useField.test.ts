@@ -18,7 +18,7 @@ describe('useField', () => {
   const mockLabel = 'Unit field';
 
   interface ISetupArgs {
-    props?: Partial<IUseFieldProps>;
+    props?: Partial<IUseFieldProps<unknown>>;
     contextOverrides?: Partial<IFormContext>;
   }
 
@@ -27,12 +27,12 @@ describe('useField', () => {
     validation: IUseValidationResult;
     fieldState: IFieldState;
 
-    usedFieldProps: IUseFieldProps;
+    usedFieldProps: IUseFieldProps<unknown>;
 
     unmount(): boolean;
-    rerender(newProps?: IUseFieldProps): void;
+    rerender(newProps?: IUseFieldProps<unknown>): void;
     waitForNextUpdate(): Promise<void>;
-    result: { current: IUseFieldResult };
+    result: { current: IUseFieldResult<unknown> };
   }
 
   const setup = ({
@@ -77,8 +77,8 @@ describe('useField', () => {
     };
   };
 
-  const assertValue = (fieldProps: IFieldComponentFieldProps, value: TBasicFieldValue): unknown => expect(fieldProps.value).toBe(value);
-  const simulateChange = (field: IFieldComponentFieldProps, value: TBasicFieldValue): void => {
+  const assertValue = (fieldProps: IFieldComponentFieldProps<unknown>, value: TBasicFieldValue): unknown => expect(fieldProps.value).toBe(value);
+  const simulateChange = (field: IFieldComponentFieldProps<unknown>, value: TBasicFieldValue): void => {
     act(() => {
       field.onChange({
         target: {
@@ -279,7 +279,7 @@ describe('useField', () => {
   describe('onChange handling', () => {
     const mockValue = 'mock-change-value';
 
-    const setupOnChange = (props?: Partial<IUseFieldProps>, contextOverrides?: Partial<IFormContext>): ISetupResult => {
+    const setupOnChange = (props?: Partial<IUseFieldProps<unknown>>, contextOverrides?: Partial<IFormContext>): ISetupResult => {
       const setupResult = setup({
         props,
         contextOverrides,
@@ -398,14 +398,14 @@ describe('useField', () => {
   describe('onBlur handling', () => {
     const mockValue = 'mock-value';
 
-    const setupLocal = (props?: Partial<IUseFieldProps>, contextOverrides?: Partial<IFormContext>): ISetupResult => {
+    const setupLocal = (props?: Partial<IUseFieldProps<unknown>>, contextOverrides?: Partial<IFormContext>): ISetupResult => {
       return setup({
         props: { ...props, value: mockValue },
         contextOverrides: contextOverrides,
       });
     };
 
-    const setupOnBlur = (props?: Partial<IUseFieldProps>, contextOverrides?: Partial<IFormContext>): ISetupResult => {
+    const setupOnBlur = (props?: Partial<IUseFieldProps<unknown>>, contextOverrides?: Partial<IFormContext>): ISetupResult => {
       const setupResult = setupLocal(props, contextOverrides);
 
       act(() => {
