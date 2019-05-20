@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 - `withValidation` has been removed, use the new hook `useValiation` instead
 - `withField` has been deprecated, use the new hook `useField` instead
 - removed some utils that were not intended for public use
+- default *empty* value of a field is now undefined instead of an empty string
 
 ### New features
 - Added `useValidation` hook as replacement for `withValidation`
