@@ -76,10 +76,4 @@ describe('<Input />', () => {
     const wrapper = setup({ props: { type: 'number' }});
     expect(wrapper).toMatchSnapshot();
   });
-
-  describe('Unsupported value types', () => {
-    it('should throw an error if the value is not a string', () => {
-      expect(() => setup({ fieldOverrides: { value: 42 }})).toThrowError();
-    });
-  });
 });
