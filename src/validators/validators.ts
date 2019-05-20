@@ -6,7 +6,7 @@
  */
 
 import { IFormContext } from '../components';
-import { FieldErrorMessageId, TAsyncValidator, TFieldError, TValidator, IDefaultValidator } from './validators.types';
+import { FieldErrorMessageId, TAsyncValidator, TFieldError, TValidator } from './validators.types';
 
 /**
  * Wrapper function to call validators with parameters
@@ -31,7 +31,7 @@ const withAsyncParam = (validator: TAsyncValidator, ...args: unknown[]): TAsyncV
  * Checks if there is any value
  * @param value field value
  */
-const required: IDefaultValidator = (value: unknown): TFieldError => {
+const required = (value: unknown): TFieldError => {
   // Special check for empty arrays
   if (Array.isArray(value)) {
     return value.length === 0 ? FieldErrorMessageId.Required : undefined;
