@@ -10,7 +10,7 @@ jest.mock('../../hooks');
 
 describe('<Input />', () => {
   interface ISetupArgs {
-    props?: Partial<IInputProps>;
+    props?: Partial<IInputProps<unknown>>;
     metaOverrides?: Partial<IFieldComponentMeta>;
     fieldOverrides?: Partial<IFieldComponentFieldProps<unknown>>;
   }

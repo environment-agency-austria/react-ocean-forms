@@ -11,7 +11,7 @@ type DefaultHtmlInputValueType = React.InputHTMLAttributes<HTMLInputElement>['va
 /**
  * Props for the Input component
  */
-export interface IInputProps extends IUseFieldProps<DefaultHtmlInputValueType> {
+export interface IInputProps<TSubmitValue> extends IUseFieldProps<DefaultHtmlInputValueType, TSubmitValue> {
   /**
    * HTML5 input type of the input element.
    * @default 'text'

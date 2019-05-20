@@ -16,7 +16,7 @@ import { IInputProps } from './Input.types';
  * will render validation messages. If the user adds the required validator
  * then it will mark the field as required as well.
  */
-export const Input: React.FC<IInputProps> = (props) => {
+export const Input = <TSubmitValue extends unknown>(props: IInputProps<TSubmitValue>): JSX.Element => {
   const {
     type = 'text',
     ...rest
@@ -24,17 +24,9 @@ export const Input: React.FC<IInputProps> = (props) => {
 
   const { fieldProps, metaProps } = useField(rest);
 
-  const fieldValue = fieldProps.value;
-  if (typeof fieldValue !== 'string' && fieldValue !== undefined) {
-    throw new Error(
-      'Incompatible field value supplied for input component '
-      + `${fieldProps.id}. Only values with type string or undefined are allowed.`,
-    );
-  }
-
   return (
     <FieldLine {...props} field={fieldProps} meta={metaProps}>
-      {metaProps.plaintext ? fieldProps.value : <input type={type} {...fieldProps} value={fieldValue} />}
+      {metaProps.plaintext ? fieldProps.value : <input type={type} {...fieldProps} />}
     </FieldLine>
   );
 }
