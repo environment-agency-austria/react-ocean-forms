@@ -13,7 +13,7 @@ import { IFieldComponentProps } from './withField.types';
 export type IValidatedComponentProps = IUseValidationArgs;
 
 type WrappedValidatedComponentProps<TComp> =
-  Subtract<JSX.LibraryManagedAttributes<TComp, PropsOf<TComp>>, IFieldComponentProps> & IBaseFieldProps<TBasicFieldValue> & IUseValidationArgs;
+  Subtract<JSX.LibraryManagedAttributes<TComp, PropsOf<TComp>>, IFieldComponentProps> & IBaseFieldProps<TBasicFieldValue, TBasicFieldValue> & IUseValidationArgs;
 
 /**
  * Higher order component for validation
