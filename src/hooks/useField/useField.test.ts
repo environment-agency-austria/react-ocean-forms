@@ -99,9 +99,9 @@ describe('useField', () => {
   });
 
   describe('Default value handling', () => {
-    it('should have an empty string as the default value', () => {
+    it('should have undefined as the default value', () => {
       const { result } = setup();
-      assertValue(result.current.fieldProps, '');
+      assertValue(result.current.fieldProps, undefined);
     });
 
     it('should use the default value from Form.defaultValues if existing', () => {
@@ -483,7 +483,7 @@ describe('useField', () => {
       const { getDisplayValue, result } = setupWithDisplayName();
       assertValue(result.current.fieldProps, mockDisplayValue);
       expect(getDisplayValue).toHaveBeenCalledWith(
-        '',
+        undefined,
         { disabled: false, plaintext: false },
       );
     });
