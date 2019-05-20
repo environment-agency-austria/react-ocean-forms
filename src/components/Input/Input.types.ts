@@ -6,10 +6,12 @@
  */
 import { IUseFieldProps } from '../../hooks';
 
+type DefaultHtmlInputValueType = React.InputHTMLAttributes<HTMLInputElement>['value'];
+
 /**
  * Props for the Input component
  */
-export interface IInputProps extends IUseFieldProps {
+export interface IInputProps extends IUseFieldProps<DefaultHtmlInputValueType> {
   /**
    * HTML5 input type of the input element.
    * @default 'text'
