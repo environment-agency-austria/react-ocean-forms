@@ -48,7 +48,26 @@ module.exports = {
           content: 'src/hooks/useValidation/useValidation.md'
         },
       ],
-    }
+    },
+    {
+      name: 'Validation',
+      content: 'docs/validation/index.md',
+      sectionDepth: 1,
+      sections: [
+        {
+          name: 'Default validators',
+          content: 'docs/validation/default.md'
+        },
+        {
+          name: 'Validation behaviour',
+          content: 'docs/validation/behaviour.md'
+        },
+        {
+          name: 'Custom validation',
+          content: 'docs/validation/custom.md'
+        },
+      ],
+    },
   ],
   theme: {
     fontFamily: {
