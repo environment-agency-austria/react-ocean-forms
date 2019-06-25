@@ -39,7 +39,7 @@ export function useForm<TFieldValues extends Record<string, unknown> = IFieldVal
       if (state.isGroup === true) { return; }
 
       const nameParts = name.split('.');
-      let valueRef = values;
+      let valueRef: Record<string, unknown> = values;
 
       nameParts.forEach((key, index) => {
         if (nameParts.length === 1 || index === nameParts.length - 1) {
