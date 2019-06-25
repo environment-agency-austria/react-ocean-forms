@@ -18,17 +18,18 @@ export interface IValueMeta {
 
 /**
  * Type that defines which values a field could hold
+ * @deprecated Please speficy the value types through type arguments
  */
 export type TBasicFieldValue = string | boolean | number | object | null | undefined;
 /**
  * Type definition for getDisplayValue and getSubmitValue callbacks
  */
-export type TValueCallback = ((value: TBasicFieldValue, meta: IValueMeta) => TBasicFieldValue);
+export type TValueCallback<TFieldValue, TOutValue> = ((value: TFieldValue | undefined, meta: IValueMeta) => TOutValue | undefined);
 
 /**
  * Basic props for the field component
  */
-export interface IBaseFieldProps {
+export interface IBaseFieldProps<TDisplayValue, TSubmitValue> {
   /**
    * Name of this input. Will be used as the unique identifier of this value.
    * **Must be unique inside its context (e.g. form wide or form group wide)!**
@@ -43,13 +44,13 @@ export interface IBaseFieldProps {
    * Overwrites the Form default values for this field. This value will be
    * used during form initialization.
    */
-  defaultValue?: TBasicFieldValue;
+  defaultValue?: TSubmitValue;
   /**
    * Overwrites the Form value for this field. Changing this property will
    * update the Field value, overwriting its default value but also any
    * value the user put in.
    */
-  value?: TBasicFieldValue;
+  value?: TSubmitValue;
   /**
    * If set to true the form will trigger asynchronous validation on this field whenever
    * it changes (e.g. on key press). Default behaviour is that the fields will only async
@@ -65,7 +66,7 @@ export interface IBaseFieldProps {
    * @param meta Contains the properties disabled and plaintext, representing the current Form setup.
    * @returns: the function should return the value that should be displayed.
    */
-  getDisplayValue?: TValueCallback;
+  getDisplayValue?: TValueCallback<TSubmitValue, TDisplayValue>;
   /**
    * Called, when the field is submitting its value to the form.
    * Must return the value to submit.
@@ -74,7 +75,7 @@ export interface IBaseFieldProps {
    * @param meta Contains the properties disabled and plaintext, representing the current Form setup.
    * @returns: the function should return the value that should be submitted.
    */
-  getSubmitValue?: TValueCallback;
+  getSubmitValue?: TValueCallback<TDisplayValue, TSubmitValue>;
   /**
    * Overwrites the disabled state for this field.
    * @default Form.disabled
@@ -93,15 +94,15 @@ export interface IBaseFieldProps {
    * Triggered on field value change.
    * @param value Current field value
    */
-  onChange?(value: TBasicFieldValue): void;
+  onChange?(value: TSubmitValue | undefined): void;
 }
 
 /**
  * Event for field value changes
  */
-export interface IFieldChangedEvent {
+export interface IFieldChangedEvent<TFieldValue> {
   target: {
-    value: TBasicFieldValue;
+    value: TFieldValue;
   };
 }
 
@@ -110,7 +111,7 @@ export interface IFieldChangedEvent {
  * input component. Designed to be passed to the
  * html input as-is.
  */
-export interface IFieldComponentFieldProps {
+export interface IFieldComponentFieldProps<TDisplayValue> {
   /**
    * Html id
    */
@@ -122,7 +123,7 @@ export interface IFieldComponentFieldProps {
   /**
    * Field value
    */
-  value: TBasicFieldValue;
+  value: TDisplayValue | undefined;
   /**
    * Disabled state
    */
@@ -131,7 +132,7 @@ export interface IFieldComponentFieldProps {
    * OnChange handler
    * @param event Change event
    */
-  onChange(event: IFieldChangedEvent): void;
+  onChange(event: IFieldChangedEvent<TDisplayValue>): void;
   /**
    * OnBlur handler
    */
@@ -156,15 +157,15 @@ export interface IFieldComponentMeta extends IValidationState {
   plaintext: boolean;
 }
 
-export interface IUseFieldProps extends IBaseFieldProps, IUseValidationArgs { }
+export interface IUseFieldProps<TDisplayValue, TSubmitValue = TDisplayValue> extends IBaseFieldProps<TDisplayValue, TSubmitValue>, IUseValidationArgs<TSubmitValue> { }
 
-export interface IUseFieldResult {
-  fieldProps: IFieldComponentFieldProps;
+export interface IUseFieldResult<TDisplayValue> {
+  fieldProps: IFieldComponentFieldProps<TDisplayValue>;
   metaProps: IFieldComponentMeta;
 }
 
-export interface IUseFieldState {
+export interface IUseFieldState<TDisplayValue> {
   touched: boolean;
   dirty: boolean;
-  value: TBasicFieldValue;
+  value: TDisplayValue | undefined;
 }

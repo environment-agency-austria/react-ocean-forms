@@ -6,7 +6,7 @@ import { IFormContext, IFieldValues } from '../../FormContext';
 import { IFormProps } from '../Form.types';
 import { useFieldEvents, useFieldStates } from '../../../hooks/internal';
 
-export function useForm(props: IFormProps): IFormContext {
+export function useForm<TFieldValues extends Record<string, unknown> = IFieldValues>(props: IFormProps<TFieldValues>): IFormContext<TFieldValues> {
   const [ busyState, setBusyState ] = useState(false);
 
   const {
@@ -32,21 +32,21 @@ export function useForm(props: IFormProps): IFormContext {
    * all values from all the fields.
    * @returns Current values in form of { name: value, name2: value2, ... }
    */
-  const getValues = useCallback((): IFieldValues => {
-    const values: IFieldValues = {};
+  const getValues = useCallback((): TFieldValues => {
+    const values = {} as TFieldValues;
 
     forEachFieldState((state, name) => {
       if (state.isGroup === true) { return; }
 
       const nameParts = name.split('.');
-      let valueRef = values;
+      let valueRef: Record<string, unknown> = values;
 
       nameParts.forEach((key, index) => {
         if (nameParts.length === 1 || index === nameParts.length - 1) {
           valueRef[key] = state.getValue();
         } else {
           if (valueRef[key] === undefined) { valueRef[key] = {}; }
-          valueRef = valueRef[key] as IFieldValues;
+          valueRef = valueRef[key] as TFieldValues;
         }
       });
     });
@@ -153,7 +153,7 @@ export function useForm(props: IFormProps): IFormContext {
     }
   }, [forEachFieldState, getValues, notifyListeners, onSubmit, reset, resetOnSubmit, triggerFormValidation]);
 
-  const formContext: IFormContext = useMemo(() => ({
+  const formContext: IFormContext<TFieldValues> = useMemo(() => ({
     fieldPrefix: null,
     defaultValues,
     values,

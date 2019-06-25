@@ -1,7 +1,6 @@
 import { useRef, useCallback } from 'react';
 
 import { IValidationArgs, IBasicValidationState, TUpdateMethod } from '../useValidation';
-import { TBasicFieldValue } from '../useField';
 
 /**
  * Interface describing field states
@@ -23,7 +22,7 @@ export interface IFieldState {
   /**
    * Returns the current value of the field
    */
-  getValue(): TBasicFieldValue;
+  getValue(): unknown;
   /**
    * Resets the field to its initial state
    */

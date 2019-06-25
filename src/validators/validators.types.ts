@@ -6,7 +6,6 @@
  */
 
 import { IFormContext } from '../components';
-import { TBasicFieldValue } from '../hooks';
 import { IMessageValues } from '../utils/stringFormatter';
 
 /**
@@ -56,11 +55,11 @@ export type TFieldErrors = null | IFieldErrorObject | IFieldErrorObject[];
 /**
  * Validator method type
  */
-export type TValidator = ((value: TBasicFieldValue, context: IFormContext, ...args: unknown[]) => TFieldError);
+export type TValidator<TFieldValue = unknown> = ((value: TFieldValue | undefined, context: IFormContext, ...args: unknown[]) => TFieldError);
 /**
  * Async validator method type
  */
-export type TAsyncValidator = ((value: TBasicFieldValue, context: IFormContext, ...args: unknown[]) => Promise<TFieldError>);
+export type TAsyncValidator<TFieldValue = unknown> = ((value: TFieldValue | undefined, context: IFormContext, ...args: unknown[]) => Promise<TFieldError>);
 
 /**
  * Default validator type

@@ -5,7 +5,7 @@ import { useFormContext } from '../useFormContext';
 import { useValidation, IValidationArgs, IBasicValidationState } from '../useValidation';
 import { useFullName, useFieldRegistration } from '../internal';
 
-import { IFieldComponentFieldProps, IFieldComponentMeta, IFieldChangedEvent, IUseFieldProps, IUseFieldResult, IUseFieldState, TBasicFieldValue, IValueMeta } from './useField.types';
+import { IFieldComponentFieldProps, IFieldComponentMeta, IFieldChangedEvent, IUseFieldProps, IUseFieldResult, IUseFieldState, IValueMeta, TValueCallback } from './useField.types';
 import { noopFieldValueFunction } from './useField.utils';
 
 /**
@@ -14,28 +14,32 @@ import { noopFieldValueFunction } from './useField.utils';
  * form context.
  * @param props Field props @see IUseFieldProps
  */
-export function useField(props: IUseFieldProps): IUseFieldResult {
+export function useField<TDisplayValue = unknown, TSubmitValue = TDisplayValue>(props: IUseFieldProps<TDisplayValue, TSubmitValue>): IUseFieldResult<TDisplayValue> {
   const formContext = useFormContext();
   const fullName = useFullName(props.name);
 
   const {
     label,
-    getSubmitValue = noopFieldValueFunction,
-    getDisplayValue = noopFieldValueFunction,
+    getDisplayValue = noopFieldValueFunction as TValueCallback<TSubmitValue, TDisplayValue>,
+    getSubmitValue = noopFieldValueFunction as TValueCallback<TDisplayValue, TSubmitValue>,
     onChange = noopFunction,
     onBlur = noopFunction,
     asyncValidateOnChange = formContext.asyncValidateOnChange,
-    defaultValue = getDeepValue(fullName, formContext.defaultValues),
-    value = getDeepValue(fullName, formContext.values),
+    defaultValue = getDeepValue<TSubmitValue>(fullName, formContext.defaultValues),
+    value = getDeepValue<TSubmitValue>(fullName, formContext.values),
     disabled = formContext.disabled,
     plaintext = formContext.plaintext,
   } = props;
 
-  const [ fieldState, setFieldState ] = useState<IUseFieldState>(
+  const [ fieldState, setFieldState ] = useState<IUseFieldState<TDisplayValue>>(
     // Initialize the field state with an empty string provided to getDisplayValue
     // Note: the correct defaultValue / value from props will be overriden in an
     // effect later on
-    () => ({ touched: false, dirty: false, value: getDisplayValue('', { plaintext, disabled }) })
+    () => ({
+      touched: false,
+      dirty: false,
+      value: getDisplayValue(defaultValue, { plaintext, disabled })
+    })
   );
   const { validationState, validate, resetValidation, updateValidationState } = useValidation(props);
 
@@ -52,7 +56,7 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
    * Returns the current submit value using the getSubmitValue
    * callback and the correct value and value meta parameters
    */
-  const getFieldValue = useCallback((valueOverride?: TBasicFieldValue) => {
+  const getFieldValue = useCallback((valueOverride?: TDisplayValue) => {
     return getSubmitValue(
       valueOverride !== undefined ? valueOverride : fieldState.value,
       valueMeta,
@@ -66,7 +70,7 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
     () => {
       const overridenValue = value === undefined ? defaultValue : value;
       const displayValue = getDisplayValue(
-        overridenValue === undefined ? '' : overridenValue,
+        overridenValue,
         valueMeta,
       );
 
@@ -76,9 +80,9 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
         dirty: false,
       });
       resetValidation();
-      onChange(displayValue);
+      onChange(getSubmitValue(displayValue, valueMeta));
     },
-    [value, defaultValue, getDisplayValue, valueMeta, resetValidation, onChange],
+    [value, defaultValue, getDisplayValue, valueMeta, resetValidation, onChange, getSubmitValue],
   );
 
   /**
@@ -144,7 +148,7 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
    * internal state
    */
   const handleFieldChanged = useCallback(
-    (event: IFieldChangedEvent) => {
+    (event: IFieldChangedEvent<TDisplayValue>) => {
       const updatedValue = event.target.value;
       setFieldState({
         value: updatedValue,
@@ -191,7 +195,7 @@ export function useField(props: IUseFieldProps): IUseFieldResult {
    * @see IFieldComponentFieldProps
    */
   const fieldProps = useMemo(
-    (): IFieldComponentFieldProps => ({
+    (): IFieldComponentFieldProps<TDisplayValue> => ({
       value: fieldState.value,
       disabled,
       id: fullName,

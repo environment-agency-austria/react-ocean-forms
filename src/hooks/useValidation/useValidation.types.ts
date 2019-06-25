@@ -1,5 +1,4 @@
 import { TFieldErrors, TValidator, TAsyncValidator } from '../../validators';
-import { TBasicFieldValue } from '../useField';
 
 export interface IBasicValidationState {
   /**
@@ -51,7 +50,7 @@ export interface IValidationState extends IBasicValidationState {
  * @param value Value to validate
  * @param args Optional validation args, @see IValidationArgs
  */
-export type TValidateMethod = (value: TBasicFieldValue, args?: Partial<IValidationArgs>) => Promise<IBasicValidationState>;
+export type TValidateMethod<TFieldValue = unknown> = (value: TFieldValue | undefined, args?: Partial<IValidationArgs>) => Promise<IBasicValidationState>;
 export type TResetMethod = () => void;
 /**
  * Update validation state method
@@ -62,7 +61,7 @@ export type TUpdateMethod = (state: Partial<IBasicValidationState>) => void;
 /**
  * Result of the useValidation hook
  */
-export interface IUseValidationResult {
+export interface IUseValidationResult<TFieldValue = unknown> {
   /**
    * Current validation state
    */
@@ -71,7 +70,7 @@ export interface IUseValidationResult {
    * Triggers the validation
    * @see TValidateMethod
    */
-  validate: TValidateMethod;
+  validate: TValidateMethod<TFieldValue>;
   /**
    * Resets the validation to default
    */
@@ -87,7 +86,7 @@ export interface IUseValidationResult {
  * Properties of a component that is wrapped
  * by withValidation
  */
-export interface IUseValidationArgs {
+export interface IUseValidationArgs<TFieldValue = unknown> {
   /**
    * Name of this input. Will be used as the unique identifier of this value.
    * **Must be unique inside its context (e.g. form wide or form group wide)!**
@@ -104,7 +103,7 @@ export interface IUseValidationArgs {
    * are not called. The validator function must return either undefined or a string containing the message
    * id of the validation error text.
    */
-  validators?: TValidator[];
+  validators?: TValidator<TFieldValue>[];
   /**
    * Contains an array of functions that must return a Promise. Those functions are called by default onBlur,
    * however this behaviour can be changed by setting asyncValidateOnChange on the Form. The Form will call
@@ -113,7 +112,7 @@ export interface IUseValidationArgs {
    * before triggering any validation. This is put in place so the validation won't get triggered on every
    * keystroke of the user. The async validators will be called 400ms after the last value change.
    */
-  asyncValidators?: TAsyncValidator[];
+  asyncValidators?: TAsyncValidator<TFieldValue>[];
   /**
    * Wait time in ms that should pass after
    * the last user input before the async

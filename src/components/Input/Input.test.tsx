@@ -10,9 +10,9 @@ jest.mock('../../hooks');
 
 describe('<Input />', () => {
   interface ISetupArgs {
-    props?: Partial<IInputProps>;
+    props?: Partial<IInputProps<unknown>>;
     metaOverrides?: Partial<IFieldComponentMeta>;
-    fieldOverrides?: Partial<IFieldComponentFieldProps>;
+    fieldOverrides?: Partial<IFieldComponentFieldProps<unknown>>;
   }
 
   interface ISetupResult {
@@ -75,11 +75,5 @@ describe('<Input />', () => {
   it('should properly pass the type prop', () => {
     const wrapper = setup({ props: { type: 'number' }});
     expect(wrapper).toMatchSnapshot();
-  });
-
-  describe('Unsupported value types', () => {
-    it('should throw an error if the value is not a string', () => {
-      expect(() => setup({ fieldOverrides: { value: 42 }})).toThrowError();
-    });
   });
 });

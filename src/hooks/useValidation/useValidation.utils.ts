@@ -1,6 +1,5 @@
 import { TValidator, isDefaultValidator, isIFieldErrorObject, TAsyncValidator } from '../../validators';
 import { IBasicValidationState } from './useValidation.types';
-import { TBasicFieldValue } from '../useField';
 import { IFormContext } from '../../components';
 import { parseValidationError } from '../../utils';
 
@@ -9,7 +8,7 @@ import { parseValidationError } from '../../utils';
  * validator
  * @param validators Sync validators provided through props
  */
-export function isRequired(validators?: TValidator[]): boolean {
+export function isRequired<TFieldValue = unknown>(validators?: TValidator<TFieldValue>[]): boolean {
   return Array.isArray(validators) && validators.some(isDefaultValidator);
 }
 
@@ -33,9 +32,9 @@ export function createInitialValidationState(): IBasicValidationState {
  * @param value Value to be validated
  * @param formContext Form context
  */
-export function runSyncValidators(
-  validators: TValidator[] | undefined,
-  value: TBasicFieldValue,
+export function runSyncValidators<TFieldValue = unknown>(
+  validators: TValidator<TFieldValue>[] | undefined,
+  value: TFieldValue | undefined,
   formContext: IFormContext,
 ): Partial<IBasicValidationState> {
   // No sync validators given - do nothing
@@ -64,9 +63,9 @@ export function runSyncValidators(
  * @param value Value to be validated
  * @param formContext Form context
  */
-export async function runAsyncValidators(
-  validators: TAsyncValidator[],
-  value: TBasicFieldValue,
+export async function runAsyncValidators<TFieldValue = unknown>(
+  validators: TAsyncValidator<TFieldValue>[],
+  value: TFieldValue | undefined,
   formContext: IFormContext,
 ): Promise<IBasicValidationState> {
   const validationResults = await Promise.all(validators.map(
