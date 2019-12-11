@@ -67,7 +67,7 @@ interface ILength {
 }
 
 function isILength(object: any): object is ILength {
-  return object !== null && object !== undefined && typeof (<ILength>object).length === 'number';
+  return object !== null && object !== undefined && typeof (object as ILength).length === 'number';
 }
 
 /**
