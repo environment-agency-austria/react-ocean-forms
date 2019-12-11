@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - Added `useValidation` hook as replacement for `withValidation`
 - Added `useField` hook as replacement for `withField`
 - Added `useFormEventListener` hook for easy access to form events
+- Added `useFormText` hook for easy access to form formatted texts
 - Added `reset` to `FormContext`
 
 ### Other
