@@ -6,9 +6,9 @@
  */
 
 // Local type for better readability
-type TStringProp = {
+interface TStringProp {
   [prop: string]: any;
-};
+}
 
 /**
  * Returns the 'deep' value of an object. For example
@@ -18,8 +18,8 @@ type TStringProp = {
  * @param object Object
  */
 export const getDeepValue = <T, U extends TStringProp = TStringProp>(name: string, object?: U): T | undefined => {
-  return <T | undefined>name.split('.').reduce(
-    (o: U, i: string) => {
+  return name.split('.').reduce(
+    (o: U | undefined, i: string) => {
       // Workaround for deep objects and
       // 'cannot read property of undefined'
       // - is there a better way?
@@ -28,7 +28,6 @@ export const getDeepValue = <T, U extends TStringProp = TStringProp>(name: strin
 
       return o[i];
     },
-    // @ts-ignore
     object,
-  );
+  ) as T | undefined;
 };

@@ -40,7 +40,7 @@ export interface IFieldErrorObject {
  * @param object Object to test
  */
 export function isIFieldErrorObject(object: any): object is IFieldErrorObject {
-  return object && typeof (<IFieldErrorObject>object).message_id === 'string';
+  return object && typeof (object as IFieldErrorObject).message_id === 'string';
 }
 
 /**
@@ -73,5 +73,5 @@ export interface IDefaultValidator extends TValidator {
  * @param object Function to test
  */
 export function isDefaultValidator(object: any): object is IDefaultValidator {
-  return object && typeof object === 'function' && (<IDefaultValidator>object).isDefaultValidator === true;
+  return object && typeof object === 'function' && (object as IDefaultValidator).isDefaultValidator === true;
 }

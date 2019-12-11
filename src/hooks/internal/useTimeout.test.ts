@@ -1,12 +1,12 @@
-import { renderHook, act } from 'react-hooks-testing-library';
+import { renderHook, act } from '@testing-library/react-hooks';
 import { useTimeout } from './useTimeout';
 
 beforeAll(jest.useFakeTimers);
 
 describe('useTimeout', () => {
-  const { result, unmount } = renderHook(() => useTimeout());
-
   it('should return an array with a setTimeout and a clearTimeout function', () => {
+    const { result } = renderHook(() => useTimeout());
+
     expect(result.current).toBeInstanceOf(Array);
     expect(result.current.length).toBe(2);
     expect(result.current[0]).toBeInstanceOf(Function);
@@ -14,6 +14,8 @@ describe('useTimeout', () => {
   });
 
   it('should call the timeout handler after timeout milliseconds', () => {
+    const { result } = renderHook(() => useTimeout());
+
     const mockHandler = jest.fn();
     const mockTimeout = 1000;
 
@@ -26,6 +28,8 @@ describe('useTimeout', () => {
   });
 
   it('should cancel the timeout with the clearTimeout function', () => {
+    const { result } = renderHook(() => useTimeout());
+
     const mockHandler = jest.fn();
     const mockTimeout = 1000;
 
@@ -41,6 +45,8 @@ describe('useTimeout', () => {
   });
 
   it('should cancel the timeout on unmount', () => {
+    const { result, unmount } = renderHook(() => useTimeout());
+
     const mockHandler = jest.fn();
     const mockTimeout = 1000;
 

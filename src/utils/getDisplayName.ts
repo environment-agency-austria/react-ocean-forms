@@ -18,10 +18,10 @@ interface IObjectWithName {
  * Returns the display name of the wrapped component.
  */
 export const getDisplayName = (wrappedComponent: IObjectWithName | IObjectWithDisplayName | unknown): string => {
-  if (stringHasValue((<IObjectWithDisplayName>wrappedComponent).displayName)) {
-    return <string>(<IObjectWithDisplayName>wrappedComponent).displayName;
+  if (stringHasValue((wrappedComponent as IObjectWithDisplayName).displayName)) {
+    return (wrappedComponent as IObjectWithDisplayName).displayName as string;
   }
-  if (stringHasValue((<IObjectWithName>wrappedComponent).name)) { return <string>(<IObjectWithName>wrappedComponent).name; }
+  if (stringHasValue((wrappedComponent as IObjectWithName).name)) { return (wrappedComponent as IObjectWithName).name as string; }
 
   return 'Component';
 };

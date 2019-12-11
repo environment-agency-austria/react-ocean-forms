@@ -4,7 +4,7 @@ import { stringFormatter as defaultStringFormatter, noopFunction, parseValidatio
 import { IBasicValidationState } from '../../../hooks';
 import { IFormContext, IFieldValues } from '../../FormContext';
 import { IFormProps } from '../Form.types';
-import { useFieldEvents, useFieldStates } from '../../../hooks/internal';
+import { useFieldEvents, useFieldStates, useIsUnmounted } from '../../../hooks/internal';
 
 export function useForm<TFieldValues extends Record<string, unknown> = IFieldValues>(props: IFormProps<TFieldValues>): IFormContext<TFieldValues> {
   const [ busyState, setBusyState ] = useState(false);
@@ -26,6 +26,7 @@ export function useForm<TFieldValues extends Record<string, unknown> = IFieldVal
 
   const { registerListener, unregisterListener, notifyListeners } = useFieldEvents();
   const { getFieldState, registerField, unregisterField, forEachFieldState } = useFieldStates();
+  const isUnmounted = useIsUnmounted();
 
   /**
    * Generates and returns an object that contains
@@ -141,6 +142,8 @@ export function useForm<TFieldValues extends Record<string, unknown> = IFieldVal
 
     // Make sure the state is cleaned up before
     const cleanup = (resetForm: boolean | undefined): void => {
+      if (isUnmounted.current) return;
+
       setBusyState(false);
       if (resetForm) { reset(); }
     };
@@ -151,7 +154,7 @@ export function useForm<TFieldValues extends Record<string, unknown> = IFieldVal
     } else {
       cleanup(resetOnSubmit);
     }
-  }, [forEachFieldState, getValues, notifyListeners, onSubmit, reset, resetOnSubmit, triggerFormValidation]);
+  }, [forEachFieldState, getValues, isUnmounted, notifyListeners, onSubmit, reset, resetOnSubmit, triggerFormValidation]);
 
   const formContext: IFormContext<TFieldValues> = useMemo(() => ({
     fieldPrefix: null,

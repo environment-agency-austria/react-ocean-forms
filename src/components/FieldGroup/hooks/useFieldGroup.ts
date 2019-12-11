@@ -93,8 +93,8 @@ export function useFieldGroup(props: IUseFieldGroupArgs): IUseFieldGroupResult {
     notifyFieldEvent,
     disabled,
     plaintext,
-    defaultValues: defaultValues === undefined ? formContext.defaultValues : { ...formContext.defaultValues, ... { [fullName]: defaultValues }},
-    values: values === undefined ? formContext.values : { ...formContext.values, ... { [fullName]: values }},
+    defaultValues: defaultValues === undefined ? formContext.defaultValues : { ...formContext.defaultValues, ...{ [fullName]: defaultValues }},
+    values: values === undefined ? formContext.values : { ...formContext.values, ...{ [fullName]: values }},
   }), [defaultValues, disabled, formContext, fullName, notifyFieldEvent, plaintext, values]);
 
   const groupState = useMemo(
