@@ -17,7 +17,7 @@ describe('<FieldGroup />', () => {
   const mockLabel = 'Unit group';
 
   interface ISetupArgs {
-    props?: Partial<IFieldGroupProps>;
+    props?: Partial<IFieldGroupProps<{} | undefined>>;
     contextOverrides?: Partial<IFormContext>;
     validationOverrides?: Partial<IFieldGroupRenderParams>;
   }

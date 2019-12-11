@@ -1,4 +1,4 @@
-import { IFormContext, IFieldValues } from '../../FormContext';
+import { IFormContext } from '../../FormContext';
 
 /**
  * Helper function to get the correct value
@@ -6,7 +6,7 @@ import { IFormContext, IFieldValues } from '../../FormContext';
  * @param formContext Form context
  * @param fullName Full name of the field group
  */
-export function getGroupValue(formContext: IFormContext, fullName: string): IFieldValues | undefined {
+export function getGroupValue<TFieldValue extends {}>(formContext: IFormContext, fullName: string): TFieldValue | undefined {
   const formValues = formContext.getValues();
 
   const formValue = formValues[fullName];
@@ -14,5 +14,5 @@ export function getGroupValue(formContext: IFormContext, fullName: string): IFie
     return undefined;
   }
 
-  return formValue as IFieldValues;
+  return formValue as TFieldValue;
 }
