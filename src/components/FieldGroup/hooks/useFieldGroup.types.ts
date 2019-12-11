@@ -1,10 +1,10 @@
 import { IUseValidationArgs, IValidationState } from '../../../hooks';
-import { IFieldValues, IFormContext } from '../../FormContext';
+import { IFormContext } from '../../FormContext';
 
 /**
  * Props for the field group component
  */
-export interface IUseFieldGroupArgs extends IUseValidationArgs {
+export interface IUseFieldGroupArgs<TFieldValue = unknown> extends IUseValidationArgs<TFieldValue> {
   /**
    * Message id of the label that will be displayed along the input.
    * If you don't want to use any i18n features you can pass a raw message instead.
@@ -21,13 +21,13 @@ export interface IUseFieldGroupArgs extends IUseValidationArgs {
    * Overwrites the Form default values for the child fields of this field group.
    * Those values will be put into the according fields when the form initializes.
    */
-  defaultValues?: IFieldValues;
+  defaultValues?: TFieldValue;
   /**
    * Overwrites the Form values for the child fields of this field group. Changing
    * this property will update all Field values, overwriting their default values
    * but also any value the user put in.
    */
-  values?: IFieldValues;
+  values?: TFieldValue;
   /**
    * Overwrites the disabled state for this field group.
    * @default Form.disabled

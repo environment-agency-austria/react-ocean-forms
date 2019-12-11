@@ -10,7 +10,7 @@ import { IUseFieldGroupArgs, IFieldGroupRenderParams } from './hooks/useFieldGro
 /**
  * Props for the field group component
  */
-export interface IFieldGroupProps extends IUseFieldGroupArgs {
+export interface IFieldGroupProps<TFieldValue = unknown> extends IUseFieldGroupArgs<TFieldValue> {
   /**
    * Gets called to render its children (see render prop pattern).
    * @param params Contains the group state consisting of fullName,

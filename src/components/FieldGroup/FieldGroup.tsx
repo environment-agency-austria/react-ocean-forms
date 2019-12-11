@@ -7,7 +7,7 @@
 
 import React from 'react';
 
-import { FormContext } from '../FormContext';
+import { FormContext, IFieldValues } from '../FormContext';
 import { IFieldGroupProps } from './FieldGroup.types';
 import { useFieldGroup } from './hooks/useFieldGroup';
 
@@ -15,7 +15,7 @@ import { useFieldGroup } from './hooks/useFieldGroup';
  * Defines a collection of fields. It combines its values to a
  * sub-object and provides the possibility to attach validators to the group.
  */
-export const FieldGroup: React.FC<IFieldGroupProps> = ({ render, ...props }) => {
+export const FieldGroup = <TFieldValues extends {} = IFieldValues>({ render, ...props }: React.PropsWithChildren<IFieldGroupProps<TFieldValues>>): React.ReactElement | null => {
   const { groupFormContext, renderParams } = useFieldGroup(props);
 
   return (
