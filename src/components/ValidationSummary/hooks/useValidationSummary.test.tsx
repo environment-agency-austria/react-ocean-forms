@@ -1,5 +1,5 @@
 import React from 'react';
-import { renderHook, act } from 'react-hooks-testing-library';
+import { renderHook, act } from '@testing-library/react-hooks';
 import { shallow } from 'enzyme';
 
 import { useFormContext, useFormEventListener } from '../../../hooks';

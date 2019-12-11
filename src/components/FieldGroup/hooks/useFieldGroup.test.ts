@@ -1,4 +1,4 @@
-import { renderHook } from 'react-hooks-testing-library';
+import { renderHook } from '@testing-library/react-hooks';
 
 import { createMockFormContext, createMockValidationResult } from '../../../test-utils/enzymeFormContext';
 import { useFormContext, useValidation, IUseValidationResult } from '../../../hooks';
@@ -288,13 +288,13 @@ describe('useFieldGroup', () => {
       });
     });
 
-    const propCases = [
+    const propCases: [keyof IFormContext][] = [
       ['defaultValues'],
       ['values'],
     ];
 
     describe.each(propCases)('Context.%s behaviour', (prop) => {
-      const formStates: [string, unknown][] = [
+      const formStates: [string, null | undefined | object][] = [
         ['null', null],
         ['undefined', undefined],
         ['empty', {}],
@@ -316,7 +316,6 @@ describe('useFieldGroup', () => {
           },
         });
 
-        // @ts-ignore any is OK here
         expect(result.current.groupFormContext[prop]).toEqual({
           ...formState,
           ...{

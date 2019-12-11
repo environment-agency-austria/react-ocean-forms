@@ -1,4 +1,4 @@
-import { renderHook, act } from 'react-hooks-testing-library';
+import { renderHook, act } from '@testing-library/react-hooks';
 
 import { IFormProps } from '../Form.types';
 import { IFormContext, IFieldValues } from '../../FormContext';
@@ -6,7 +6,19 @@ import { IFormContext, IFieldValues } from '../../FormContext';
 import { useForm } from './useForm';
 import { useFieldEvents, IUseFieldEventsResult, IUseFieldStatesResult, useFieldStates, IFieldState } from '../../../hooks/internal';
 
-jest.mock('../../../hooks/internal');
+// Only mock parts of the internal hooks, as
+// some of them are needed for useForm to function
+// properly inside the unit tests (useIsUnmounted)
+jest.mock('../../../hooks/internal', () => {
+  const originalModule = jest.requireActual('../../../hooks/internal');
+
+  return {
+    __esModule: true,
+    ...originalModule,
+    useFieldEvents: jest.fn(),
+    useFieldStates: jest.fn(),
+  };
+});
 
 describe('useForm', () => {
   interface ISetupArgs {
