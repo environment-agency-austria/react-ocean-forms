@@ -9,12 +9,12 @@ import { IFieldComponentFieldProps, IFieldComponentMeta, TBasicFieldValue } from
 /**
  * Props for the input component of a Field
  */
-export interface IFieldComponentProps {
+export interface IFieldComponentProps<TFieldValue = TBasicFieldValue> {
   /**
    * Props for the actual html input, designed
    * to be passed as-is
    */
-  field: IFieldComponentFieldProps<TBasicFieldValue>;
+  field: IFieldComponentFieldProps<TFieldValue>;
   /**
    * Meta informations about the field state
    */
