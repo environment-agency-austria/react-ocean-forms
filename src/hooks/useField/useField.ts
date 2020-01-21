@@ -1,3 +1,14 @@
+/**
+ * Copyright (c) 2018-present, Umweltbundesamt GmbH
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @packageDocumentation
+ * @module useField
+ * @category Hooks
+ * @preferred
+ */
 import { useMemo, useState, useCallback, useEffect, useRef } from 'react';
 
 import { getDeepValue, noopFunction } from '../../utils';
@@ -13,6 +24,8 @@ import { noopFieldValueFunction } from './useField.utils';
  * of the field, the validation and all communication with the
  * form context.
  * @param props Field props @see IUseFieldProps
+ * @typeparam TDisplayValue Type of the value that will be displayed (consumed by the displaying component)
+ * @typeparam TSubmitValue Type of the value that will be submitted to the form
  */
 export function useField<TDisplayValue = unknown, TSubmitValue = TDisplayValue>(props: IUseFieldProps<TDisplayValue, TSubmitValue>): IUseFieldResult<TDisplayValue> {
   const formContext = useFormContext();

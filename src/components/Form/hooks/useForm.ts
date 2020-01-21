@@ -1,3 +1,12 @@
+/**
+ * Copyright (c) 2018-present, Umweltbundesamt GmbH
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @packageDocumentation
+ * @module Form
+ */
 import { useMemo, useState, useCallback } from 'react';
 
 import { stringFormatter as defaultStringFormatter, noopFunction, parseValidationError, getDeepValue } from '../../../utils';
@@ -6,6 +15,9 @@ import { IFormContext, IFieldValues } from '../../FormContext';
 import { IFormProps } from '../Form.types';
 import { useFieldEvents, useFieldStates, useIsUnmounted } from '../../../hooks/internal';
 
+/**
+ * @hidden
+ */
 export function useForm<TFieldValues extends Record<string, unknown> = IFieldValues>(props: IFormProps<TFieldValues>): IFormContext<TFieldValues> {
   const [ busyState, setBusyState ] = useState(false);
 

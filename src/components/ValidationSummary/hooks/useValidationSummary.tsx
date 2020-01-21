@@ -1,3 +1,12 @@
+/**
+ * Copyright (c) 2018-present, Umweltbundesamt GmbH
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @packageDocumentation
+ * @module ValidationSummary
+ */
 import React, { useRef, useCallback, useState } from 'react';
 
 import { useFormContext, IValidationState, useFormEventListener } from '../../../hooks';
@@ -7,6 +16,9 @@ interface IValidationEventArgs extends IValidationState {
   label: string;
 }
 
+/**
+ * @hidden
+ */
 export interface IInvalidField {
   id: string;
   name: string;
@@ -14,11 +26,20 @@ export interface IInvalidField {
   linkCallback(event: React.MouseEvent): void;
 }
 
+/**
+ * @hidden
+ */
 export interface IUseValidationSummaryResult {
   headerRef: React.MutableRefObject<HTMLHeadingElement | null>;
   errorList: [string, IInvalidField][];
 }
 
+/**
+ * Custom hook for the validation summary logic
+ * @param id Id of the validation summary
+ * @param disableFocusOnSubmit If set to true the validation summary will stop automatically scrolling to itself when the user clicks on a submit button and the form is invalid.
+ * @hidden
+ */
 export function useValidationSummary(id: string, disableFocusOnSubmit: boolean): IUseValidationSummaryResult {
   const headerRef = useRef<HTMLHeadingElement | null>(null);
   const [errorList, setErrorList] = useState<[string, IInvalidField][]>([]);

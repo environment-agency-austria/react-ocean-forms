@@ -1,2 +1,7 @@
-export type Omit<T, U> = Pick<T, Exclude<keyof T, U>>;
+/**
+ * @packageDocumentation
+ * @module common
+ * @category Type Utils
+ */
+
 export type Subtract<T, U> = Omit<T, keyof U>;

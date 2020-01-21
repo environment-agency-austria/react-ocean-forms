@@ -1,3 +1,12 @@
+/**
+ * Copyright (c) 2019-present, Umweltbundesamt GmbH
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @packageDocumentation
+ * @module useValidation
+ */
 import { TValidator, isDefaultValidator, isIFieldErrorObject, TAsyncValidator } from '../../validators';
 import { IBasicValidationState } from './useValidation.types';
 import { IFormContext } from '../../components';
@@ -7,6 +16,7 @@ import { parseValidationError } from '../../utils';
  * Checks if the given validators contain at least one default
  * validator
  * @param validators Sync validators provided through props
+ * @hidden
  */
 export function isRequired<TFieldValue = unknown>(validators?: TValidator<TFieldValue>[]): boolean {
   return Array.isArray(validators) && validators.some(isDefaultValidator);
@@ -16,6 +26,7 @@ export function isRequired<TFieldValue = unknown>(validators?: TValidator<TField
  * Creates the initial / default validation state of a
  * validated component
  * @param validators Sync validators provied through props
+ * @hidden
  */
 export function createInitialValidationState(): IBasicValidationState {
   return {
@@ -31,6 +42,7 @@ export function createInitialValidationState(): IBasicValidationState {
  * @param validators Array of validator functions
  * @param value Value to be validated
  * @param formContext Form context
+ * @hidden
  */
 export function runSyncValidators<TFieldValue = unknown>(
   validators: TValidator<TFieldValue>[] | undefined,
@@ -62,6 +74,7 @@ export function runSyncValidators<TFieldValue = unknown>(
  * @param validators Array of async validator functions
  * @param value Value to be validated
  * @param formContext Form context
+ * @hidden
  */
 export async function runAsyncValidators<TFieldValue = unknown>(
   validators: TAsyncValidator<TFieldValue>[],

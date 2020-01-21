@@ -1,3 +1,12 @@
+/**
+ * Copyright (c) 2018-present, Umweltbundesamt GmbH
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @packageDocumentation
+ * @module FieldGroup
+ */
 import { useCallback, useMemo } from 'react';
 
 import { useFormContext, useValidation, IValidationArgs, IBasicValidationState } from '../../../hooks';
@@ -7,6 +16,9 @@ import { IFormContext, IFieldValues } from '../../FormContext';
 import { getGroupValue } from './useFieldGroup.utils';
 import { IUseFieldGroupArgs, IUseFieldGroupResult } from './useFieldGroup.types';
 
+/**
+ * @hidden
+ */
 export function useFieldGroup<TFieldValue = unknown>(props: IUseFieldGroupArgs<TFieldValue>): IUseFieldGroupResult {
   const formContext = useFormContext();
 
