@@ -3,6 +3,10 @@
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
+ *
+ * @packageDocumentation
+ * @module parseValidationError
+ * @category Utils
  */
 import { stringHasValue } from './stringHasValue';
 
@@ -16,6 +20,7 @@ interface IObjectWithName {
 
 /**
  * Returns the display name of the wrapped component.
+ * @hidden
  */
 export const getDisplayName = (wrappedComponent: IObjectWithName | IObjectWithDisplayName | unknown): string => {
   if (stringHasValue((wrappedComponent as IObjectWithDisplayName).displayName)) {

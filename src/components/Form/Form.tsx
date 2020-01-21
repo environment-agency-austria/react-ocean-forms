@@ -3,6 +3,11 @@
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
+ *
+ * @packageDocumentation
+ * @module Form
+ * @category Components
+ * @preferred
  */
 import React from 'react';
 
@@ -14,8 +19,9 @@ import { useForm } from './hooks/useForm';
  * The form is the main component. It glues together all the Form logic through the context api.
  * All form specific components must be wrapped by a form.
  */
-export const Form = <TFieldValues extends {} = IFieldValues, TSubmitArgs = unknown>({ children, className, ...rest }:
+export const Form = <TFieldValues extends {} = IFieldValues, TSubmitArgs = unknown>(props:
 React.PropsWithChildren<IFormProps<TFieldValues, TSubmitArgs>>): React.ReactElement | null => {
+  const { children, className, ...rest } = props;
   const formContext = useForm(rest);
 
   let formClass = className === undefined ? '' : className;
