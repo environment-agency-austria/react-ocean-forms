@@ -15,7 +15,8 @@
     "build": "rollup -c",
     "lint": "eslint \"src/**\"",
     "start:docs": "styleguidist server",
-    "build:docs": "styleguidist build"
+    "build:docs": "styleguidist build",
+    "build:typedocs": "typedoc"
   },
   "peerDependencies": {
     "react": "^16.8.0"
@@ -53,6 +54,8 @@
     "rollup-plugin-typescript2": "^0.25.3",
     "ts-jest": "^24.3.0",
     "ts-loader": "^6.2.1",
+    "typedoc": "^0.16.7",
+    "typedoc-plugin-external-module-name": "^3.0.0",
     "typescript": "^3.7.5",
     "webpack": "^4.41.5"
   },
