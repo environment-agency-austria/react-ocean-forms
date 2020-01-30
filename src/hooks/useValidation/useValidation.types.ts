@@ -59,7 +59,10 @@ export interface IValidationState extends IBasicValidationState {
  * @param value Value to validate
  * @param args Optional validation args, @see IValidationArgs
  */
-export type TValidateMethod<TFieldValue = unknown> = (value: TFieldValue | undefined, args?: Partial<IValidationArgs>) => Promise<IBasicValidationState>;
+export type TValidateMethod<TFieldValue = unknown> = (
+  value: TFieldValue | undefined,
+  args?: Partial<IValidationArgs>
+) => Promise<IBasicValidationState>;
 export type TResetMethod = () => void;
 /**
  * Update validation state method

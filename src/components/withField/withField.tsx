@@ -17,21 +17,28 @@ import { IFieldComponentProps } from './withField.types';
 
 export type IValidatedComponentProps = IUseValidationArgs;
 
-type WrappedValidatedComponentProps<TComp> =
-  Subtract<JSX.LibraryManagedAttributes<TComp, PropsOf<TComp>>, IFieldComponentProps> & IBaseFieldProps<TBasicFieldValue, TBasicFieldValue> & IUseValidationArgs;
+type WrappedValidatedComponentProps<TComp> = Subtract<
+  JSX.LibraryManagedAttributes<TComp, PropsOf<TComp>>,
+  IFieldComponentProps
+> &
+  IBaseFieldProps<TBasicFieldValue, TBasicFieldValue> &
+  IUseValidationArgs;
 
 /**
  * Higher order component for validation
  * @deprecated Deprecated in favour of `useField` hook
  */
-export const withField = <TComp extends React.ComponentType<TProps>, TProps extends IFieldComponentProps = PropsOf<TComp>>
-(component: TComp): React.ComponentType<WrappedValidatedComponentProps<TComp>> => {
-
+export const withField = <
+  TComp extends React.ComponentType<TProps>,
+  TProps extends IFieldComponentProps = PropsOf<TComp>
+>(
+  component: TComp
+): React.ComponentType<WrappedValidatedComponentProps<TComp>> => {
   const CastedComponent = component as React.ComponentType<TProps>;
 
   type IWrappedProps = WrappedValidatedComponentProps<TComp>;
 
-  const ValidatedComponent: React.FC<IWrappedProps> = (props) => {
+  const ValidatedComponent: React.FC<IWrappedProps> = props => {
     const { fieldProps, metaProps } = useField(props);
 
     return (

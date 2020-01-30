@@ -15,13 +15,27 @@ import { useCallback, useState, useMemo } from 'react';
 import { useFormContext } from '../useFormContext';
 import { useIsUnmounted, useTimeout, useFullName } from '../internal';
 
-import { IBasicValidationState, IUseValidationResult, IValidationArgs, IUseValidationArgs } from './useValidation.types';
-import { createInitialValidationState, isRequired, runSyncValidators, runAsyncValidators } from './useValidation.utils';
+import {
+  IBasicValidationState,
+  IUseValidationResult,
+  IValidationArgs,
+  IUseValidationArgs,
+} from './useValidation.types';
+import {
+  createInitialValidationState,
+  isRequired,
+  runSyncValidators,
+  runAsyncValidators,
+} from './useValidation.utils';
 
-export function useValidation<TFieldValue = unknown>(args: IUseValidationArgs<TFieldValue>): IUseValidationResult<TFieldValue> {
+export function useValidation<TFieldValue = unknown>(
+  args: IUseValidationArgs<TFieldValue>
+): IUseValidationResult<TFieldValue> {
   const formContext = useFormContext();
   const isUnmounted = useIsUnmounted();
-  const [validationState, setValidationState] = useState<IBasicValidationState>(createInitialValidationState());
+  const [validationState, setValidationState] = useState<IBasicValidationState>(
+    createInitialValidationState()
+  );
   const [setAsyncTimeout, clearAsyncTimeout] = useTimeout();
   const fullName = useFullName(args.name);
 
@@ -40,7 +54,7 @@ export function useValidation<TFieldValue = unknown>(args: IUseValidationArgs<TF
     (newState: Partial<IBasicValidationState>): void => {
       if (isUnmounted.current) return;
 
-      setValidationState((prevState) => {
+      setValidationState(prevState => {
         const fullNewState = {
           ...prevState,
           ...newState,
@@ -50,30 +64,26 @@ export function useValidation<TFieldValue = unknown>(args: IUseValidationArgs<TF
         return fullNewState;
       });
     },
-    [isUnmounted, formContext, fullName, label],
+    [isUnmounted, formContext, fullName, label]
   );
 
   /**
    * Resets the validation state to the initial value and
    * clears any pending async validations
    */
-  const reset = useCallback(
-    () => {
-      clearAsyncTimeout();
-      updateAndNotify(createInitialValidationState());
-    },
-    [clearAsyncTimeout, updateAndNotify],
-  );
+  const reset = useCallback(() => {
+    clearAsyncTimeout();
+    updateAndNotify(createInitialValidationState());
+  }, [clearAsyncTimeout, updateAndNotify]);
 
   /**
    * Performs the sync and async validation logic
    */
   const validate = useCallback(
-    async (value: TFieldValue | undefined, {
-      checkAsync = true,
-      immediateAsync = false,
-    }: Partial<IValidationArgs> = {} ):
-    Promise<IBasicValidationState> => {
+    async (
+      value: TFieldValue | undefined,
+      { checkAsync = true, immediateAsync = false }: Partial<IValidationArgs> = {}
+    ): Promise<IBasicValidationState> => {
       let temporaryValidationState = createInitialValidationState();
 
       // Clear the old timeout so we only run the
@@ -95,7 +105,11 @@ export function useValidation<TFieldValue = unknown>(args: IUseValidationArgs<TF
 
       // Ignore async validation if sync validation is already false
       // or checkAsync is disabled or there are no async validators
-      if (temporaryValidationState.valid === false || !checkAsync || !Array.isArray(asyncValidators)) {
+      if (
+        temporaryValidationState.valid === false ||
+        !checkAsync ||
+        !Array.isArray(asyncValidators)
+      ) {
         updateAndNotify(temporaryValidationState);
         return temporaryValidationState;
       }
@@ -122,18 +136,29 @@ export function useValidation<TFieldValue = unknown>(args: IUseValidationArgs<TF
       updateAndNotify(temporaryValidationState);
       return temporaryValidationState;
     },
-    [clearAsyncTimeout, validators, asyncValidators, setAsyncTimeout, asyncValidationWait, updateAndNotify, formContext],
+    [
+      clearAsyncTimeout,
+      validators,
+      asyncValidators,
+      setAsyncTimeout,
+      asyncValidationWait,
+      updateAndNotify,
+      formContext,
+    ]
   );
 
-  const validationResult = useMemo<IUseValidationResult<TFieldValue>>(() => ({
-    validationState: {
-      ...validationState,
-      isRequired: isRequired(validators),
-    },
-    validate,
-    resetValidation: reset,
-    updateValidationState: updateAndNotify,
-  }), [reset, updateAndNotify, validate, validationState, validators]);
+  const validationResult = useMemo<IUseValidationResult<TFieldValue>>(
+    () => ({
+      validationState: {
+        ...validationState,
+        isRequired: isRequired(validators),
+      },
+      validate,
+      resetValidation: reset,
+      updateValidationState: updateAndNotify,
+    }),
+    [reset, updateAndNotify, validate, validationState, validators]
+  );
 
   return validationResult;
 }

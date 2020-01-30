@@ -1,4 +1,9 @@
-import { addCustomMessages, IMessageValues, stringFormatter, TEST_MESSAGES } from '../stringFormatter';
+import {
+  addCustomMessages,
+  IMessageValues,
+  stringFormatter,
+  TEST_MESSAGES,
+} from '../stringFormatter';
 
 describe('stringFormatter', () => {
   const cases: [string, any][] = [
@@ -20,8 +25,9 @@ describe('stringFormatter', () => {
   });
 
   it('should support parameters', () => {
-    expect(stringFormatter('ojs_error_minLength', { length: '5' }))
-      .toBe('The value must be at least 5 characters long.');
+    expect(stringFormatter('ojs_error_minLength', { length: '5' })).toBe(
+      'The value must be at least 5 characters long.'
+    );
   });
 
   it('should return unknown strings as-is', () => {
@@ -31,8 +37,7 @@ describe('stringFormatter', () => {
 
   it('should support parameters on unknown strings', () => {
     const testString = 'foo: {bar}';
-    expect(stringFormatter(testString, { bar: 'baz' }))
-      .toBe('foo: baz');
+    expect(stringFormatter(testString, { bar: 'baz' })).toBe('foo: baz');
   });
 
   describe('it should ignore invalid parameters', () => {

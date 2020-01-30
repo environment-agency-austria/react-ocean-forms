@@ -35,7 +35,7 @@ describe('useFieldEvents', () => {
   it('should register new listeners without crashing', () => {
     const mockListeners = createMockListeners(3);
     const { result } = renderHook(() => useFieldEvents());
-    mockListeners.forEach((item) => {
+    mockListeners.forEach(item => {
       expect(() => {
         result.current.registerListener(item.id, item.state);
       }).not.toThrowError();
@@ -45,7 +45,7 @@ describe('useFieldEvents', () => {
   it('should unregister new listeners without crashing', () => {
     const mockListeners = createMockListeners(3);
     const { result } = renderHook(() => useFieldEvents());
-    mockListeners.forEach((item) => {
+    mockListeners.forEach(item => {
       result.current.registerListener(item.id, item.state);
       expect(() => {
         result.current.unregisterListener(item.id);
@@ -63,10 +63,8 @@ describe('useFieldEvents', () => {
     mockListeners.forEach(item => result.current.registerListener(item.id, item.state));
 
     result.current.notifyListeners(fieldName, eventName, eventArgs);
-    mockListeners.forEach(item => expect(item.state).toHaveBeenLastCalledWith(
-      fieldName,
-      eventName,
-      eventArgs,
-    ));
+    mockListeners.forEach(item =>
+      expect(item.state).toHaveBeenLastCalledWith(fieldName, eventName, eventArgs)
+    );
   });
 });

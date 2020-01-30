@@ -14,9 +14,8 @@ import React from 'react';
 /**
  * Acquire the props for a Component {T}
  */
-export type PropsOf<T> =
-  T extends (props: infer P) => React.ReactElement | null // Try to infer for SFCs
-    ? P
-    : T extends new (props: infer P) => React.Component // Otherwise try to infer for classes
-      ? P
-      : never;
+export type PropsOf<T> = T extends (props: infer P) => React.ReactElement | null // Try to infer for SFCs
+  ? P
+  : T extends new (props: infer P) => React.Component // Otherwise try to infer for classes
+  ? P
+  : never;

@@ -21,11 +21,10 @@ import { IInputProps } from './Input.types';
  * will render validation messages. If the user adds the required validator
  * then it will mark the field as required as well.
  */
-export const Input = <TSubmitValue extends unknown>(props: IInputProps<TSubmitValue>): JSX.Element => {
-  const {
-    type = 'text',
-    ...rest
-  } = props;
+export const Input = <TSubmitValue extends unknown>(
+  props: IInputProps<TSubmitValue>
+): JSX.Element => {
+  const { type = 'text', ...rest } = props;
 
   const { fieldProps, metaProps } = useField(rest);
 
@@ -34,4 +33,4 @@ export const Input = <TSubmitValue extends unknown>(props: IInputProps<TSubmitVa
       {metaProps.plaintext ? fieldProps.value : <input type={type} {...fieldProps} />}
     </FieldLine>
   );
-}
+};

@@ -1,5 +1,7 @@
 ### Examples
+
 #### FormButton
+
 Showcase of the form button
 
 ```jsx
@@ -20,11 +22,7 @@ function asyncValidator(value) {
 function Example() {
   return (
     <Form className="demo">
-      <Input
-        name="input"
-        label="Sample input"
-        asyncValidators={[asyncValidator]}
-      />
+      <Input name="input" label="Sample input" asyncValidators={[asyncValidator]} />
 
       <FormButton type="submit">Submit</FormButton>
       <FormButton type="reset">Reset</FormButton>
@@ -32,10 +30,11 @@ function Example() {
   );
 }
 
-<Example />
+<Example />;
 ```
 
 #### Submit args
+
 Arguments to the form.onSubmit handler can be passed this way
 
 ```jsx
@@ -44,28 +43,27 @@ import { Form, Input, FormButton } from 'react-ocean-forms';
 function Example() {
   const handleSubmit = (values, submitArgs) => {
     console.log(
-      'onSubmit, values: ' + JSON.stringify(values) +
-      ', submitArgs: ' + JSON.stringify(submitArgs)
+      'onSubmit, values: ' + JSON.stringify(values) + ', submitArgs: ' + JSON.stringify(submitArgs)
     );
   };
 
   return (
     <Form className="demo" onSubmit={handleSubmit}>
-      <Input
-        name="input"
-        label="Sample input"
-        />
+      <Input name="input" label="Sample input" />
 
-      <FormButton type="submit" submitArgs={{ foo: 'bar' }}>Submit</FormButton>
+      <FormButton type="submit" submitArgs={{ foo: 'bar' }}>
+        Submit
+      </FormButton>
       <FormButton type="reset">Reset</FormButton>
     </Form>
   );
 }
 
-<Example />
+<Example />;
 ```
 
 #### Disabled form
+
 FormButtons are disabled if the form is disabled too
 
 ```jsx
@@ -74,10 +72,7 @@ import { Form, Input, FormButton } from 'react-ocean-forms';
 function Example() {
   return (
     <Form className="demo" disabled>
-      <Input
-        name="input"
-        label="Sample input"
-        />
+      <Input name="input" label="Sample input" />
 
       <FormButton type="submit">Submit</FormButton>
       <FormButton type="reset">Reset</FormButton>
@@ -85,5 +80,5 @@ function Example() {
   );
 }
 
-<Example />
+<Example />;
 ```

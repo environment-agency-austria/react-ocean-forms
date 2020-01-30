@@ -13,7 +13,7 @@ export interface IMessageValues {
   [s: string]: string;
 }
 
-export type TSTringFormatter = ((id: string, values?: IMessageValues) => string);
+export type TSTringFormatter = (id: string, values?: IMessageValues) => string;
 
 interface IMessages {
   [s: string]: string;
@@ -38,7 +38,9 @@ export const TEST_MESSAGES = DEFAULT_MESSAGES;
  */
 export const stringFormatter: TSTringFormatter = (id: string, values?: IMessageValues): string => {
   // Do nothing if the id is not a string
-  if (typeof id !== 'string') { return id; }
+  if (typeof id !== 'string') {
+    return id;
+  }
 
   // Either use one of the default messages or
   // the string as a literal
@@ -48,9 +50,15 @@ export const stringFormatter: TSTringFormatter = (id: string, values?: IMessageV
   }
 
   // If no values are specified do nothing
-  if (!values) { return formattedString; }
-  if (typeof values !== 'object') { return formattedString; }
-  if (Array.isArray(values)) { return formattedString; }
+  if (!values) {
+    return formattedString;
+  }
+  if (typeof values !== 'object') {
+    return formattedString;
+  }
+  if (Array.isArray(values)) {
+    return formattedString;
+  }
 
   // Iterate through each value and replace the
   // value inside the string

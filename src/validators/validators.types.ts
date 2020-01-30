@@ -58,11 +58,19 @@ export type TFieldErrors = null | IFieldErrorObject | IFieldErrorObject[];
 /**
  * Validator method type
  */
-export type TValidator<TFieldValue = unknown> = ((value: TFieldValue | undefined, context: IFormContext, ...args: unknown[]) => TFieldError);
+export type TValidator<TFieldValue = unknown> = (
+  value: TFieldValue | undefined,
+  context: IFormContext,
+  ...args: unknown[]
+) => TFieldError;
 /**
  * Async validator method type
  */
-export type TAsyncValidator<TFieldValue = unknown> = ((value: TFieldValue | undefined, context: IFormContext, ...args: unknown[]) => Promise<TFieldError>);
+export type TAsyncValidator<TFieldValue = unknown> = (
+  value: TFieldValue | undefined,
+  context: IFormContext,
+  ...args: unknown[]
+) => Promise<TFieldError>;
 
 /**
  * Default validator type
@@ -76,5 +84,9 @@ export interface IDefaultValidator extends TValidator {
  * @param object Function to test
  */
 export function isDefaultValidator(object: any): object is IDefaultValidator {
-  return object && typeof object === 'function' && (object as IDefaultValidator).isDefaultValidator === true;
+  return (
+    object &&
+    typeof object === 'function' &&
+    (object as IDefaultValidator).isDefaultValidator === true
+  );
 }

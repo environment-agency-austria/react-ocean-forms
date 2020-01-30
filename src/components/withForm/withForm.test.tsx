@@ -14,14 +14,11 @@ describe('withForm', () => {
   const formContext = createMockFormContext();
   (useFormContext as jest.Mock).mockReturnValue(formContext);
 
-  const TestComponent = (): JSX.Element => (<div id="test-component" />);
+  const TestComponent = (): JSX.Element => <div id="test-component" />;
   const WrappedComponent = withForm(TestComponent);
 
-  const setup = (props?: Partial<IFormContextProps>): ShallowWrapper => shallow((
-    <WrappedComponent
-      {...props}
-    />
-  ));
+  const setup = (props?: Partial<IFormContextProps>): ShallowWrapper =>
+    shallow(<WrappedComponent {...props} />);
   const wrapper = setup();
 
   it('should render without error', () => {

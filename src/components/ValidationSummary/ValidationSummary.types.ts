@@ -35,7 +35,12 @@ export interface IValidationSummaryProps {
    * @param errors Object / Array of objects with the rendered error messages
    * @param linkCallback Function that should be called on click, will focus on the input element.
    */
-  renderFieldError?(id: string, fieldName: string, errors: React.ReactNode, linkCallback: React.MouseEventHandler): React.ReactNode;
+  renderFieldError?(
+    id: string,
+    fieldName: string,
+    errors: React.ReactNode,
+    linkCallback: React.MouseEventHandler
+  ): React.ReactNode;
   /**
    * Optional function that can be used to customize the ValidationSummary rendering.
    * Note: This function will only be called when there are errors to be displayed.

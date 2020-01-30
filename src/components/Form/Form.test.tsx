@@ -29,13 +29,11 @@ describe('<Form />', () => {
 
     (useForm as jest.Mock).mockReturnValue(overriddenContext);
 
-    const wrapper = shallow((
-      <Form
-        {...props}
-      >
+    const wrapper = shallow(
+      <Form {...props}>
         <div>unitChild</div>
       </Form>
-    ));
+    );
 
     const form = wrapper.find('form');
 
@@ -52,7 +50,12 @@ describe('<Form />', () => {
   });
 
   it('should pass the props to useForm', () => {
-    const props: Partial<IFormProps> = { disabled: true, busy: true, plaintext: false, asyncValidateOnChange: false };
+    const props: Partial<IFormProps> = {
+      disabled: true,
+      busy: true,
+      plaintext: false,
+      asyncValidateOnChange: false,
+    };
     setup({ props });
 
     expect(useForm).toHaveBeenCalledWith(props);
@@ -65,19 +68,22 @@ describe('<Form />', () => {
 
     it('should output any additional classNames added to the form', () => {
       const mockClass = 'mock-class';
-      const { wrapper } = setup({ props: { className: mockClass }});
+      const { wrapper } = setup({ props: { className: mockClass } });
       hasClass(wrapper, mockClass);
     });
 
     describe('plaintext', () => {
       it('should have the plaintext css class if in plaintext mode', () => {
-        const { wrapper } = setup({ formContext: { plaintext: true }});
+        const { wrapper } = setup({ formContext: { plaintext: true } });
         hasClass(wrapper, 'plaintext');
       });
 
       it('should still add the additional classNames', () => {
         const mockClass = 'mock-class';
-        const { wrapper } = setup({ props: { className: mockClass }, formContext: { plaintext: true }});
+        const { wrapper } = setup({
+          props: { className: mockClass },
+          formContext: { plaintext: true },
+        });
         hasClass(wrapper, 'plaintext');
         hasClass(wrapper, mockClass);
       });

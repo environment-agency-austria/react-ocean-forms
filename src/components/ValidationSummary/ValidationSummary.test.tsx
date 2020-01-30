@@ -4,7 +4,11 @@ import { shallow, ShallowWrapper } from 'enzyme';
 
 import { ValidationSummary } from './ValidationSummary';
 import { IValidationSummaryProps } from './ValidationSummary.types';
-import { IUseValidationSummaryResult, useValidationSummary, IInvalidField } from './hooks/useValidationSummary';
+import {
+  IUseValidationSummaryResult,
+  useValidationSummary,
+  IInvalidField,
+} from './hooks/useValidationSummary';
 
 jest.mock('./hooks/useValidationSummary');
 
@@ -20,23 +24,15 @@ describe('<ValidationSummary />', () => {
     wrapper: ShallowWrapper;
   }
 
-  const setup = ({
-    props,
-    validationSummaryResult,
-  }: ISetupArgs = {}): ISetupResult => {
+  const setup = ({ props, validationSummaryResult }: ISetupArgs = {}): ISetupResult => {
     const summaryResult: IUseValidationSummaryResult = {
       headerRef: { current: null },
-      errorList: [ ],
-      ...validationSummaryResult
+      errorList: [],
+      ...validationSummaryResult,
     };
     (useValidationSummary as jest.Mock).mockReturnValue(summaryResult);
 
-    const wrapper = shallow((
-      <ValidationSummary
-        id={summaryId}
-        {...props}
-      />
-    ));
+    const wrapper = shallow(<ValidationSummary id={summaryId} {...props} />);
 
     return {
       wrapper,
@@ -52,7 +48,7 @@ describe('<ValidationSummary />', () => {
     setup();
     expect(useValidationSummary).toHaveBeenLastCalledWith(summaryId, false);
 
-    setup({ props: { disableFocusOnSubmit: true, id: 'foobar' }});
+    setup({ props: { disableFocusOnSubmit: true, id: 'foobar' } });
     expect(useValidationSummary).toHaveBeenLastCalledWith('foobar', true);
   });
 
@@ -68,8 +64,8 @@ describe('<ValidationSummary />', () => {
           name: fieldLabel,
           error: <span>Error</span>,
           linkCallback: jest.fn(),
-        }
-      ]
+        },
+      ],
     ];
   }
 
@@ -80,7 +76,10 @@ describe('<ValidationSummary />', () => {
     });
 
     it('should render correctly if there is an error', () => {
-      const { wrapper } = setup({ props: { title: 'mock-title' }, validationSummaryResult: { errorList: createErrorList() }});
+      const { wrapper } = setup({
+        props: { title: 'mock-title' },
+        validationSummaryResult: { errorList: createErrorList() },
+      });
       expect(wrapper).toMatchSnapshot();
     });
   });
@@ -89,14 +88,17 @@ describe('<ValidationSummary />', () => {
     describe('render prop', () => {
       it('should not be called if the form is valid', () => {
         const mockRender = jest.fn();
-        setup({ props: { render: mockRender }});
+        setup({ props: { render: mockRender } });
 
         expect(mockRender).not.toHaveBeenCalled();
       });
 
       it('should be called with the basic summary render if the form is invalid', () => {
         const mockRender = jest.fn();
-        setup({ props: { render: mockRender }, validationSummaryResult: { errorList: createErrorList() }});
+        setup({
+          props: { render: mockRender },
+          validationSummaryResult: { errorList: createErrorList() },
+        });
 
         // We are using the mock calls in order to extract the parameters
         // that have been used in the last call. The first parameter of the
@@ -108,8 +110,11 @@ describe('<ValidationSummary />', () => {
       });
 
       it('should render the result of the render prop', () => {
-        const mockRender = (): JSX.Element => (<div id="mock-renderer">mock renderer</div>);
-        const { wrapper } = setup({ props: { render: mockRender }, validationSummaryResult: { errorList: createErrorList() }});
+        const mockRender = (): JSX.Element => <div id="mock-renderer">mock renderer</div>;
+        const { wrapper } = setup({
+          props: { render: mockRender },
+          validationSummaryResult: { errorList: createErrorList() },
+        });
         expect(wrapper).toMatchSnapshot();
       });
     });
@@ -117,26 +122,36 @@ describe('<ValidationSummary />', () => {
     describe('renderFieldError prop', () => {
       it('should not be called if the form is valid', () => {
         const mockRender = jest.fn();
-        setup({ props: { renderFieldError: mockRender }});
+        setup({ props: { renderFieldError: mockRender } });
 
         expect(mockRender).not.toHaveBeenCalled();
       });
 
       it('should be called with informations about the invalid field if the form is invalid', () => {
         const mockRender = jest.fn();
-        setup({ props: { renderFieldError: mockRender }, validationSummaryResult: { errorList: createErrorList() }});
+        setup({
+          props: { renderFieldError: mockRender },
+          validationSummaryResult: { errorList: createErrorList() },
+        });
 
         expect(mockRender).toHaveBeenCalledWith(
           fieldId,
           fieldLabel,
           expect.any(Object),
-          expect.any(Function),
+          expect.any(Function)
         );
       });
 
       it('should render the result of the render prop', () => {
-        const mockRender = (): JSX.Element => (<div id="mock-renderer" key="mock-render">mock renderer</div>);
-        const { wrapper } = setup({ props: { renderFieldError: mockRender }, validationSummaryResult: { errorList: createErrorList() }});
+        const mockRender = (): JSX.Element => (
+          <div id="mock-renderer" key="mock-render">
+            mock renderer
+          </div>
+        );
+        const { wrapper } = setup({
+          props: { renderFieldError: mockRender },
+          validationSummaryResult: { errorList: createErrorList() },
+        });
 
         expect(wrapper).toMatchSnapshot();
       });

@@ -29,7 +29,8 @@ const withParam = (validator: TValidator, ...args: unknown[]): TValidator => {
  * @param args parameters for the validator
  */
 const withAsyncParam = (validator: TAsyncValidator, ...args: unknown[]): TAsyncValidator => {
-  return async (value: unknown, context: IFormContext): Promise<TFieldError> => validator(value, context, args);
+  return async (value: unknown, context: IFormContext): Promise<TFieldError> =>
+    validator(value, context, args);
 };
 
 /**
@@ -62,7 +63,9 @@ required.isDefaultValidator = true as const;
  * Checks if the value is alpha numeric
  */
 const alphaNumeric = (value: unknown): TFieldError => {
-  if (typeof value !== 'string') { return undefined; }
+  if (typeof value !== 'string') {
+    return undefined;
+  }
 
   return /[^a-zA-Z0-9 ]/i.test(value) ? FieldErrorMessageId.AlphaNumeric : undefined;
 };
@@ -83,8 +86,12 @@ function isILength(object: any): object is ILength {
  * @param length minimum length
  */
 const minLength = (value: unknown, context: IFormContext, [length]: [number]): TFieldError => {
-  if (!isILength(value)) { return undefined; }
-  if (value.length >= length) { return undefined; }
+  if (!isILength(value)) {
+    return undefined;
+  }
+  if (value.length >= length) {
+    return undefined;
+  }
 
   return {
     message_id: FieldErrorMessageId.MinLength,
@@ -102,8 +109,12 @@ const minLength = (value: unknown, context: IFormContext, [length]: [number]): T
  * @param length maximum length
  */
 const maxLength = (value: unknown, context: IFormContext, [length]: [number]): TFieldError => {
-  if (!isILength(value)) { return undefined; }
-  if (value.length <= length) { return undefined; }
+  if (!isILength(value)) {
+    return undefined;
+  }
+  if (value.length <= length) {
+    return undefined;
+  }
 
   return {
     message_id: FieldErrorMessageId.MaxLength,

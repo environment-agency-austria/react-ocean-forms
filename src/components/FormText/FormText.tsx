@@ -23,12 +23,10 @@ import { IFormTextProps } from './FormText.types';
  */
 export const FormText: React.FC<IFormTextProps> = ({ text, values }) => {
   const context = useFormContext();
-  if (text === '' || text === null) { return null; }
+  if (text === '' || text === null) {
+    return null;
+  }
 
-  return (
-    <React.Fragment>
-      {context.stringFormatter(text, values)}
-    </React.Fragment>
-  );
+  return <React.Fragment>{context.stringFormatter(text, values)}</React.Fragment>;
 };
 FormText.displayName = 'FormText';

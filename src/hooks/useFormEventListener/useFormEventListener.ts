@@ -20,10 +20,7 @@ import { TFormEventListener } from '../internal';
  * @param id Unique listener id
  * @param callback Callback @see TFormEventListener
  */
-export function useFormEventListener(
-  id: string,
-  callback: TFormEventListener
-): void {
+export function useFormEventListener(id: string, callback: TFormEventListener): void {
   const formContext = useFormContext();
   useEffect(() => {
     formContext.registerListener(id, callback);

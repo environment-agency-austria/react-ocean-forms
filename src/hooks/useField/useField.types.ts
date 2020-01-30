@@ -33,7 +33,10 @@ export type TBasicFieldValue = string | boolean | number | object | null | undef
 /**
  * Type definition for getDisplayValue and getSubmitValue callbacks
  */
-export type TValueCallback<TFieldValue, TOutValue> = ((value: TFieldValue | undefined, meta: IValueMeta) => TOutValue | undefined);
+export type TValueCallback<TFieldValue, TOutValue> = (
+  value: TFieldValue | undefined,
+  meta: IValueMeta
+) => TOutValue | undefined;
 
 /**
  * Basic props for the field component
@@ -166,7 +169,9 @@ export interface IFieldComponentMeta extends IValidationState {
   plaintext: boolean;
 }
 
-export interface IUseFieldProps<TDisplayValue, TSubmitValue = TDisplayValue> extends IBaseFieldProps<TDisplayValue, TSubmitValue>, IUseValidationArgs<TSubmitValue> { }
+export interface IUseFieldProps<TDisplayValue, TSubmitValue = TDisplayValue>
+  extends IBaseFieldProps<TDisplayValue, TSubmitValue>,
+    IUseValidationArgs<TSubmitValue> {}
 
 export interface IUseFieldResult<TDisplayValue> {
   fieldProps: IFieldComponentFieldProps<TDisplayValue>;

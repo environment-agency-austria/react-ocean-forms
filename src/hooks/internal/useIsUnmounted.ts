@@ -19,7 +19,9 @@ import { useRef, useEffect } from 'react';
 export function useIsUnmounted(): React.MutableRefObject<boolean> {
   const isUnmounted = useRef(false);
   useEffect(() => {
-    return () => { isUnmounted.current = true; }
+    return () => {
+      isUnmounted.current = true;
+    };
   }, []);
 
   return isUnmounted;

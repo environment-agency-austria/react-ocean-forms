@@ -12,19 +12,16 @@ import { useRef, useEffect, useCallback } from 'react';
  * @param handle Callback that should be called after the timout has been reached
  * @param timeout Timeout in milliseconds
  */
-export type TSetTimeout = ((handle: TimerHandler, timeout: number) => void);
+export type TSetTimeout = (handle: TimerHandler, timeout: number) => void;
 /**
  * Clears any timeout if existing
  */
-export type TClearTimeout = (() => void);
+export type TClearTimeout = () => void;
 /**
  * Result of useTimeout. Contains an array with a setTimeout and a
  * clearTimeout function
  */
-export type TUseTimeoutResult = [
-  TSetTimeout,
-  TClearTimeout,
-];
+export type TUseTimeoutResult = [TSetTimeout, TClearTimeout];
 
 /**
  * Wrapper hook for `window.setTimeout` and `window.clearTimeout`. Will
@@ -40,19 +37,15 @@ export function useTimeout(): TUseTimeoutResult {
     }
   }, []);
 
-  const internalSetTimeout = useCallback(
-    (handle: TimerHandler, timeout: number) => {
-      timeoutId.current = window.setTimeout(handle, timeout);
-    },
-    [],
-  );
+  const internalSetTimeout = useCallback((handle: TimerHandler, timeout: number) => {
+    timeoutId.current = window.setTimeout(handle, timeout);
+  }, []);
 
   useEffect(() => {
-    return () => { internalClearTimeout(); }
-  }, [ internalClearTimeout ]);
+    return () => {
+      internalClearTimeout();
+    };
+  }, [internalClearTimeout]);
 
-  return [
-    internalSetTimeout,
-    internalClearTimeout,
-  ];
+  return [internalSetTimeout, internalClearTimeout];
 }

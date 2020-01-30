@@ -2,7 +2,10 @@ import React from 'react';
 
 import { shallow, ShallowWrapper } from 'enzyme';
 
-import { createMockFormContext, createMockValidationResult } from '../../test-utils/enzymeFormContext';
+import {
+  createMockFormContext,
+  createMockValidationResult,
+} from '../../test-utils/enzymeFormContext';
 import { IFormContext } from '../FormContext';
 
 import { FieldGroup } from './FieldGroup';
@@ -53,14 +56,9 @@ describe('<FieldGroup />', () => {
       renderParams: validation,
     });
 
-    const wrapper = shallow((
-      <FieldGroup
-        name={mockName}
-        label={mockLabel}
-        render={renderMock}
-        {...props}
-      />
-    ));
+    const wrapper = shallow(
+      <FieldGroup name={mockName} label={mockLabel} render={renderMock} {...props} />
+    );
 
     const groupContext = wrapper.first().prop('value') as IFormContext;
 

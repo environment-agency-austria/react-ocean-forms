@@ -7,7 +7,12 @@
  * @packageDocumentation
  * @module useValidation
  */
-import { TValidator, isDefaultValidator, isIFieldErrorObject, TAsyncValidator } from '../../validators';
+import {
+  TValidator,
+  isDefaultValidator,
+  isIFieldErrorObject,
+  TAsyncValidator,
+} from '../../validators';
 import { IBasicValidationState } from './useValidation.types';
 import { IFormContext } from '../../components';
 import { parseValidationError } from '../../utils';
@@ -33,7 +38,7 @@ export function createInitialValidationState(): IBasicValidationState {
     valid: true,
     error: null,
     isValidating: false,
-  }
+  };
 }
 
 /**
@@ -47,10 +52,10 @@ export function createInitialValidationState(): IBasicValidationState {
 export function runSyncValidators<TFieldValue = unknown>(
   validators: TValidator<TFieldValue>[] | undefined,
   value: TFieldValue | undefined,
-  formContext: IFormContext,
+  formContext: IFormContext
 ): Partial<IBasicValidationState> {
   // No sync validators given - do nothing
-  if (!Array.isArray(validators)) return { };
+  if (!Array.isArray(validators)) return {};
 
   for (let i = 0; i < validators.length; i++) {
     const validator = validators[i];
@@ -65,7 +70,7 @@ export function runSyncValidators<TFieldValue = unknown>(
     }
   }
 
-  return { };
+  return {};
 }
 
 /**
@@ -79,12 +84,14 @@ export function runSyncValidators<TFieldValue = unknown>(
 export async function runAsyncValidators<TFieldValue = unknown>(
   validators: TAsyncValidator<TFieldValue>[],
   value: TFieldValue | undefined,
-  formContext: IFormContext,
+  formContext: IFormContext
 ): Promise<IBasicValidationState> {
-  const validationResults = await Promise.all(validators.map(
-    async validator => validator(value, formContext),
-  ))
-  const parsedErrors = validationResults.map(result => parseValidationError(result)).filter(isIFieldErrorObject);
+  const validationResults = await Promise.all(
+    validators.map(async validator => validator(value, formContext))
+  );
+  const parsedErrors = validationResults
+    .map(result => parseValidationError(result))
+    .filter(isIFieldErrorObject);
 
   if (parsedErrors.length === 0) {
     return createInitialValidationState();

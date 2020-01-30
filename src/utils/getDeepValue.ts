@@ -22,17 +22,21 @@ interface TStringProp {
  * @param object Object
  * @hidden
  */
-export const getDeepValue = <T, U extends TStringProp = TStringProp>(name: string, object?: U): T | undefined => {
-  return name.split('.').reduce(
-    (o: U | undefined, i: string) => {
-      // Workaround for deep objects and
-      // 'cannot read property of undefined'
-      // - is there a better way?
-      if (o === undefined) { return undefined; }
-      if (o[i] === null) { return undefined; }
+export const getDeepValue = <T, U extends TStringProp = TStringProp>(
+  name: string,
+  object?: U
+): T | undefined => {
+  return name.split('.').reduce((o: U | undefined, i: string) => {
+    // Workaround for deep objects and
+    // 'cannot read property of undefined'
+    // - is there a better way?
+    if (o === undefined) {
+      return undefined;
+    }
+    if (o[i] === null) {
+      return undefined;
+    }
 
-      return o[i];
-    },
-    object,
-  ) as T | undefined;
+    return o[i];
+  }, object) as T | undefined;
 };

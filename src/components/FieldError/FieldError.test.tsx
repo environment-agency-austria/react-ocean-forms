@@ -11,14 +11,8 @@ jest.mock('../../hooks');
 describe('<FieldError />', () => {
   const mockStringFormatter = jest.fn().mockReturnValue('string');
   (useFormContext as jest.Mock).mockReturnValue({ stringFormatter: mockStringFormatter });
-  const setup = (props?: Partial<IFieldErrorProps>): ShallowWrapper => shallow((
-    <FieldError
-      id="unitError"
-      invalid={false}
-      error={null}
-      {...props}
-    />
-  ));
+  const setup = (props?: Partial<IFieldErrorProps>): ShallowWrapper =>
+    shallow(<FieldError id="unitError" invalid={false} error={null} {...props} />);
 
   it('should do nothing if invalid is false', () => {
     const wrapper = setup({ invalid: false });
@@ -41,10 +35,7 @@ describe('<FieldError />', () => {
   });
 
   it('should correctly use the stringFormatter', () => {
-    expect(mockStringFormatter).toHaveBeenLastCalledWith(
-      errorId,
-      errorParams,
-    );
+    expect(mockStringFormatter).toHaveBeenLastCalledWith(errorId, errorParams);
   });
 
   it('should render multiple errors', () => {
@@ -57,8 +48,8 @@ describe('<FieldError />', () => {
         },
         {
           message_id: 'foo2',
-          params: { },
-        }
+          params: {},
+        },
       ],
     });
 

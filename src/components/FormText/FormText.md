@@ -1,5 +1,7 @@
 ### Examples
+
 #### FormText
+
 Showcase of the form text
 
 ```jsx
@@ -9,20 +11,15 @@ function Example() {
   return (
     <Form>
       <p>
-        <FormText
-          text="Demo output"
-        />
+        <FormText text="Demo output" />
       </p>
 
       <p>
-        <FormText
-          text="Output with parameters: {param}"
-          values={{ param: 'Demo value' }}
-        />
+        <FormText text="Output with parameters: {param}" values={{ param: 'Demo value' }} />
       </p>
     </Form>
   );
 }
 
-<Example />
+<Example />;
 ```

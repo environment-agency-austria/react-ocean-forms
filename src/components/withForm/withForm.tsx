@@ -19,14 +19,21 @@ import { IFormContextProps } from './withForm.types';
  * Internal type for form component props. Deals with the
  * defaultProp logic and removes the form context props.
  */
-type FormComponentProps<TComp> = Subtract<JSX.LibraryManagedAttributes<TComp, PropsOf<TComp>>, IFormContextProps>;
+type FormComponentProps<TComp> = Subtract<
+  JSX.LibraryManagedAttributes<TComp, PropsOf<TComp>>,
+  IFormContextProps
+>;
 
 /**
  * High order component for consuming the form context
  * @deprecated Deprecated in favour of `useFormContext` hook
  */
-export const withForm = <TComp extends React.ComponentType<TProps>, TProps extends IFormContextProps = PropsOf<TComp>>(Component: TComp):
-React.ComponentType<FormComponentProps<TComp>> => {
+export const withForm = <
+  TComp extends React.ComponentType<TProps>,
+  TProps extends IFormContextProps = PropsOf<TComp>
+>(
+  Component: TComp
+): React.ComponentType<FormComponentProps<TComp>> => {
   /**
    * We need to cast the component back to a
    * React.ComponentType in order to use it in
@@ -40,7 +47,7 @@ React.ComponentType<FormComponentProps<TComp>> => {
    * Component that injects the form context prop
    * to the wrapped component
    */
-  const FormComponent: React.FC<FormComponentProps<TComp>> = (props) => {
+  const FormComponent: React.FC<FormComponentProps<TComp>> = props => {
     const context = useFormContext();
 
     // @ts-ignore

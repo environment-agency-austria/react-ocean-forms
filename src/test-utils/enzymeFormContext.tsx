@@ -24,11 +24,13 @@ export const createMockFormContext = (registerCallback?: Function): IFormContext
   unregisterField: jest.fn(),
   notifyFieldEvent: jest.fn(),
 
-  registerListener: jest.fn().mockImplementation((name: string, callback: TFormEventListener): void => {
-    if (registerCallback) {
-      registerCallback(name, callback);
-    }
-  }),
+  registerListener: jest
+    .fn()
+    .mockImplementation((name: string, callback: TFormEventListener): void => {
+      if (registerCallback) {
+        registerCallback(name, callback);
+      }
+    }),
   unregisterListener: jest.fn(),
 
   getFieldState: jest.fn(),

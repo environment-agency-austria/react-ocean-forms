@@ -27,12 +27,12 @@ const createMockField = (name: string, label: string, isGroup?: boolean): IMockF
 
 describe('useFieldStates', () => {
   interface ISetupResult {
-    result:  {
+    result: {
       current: IUseFieldStatesResult;
     };
   }
 
-  const setup = (): ISetupResult => renderHook(useFieldStates)
+  const setup = (): ISetupResult => renderHook(useFieldStates);
 
   it('should return the correct result', () => {
     const { result } = setup();
@@ -55,12 +55,16 @@ describe('useFieldStates', () => {
       ['1 of 5 props', 'foo', { label: 'hey' }],
       ['2 of 5 props', 'foo', { label: 'hey', validate: mf }],
       ['3 of 5 props', 'foo', { label: 'hey', validate: mf, updateValidation: mf }],
-      ['4 of 5 props', 'foo', {
-        label: 'hey',
-        validate: mf,
-        updateValidation: mf,
-        reset: mf,
-      }],
+      [
+        '4 of 5 props',
+        'foo',
+        {
+          label: 'hey',
+          validate: mf,
+          updateValidation: mf,
+          reset: mf,
+        },
+      ],
     ];
 
     test.each(cases)('case %s', (testName: string, fieldName: string, fieldState: IFieldState) => {
@@ -83,12 +87,15 @@ describe('useFieldStates', () => {
     describe('registerField - field registration', () => {
       const cases = createCases();
 
-      test.each(cases)('should register a new %s without crashing', (testName, field: IMockField) => {
-        const { result } = setup();
-        expect(() => {
-          result.current.registerField(field.name, field.state);
-        }).not.toThrowError();
-      });
+      test.each(cases)(
+        'should register a new %s without crashing',
+        (testName, field: IMockField) => {
+          const { result } = setup();
+          expect(() => {
+            result.current.registerField(field.name, field.state);
+          }).not.toThrowError();
+        }
+      );
 
       it('should throw an error if a field with the given name is already registered', () => {
         const { result } = setup();
@@ -117,19 +124,22 @@ describe('useFieldStates', () => {
     describe('getFieldState - field states', () => {
       const cases = createCases();
 
-      test.each(cases)('should return the correct field state of a %s', (testName, field: IMockField) => {
-        const { result } = setup();
-        result.current.registerField(field.name, field.state);
-        expect(result.current.getFieldState(field.name)).toBe(field.state);
-      });
+      test.each(cases)(
+        'should return the correct field state of a %s',
+        (testName, field: IMockField) => {
+          const { result } = setup();
+          result.current.registerField(field.name, field.state);
+          expect(result.current.getFieldState(field.name)).toBe(field.state);
+        }
+      );
 
       it('should throw an error when trying to access an non-existing field state', () => {
         const { result } = setup();
         const mockFieldName = 'mock-test';
 
-        expect(
-          () => result.current.getFieldState(mockFieldName),
-        ).toThrowError(`[Form] getFieldState: Could not find state of field '${mockFieldName}'`);
+        expect(() => result.current.getFieldState(mockFieldName)).toThrowError(
+          `[Form] getFieldState: Could not find state of field '${mockFieldName}'`
+        );
       });
     });
 
@@ -149,9 +159,24 @@ describe('useFieldStates', () => {
       result.current.forEachFieldState(forEachCallback);
 
       expect(forEachCallback).toHaveBeenCalledTimes(3);
-      expect(forEachCallback).toHaveBeenNthCalledWith(1, field.state, field.name, expect.anything());
-      expect(forEachCallback).toHaveBeenNthCalledWith(2, group.state, group.name, expect.anything());
-      expect(forEachCallback).toHaveBeenNthCalledWith(3, subField.state, subField.name, expect.anything());
+      expect(forEachCallback).toHaveBeenNthCalledWith(
+        1,
+        field.state,
+        field.name,
+        expect.anything()
+      );
+      expect(forEachCallback).toHaveBeenNthCalledWith(
+        2,
+        group.state,
+        group.name,
+        expect.anything()
+      );
+      expect(forEachCallback).toHaveBeenNthCalledWith(
+        3,
+        subField.state,
+        subField.name,
+        expect.anything()
+      );
     });
   });
 });

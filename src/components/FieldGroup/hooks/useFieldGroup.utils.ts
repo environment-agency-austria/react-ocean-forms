@@ -16,7 +16,10 @@ import { IFormContext } from '../../FormContext';
  * @param fullName Full name of the field group
  * @hidden
  */
-export function getGroupValue<TFieldValue extends {}>(formContext: IFormContext, fullName: string): TFieldValue | undefined {
+export function getGroupValue<TFieldValue extends {}>(
+  formContext: IFormContext,
+  fullName: string
+): TFieldValue | undefined {
   const formValues = formContext.getValues();
 
   const formValue = formValues[fullName];

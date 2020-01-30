@@ -1,5 +1,7 @@
 ### Examples
+
 #### Simple field group
+
 Showcase of a simple field group
 
 ```jsx
@@ -7,7 +9,7 @@ import { Form, FieldGroup, Input } from 'react-ocean-forms';
 
 function Example() {
   // Submit callback, here you'd make your api calls
-  const handleSubmit = (values) => {
+  const handleSubmit = values => {
     console.log('onSubmit, values: ' + JSON.stringify(values));
   };
 
@@ -16,15 +18,11 @@ function Example() {
     myGroup: {
       myInput1: 'input 1',
       myInput2: 'input 2',
-    }
+    },
   };
 
   return (
-    <Form
-      className="demo"
-      onSubmit={handleSubmit}
-      defaultValues={defaultValues}
-    >
+    <Form className="demo" onSubmit={handleSubmit} defaultValues={defaultValues}>
       <FieldGroup
         name="myGroup"
         label="Example group"
@@ -42,5 +40,5 @@ function Example() {
   );
 }
 
-<Example />
+<Example />;
 ```

@@ -22,10 +22,7 @@ describe('<FormButton />', () => {
     button: ShallowWrapper;
   }
 
-  const setup = ({
-    props,
-    contextOverrides,
-  }: Partial<ISetupArgs> = {}): ISetupResult => {
+  const setup = ({ props, contextOverrides }: Partial<ISetupArgs> = {}): ISetupResult => {
     const formContext: IFormContext = {
       ...createMockFormContext(),
       ...contextOverrides,
@@ -33,11 +30,7 @@ describe('<FormButton />', () => {
 
     (useFormContext as jest.Mock).mockReturnValue(formContext);
 
-    const wrapper = shallow((
-      <FormButton
-        {...props}
-      />
-    ));
+    const wrapper = shallow(<FormButton {...props} />);
     const button = wrapper.find('button');
 
     return {
@@ -47,7 +40,8 @@ describe('<FormButton />', () => {
     };
   };
 
-  const simulateClick = (button: ShallowWrapper): ShallowWrapper => button.simulate('click', mockEvent());
+  const simulateClick = (button: ShallowWrapper): ShallowWrapper =>
+    button.simulate('click', mockEvent());
 
   const checkClickHandler = (args: Partial<ISetupArgs>, called: boolean): void => {
     describe('with onClick handler', () => {
@@ -104,7 +98,7 @@ describe('<FormButton />', () => {
 
     describe('custom component', () => {
       it('should render the custom component', () => {
-        const { wrapper } = setup({ props: { component: 'div' }});
+        const { wrapper } = setup({ props: { component: 'div' } });
         expect(wrapper).toMatchSnapshot();
       });
     });

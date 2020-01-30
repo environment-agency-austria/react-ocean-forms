@@ -20,13 +20,13 @@ import { useFieldGroup } from './hooks/useFieldGroup';
  * Defines a collection of fields. It combines its values to a
  * sub-object and provides the possibility to attach validators to the group.
  */
-export const FieldGroup = <TFieldValues extends {} = IFieldValues>(props: React.PropsWithChildren<IFieldGroupProps<TFieldValues>>): React.ReactElement | null => {
+export const FieldGroup = <TFieldValues extends {} = IFieldValues>(
+  props: React.PropsWithChildren<IFieldGroupProps<TFieldValues>>
+): React.ReactElement | null => {
   const { render, ...otherProps } = props;
   const { groupFormContext, renderParams } = useFieldGroup(otherProps);
 
   return (
-    <FormContext.Provider value={groupFormContext}>
-      {render(renderParams)}
-    </FormContext.Provider>
+    <FormContext.Provider value={groupFormContext}>{render(renderParams)}</FormContext.Provider>
   );
 };

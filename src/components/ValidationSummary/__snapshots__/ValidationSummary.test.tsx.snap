@@ -21,8 +21,7 @@ exports[`<ValidationSummary /> basic rendering should render correctly if there 
         onClick={[MockFunction]}
       >
         mock-label
-        :
-         
+        : 
         <span>
           Error
         </span>
@@ -53,8 +52,7 @@ exports[`<ValidationSummary /> render props render prop should be called with th
         onClick={[MockFunction]}
       >
         mock-label
-        :
-         
+        : 
         <span>
           Error
         </span>

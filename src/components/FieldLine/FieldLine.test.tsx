@@ -24,16 +24,12 @@ describe('<FieldLine />', () => {
     onBlur: jest.fn(),
   };
 
-  const setup = (props?: Partial<IFieldLineProps>): ShallowWrapper => shallow((
-    <FieldLine
-      label="unitLabel"
-      meta={meta}
-      field={field}
-      {...props}
-    >
-      <div>children</div>
-    </FieldLine>
-  ));
+  const setup = (props?: Partial<IFieldLineProps>): ShallowWrapper =>
+    shallow(
+      <FieldLine label="unitLabel" meta={meta} field={field} {...props}>
+        <div>children</div>
+      </FieldLine>
+    );
 
   it('should render without crashing', () => {
     const wrapper = setup();

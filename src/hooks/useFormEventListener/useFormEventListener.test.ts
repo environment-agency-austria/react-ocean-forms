@@ -26,10 +26,7 @@ function setup(): ISetupResult {
 
   const fullName = 'mock-name';
 
-  const { rerender, unmount } = renderHook(() => useFormEventListener(
-    fullName,
-    mockListener,
-  ));
+  const { rerender, unmount } = renderHook(() => useFormEventListener(fullName, mockListener));
 
   return {
     registerListener,
@@ -38,7 +35,7 @@ function setup(): ISetupResult {
     fullName,
     rerender,
     unmount,
-  }
+  };
 }
 
 describe('useFormEventListener', () => {

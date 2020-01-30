@@ -1,13 +1,21 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
 import { IFormContext } from '../../components';
-import { createMockFormContext, createMockValidationResult } from '../../test-utils/enzymeFormContext';
+import {
+  createMockFormContext,
+  createMockValidationResult,
+} from '../../test-utils/enzymeFormContext';
 import { useFormContext } from '../useFormContext';
 import { useValidation, IUseValidationResult } from '../useValidation';
 import { useFullName, useFieldRegistration, IFieldState } from '../internal';
 
 import { useField } from './useField';
-import { TBasicFieldValue, IFieldComponentFieldProps, IUseFieldProps, IUseFieldResult } from './useField.types';
+import {
+  TBasicFieldValue,
+  IFieldComponentFieldProps,
+  IUseFieldProps,
+  IUseFieldResult,
+} from './useField.types';
 
 jest.mock('../useFormContext');
 jest.mock('../useValidation');
@@ -35,11 +43,8 @@ describe('useField', () => {
     result: { current: IUseFieldResult<unknown> };
   }
 
-  const setup = ({
-    props,
-    contextOverrides,
-  }: Partial<ISetupArgs> = {}): ISetupResult => {
-    (useFullName as jest.Mock).mockImplementation((name: string) => name)
+  const setup = ({ props, contextOverrides }: Partial<ISetupArgs> = {}): ISetupResult => {
+    (useFullName as jest.Mock).mockImplementation((name: string) => name);
     const formContext = {
       ...createMockFormContext(),
       ...contextOverrides,
@@ -59,7 +64,9 @@ describe('useField', () => {
       label: mockLabel,
       ...props,
     };
-    const { result, unmount, rerender, waitForNextUpdate } = renderHook(useField, { initialProps: useFieldParams });
+    const { result, unmount, rerender, waitForNextUpdate } = renderHook(useField, {
+      initialProps: useFieldParams,
+    });
 
     return {
       formContext,
@@ -77,8 +84,14 @@ describe('useField', () => {
     };
   };
 
-  const assertValue = (fieldProps: IFieldComponentFieldProps<unknown>, value: TBasicFieldValue): unknown => expect(fieldProps.value).toBe(value);
-  const simulateChange = (field: IFieldComponentFieldProps<unknown>, value: TBasicFieldValue): void => {
+  const assertValue = (
+    fieldProps: IFieldComponentFieldProps<unknown>,
+    value: TBasicFieldValue
+  ): unknown => expect(fieldProps.value).toBe(value);
+  const simulateChange = (
+    field: IFieldComponentFieldProps<unknown>,
+    value: TBasicFieldValue
+  ): void => {
     act(() => {
       field.onChange({
         target: {
@@ -91,10 +104,7 @@ describe('useField', () => {
   describe('Form registration', () => {
     it('should register itself in the form context', () => {
       const { fieldState } = setup();
-      expect((useFieldRegistration as jest.Mock)).toHaveBeenCalledWith(
-        mockName,
-        fieldState,
-      );
+      expect(useFieldRegistration as jest.Mock).toHaveBeenCalledWith(mockName, fieldState);
     });
   });
 
@@ -279,7 +289,10 @@ describe('useField', () => {
   describe('onChange handling', () => {
     const mockValue = 'mock-change-value';
 
-    const setupOnChange = (props?: Partial<IUseFieldProps<unknown>>, contextOverrides?: Partial<IFormContext>): ISetupResult => {
+    const setupOnChange = (
+      props?: Partial<IUseFieldProps<unknown>>,
+      contextOverrides?: Partial<IFormContext>
+    ): ISetupResult => {
       const setupResult = setup({
         props,
         contextOverrides,
@@ -296,19 +309,12 @@ describe('useField', () => {
 
     it('should call the validate function', () => {
       const { validation } = setupOnChange();
-      expect(validation.validate).toHaveBeenCalledWith(
-        mockValue,
-        { checkAsync: false },
-      );
+      expect(validation.validate).toHaveBeenCalledWith(mockValue, { checkAsync: false });
     });
 
     it('should notify the form context', () => {
       const { formContext } = setupOnChange();
-      expect(formContext.notifyFieldEvent).toHaveBeenCalledWith(
-        mockName,
-        'change',
-        mockValue,
-      );
+      expect(formContext.notifyFieldEvent).toHaveBeenCalledWith(mockName, 'change', mockValue);
     });
 
     it('should call the Field.onChange handler', () => {
@@ -320,76 +326,92 @@ describe('useField', () => {
     it('should respect the Form.asyncValidateOnChange configuration', () => {
       const mockCheckAsync = true;
       const { validation } = setupOnChange(undefined, { asyncValidateOnChange: mockCheckAsync });
-      expect(validation.validate).toHaveBeenCalledWith(
-        mockValue,
-        { checkAsync: mockCheckAsync },
-      );
+      expect(validation.validate).toHaveBeenCalledWith(mockValue, { checkAsync: mockCheckAsync });
     });
 
     it('should respect the Field.asyncValidateOnChange configuration', () => {
       const mockCheckAsync = true;
       const { validation } = setupOnChange({ asyncValidateOnChange: mockCheckAsync });
 
-      expect(validation.validate).toHaveBeenCalledWith(
-        mockValue,
-        { checkAsync: mockCheckAsync },
-      );
+      expect(validation.validate).toHaveBeenCalledWith(mockValue, { checkAsync: mockCheckAsync });
     });
 
     describe('Field.getSubmitValue', () => {
       it('should call the Field.getSubmitValue callback', () => {
-        const mockGetSubmitValue = jest.fn().mockImplementation((value: TBasicFieldValue): TBasicFieldValue => value);
+        const mockGetSubmitValue = jest
+          .fn()
+          .mockImplementation((value: TBasicFieldValue): TBasicFieldValue => value);
         setupOnChange({ getSubmitValue: mockGetSubmitValue });
 
-        expect(mockGetSubmitValue).toHaveBeenCalledWith(
-          mockValue,
-          { disabled: false, plaintext: false },
-        );
+        expect(mockGetSubmitValue).toHaveBeenCalledWith(mockValue, {
+          disabled: false,
+          plaintext: false,
+        });
       });
 
       describe('meta.disabled handling', () => {
         const cases: [string, boolean, boolean | undefined, boolean][] = [
-          [ 'Field.disabled = undefined, FormContext.disabled = false', false, undefined, false ],
-          [ 'Field.disabled = undefined, FormContext.disabled = true', true, undefined, true ],
-          [ 'Field.disabled = false, FormContext.disabled = false', false, false, false ],
-          [ 'Field.disabled = false, FormContext.disabled = true', false, false, true ],
-          [ 'Field.disabled = true, FormContext.disabled = true', true, true, true ],
-          [ 'Field.disabled = true, FormContext.disabled = false', true, true, false ],
+          ['Field.disabled = undefined, FormContext.disabled = false', false, undefined, false],
+          ['Field.disabled = undefined, FormContext.disabled = true', true, undefined, true],
+          ['Field.disabled = false, FormContext.disabled = false', false, false, false],
+          ['Field.disabled = false, FormContext.disabled = true', false, false, true],
+          ['Field.disabled = true, FormContext.disabled = true', true, true, true],
+          ['Field.disabled = true, FormContext.disabled = false', true, true, false],
         ];
         it.each(cases)(
           'Case "%s" should result in disabled = %s',
-          (name: string, expectedValue: boolean, overridenValue: boolean | undefined, contextValue: boolean) => {
-            const mockGetSubmitValue = jest.fn().mockImplementation((value: TBasicFieldValue): TBasicFieldValue => value);
-            setupOnChange({ getSubmitValue: mockGetSubmitValue, disabled: overridenValue }, { disabled: contextValue });
-
-            expect(mockGetSubmitValue).toHaveBeenCalledWith(
-              mockValue,
-              { disabled: expectedValue, plaintext: false },
+          (
+            name: string,
+            expectedValue: boolean,
+            overridenValue: boolean | undefined,
+            contextValue: boolean
+          ) => {
+            const mockGetSubmitValue = jest
+              .fn()
+              .mockImplementation((value: TBasicFieldValue): TBasicFieldValue => value);
+            setupOnChange(
+              { getSubmitValue: mockGetSubmitValue, disabled: overridenValue },
+              { disabled: contextValue }
             );
-          },
+
+            expect(mockGetSubmitValue).toHaveBeenCalledWith(mockValue, {
+              disabled: expectedValue,
+              plaintext: false,
+            });
+          }
         );
       });
 
       describe('meta.plaintext handling', () => {
         const cases: [string, boolean, boolean | undefined, boolean][] = [
-          [ 'Field.plaintext = undefined, FormContext.plaintext = false', false, undefined, false ],
-          [ 'Field.plaintext = undefined, FormContext.plaintext = true', true, undefined, true ],
-          [ 'Field.plaintext = false, FormContext.plaintext = false', false, false, false ],
-          [ 'Field.plaintext = false, FormContext.plaintext = true', false, false, true ],
-          [ 'Field.plaintext = true, FormContext.plaintext = true', true, true, true ],
-          [ 'Field.plaintext = true, FormContext.plaintext = false', true, true, false ],
+          ['Field.plaintext = undefined, FormContext.plaintext = false', false, undefined, false],
+          ['Field.plaintext = undefined, FormContext.plaintext = true', true, undefined, true],
+          ['Field.plaintext = false, FormContext.plaintext = false', false, false, false],
+          ['Field.plaintext = false, FormContext.plaintext = true', false, false, true],
+          ['Field.plaintext = true, FormContext.plaintext = true', true, true, true],
+          ['Field.plaintext = true, FormContext.plaintext = false', true, true, false],
         ];
         it.each(cases)(
           'Case "%s" should result in plaintext = %s',
-          (name: string, expectedValue: boolean, overridenValue: boolean | undefined, contextValue: boolean) => {
-            const mockGetSubmitValue = jest.fn().mockImplementation((value: TBasicFieldValue): TBasicFieldValue => value);
-            setupOnChange({ getSubmitValue: mockGetSubmitValue, plaintext: overridenValue }, { plaintext: contextValue });
-
-            expect(mockGetSubmitValue).toHaveBeenCalledWith(
-              mockValue,
-              { disabled: false, plaintext: expectedValue },
+          (
+            name: string,
+            expectedValue: boolean,
+            overridenValue: boolean | undefined,
+            contextValue: boolean
+          ) => {
+            const mockGetSubmitValue = jest
+              .fn()
+              .mockImplementation((value: TBasicFieldValue): TBasicFieldValue => value);
+            setupOnChange(
+              { getSubmitValue: mockGetSubmitValue, plaintext: overridenValue },
+              { plaintext: contextValue }
             );
-          },
+
+            expect(mockGetSubmitValue).toHaveBeenCalledWith(mockValue, {
+              disabled: false,
+              plaintext: expectedValue,
+            });
+          }
         );
       });
     });
@@ -398,14 +420,20 @@ describe('useField', () => {
   describe('onBlur handling', () => {
     const mockValue = 'mock-value';
 
-    const setupLocal = (props?: Partial<IUseFieldProps<unknown>>, contextOverrides?: Partial<IFormContext>): ISetupResult => {
+    const setupLocal = (
+      props?: Partial<IUseFieldProps<unknown>>,
+      contextOverrides?: Partial<IFormContext>
+    ): ISetupResult => {
       return setup({
         props: { ...props, value: mockValue },
         contextOverrides: contextOverrides,
       });
     };
 
-    const setupOnBlur = (props?: Partial<IUseFieldProps<unknown>>, contextOverrides?: Partial<IFormContext>): ISetupResult => {
+    const setupOnBlur = (
+      props?: Partial<IUseFieldProps<unknown>>,
+      contextOverrides?: Partial<IFormContext>
+    ): ISetupResult => {
       const setupResult = setupLocal(props, contextOverrides);
 
       act(() => {
@@ -416,7 +444,9 @@ describe('useField', () => {
     };
 
     it('should call the validate function with the value from Field.getSubmitValue', () => {
-      const mockGetSubmitValue = jest.fn().mockImplementation((value: TBasicFieldValue): TBasicFieldValue => value);
+      const mockGetSubmitValue = jest
+        .fn()
+        .mockImplementation((value: TBasicFieldValue): TBasicFieldValue => value);
       const mockChangeValue = 'foo';
       const { result, validation } = setupLocal({ getSubmitValue: mockGetSubmitValue });
 
@@ -428,10 +458,10 @@ describe('useField', () => {
         result.current.fieldProps.onBlur();
       });
       expect(validation.validate).toHaveBeenCalledWith(mockChangeValue);
-      expect(mockGetSubmitValue).toHaveBeenCalledWith(
-        mockChangeValue,
-        { disabled: false, plaintext: false },
-      );
+      expect(mockGetSubmitValue).toHaveBeenCalledWith(mockChangeValue, {
+        disabled: false,
+        plaintext: false,
+      });
     });
 
     it('should not call the validate function if the field is not dirty', () => {
@@ -440,7 +470,9 @@ describe('useField', () => {
     });
 
     it('should not call the Field.getSubmitValue function if the field is not dirty', () => {
-      const mockGetSubmitValue = jest.fn().mockImplementation((value: TBasicFieldValue): TBasicFieldValue => value);
+      const mockGetSubmitValue = jest
+        .fn()
+        .mockImplementation((value: TBasicFieldValue): TBasicFieldValue => value);
       const { validation } = setupOnBlur({ getSubmitValue: mockGetSubmitValue });
 
       expect(validation.validate).not.toHaveBeenCalledWith(mockValue);
@@ -449,10 +481,7 @@ describe('useField', () => {
 
     it('should notify the form context', () => {
       const { formContext } = setupOnBlur();
-      expect(formContext.notifyFieldEvent).toHaveBeenCalledWith(
-        mockName,
-        'blur',
-      );
+      expect(formContext.notifyFieldEvent).toHaveBeenCalledWith(mockName, 'blur');
     });
 
     it('should call the Field.onBlur handler', () => {
@@ -482,10 +511,10 @@ describe('useField', () => {
     it('should call Field.getDisplayValue on first render', () => {
       const { getDisplayValue, result } = setupWithDisplayName();
       assertValue(result.current.fieldProps, mockDisplayValue);
-      expect(getDisplayValue).toHaveBeenCalledWith(
-        undefined,
-        { disabled: false, plaintext: false },
-      );
+      expect(getDisplayValue).toHaveBeenCalledWith(undefined, {
+        disabled: false,
+        plaintext: false,
+      });
     });
 
     it('should call getDisplayValue whenever the Context.disabled state changes', () => {
@@ -495,10 +524,7 @@ describe('useField', () => {
       formContext.disabled = true;
       rerender();
 
-      expect(getDisplayValue).toHaveBeenCalledWith(
-        mockValue,
-        { disabled: true, plaintext: false },
-      );
+      expect(getDisplayValue).toHaveBeenCalledWith(mockValue, { disabled: true, plaintext: false });
     });
 
     it('should call getDisplayValue whenever the Context.plaintext state changes', () => {
@@ -508,10 +534,7 @@ describe('useField', () => {
       formContext.plaintext = true;
       rerender();
 
-      expect(getDisplayValue).toHaveBeenCalledWith(
-        mockValue,
-        { disabled: false, plaintext: true },
-      );
+      expect(getDisplayValue).toHaveBeenCalledWith(mockValue, { disabled: false, plaintext: true });
     });
 
     it('should call getDisplayValue whenever the disabled prop changes', () => {
@@ -523,10 +546,7 @@ describe('useField', () => {
         disabled: true,
       });
 
-      expect(getDisplayValue).toHaveBeenCalledWith(
-        mockValue,
-        { disabled: true, plaintext: false },
-      );
+      expect(getDisplayValue).toHaveBeenCalledWith(mockValue, { disabled: true, plaintext: false });
     });
 
     it('should call getDisplayValue whenever the plaintext prop changes', () => {
@@ -538,10 +558,7 @@ describe('useField', () => {
         plaintext: true,
       });
 
-      expect(getDisplayValue).toHaveBeenCalledWith(
-        mockValue,
-        { disabled: false, plaintext: true },
-      );
+      expect(getDisplayValue).toHaveBeenCalledWith(mockValue, { disabled: false, plaintext: true });
     });
   });
 
@@ -566,10 +583,10 @@ describe('useField', () => {
         });
 
         expect(fieldState.getValue()).toBe(mockSubmitValue);
-        expect(mockGetSubmitValue).toHaveBeenCalledWith(
-          mockValue,
-          { disabled: false, plaintext: false },
-        );
+        expect(mockGetSubmitValue).toHaveBeenCalledWith(mockValue, {
+          disabled: false,
+          plaintext: false,
+        });
       });
     });
 
@@ -581,10 +598,7 @@ describe('useField', () => {
         const { fieldState, validation } = setup({ props: { value: mockValue } });
         void fieldState.validate(mockValidateArgs);
 
-        expect(validation.validate).toHaveBeenLastCalledWith(
-          mockValue,
-          mockValidateArgs,
-        );
+        expect(validation.validate).toHaveBeenLastCalledWith(mockValue, mockValidateArgs);
       });
 
       it('should pass the validated value through getSubmitValue', () => {
@@ -603,10 +617,10 @@ describe('useField', () => {
           void fieldState.validate();
         });
 
-        expect(mockGetSubmitValue).toHaveBeenCalledWith(
-          mockValue,
-          { disabled: false, plaintext: false },
-        );
+        expect(mockGetSubmitValue).toHaveBeenCalledWith(mockValue, {
+          disabled: false,
+          plaintext: false,
+        });
       });
     });
 
@@ -665,10 +679,10 @@ describe('useField', () => {
           });
 
           assertValue(result.current.fieldProps, mockDisplayValue);
-          expect(mockGetDisplayValue).toHaveBeenCalledWith(
-            mockDefaultValue,
-            { disabled: false, plaintext: false },
-          );
+          expect(mockGetDisplayValue).toHaveBeenCalledWith(mockDefaultValue, {
+            disabled: false,
+            plaintext: false,
+          });
         });
 
         it('should call the onChange handler', () => {

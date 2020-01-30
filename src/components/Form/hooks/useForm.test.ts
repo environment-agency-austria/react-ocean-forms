@@ -4,7 +4,13 @@ import { IFormProps } from '../Form.types';
 import { IFormContext, IFieldValues } from '../../FormContext';
 
 import { useForm } from './useForm';
-import { useFieldEvents, IUseFieldEventsResult, IUseFieldStatesResult, useFieldStates, IFieldState } from '../../../hooks/internal';
+import {
+  useFieldEvents,
+  IUseFieldEventsResult,
+  IUseFieldStatesResult,
+  useFieldStates,
+  IFieldState,
+} from '../../../hooks/internal';
 
 // Only mock parts of the internal hooks, as
 // some of them are needed for useForm to function
@@ -36,7 +42,7 @@ describe('useForm', () => {
     fieldStatesResult: IUseFieldStatesResult;
   }
 
-  const setup = ({ props = { }, fieldStatesOverride }: Partial<ISetupArgs> = {}): ISetupResult => {
+  const setup = ({ props = {}, fieldStatesOverride }: Partial<ISetupArgs> = {}): ISetupResult => {
     const fieldEventResult: IUseFieldEventsResult = {
       notifyListeners: jest.fn(),
       registerListener: jest.fn(),
@@ -129,16 +135,16 @@ describe('useForm', () => {
     const unitSubField2 = createMockField(`${unitGroup.name}.subField2`, 'Sub field 2');
 
     const mockFields = new Map<string, IFieldState>([
-      [ unitField.name, unitField.state ],
-      [ unitGroup.name, unitGroup.state ],
-      [ unitSubField.name, unitSubField.state ],
-      [ unitSubField2.name, unitSubField2.state ],
+      [unitField.name, unitField.state],
+      [unitGroup.name, unitGroup.state],
+      [unitSubField.name, unitSubField.state],
+      [unitSubField2.name, unitSubField2.state],
     ]);
 
-    const forEachFieldState = jest.fn().mockImplementation((cb) => {
+    const forEachFieldState = jest.fn().mockImplementation(cb => {
       mockFields.forEach(cb);
     });
-    const { result } = setup({ fieldStatesOverride: { forEachFieldState }});
+    const { result } = setup({ fieldStatesOverride: { forEachFieldState } });
 
     let formValues: IFieldValues;
     it('should return the values without crashing', () => {
@@ -194,22 +200,25 @@ describe('useForm', () => {
 
     const unitFieldName = 'unitField';
 
-    const setupSubmit = async ({ props, customField, }: Partial<ISetupSubmitArgs> = {}): Promise<ISetupSubmitResult> => {
+    const setupSubmit = async ({
+      props,
+      customField,
+    }: Partial<ISetupSubmitArgs> = {}): Promise<ISetupSubmitResult> => {
       const unitField = createMockField(unitFieldName, 'Unit field');
       const unitGroup = createMockField('unitGroup', 'Unit group', true);
       const unitSubField = createMockField(`${unitGroup.name}.subField`, 'Sub field');
 
       const mockFields = new Map<string, IFieldState>([
-        [ unitField.name, unitField.state ],
-        [ unitGroup.name, unitGroup.state ],
-        [ unitSubField.name, unitSubField.state ],
+        [unitField.name, unitField.state],
+        [unitGroup.name, unitGroup.state],
+        [unitSubField.name, unitSubField.state],
       ]);
 
       if (customField) {
         mockFields.set(customField.name, customField.state);
       }
 
-      const forEachFieldState = jest.fn().mockImplementation((cb) => {
+      const forEachFieldState = jest.fn().mockImplementation(cb => {
         mockFields.forEach(cb);
       });
 
@@ -236,22 +245,26 @@ describe('useForm', () => {
       it('should call all the validation functions', async () => {
         const { mockFields } = await setupSubmit();
 
-        mockFields.forEach(item => expect(item.validate).toHaveBeenLastCalledWith({
-          checkAsync: true,
-          immediateAsync: true,
-        }));
+        mockFields.forEach(item =>
+          expect(item.validate).toHaveBeenLastCalledWith({
+            checkAsync: true,
+            immediateAsync: true,
+          })
+        );
       });
 
       it('should call the onValidate prop', async () => {
         const onValidateHandler = jest.fn().mockReturnValue(null);
-        const { expectedFormValues } = await setupSubmit({ props: { onValidate: onValidateHandler }});
+        const { expectedFormValues } = await setupSubmit({
+          props: { onValidate: onValidateHandler },
+        });
 
         expect(onValidateHandler).toHaveBeenCalledWith(expectedFormValues);
       });
 
       it('should call the onSubmit prop', async () => {
         const onSubmitHandler = jest.fn();
-        const { expectedFormValues } = await setupSubmit({ props: { onSubmit: onSubmitHandler }});
+        const { expectedFormValues } = await setupSubmit({ props: { onSubmit: onSubmitHandler } });
 
         expect(onSubmitHandler).toHaveBeenCalledWith(expectedFormValues, undefined);
       });
@@ -262,7 +275,9 @@ describe('useForm', () => {
             unitField: undefined,
           });
           const onSubmitHandler = jest.fn();
-          const { expectedFormValues } = await setupSubmit({ props: { onValidate: onValidateHandler, onSubmit: onSubmitHandler }});
+          const { expectedFormValues } = await setupSubmit({
+            props: { onValidate: onValidateHandler, onSubmit: onSubmitHandler },
+          });
 
           expect(onSubmitHandler).toHaveBeenCalledWith(expectedFormValues, undefined);
         });
@@ -270,36 +285,45 @@ describe('useForm', () => {
     });
 
     describe('invalid through form validator', () => {
-      const createInvalidValidator = (): jest.Mock => jest.fn().mockReturnValue({
-        [unitFieldName]: 'error',
-      });
+      const createInvalidValidator = (): jest.Mock =>
+        jest.fn().mockReturnValue({
+          [unitFieldName]: 'error',
+        });
 
       it('should update the validation state of the field', async () => {
-        const { mockFields } = await setupSubmit({ props: { onValidate: createInvalidValidator() }});
+        const { mockFields } = await setupSubmit({
+          props: { onValidate: createInvalidValidator() },
+        });
 
         mockFields.forEach((item, name) => {
-          if (name !== unitFieldName) { return; }
+          if (name !== unitFieldName) {
+            return;
+          }
           expect(item.updateValidation).toHaveBeenCalledWith({
             valid: false,
             error: {
               message_id: 'error',
-              params: { },
+              params: {},
             },
           });
         });
       });
 
       it('should trigger a submit-invalid event', async () => {
-        const { fieldEventResult } = await setupSubmit({ props: { onValidate: createInvalidValidator() } });
+        const { fieldEventResult } = await setupSubmit({
+          props: { onValidate: createInvalidValidator() },
+        });
         expect(fieldEventResult.notifyListeners).toHaveBeenCalledWith('_form', 'submit-invalid');
       });
 
       it('should not call the onSubmit prop', async () => {
         const onSubmitHandler = jest.fn();
-        await setupSubmit({ props: {
-          onValidate: createInvalidValidator(),
-          onSubmit: onSubmitHandler,
-        }});
+        await setupSubmit({
+          props: {
+            onValidate: createInvalidValidator(),
+            onSubmit: onSubmitHandler,
+          },
+        });
         expect(onSubmitHandler).not.toHaveBeenCalled();
       });
     });
@@ -339,7 +363,7 @@ describe('useForm', () => {
 
       it('should not be busy if the onSubmit callback returns immediately', async () => {
         const onSubmitHandler = jest.fn();
-        const { result } = setup({ props: { onSubmit: onSubmitHandler }});
+        const { result } = setup({ props: { onSubmit: onSubmitHandler } });
         await testBusyState(result, false);
       });
 
@@ -350,30 +374,30 @@ describe('useForm', () => {
 
       describe('busy prop override set to true', () => {
         it('should be always busy', () => {
-          const { result } = setup({ props: { busy: true }});
+          const { result } = setup({ props: { busy: true } });
           expect(result.current.busy).toBeTruthy();
         });
 
         it('should be busy if the onSubmit callback returns immediately', async () => {
           const onSubmitHandler = jest.fn();
-          const { result } = setup({ props: { onSubmit: onSubmitHandler, busy: true }});
+          const { result } = setup({ props: { onSubmit: onSubmitHandler, busy: true } });
           await testBusyState(result, true);
         });
 
         it('should be busy if there is no onSubmit callback', async () => {
-          const { result } = setup({ props: { busy: true }});
+          const { result } = setup({ props: { busy: true } });
           await testBusyState(result, true);
         });
       });
 
       describe('async onSubmit callback', () => {
-        const createSlowOnSubmit = (): () => Promise<void> => {
-          return async (): Promise<void> => new Promise<void>(
-            (resolve: Function) => setTimeout(
-              (): void => { resolve(); },
-              1000,
-            ),
-          );
+        const createSlowOnSubmit = (): (() => Promise<void>) => {
+          return async (): Promise<void> =>
+            new Promise<void>((resolve: Function) =>
+              setTimeout((): void => {
+                resolve();
+              }, 1000)
+            );
         };
 
         beforeAll(() => {
@@ -385,14 +409,14 @@ describe('useForm', () => {
         });
 
         it('should be busy after invoking onSubmit', async () => {
-          const { result } = setup({ props: { onSubmit: createSlowOnSubmit() }});
+          const { result } = setup({ props: { onSubmit: createSlowOnSubmit() } });
           await simulateSubmitEvent(result.current);
 
           expect(result.current.busy).toBe(true);
         });
 
         it('should not be busy after onSubmit finished', async () => {
-          const { result } = setup({ props: { onSubmit: createSlowOnSubmit() }});
+          const { result } = setup({ props: { onSubmit: createSlowOnSubmit() } });
           await simulateSubmitEvent(result.current);
 
           await act(async () => {
@@ -403,7 +427,7 @@ describe('useForm', () => {
         });
 
         it('should be busy after onSubmit finished if the busy prop is set to true', async () => {
-          const { result } = setup({ props: { onSubmit: createSlowOnSubmit(), busy: true }});
+          const { result } = setup({ props: { onSubmit: createSlowOnSubmit(), busy: true } });
           await simulateSubmitEvent(result.current);
 
           await act(async () => {
@@ -418,7 +442,7 @@ describe('useForm', () => {
     describe('reset on successful submit', () => {
       it('should call the onReset prop on submit when resetOnSubmit is true', async () => {
         const onResetHandler = jest.fn();
-        const { result } = setup({ props: { onReset: onResetHandler, resetOnSubmit: true }});
+        const { result } = setup({ props: { onReset: onResetHandler, resetOnSubmit: true } });
         await simulateSubmitEvent(result.current);
 
         expect(onResetHandler).toHaveBeenCalled();
@@ -438,16 +462,16 @@ describe('useForm', () => {
       const unitGroup = createMockField('unitGroup', 'Unit group', true);
       const unitSubField = createMockField(`${unitGroup.name}.subField`, 'Sub field');
       const mockFields = new Map<string, IFieldState>([
-        [ unitField.name, unitField.state ],
-        [ unitGroup.name, unitGroup.state ],
-        [ unitSubField.name, unitSubField.state ],
+        [unitField.name, unitField.state],
+        [unitGroup.name, unitGroup.state],
+        [unitSubField.name, unitSubField.state],
       ]);
 
-      const forEachFieldState = jest.fn().mockImplementation((cb) => {
+      const forEachFieldState = jest.fn().mockImplementation(cb => {
         mockFields.forEach(cb);
       });
 
-      const { result } = setup({ fieldStatesOverride: { forEachFieldState }});
+      const { result } = setup({ fieldStatesOverride: { forEachFieldState } });
 
       simulateResetEvent(result.current);
       mockFields.forEach(item => expect(item.reset).toHaveBeenCalled());
@@ -455,7 +479,7 @@ describe('useForm', () => {
 
     it('should call the onReset prop', () => {
       const onResetHandler = jest.fn();
-      const { result } = setup({ props: { onReset: onResetHandler }});
+      const { result } = setup({ props: { onReset: onResetHandler } });
       simulateResetEvent(result.current);
 
       expect(onResetHandler).toHaveBeenCalled();

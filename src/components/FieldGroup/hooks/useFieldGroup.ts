@@ -9,7 +9,12 @@
  */
 import { useCallback, useMemo } from 'react';
 
-import { useFormContext, useValidation, IValidationArgs, IBasicValidationState } from '../../../hooks';
+import {
+  useFormContext,
+  useValidation,
+  IValidationArgs,
+  IBasicValidationState,
+} from '../../../hooks';
 import { useFullName, useFieldRegistration } from '../../../hooks/internal';
 import { IFormContext, IFieldValues } from '../../FormContext';
 
@@ -19,7 +24,9 @@ import { IUseFieldGroupArgs, IUseFieldGroupResult } from './useFieldGroup.types'
 /**
  * @hidden
  */
-export function useFieldGroup<TFieldValue = unknown>(props: IUseFieldGroupArgs<TFieldValue>): IUseFieldGroupResult {
+export function useFieldGroup<TFieldValue = unknown>(
+  props: IUseFieldGroupArgs<TFieldValue>
+): IUseFieldGroupResult {
   const formContext = useFormContext();
 
   const {
@@ -33,7 +40,9 @@ export function useFieldGroup<TFieldValue = unknown>(props: IUseFieldGroupArgs<T
   } = props;
 
   const fullName = useFullName(name);
-  const { validationState, validate, resetValidation, updateValidationState } = useValidation(props);
+  const { validationState, validate, resetValidation, updateValidationState } = useValidation(
+    props
+  );
 
   /**
    * Triggers the validation of the group
@@ -43,23 +52,23 @@ export function useFieldGroup<TFieldValue = unknown>(props: IUseFieldGroupArgs<T
       const groupValue = getGroupValue<TFieldValue>(formContext, fullName);
       return validate(groupValue, args);
     },
-    [formContext, fullName, validate],
+    [formContext, fullName, validate]
   );
 
   // Register the group in the formContext, so the group
   // validation can be called on form submit.
-  const registerFieldState = useMemo(() => ({
-    label,
-    isGroup: true,
-    updateValidation: updateValidationState,
-    validate: validateGroup,
-    reset: resetValidation,
-    getValue: () => ({}),
-  }), [label, resetValidation, updateValidationState, validateGroup]);
-  useFieldRegistration(
-    fullName,
-    registerFieldState,
+  const registerFieldState = useMemo(
+    () => ({
+      label,
+      isGroup: true,
+      updateValidation: updateValidationState,
+      validate: validateGroup,
+      reset: resetValidation,
+      getValue: () => ({}),
+    }),
+    [label, resetValidation, updateValidationState, validateGroup]
   );
+  useFieldRegistration(fullName, registerFieldState);
 
   /**
    * Listens to child field events, triggers validation if
@@ -72,14 +81,16 @@ export function useFieldGroup<TFieldValue = unknown>(props: IUseFieldGroupArgs<T
     (name: string, event: string, args?: unknown): void => {
       formContext.notifyFieldEvent(name, event, args);
 
-      if (event !== 'change' && event !== 'blur') { return; }
+      if (event !== 'change' && event !== 'blur') {
+        return;
+      }
 
       if (event === 'change') {
         const localName = name.substring(fullName.length + 1);
 
         const currentGroupValue = getGroupValue<TFieldValue>(formContext, fullName);
         const intermediateGroupValue = {
-          ...(currentGroupValue === undefined ? { } : currentGroupValue),
+          ...(currentGroupValue === undefined ? {} : currentGroupValue),
           ...{
             // Override the value of the event sender, because
             // the Field didn't update its state yet, making the
@@ -88,26 +99,32 @@ export function useFieldGroup<TFieldValue = unknown>(props: IUseFieldGroupArgs<T
           },
         };
 
-        void validate(
-          intermediateGroupValue as TFieldValue,
-          { checkAsync: asyncValidateOnChange },
-        );
+        void validate(intermediateGroupValue as TFieldValue, { checkAsync: asyncValidateOnChange });
       } else if (!asyncValidateOnChange) {
         void validate(getGroupValue(formContext, fullName));
       }
     },
-    [asyncValidateOnChange, formContext, fullName, validate],
+    [asyncValidateOnChange, formContext, fullName, validate]
   );
 
-  const subContext: IFormContext = useMemo(() => ({
-    ...formContext,
-    fieldPrefix: fullName,
-    notifyFieldEvent,
-    disabled,
-    plaintext,
-    defaultValues: (defaultValues === undefined ? formContext.defaultValues : { ...formContext.defaultValues, ...{ [fullName]: defaultValues }}) as Partial<IFieldValues>,
-    values: (values === undefined ? formContext.values : { ...formContext.values, ...{ [fullName]: values }}) as Partial<IFieldValues>,
-  }), [defaultValues, disabled, formContext, fullName, notifyFieldEvent, plaintext, values]);
+  const subContext: IFormContext = useMemo(
+    () => ({
+      ...formContext,
+      fieldPrefix: fullName,
+      notifyFieldEvent,
+      disabled,
+      plaintext,
+      defaultValues: (defaultValues === undefined
+        ? formContext.defaultValues
+        : { ...formContext.defaultValues, ...{ [fullName]: defaultValues } }) as Partial<
+        IFieldValues
+      >,
+      values: (values === undefined
+        ? formContext.values
+        : { ...formContext.values, ...{ [fullName]: values } }) as Partial<IFieldValues>,
+    }),
+    [defaultValues, disabled, formContext, fullName, notifyFieldEvent, plaintext, values]
+  );
 
   const groupState = useMemo(
     () => ({
@@ -117,10 +134,7 @@ export function useFieldGroup<TFieldValue = unknown>(props: IUseFieldGroupArgs<T
       valid: validationState.valid,
       error: validationState.error,
     }),
-    [
-      fullName,
-      validationState,
-    ],
+    [fullName, validationState]
   );
 
   return {

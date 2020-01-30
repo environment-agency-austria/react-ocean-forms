@@ -16,7 +16,16 @@ import { useFormContext } from '../useFormContext';
 import { useValidation, IValidationArgs, IBasicValidationState } from '../useValidation';
 import { useFullName, useFieldRegistration } from '../internal';
 
-import { IFieldComponentFieldProps, IFieldComponentMeta, IFieldChangedEvent, IUseFieldProps, IUseFieldResult, IUseFieldState, IValueMeta, TValueCallback } from './useField.types';
+import {
+  IFieldComponentFieldProps,
+  IFieldComponentMeta,
+  IFieldChangedEvent,
+  IUseFieldProps,
+  IUseFieldResult,
+  IUseFieldState,
+  IValueMeta,
+  TValueCallback,
+} from './useField.types';
 import { noopFieldValueFunction } from './useField.utils';
 
 /**
@@ -27,7 +36,9 @@ import { noopFieldValueFunction } from './useField.utils';
  * @typeparam TDisplayValue Type of the value that will be displayed (consumed by the displaying component)
  * @typeparam TSubmitValue Type of the value that will be submitted to the form
  */
-export function useField<TDisplayValue = unknown, TSubmitValue = TDisplayValue>(props: IUseFieldProps<TDisplayValue, TSubmitValue>): IUseFieldResult<TDisplayValue> {
+export function useField<TDisplayValue = unknown, TSubmitValue = TDisplayValue>(
+  props: IUseFieldProps<TDisplayValue, TSubmitValue>
+): IUseFieldResult<TDisplayValue> {
   const formContext = useFormContext();
   const fullName = useFullName(props.name);
 
@@ -44,88 +55,87 @@ export function useField<TDisplayValue = unknown, TSubmitValue = TDisplayValue>(
     plaintext = formContext.plaintext,
   } = props;
 
-  const [ fieldState, setFieldState ] = useState<IUseFieldState<TDisplayValue>>(
+  const [fieldState, setFieldState] = useState<IUseFieldState<TDisplayValue>>(
     // Initialize the field state with an empty string provided to getDisplayValue
     // Note: the correct defaultValue / value from props will be overriden in an
     // effect later on
     () => ({
       touched: false,
       dirty: false,
-      value: getDisplayValue(defaultValue, { plaintext, disabled })
+      value: getDisplayValue(defaultValue, { plaintext, disabled }),
     })
   );
-  const { validationState, validate, resetValidation, updateValidationState } = useValidation(props);
+  const { validationState, validate, resetValidation, updateValidationState } = useValidation(
+    props
+  );
 
   /**
    * Contains the memoized value meta for passing to
    * getSubmitValue and getDisplayValue
    */
-  const valueMeta: IValueMeta = useMemo(() => ({
-    disabled,
-    plaintext,
-  }), [disabled, plaintext]);
+  const valueMeta: IValueMeta = useMemo(
+    () => ({
+      disabled,
+      plaintext,
+    }),
+    [disabled, plaintext]
+  );
 
   /**
    * Returns the current submit value using the getSubmitValue
    * callback and the correct value and value meta parameters
    */
-  const getFieldValue = useCallback((valueOverride?: TDisplayValue) => {
-    return getSubmitValue(
-      valueOverride !== undefined ? valueOverride : fieldState.value,
-      valueMeta,
-    );
-  }, [getSubmitValue, fieldState.value, valueMeta]);
+  const getFieldValue = useCallback(
+    (valueOverride?: TDisplayValue) => {
+      return getSubmitValue(
+        valueOverride !== undefined ? valueOverride : fieldState.value,
+        valueMeta
+      );
+    },
+    [getSubmitValue, fieldState.value, valueMeta]
+  );
 
   /**
    * Resets the field to its initial state.
    */
-  const resetField = useCallback(
-    () => {
-      const overridenValue = value === undefined ? defaultValue : value;
-      const displayValue = getDisplayValue(
-        overridenValue,
-        valueMeta,
-      );
+  const resetField = useCallback(() => {
+    const overridenValue = value === undefined ? defaultValue : value;
+    const displayValue = getDisplayValue(overridenValue, valueMeta);
 
-      setFieldState({
-        value: displayValue,
-        touched: false,
-        dirty: false,
-      });
-      resetValidation();
-      onChange(getSubmitValue(displayValue, valueMeta));
-    },
-    [value, defaultValue, getDisplayValue, valueMeta, resetValidation, onChange, getSubmitValue],
-  );
+    setFieldState({
+      value: displayValue,
+      touched: false,
+      dirty: false,
+    });
+    resetValidation();
+    onChange(getSubmitValue(displayValue, valueMeta));
+  }, [value, defaultValue, getDisplayValue, valueMeta, resetValidation, onChange, getSubmitValue]);
 
   /**
    * Calls the validation method with the current field value
    */
   const validateField = useCallback(
     async (args?: Partial<IValidationArgs>): Promise<IBasicValidationState> => {
-      return validate(
-        getFieldValue(),
-        args,
-      );
+      return validate(getFieldValue(), args);
     },
-    [getFieldValue, validate],
+    [getFieldValue, validate]
   );
 
   /**
    * Register / unregister the field in the form context
    */
-  const registerFieldState = useMemo(() => ({
-    label,
-    isGroup: false,
-    updateValidation: updateValidationState,
-    validate: validateField,
-    reset: resetField,
-    getValue: getFieldValue,
-  }), [getFieldValue, label, resetField, updateValidationState, validateField]);
-  useFieldRegistration(
-    fullName,
-    registerFieldState,
+  const registerFieldState = useMemo(
+    () => ({
+      label,
+      isGroup: false,
+      updateValidation: updateValidationState,
+      validate: validateField,
+      reset: resetField,
+      getValue: getFieldValue,
+    }),
+    [getFieldValue, label, resetField, updateValidationState, validateField]
   );
+  useFieldRegistration(fullName, registerFieldState);
 
   /**
    * Effect for overwriting the current field value with either
@@ -171,15 +181,12 @@ export function useField<TDisplayValue = unknown, TSubmitValue = TDisplayValue>(
 
       const submitValue = getFieldValue(updatedValue);
 
-      validate(
-        submitValue,
-        { checkAsync: asyncValidateOnChange },
-      );
+      validate(submitValue, { checkAsync: asyncValidateOnChange });
 
       formContext.notifyFieldEvent(fullName, 'change', submitValue);
       onChange(submitValue);
     },
-    [asyncValidateOnChange, formContext, fullName, getFieldValue, onChange, validate],
+    [asyncValidateOnChange, formContext, fullName, getFieldValue, onChange, validate]
   );
 
   /**
@@ -188,16 +195,21 @@ export function useField<TDisplayValue = unknown, TSubmitValue = TDisplayValue>(
    * (otherwise the async validators would never be called).
    * Notifies the form context and calls the onBlur callback
    */
-  const handleFieldBlur = useCallback(
-    () => {
-      if (fieldState.dirty && !asyncValidateOnChange) {
-        validate(getFieldValue());
-      }
-      formContext.notifyFieldEvent(fullName, 'blur');
-      onBlur();
-    },
-    [asyncValidateOnChange, fieldState.dirty, formContext, fullName, getFieldValue, onBlur, validate],
-  );
+  const handleFieldBlur = useCallback(() => {
+    if (fieldState.dirty && !asyncValidateOnChange) {
+      validate(getFieldValue());
+    }
+    formContext.notifyFieldEvent(fullName, 'blur');
+    onBlur();
+  }, [
+    asyncValidateOnChange,
+    fieldState.dirty,
+    formContext,
+    fullName,
+    getFieldValue,
+    onBlur,
+    validate,
+  ]);
 
   /**
    * Memoize the field props which are designed to be used directly
@@ -216,7 +228,7 @@ export function useField<TDisplayValue = unknown, TSubmitValue = TDisplayValue>(
       onChange: handleFieldChanged,
       onBlur: handleFieldBlur,
     }),
-    [fieldState.value, disabled, fullName, handleFieldChanged, handleFieldBlur],
+    [fieldState.value, disabled, fullName, handleFieldChanged, handleFieldBlur]
   );
 
   /**
@@ -233,11 +245,19 @@ export function useField<TDisplayValue = unknown, TSubmitValue = TDisplayValue>(
       stringFormatter: formContext.stringFormatter,
       plaintext,
     }),
-    [fieldState.touched, formContext.stringFormatter, plaintext, validationState.error, validationState.isRequired, validationState.isValidating, validationState.valid],
+    [
+      fieldState.touched,
+      formContext.stringFormatter,
+      plaintext,
+      validationState.error,
+      validationState.isRequired,
+      validationState.isValidating,
+      validationState.valid,
+    ]
   );
 
   return {
     fieldProps,
     metaProps,
-  }
+  };
 }

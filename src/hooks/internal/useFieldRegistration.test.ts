@@ -39,10 +39,7 @@ function setup(): ISetupResult {
 
   const fullName = 'mock-name';
 
-  const { rerender, unmount } = renderHook(() => useFieldRegistration(
-    fullName,
-    fieldState,
-  ));
+  const { rerender, unmount } = renderHook(() => useFieldRegistration(fullName, fieldState));
 
   return {
     registerField,
@@ -51,7 +48,7 @@ function setup(): ISetupResult {
     fullName,
     rerender,
     unmount,
-  }
+  };
 }
 
 describe('useFieldRegistration', () => {

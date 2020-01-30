@@ -13,4 +13,4 @@
  * Noop function that does nothing
  * @hidden
  */
-export function noopFunction(): void { }
+export function noopFunction(): void {}

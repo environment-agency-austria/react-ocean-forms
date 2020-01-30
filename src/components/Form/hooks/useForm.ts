@@ -9,7 +9,12 @@
  */
 import { useMemo, useState, useCallback } from 'react';
 
-import { stringFormatter as defaultStringFormatter, noopFunction, parseValidationError, getDeepValue } from '../../../utils';
+import {
+  stringFormatter as defaultStringFormatter,
+  noopFunction,
+  parseValidationError,
+  getDeepValue,
+} from '../../../utils';
 import { IBasicValidationState } from '../../../hooks';
 import { IFormContext, IFieldValues } from '../../FormContext';
 import { IFormProps } from '../Form.types';
@@ -18,11 +23,13 @@ import { useFieldEvents, useFieldStates, useIsUnmounted } from '../../../hooks/i
 /**
  * @hidden
  */
-export function useForm<TFieldValues extends Record<string, unknown> = IFieldValues>(props: IFormProps<TFieldValues>): IFormContext<TFieldValues> {
-  const [ busyState, setBusyState ] = useState(false);
+export function useForm<TFieldValues extends Record<string, unknown> = IFieldValues>(
+  props: IFormProps<TFieldValues>
+): IFormContext<TFieldValues> {
+  const [busyState, setBusyState] = useState(false);
 
   const {
-    defaultValues = { },
+    defaultValues = {},
     values,
     asyncValidationWait = 400,
     asyncValidateOnChange = false,
@@ -49,7 +56,9 @@ export function useForm<TFieldValues extends Record<string, unknown> = IFieldVal
     const values = {} as TFieldValues;
 
     forEachFieldState((state, name) => {
-      if (state.isGroup === true) { return; }
+      if (state.isGroup === true) {
+        return;
+      }
 
       const nameParts = name.split('.');
       let valueRef: Record<string, unknown> = values;
@@ -58,7 +67,9 @@ export function useForm<TFieldValues extends Record<string, unknown> = IFieldVal
         if (nameParts.length === 1 || index === nameParts.length - 1) {
           valueRef[key] = state.getValue();
         } else {
-          if (valueRef[key] === undefined) { valueRef[key] = {}; }
+          if (valueRef[key] === undefined) {
+            valueRef[key] = {};
+          }
           valueRef = valueRef[key] as TFieldValues;
         }
       });
@@ -72,7 +83,7 @@ export function useForm<TFieldValues extends Record<string, unknown> = IFieldVal
    * to the default state.
    */
   const reset = useCallback((): void => {
-    forEachFieldState((state) => {
+    forEachFieldState(state => {
       state.reset();
     });
 
@@ -88,7 +99,9 @@ export function useForm<TFieldValues extends Record<string, unknown> = IFieldVal
     const result = onValidate(values);
 
     // If the callback returned null then the form is valid
-    if (result === null || result === undefined) { return true; }
+    if (result === null || result === undefined) {
+      return true;
+    }
 
     // Otherwise parse the result object and update the
     // field states.
@@ -97,7 +110,9 @@ export function useForm<TFieldValues extends Record<string, unknown> = IFieldVal
       const fieldError = parseValidationError(getDeepValue(name, result));
       const isValid = fieldError === null || typeof fieldError !== 'object';
 
-      if (isValid) { return; }
+      if (isValid) {
+        return;
+      }
 
       state.updateValidation({
         valid: false,
@@ -116,100 +131,119 @@ export function useForm<TFieldValues extends Record<string, unknown> = IFieldVal
    * @param submitArgs Arguments that will be passed
    * to the onSubmit callback
    */
-  const submit = useCallback(async (submitArgs?: unknown): Promise<void> => {
-    setBusyState(true);
+  const submit = useCallback(
+    async (submitArgs?: unknown): Promise<void> => {
+      setBusyState(true);
 
-    // Iterate through all fields and validate them
-    // if needed.
-    const validations: Promise<IBasicValidationState>[] = [];
-    forEachFieldState(field => {
-      validations.push(field.validate({
-        checkAsync: true,
-        immediateAsync: true,
-      }));
-    });
-    const validationStates = await Promise.all(validations);
+      // Iterate through all fields and validate them
+      // if needed.
+      const validations: Promise<IBasicValidationState>[] = [];
+      forEachFieldState(field => {
+        validations.push(
+          field.validate({
+            checkAsync: true,
+            immediateAsync: true,
+          })
+        );
+      });
+      const validationStates = await Promise.all(validations);
 
-    const notifyInvalid = (): void => {
-      notifyListeners('_form', 'submit-invalid');
-      setBusyState(false);
-    }
+      const notifyInvalid = (): void => {
+        notifyListeners('_form', 'submit-invalid');
+        setBusyState(false);
+      };
 
-    // Check if all fields are valid
-    const allValid = validationStates.every(state => state.valid === true);
-    if (allValid === false) {
-      notifyInvalid();
-      return;
-    }
+      // Check if all fields are valid
+      const allValid = validationStates.every(state => state.valid === true);
+      if (allValid === false) {
+        notifyInvalid();
+        return;
+      }
 
-    // Call the form wide validation
-    const formValid = triggerFormValidation();
-    if (formValid === false) {
-      notifyInvalid();
-      return;
-    }
+      // Call the form wide validation
+      const formValid = triggerFormValidation();
+      if (formValid === false) {
+        notifyInvalid();
+        return;
+      }
 
-    // Await the result from callOnSubmit
-    const callOnSubmitResult = onSubmit(getValues(), submitArgs);
+      // Await the result from callOnSubmit
+      const callOnSubmitResult = onSubmit(getValues(), submitArgs);
 
-    // Make sure the state is cleaned up before
-    const cleanup = (resetForm: boolean | undefined): void => {
-      if (isUnmounted.current) return;
+      // Make sure the state is cleaned up before
+      const cleanup = (resetForm: boolean | undefined): void => {
+        if (isUnmounted.current) return;
 
-      setBusyState(false);
-      if (resetForm) { reset(); }
-    };
-    if (callOnSubmitResult instanceof Promise) {
-      void callOnSubmitResult.then(
-        () => { cleanup(resetOnSubmit); },
-      );
-    } else {
-      cleanup(resetOnSubmit);
-    }
-  }, [forEachFieldState, getValues, isUnmounted, notifyListeners, onSubmit, reset, resetOnSubmit, triggerFormValidation]);
+        setBusyState(false);
+        if (resetForm) {
+          reset();
+        }
+      };
+      if (callOnSubmitResult instanceof Promise) {
+        void callOnSubmitResult.then(() => {
+          cleanup(resetOnSubmit);
+        });
+      } else {
+        cleanup(resetOnSubmit);
+      }
+    },
+    [
+      forEachFieldState,
+      getValues,
+      isUnmounted,
+      notifyListeners,
+      onSubmit,
+      reset,
+      resetOnSubmit,
+      triggerFormValidation,
+    ]
+  );
 
-  const formContext: IFormContext<TFieldValues> = useMemo(() => ({
-    fieldPrefix: null,
-    defaultValues,
-    values,
-    asyncValidationWait,
-    stringFormatter: formatString,
-    disabled,
-    plaintext,
-    busy,
-    asyncValidateOnChange,
+  const formContext: IFormContext<TFieldValues> = useMemo(
+    () => ({
+      fieldPrefix: null,
+      defaultValues,
+      values,
+      asyncValidationWait,
+      stringFormatter: formatString,
+      disabled,
+      plaintext,
+      busy,
+      asyncValidateOnChange,
 
-    registerField,
-    unregisterField,
+      registerField,
+      unregisterField,
 
-    notifyFieldEvent: notifyListeners,
-    registerListener,
-    unregisterListener,
+      notifyFieldEvent: notifyListeners,
+      registerListener,
+      unregisterListener,
 
-    getFieldState: getFieldState,
-    getValues: getValues,
+      getFieldState: getFieldState,
+      getValues: getValues,
 
-    reset,
-    submit,
-  }), [
-    asyncValidateOnChange,
-    asyncValidationWait,
-    busy,
-    defaultValues,
-    disabled,
-    formatString,
-    getFieldState,
-    getValues,
-    notifyListeners,
-    plaintext,
-    registerField,
-    registerListener,
-    reset,
-    submit,
-    unregisterField,
-    unregisterListener,
-    values
-  ]);
+      reset,
+      submit,
+    }),
+    [
+      asyncValidateOnChange,
+      asyncValidationWait,
+      busy,
+      defaultValues,
+      disabled,
+      formatString,
+      getFieldState,
+      getValues,
+      notifyListeners,
+      plaintext,
+      registerField,
+      registerListener,
+      reset,
+      submit,
+      unregisterField,
+      unregisterListener,
+      values,
+    ]
+  );
 
   return formContext;
 }

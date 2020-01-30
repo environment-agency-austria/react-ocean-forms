@@ -19,11 +19,7 @@ describe('<Input />', () => {
     wrapper: ShallowWrapper;
   }
 
-  const setup = ({
-    props,
-    metaOverrides,
-    fieldOverrides,
-  }: ISetupArgs = {}): ISetupResult => {
+  const setup = ({ props, metaOverrides, fieldOverrides }: ISetupArgs = {}): ISetupResult => {
     const meta = {
       valid: true,
       error: null,
@@ -49,13 +45,7 @@ describe('<Input />', () => {
       metaProps: meta,
     });
 
-    const wrapper = shallow((
-      <Input
-        name="unitInput"
-        label="unitLabel"
-        {...props}
-      />
-    ));
+    const wrapper = shallow(<Input name="unitInput" label="unitLabel" {...props} />);
 
     return {
       wrapper,
@@ -68,12 +58,12 @@ describe('<Input />', () => {
   });
 
   it('should only display the value if plaintext is set', () => {
-    const wrapper = setup({ metaOverrides: { plaintext: true }});
+    const wrapper = setup({ metaOverrides: { plaintext: true } });
     expect(wrapper).toMatchSnapshot();
   });
 
   it('should properly pass the type prop', () => {
-    const wrapper = setup({ props: { type: 'number' }});
+    const wrapper = setup({ props: { type: 'number' } });
     expect(wrapper).toMatchSnapshot();
   });
 });

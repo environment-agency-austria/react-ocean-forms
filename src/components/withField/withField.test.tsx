@@ -17,9 +17,7 @@ describe('withField', () => {
     wrapper: ShallowWrapper;
   }
 
-  const setup = ({
-    props,
-  }: Partial<ISetupArgs> = {}): ISetupResult => {
+  const setup = ({ props }: Partial<ISetupArgs> = {}): ISetupResult => {
     (useField as jest.Mock).mockReturnValue({
       fieldProps: {
         disabled: false,
@@ -40,16 +38,10 @@ describe('withField', () => {
       },
     });
 
-    const TestComponent = (): JSX.Element => (<div id="test-component" />);
+    const TestComponent = (): JSX.Element => <div id="test-component" />;
     const WrappedComponent = withField(TestComponent);
 
-    const wrapper = shallow((
-      <WrappedComponent
-        name="mock-item"
-        label="Mock Item"
-        {...props}
-      />
-    ));
+    const wrapper = shallow(<WrappedComponent name="mock-item" label="Mock Item" {...props} />);
 
     return {
       wrapper,

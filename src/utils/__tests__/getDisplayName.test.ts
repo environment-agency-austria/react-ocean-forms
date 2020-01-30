@@ -18,7 +18,7 @@ describe('getDisplayName', () => {
     /**
      * Mocks a react component without a display name
      */
-    class Mock extends React.Component { }
+    class Mock extends React.Component {}
 
     expect(getDisplayName(Mock)).toBe('Mock');
   });

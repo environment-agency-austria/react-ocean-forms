@@ -20,7 +20,9 @@ import { IFieldValues, IFormContext, FormContext } from '../../components/FormCo
 export function useFormContext<TFieldValues = IFieldValues>(): IFormContext<TFieldValues> {
   const context = useContext(FormContext as React.Context<IFormContext<TFieldValues> | undefined>);
   if (context === undefined) {
-    throw new Error('[useFormContext]: Could not find form context. This component must be used inside a <Form> tag.');
+    throw new Error(
+      '[useFormContext]: Could not find form context. This component must be used inside a <Form> tag.'
+    );
   }
 
   return context;

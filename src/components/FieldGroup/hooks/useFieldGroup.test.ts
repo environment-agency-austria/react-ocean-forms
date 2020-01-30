@@ -1,6 +1,9 @@
 import { renderHook } from '@testing-library/react-hooks';
 
-import { createMockFormContext, createMockValidationResult } from '../../../test-utils/enzymeFormContext';
+import {
+  createMockFormContext,
+  createMockValidationResult,
+} from '../../../test-utils/enzymeFormContext';
 import { useFormContext, useValidation, IUseValidationResult } from '../../../hooks';
 import { useFullName, useFieldRegistration, IFieldState } from '../../../hooks/internal';
 import { IFormContext } from '../../FormContext';
@@ -36,13 +39,13 @@ describe('useFieldGroup', () => {
   }
 
   const setup = ({
-    props = { },
+    props = {},
     contextOverrides,
     validationOverrides,
   }: ISetupArgs = {}): ISetupResult => {
     let fieldState = null;
 
-    (useFullName as jest.Mock).mockImplementation((name: string) => name)
+    (useFullName as jest.Mock).mockImplementation((name: string) => name);
     const formContext = {
       ...createMockFormContext(),
       values: undefined,
@@ -88,10 +91,7 @@ describe('useFieldGroup', () => {
   describe('Form registration', () => {
     it('should register itself using useFieldRegistration', () => {
       const { fieldState } = setup();
-      expect((useFieldRegistration as jest.Mock)).toHaveBeenCalledWith(
-        mockName,
-        fieldState,
-      );
+      expect(useFieldRegistration as jest.Mock).toHaveBeenCalledWith(mockName, fieldState);
     });
   });
 
@@ -113,10 +113,7 @@ describe('useFieldGroup', () => {
 
         void fieldState.validate(mockValidateArgs);
 
-        expect(validation.validate).toHaveBeenLastCalledWith(
-          mockValue,
-          mockValidateArgs,
-        );
+        expect(validation.validate).toHaveBeenLastCalledWith(mockValue, mockValidateArgs);
       });
     });
 
@@ -165,7 +162,11 @@ describe('useFieldGroup', () => {
       const mockSenderLocal = 'field2';
       const mockSender = `${mockName}.${mockSenderLocal}`;
 
-      const triggerNotification = (groupContext: IFormContext, eventName: string, eventArgs?: unknown): void => {
+      const triggerNotification = (
+        groupContext: IFormContext,
+        eventName: string,
+        eventArgs?: unknown
+      ): void => {
         const notifyCallback = groupContext.notifyFieldEvent;
         notifyCallback(mockSender, eventName, eventArgs);
       };
@@ -177,7 +178,7 @@ describe('useFieldGroup', () => {
           expect(formContext.notifyFieldEvent).toHaveBeenCalledWith(
             mockSender,
             eventName,
-            eventArgs,
+            eventArgs
           );
         });
       };
@@ -194,13 +195,16 @@ describe('useFieldGroup', () => {
         const mockChangedFieldValue = 'mock-value';
         const eventName = 'change';
 
-        const assertValidateCalled = ({ validate }: IUseValidationResult, checkAsync: boolean): void => {
+        const assertValidateCalled = (
+          { validate }: IUseValidationResult,
+          checkAsync: boolean
+        ): void => {
           expect(validate).toHaveBeenCalledWith(
             {
               ...mockValue,
               [mockSenderLocal]: mockChangedFieldValue,
             },
-            { checkAsync },
+            { checkAsync }
           );
         };
 
@@ -248,7 +252,7 @@ describe('useFieldGroup', () => {
             {
               [mockSenderLocal]: mockChangedFieldValue,
             },
-            { checkAsync: false },
+            { checkAsync: false }
           );
         });
       });
@@ -288,49 +292,49 @@ describe('useFieldGroup', () => {
       });
     });
 
-    const propCases: [keyof IFormContext][] = [
-      ['defaultValues'],
-      ['values'],
-    ];
+    const propCases: [keyof IFormContext][] = [['defaultValues'], ['values']];
 
-    describe.each(propCases)('Context.%s behaviour', (prop) => {
+    describe.each(propCases)('Context.%s behaviour', prop => {
       const formStates: [string, null | undefined | object][] = [
         ['null', null],
         ['undefined', undefined],
         ['empty', {}],
-        ['existing', {
-          mockField: '42',
-          [mockName]: { default: 'values' },
-        }],
+        [
+          'existing',
+          {
+            mockField: '42',
+            [mockName]: { default: 'values' },
+          },
+        ],
       ];
 
-      it.each(formStates)(`should correctly override %s Context.${prop}`, (stateName, formState) => {
-        const mockGroupValue = { foo: 'bar' };
+      it.each(formStates)(
+        `should correctly override %s Context.${prop}`,
+        (stateName, formState) => {
+          const mockGroupValue = { foo: 'bar' };
 
-        const { result } = setup({
-          props: {
-            [prop]: mockGroupValue,
-          },
-          contextOverrides: {
-            [prop]: formState,
-          },
-        });
+          const { result } = setup({
+            props: {
+              [prop]: mockGroupValue,
+            },
+            contextOverrides: {
+              [prop]: formState,
+            },
+          });
 
-        expect(result.current.groupFormContext[prop]).toEqual({
-          ...formState,
-          ...{
-            [mockName]: mockGroupValue,
-          },
-        });
-      });
+          expect(result.current.groupFormContext[prop]).toEqual({
+            ...formState,
+            ...{
+              [mockName]: mockGroupValue,
+            },
+          });
+        }
+      );
     });
 
-    const overrideCases = [
-      ['plaintext'],
-      ['disabled'],
-    ];
+    const overrideCases = [['plaintext'], ['disabled']];
 
-    describe.each(overrideCases)('Context.%s behaviour', (prop) => {
+    describe.each(overrideCases)('Context.%s behaviour', prop => {
       const cases: [boolean, undefined | boolean, boolean][] = [
         [false, undefined, false],
         [true, undefined, true],
@@ -354,7 +358,7 @@ describe('useFieldGroup', () => {
 
           // @ts-ignore any is OK here
           expect(result.current.groupFormContext[prop]).toEqual(expectedValue);
-        },
+        }
       );
     });
   });
@@ -384,7 +388,7 @@ describe('useFieldGroup', () => {
             isRequired: mockIsRequired,
             valid: mockIsValid,
             error: mockError,
-          }
+          },
         },
       });
       expect(result.current.renderParams).toMatchObject({

@@ -1,5 +1,7 @@
 ### Examples
+
 #### Input types
+
 Showcase of the input type support
 
 ```jsx
@@ -7,7 +9,7 @@ import { Form, Input } from 'react-ocean-forms';
 
 function Example() {
   // onChange callback
-  const handleChange = (value) => {
+  const handleChange = value => {
     console.log('onChange, value: ' + JSON.stringify(value));
   };
 
@@ -37,10 +39,11 @@ function Example() {
   );
 }
 
-<Example />
+<Example />;
 ```
 
 #### Custom input
+
 Creating your own input components is quite simple. Note that if you want to use the flexible Intl support, you should put all your text outputs through meta.stringFormatter.
 
 ```jsx
@@ -50,14 +53,7 @@ import { Form, withField } from 'react-ocean-forms';
  * Simple implementation of a custom input
  */
 function BaseCustomInput(props) {
-  const {
-    field,
-    label,
-    type,
-    meta,
-    customProp,
-  } = props;
-
+  const { field, label, type, meta, customProp } = props;
 
   return (
     <div>
@@ -75,12 +71,12 @@ const CustomInput = withField(BaseCustomInput);
 
 function Example() {
   // Submit callback, here you'd make your api calls
-  const handleSubmit = (values) => {
+  const handleSubmit = values => {
     console.log('onSubmit, values: ' + JSON.stringify(values));
   };
 
   // onChange callback
-  const handleChange = (value) => {
+  const handleChange = value => {
     console.log('onChange, value: ' + JSON.stringify(value));
   };
 
@@ -105,5 +101,5 @@ function Example() {
   );
 }
 
-<Example />
+<Example />;
 ```

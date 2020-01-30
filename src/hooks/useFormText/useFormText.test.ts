@@ -24,10 +24,7 @@ function setup(): ISetupResult {
   const messageId = 'mock-message-id';
   const values = { foo: 'bar' };
 
-  const { rerender, unmount } = renderHook(() => useFormText(
-    messageId,
-    values,
-  ));
+  const { rerender, unmount } = renderHook(() => useFormText(messageId, values));
 
   return {
     stringFormatter,
@@ -35,7 +32,7 @@ function setup(): ISetupResult {
     values,
     rerender,
     unmount,
-  }
+  };
 }
 
 describe('useFormText', () => {

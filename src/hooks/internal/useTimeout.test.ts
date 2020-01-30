@@ -19,7 +19,9 @@ describe('useTimeout', () => {
     const mockHandler = jest.fn();
     const mockTimeout = 1000;
 
-    act(() => { result.current[0](mockHandler, mockTimeout); })
+    act(() => {
+      result.current[0](mockHandler, mockTimeout);
+    });
 
     expect(mockHandler).not.toHaveBeenCalled();
     jest.runAllTimers();
@@ -33,11 +35,15 @@ describe('useTimeout', () => {
     const mockHandler = jest.fn();
     const mockTimeout = 1000;
 
-    act(() => { result.current[0](mockHandler, mockTimeout); })
+    act(() => {
+      result.current[0](mockHandler, mockTimeout);
+    });
 
     expect(mockHandler).not.toHaveBeenCalled();
 
-    act(() => { result.current[1](); })
+    act(() => {
+      result.current[1]();
+    });
     expect(mockHandler).not.toHaveBeenCalled();
 
     jest.runAllTimers();
@@ -50,7 +56,9 @@ describe('useTimeout', () => {
     const mockHandler = jest.fn();
     const mockTimeout = 1000;
 
-    act(() => { result.current[0](mockHandler, mockTimeout); })
+    act(() => {
+      result.current[0](mockHandler, mockTimeout);
+    });
 
     expect(mockHandler).not.toHaveBeenCalled();
 

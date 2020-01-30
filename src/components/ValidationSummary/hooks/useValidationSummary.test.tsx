@@ -5,7 +5,11 @@ import { shallow } from 'enzyme';
 import { useFormContext, useFormEventListener } from '../../../hooks';
 import { TFormEventListener } from '../../../hooks/internal';
 
-import { useValidationSummary, IUseValidationSummaryResult, IInvalidField } from './useValidationSummary';
+import {
+  useValidationSummary,
+  IUseValidationSummaryResult,
+  IInvalidField,
+} from './useValidationSummary';
 import { mockEvent } from '../../../test-utils/enzymeEventUtils';
 
 jest.mock('../../../hooks');
@@ -26,9 +30,7 @@ describe('useValidationSummary', () => {
     result: { current: IUseValidationSummaryResult };
   }
 
-  const setup = ({
-    disableFocusOnSubmit = false,
-  }: Partial<ISetupArgs> = {}): ISetupResult => {
+  const setup = ({ disableFocusOnSubmit = false }: Partial<ISetupArgs> = {}): ISetupResult => {
     (useFormContext as jest.Mock).mockReturnValue({
       stringFormatter: jest.fn().mockImplementation(str => str),
     });
@@ -38,7 +40,9 @@ describe('useValidationSummary', () => {
       handleEvent = callback;
     });
 
-    const { result, unmount, rerender, waitForNextUpdate } = renderHook(() => useValidationSummary(mockId, disableFocusOnSubmit));
+    const { result, unmount, rerender, waitForNextUpdate } = renderHook(() =>
+      useValidationSummary(mockId, disableFocusOnSubmit)
+    );
 
     return {
       // @ts-ignore
@@ -101,7 +105,13 @@ describe('useValidationSummary', () => {
   });
 
   describe('Validation event handling', () => {
-    function triggerValidationEvent(handleEvent: TFormEventListener, fieldId: string, label: string, error: string | null, valid: boolean = false): void {
+    function triggerValidationEvent(
+      handleEvent: TFormEventListener,
+      fieldId: string,
+      label: string,
+      error: string | null,
+      valid: boolean = false
+    ): void {
       act(() => {
         handleEvent(fieldId, 'validation', { valid, label, error });
       });
@@ -133,7 +143,11 @@ describe('useValidationSummary', () => {
     it('should not add valid fields to the errorList', () => {
       const { handleEvent, result } = setup();
       act(() => {
-        handleEvent('valid-field', 'validation', { valid: true, label: 'valid-field', error: null });
+        handleEvent('valid-field', 'validation', {
+          valid: true,
+          label: 'valid-field',
+          error: null,
+        });
       });
 
       expect(result.current.errorList).toHaveLength(0);
@@ -142,24 +156,30 @@ describe('useValidationSummary', () => {
     it('should handle multiple errors', () => {
       const mockFields = [
         { fieldId: 'mock-field-1', label: 'mock-field-1', error: 'mock-error-1' },
-        { fieldId: 'mock-field-2', label: 'mock-field-2', error: 'mock-error-2' }
+        { fieldId: 'mock-field-2', label: 'mock-field-2', error: 'mock-error-2' },
       ];
       const { handleEvent, result } = setup();
 
-      mockFields.forEach(field => triggerValidationEvent(handleEvent, field.fieldId, field.label, field.error));
+      mockFields.forEach(field =>
+        triggerValidationEvent(handleEvent, field.fieldId, field.label, field.error)
+      );
 
       expect(result.current.errorList).toHaveLength(2);
-      result.current.errorList.forEach((error, index) => checkErrorItem(error, mockFields[index].fieldId, mockFields[index].label));
+      result.current.errorList.forEach((error, index) =>
+        checkErrorItem(error, mockFields[index].fieldId, mockFields[index].label)
+      );
     });
 
     it('should remove fields that are valid again from the error list', () => {
       const mockFields = [
         { fieldId: 'mock-field-1', label: 'mock-field-1', error: 'mock-error-1' },
-        { fieldId: 'mock-field-2', label: 'mock-field-2', error: 'mock-error-2' }
+        { fieldId: 'mock-field-2', label: 'mock-field-2', error: 'mock-error-2' },
       ];
       const { handleEvent, result } = setup();
 
-      mockFields.forEach(field => triggerValidationEvent(handleEvent, field.fieldId, field.label, field.error));
+      mockFields.forEach(field =>
+        triggerValidationEvent(handleEvent, field.fieldId, field.label, field.error)
+      );
 
       expect(result.current.errorList).toHaveLength(2);
 
@@ -203,7 +223,9 @@ describe('useValidationSummary', () => {
 
         it('the linkCallback should focus the field', () => {
           const mockInput = { focus: jest.fn() };
-          const mockedGetElementById = jest.spyOn(document, 'getElementById').mockReturnValue(mockInput as any);
+          const mockedGetElementById = jest
+            .spyOn(document, 'getElementById')
+            .mockReturnValue(mockInput as any);
 
           linkCallback(mockEvent() as any);
           expect(mockedGetElementById).toHaveBeenCalledWith(mockFieldId);

@@ -1,6 +1,6 @@
 import { useRef, useCallback, useMemo } from 'react';
 
-export type TFormEventListener = ((name: string, event: string, args?: unknown) => void);
+export type TFormEventListener = (name: string, event: string, args?: unknown) => void;
 
 export interface IUseFieldEventsResult {
   registerListener(name: string, callback: TFormEventListener): void;
@@ -32,14 +32,17 @@ export function useFieldEvents(): IUseFieldEventsResult {
    * @param args Event args
    */
   const notifyListeners = useCallback((name: string, event: string, args?: unknown): void => {
-    eventListeners.current.forEach((callback) => {
+    eventListeners.current.forEach(callback => {
       callback(name, event, args);
     });
   }, []);
 
-  return useMemo(() => ({
-    registerListener,
-    unregisterListener,
-    notifyListeners,
-  }), [notifyListeners, registerListener, unregisterListener]);
+  return useMemo(
+    () => ({
+      registerListener,
+      unregisterListener,
+      notifyListeners,
+    }),
+    [notifyListeners, registerListener, unregisterListener]
+  );
 }

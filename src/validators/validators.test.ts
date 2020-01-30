@@ -24,9 +24,12 @@ describe('default validators', () => {
       [undefined, {}],
     ];
 
-    it.each(cases)('should return %p if %p is passed', (output: string | undefined, input: TBasicFieldValue) => {
-      expect(validators.required(input)).toBe(output);
-    });
+    it.each(cases)(
+      'should return %p if %p is passed',
+      (output: string | undefined, input: TBasicFieldValue) => {
+        expect(validators.required(input)).toBe(output);
+      }
+    );
   });
 
   describe('alphaNumeric validator', () => {
@@ -50,9 +53,12 @@ describe('default validators', () => {
       [undefined, {}],
     ];
 
-    it.each(cases)('should return %p if %p is passed', (output: string | undefined, input: TBasicFieldValue) => {
-      expect(validators.alphaNumeric(input)).toBe(output);
-    });
+    it.each(cases)(
+      'should return %p if %p is passed',
+      (output: string | undefined, input: TBasicFieldValue) => {
+        expect(validators.alphaNumeric(input)).toBe(output);
+      }
+    );
   });
 
   describe('minLength validator', () => {
@@ -76,18 +82,21 @@ describe('default validators', () => {
       [errorId, { length: 2 }, 5],
     ];
 
-    it.each(cases)('should return %p if %p is passed', (output: string | undefined, input: TBasicFieldValue, length: number) => {
-      const context = createMockFormContext();
-      const result = validators.minLength(input, context, [length]);
-      if (output === undefined) {
-        expect(result).toBeUndefined();
-      } else {
-        expect(result).toEqual({
-          message_id: errorId,
-          params: { length: String(length) },
-        });
+    it.each(cases)(
+      'should return %p if %p is passed',
+      (output: string | undefined, input: TBasicFieldValue, length: number) => {
+        const context = createMockFormContext();
+        const result = validators.minLength(input, context, [length]);
+        if (output === undefined) {
+          expect(result).toBeUndefined();
+        } else {
+          expect(result).toEqual({
+            message_id: errorId,
+            params: { length: String(length) },
+          });
+        }
       }
-    });
+    );
   });
 
   describe('maxLength validator', () => {
@@ -111,41 +120,47 @@ describe('default validators', () => {
       [errorId, { length: 8 }, 5],
     ];
 
-    it.each(cases)('should return %p if %p is passed', (output: string | undefined, input: TBasicFieldValue, length: number) => {
-      const context = createMockFormContext();
-      const result = validators.maxLength(input, context, [length]);
-      if (output === undefined) {
-        expect(result).toBeUndefined();
-      } else {
-        expect(result).toEqual({
-          message_id: errorId,
-          params: { length: String(length) },
-        });
+    it.each(cases)(
+      'should return %p if %p is passed',
+      (output: string | undefined, input: TBasicFieldValue, length: number) => {
+        const context = createMockFormContext();
+        const result = validators.maxLength(input, context, [length]);
+        if (output === undefined) {
+          expect(result).toBeUndefined();
+        } else {
+          expect(result).toEqual({
+            message_id: errorId,
+            params: { length: String(length) },
+          });
+        }
       }
-    });
+    );
   });
 
   const withUtilityCases: any[] = [
     ['withParam', validators.withParam],
     ['withAsyncParam', validators.withAsyncParam],
   ];
-  describe.each(withUtilityCases)('%s utility', (name: string, utility: ((first: Function, ...args: unknown[]) => Function)) => {
-    const testValidator = jest.fn();
-    const param1 = '123';
-    const param2 = 456;
-    const value = 'abcd';
-    const context = createMockFormContext();
+  describe.each(withUtilityCases)(
+    '%s utility',
+    (name: string, utility: (first: Function, ...args: unknown[]) => Function) => {
+      const testValidator = jest.fn();
+      const param1 = '123';
+      const param2 = 456;
+      const value = 'abcd';
+      const context = createMockFormContext();
 
-    const func = utility(testValidator, param1, param2);
+      const func = utility(testValidator, param1, param2);
 
-    it('should call the validator', () => {
-      func(value, context);
-      expect(testValidator).toBeCalled();
-    });
+      it('should call the validator', () => {
+        func(value, context);
+        expect(testValidator).toBeCalled();
+      });
 
-    it('should pass all parameters to the validator', () => {
-      func(value, context);
-      expect(testValidator).toBeCalledWith(value, context, [param1, param2]);
-    });
-  });
+      it('should pass all parameters to the validator', () => {
+        func(value, context);
+        expect(testValidator).toBeCalledWith(value, context, [param1, param2]);
+      });
+    }
+  );
 });

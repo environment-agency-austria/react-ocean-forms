@@ -22,11 +22,15 @@ interface IObjectWithName {
  * Returns the display name of the wrapped component.
  * @hidden
  */
-export const getDisplayName = (wrappedComponent: IObjectWithName | IObjectWithDisplayName | unknown): string => {
+export const getDisplayName = (
+  wrappedComponent: IObjectWithName | IObjectWithDisplayName | unknown
+): string => {
   if (stringHasValue((wrappedComponent as IObjectWithDisplayName).displayName)) {
     return (wrappedComponent as IObjectWithDisplayName).displayName as string;
   }
-  if (stringHasValue((wrappedComponent as IObjectWithName).name)) { return (wrappedComponent as IObjectWithName).name as string; }
+  if (stringHasValue((wrappedComponent as IObjectWithName).name)) {
+    return (wrappedComponent as IObjectWithName).name as string;
+  }
 
   return 'Component';
 };

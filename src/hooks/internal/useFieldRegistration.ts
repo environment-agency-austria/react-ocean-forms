@@ -15,16 +15,10 @@ import { IFieldState } from './useFieldStates';
  * @param fullName Full name of the field
  * @param fieldState Field state to register @see IFieldState
  */
-export function useFieldRegistration(
-  fullName: string,
-  fieldState: IFieldState,
-): void {
+export function useFieldRegistration(fullName: string, fieldState: IFieldState): void {
   const formContext = useFormContext();
   useEffect(() => {
-    formContext.registerField(
-      fullName,
-      fieldState,
-    );
+    formContext.registerField(fullName, fieldState);
 
     return () => {
       formContext.unregisterField(fullName);

@@ -16,12 +16,8 @@ describe('<FormText />', () => {
 
   (useFormContext as jest.Mock).mockReturnValue(mockContext);
 
-  const setup = (text: string | null, values?: IMessageValues): ShallowWrapper => shallow((
-    <FormText
-      text={text}
-      values={values}
-    />
-  ));
+  const setup = (text: string | null, values?: IMessageValues): ShallowWrapper =>
+    shallow(<FormText text={text} values={values} />);
 
   it('should render nothing if text is null', () => {
     const wrapper = setup(null);

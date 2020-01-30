@@ -38,7 +38,9 @@ export interface IUseFieldStatesResult {
   getFieldState(name: string): IFieldState;
   registerField(name: string, fieldState: IFieldState): void;
   unregisterField(name: string): void;
-  forEachFieldState(callback: (value: IFieldState, key: string, map: Map<string, IFieldState>) => void): void;
+  forEachFieldState(
+    callback: (value: IFieldState, key: string, map: Map<string, IFieldState>) => void
+  ): void;
 }
 
 export function useFieldStates(): IUseFieldStatesResult {
@@ -73,17 +75,19 @@ export function useFieldStates(): IUseFieldStatesResult {
     }
 
     if (
-      typeof fieldState.label !== 'string'
-      || typeof fieldState.validate !== 'function'
-      || typeof fieldState.updateValidation !== 'function'
-      || typeof fieldState.reset !== 'function'
-      || typeof fieldState.getValue !== 'function'
+      typeof fieldState.label !== 'string' ||
+      typeof fieldState.validate !== 'function' ||
+      typeof fieldState.updateValidation !== 'function' ||
+      typeof fieldState.reset !== 'function' ||
+      typeof fieldState.getValue !== 'function'
     ) {
       throw new Error('[Form] registerField: invalid field state given');
     }
 
     if (fields.current.has(name)) {
-      throw new Error(`[Form] registerField: Could not register field with name '${name}'. A field with this name already exists inside this form.`);
+      throw new Error(
+        `[Form] registerField: Could not register field with name '${name}'. A field with this name already exists inside this form.`
+      );
     }
 
     fields.current.set(name, fieldState);
@@ -97,9 +101,12 @@ export function useFieldStates(): IUseFieldStatesResult {
     fields.current.delete(name);
   }, []);
 
-  const forEachFieldState = useCallback((callback: (value: IFieldState, key: string, map: Map<string, IFieldState>) => void) => {
-    return fields.current.forEach(callback);
-  }, []);
+  const forEachFieldState = useCallback(
+    (callback: (value: IFieldState, key: string, map: Map<string, IFieldState>) => void) => {
+      return fields.current.forEach(callback);
+    },
+    []
+  );
 
   return {
     getFieldState,
