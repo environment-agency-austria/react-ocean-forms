@@ -52,7 +52,7 @@
     "rollup-plugin-filesize": "^6.2.1",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-typescript2": "^0.25.3",
-    "ts-jest": "^24.3.0",
+    "ts-jest": "^25.1.0",
     "ts-loader": "^6.2.1",
     "typedoc": "^0.16.7",
     "typedoc-plugin-external-module-name": "^3.0.0",
