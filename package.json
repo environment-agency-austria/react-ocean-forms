@@ -1,6 +1,6 @@
 {
   "name": "react-ocean-forms",
-  "version": "3.0.0-beta.2",
+  "version": "3.0.0-rc.1",
   "description": "Forms components for react based on the context api.",
   "main": "build/index.js",
   "module": "build/index.es.js",
