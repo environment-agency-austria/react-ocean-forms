@@ -1,20 +1,19 @@
 language: node_js
 node_js:
-  - "10"
+  - 'lts/*'
 cache:
   yarn: true
 
 jobs:
   include:
     - stage: Test
-      name: "Linting"
-      script: "yarn lint"
+      name: 'Linting'
+      script: 'yarn lint'
     - script: jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
-      name: "Produce coverage"
+      name: 'Produce coverage'
     - stage: Build
-      node_js: "10"
-      name: "Rollup build"
-      script: "yarn build"
+      name: 'Rollup build'
+      script: 'yarn build'
       deploy:
         provider: npm
         email: $NPM_DEPLOY_EMAIL
