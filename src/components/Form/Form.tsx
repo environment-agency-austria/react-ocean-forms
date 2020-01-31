@@ -32,11 +32,13 @@ export const Form = <TFieldValues extends {} = IFieldValues, TSubmitArgs = unkno
 
   const handleSubmit = (event: React.FormEvent): void => {
     event.preventDefault();
+    event.stopPropagation();
     formContext.submit();
   };
 
   const handleReset = (event: React.FormEvent): void => {
     event.preventDefault();
+    event.stopPropagation();
     formContext.reset();
   };
 

@@ -18,6 +18,9 @@ All notable changes to this project will be documented in this file.
 ### Other
 - The `Form` will now throw an error if a duplicate field name is used.
 
+## [2.2.1] # 2020-01-31
+- Bugfix: stop event propagation of `submit` and `reset` form events
+
 ## [2.2.0] # 2019-02-19
 ### New features
 - Added `useFormContext` hook for easy access to the form context
