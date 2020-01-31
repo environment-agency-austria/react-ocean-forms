@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [2.2.1] # 2020-01-31
+- Bugfix: stop event propagation of `submit` and `reset` form events
+
 ## [2.2.0] # 2019-02-19
 ### New features
 - Added `useFormContext` hook for easy access to the form context
