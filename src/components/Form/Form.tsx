@@ -135,6 +135,7 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
    */
   private handleSubmit = (event: React.FormEvent): void => {
     event.preventDefault();
+    event.stopPropagation();
     void this.submit();
   }
 
@@ -265,6 +266,7 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
    */
   private handleReset = (event: React.FormEvent): void => {
     event.preventDefault();
+    event.stopPropagation();
     this.reset();
   }
 
