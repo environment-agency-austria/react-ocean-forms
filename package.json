@@ -55,7 +55,7 @@
     "rollup-plugin-typescript2": "^0.25.3",
     "ts-jest": "^25.1.0",
     "ts-loader": "^6.2.1",
-    "typedoc": "^0.16.9",
+    "typedoc": "^0.17.0",
     "typedoc-plugin-external-module-name": "^3.0.0",
     "typescript": "^3.7.5",
     "webpack": "^4.41.5"
