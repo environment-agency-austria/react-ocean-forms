@@ -9,7 +9,7 @@ import { Form, Input } from 'react-ocean-forms';
 
 function Example() {
   // onChange callback
-  const handleChange = value => {
+  const handleChange = (value) => {
     console.log('onChange, value: ' + JSON.stringify(value));
   };
 
@@ -71,12 +71,12 @@ const CustomInput = withField(BaseCustomInput);
 
 function Example() {
   // Submit callback, here you'd make your api calls
-  const handleSubmit = values => {
+  const handleSubmit = (values) => {
     console.log('onSubmit, values: ' + JSON.stringify(values));
   };
 
   // onChange callback
-  const handleChange = value => {
+  const handleChange = (value) => {
     console.log('onChange, value: ' + JSON.stringify(value));
   };
 

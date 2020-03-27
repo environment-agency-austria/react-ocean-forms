@@ -9,7 +9,7 @@ import { Form, FieldGroup, Input } from 'react-ocean-forms';
 
 function Example() {
   // Submit callback, here you'd make your api calls
-  const handleSubmit = values => {
+  const handleSubmit = (values) => {
     console.log('onSubmit, values: ' + JSON.stringify(values));
   };
 

@@ -54,7 +54,7 @@ export function useValidation<TFieldValue = unknown>(
     (newState: Partial<IBasicValidationState>): void => {
       if (isUnmounted.current) return;
 
-      setValidationState(prevState => {
+      setValidationState((prevState) => {
         const fullNewState = {
           ...prevState,
           ...newState,

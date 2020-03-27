@@ -83,7 +83,7 @@ export function useForm<TFieldValues extends Record<string, unknown> = IFieldVal
    * to the default state.
    */
   const reset = useCallback((): void => {
-    forEachFieldState(state => {
+    forEachFieldState((state) => {
       state.reset();
     });
 
@@ -138,7 +138,7 @@ export function useForm<TFieldValues extends Record<string, unknown> = IFieldVal
       // Iterate through all fields and validate them
       // if needed.
       const validations: Promise<IBasicValidationState>[] = [];
-      forEachFieldState(field => {
+      forEachFieldState((field) => {
         validations.push(
           field.validate({
             checkAsync: true,
@@ -154,7 +154,7 @@ export function useForm<TFieldValues extends Record<string, unknown> = IFieldVal
       };
 
       // Check if all fields are valid
-      const allValid = validationStates.every(state => state.valid === true);
+      const allValid = validationStates.every((state) => state.valid === true);
       if (allValid === false) {
         notifyInvalid();
         return;

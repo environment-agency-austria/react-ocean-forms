@@ -41,7 +41,7 @@ function defaultRenderFieldError(
  * Displays a clickable list of errors from the current form. When an
  * error is clicked, the corresponding input field is focused.
  */
-export const ValidationSummary: React.FC<IValidationSummaryProps> = props => {
+export const ValidationSummary: React.FC<IValidationSummaryProps> = (props) => {
   const {
     id,
     title = 'ojs_form_validationSummaryHeader',

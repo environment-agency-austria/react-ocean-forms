@@ -47,7 +47,7 @@ export const withForm = <
    * Component that injects the form context prop
    * to the wrapped component
    */
-  const FormComponent: React.FC<FormComponentProps<TComp>> = props => {
+  const FormComponent: React.FC<FormComponentProps<TComp>> = (props) => {
     const context = useFormContext();
 
     // @ts-ignore

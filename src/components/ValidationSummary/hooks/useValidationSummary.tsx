@@ -55,7 +55,7 @@ export function useValidationSummary(
 
         // If the field has been reported as valid delete it from our error map
         if (validationEventArgs.valid || validationEventArgs.error === null) {
-          setErrorList(oldList => oldList.filter(([oldName]) => name !== oldName));
+          setErrorList((oldList) => oldList.filter(([oldName]) => name !== oldName));
           return;
         }
 
@@ -77,7 +77,7 @@ export function useValidationSummary(
         };
 
         // Create the meta information for the error map
-        setErrorList(oldList => {
+        setErrorList((oldList) => {
           return [
             ...oldList.filter(([oldName]) => name !== oldName),
             [

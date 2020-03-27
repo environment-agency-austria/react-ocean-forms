@@ -294,7 +294,7 @@ describe('useFieldGroup', () => {
 
     const propCases: [keyof IFormContext][] = [['defaultValues'], ['values']];
 
-    describe.each(propCases)('Context.%s behaviour', prop => {
+    describe.each(propCases)('Context.%s behaviour', (prop) => {
       const formStates: [string, null | undefined | object][] = [
         ['null', null],
         ['undefined', undefined],
@@ -334,7 +334,7 @@ describe('useFieldGroup', () => {
 
     const overrideCases = [['plaintext'], ['disabled']];
 
-    describe.each(overrideCases)('Context.%s behaviour', prop => {
+    describe.each(overrideCases)('Context.%s behaviour', (prop) => {
       const cases: [boolean, undefined | boolean, boolean][] = [
         [false, undefined, false],
         [true, undefined, true],

@@ -38,7 +38,7 @@ export const withField = <
 
   type IWrappedProps = WrappedValidatedComponentProps<TComp>;
 
-  const ValidatedComponent: React.FC<IWrappedProps> = props => {
+  const ValidatedComponent: React.FC<IWrappedProps> = (props) => {
     const { fieldProps, metaProps } = useField(props);
 
     return (

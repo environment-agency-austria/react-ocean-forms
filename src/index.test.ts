@@ -19,7 +19,7 @@ describe('Index', () => {
       'useValidation',
     ];
 
-    components.forEach(component => {
+    components.forEach((component) => {
       it(`Should export ${component}`, () => {
         // @ts-ignore
         expect(FormComponents[component]).toBeTruthy();
