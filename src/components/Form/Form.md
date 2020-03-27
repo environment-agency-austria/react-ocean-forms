@@ -9,7 +9,7 @@ import { Form, Input } from 'react-ocean-forms';
 
 function Example() {
   // Submit callback, here you'd make your api calls
-  const handleSubmit = values => {
+  const handleSubmit = (values) => {
     console.log('onSubmit, values: ' + JSON.stringify(values));
   };
 
@@ -42,7 +42,7 @@ function Example() {
   const [defaultValues, setDefaultValues] = useState({ myInput: 'default value' });
 
   // Submit callback, here you'd make your api calls
-  const handleSubmit = values => {
+  const handleSubmit = (values) => {
     console.log('onSubmit, values: ' + JSON.stringify(values));
   };
 
@@ -82,7 +82,7 @@ function Example() {
   const [values, setValues] = useState({ myInput: 'demo value' });
 
   // Submit callback, here you'd make your api calls
-  const handleSubmit = values => {
+  const handleSubmit = (values) => {
     console.log('onSubmit, values: ' + JSON.stringify(values));
   };
 
@@ -117,7 +117,7 @@ import { Form, Input } from 'react-ocean-forms';
 
 function Example() {
   // Submit callback, here you'd make your api calls
-  const handleSubmit = values => {
+  const handleSubmit = (values) => {
     console.log('onSubmit, values: ' + JSON.stringify(values));
   };
 
@@ -166,7 +166,7 @@ import { Form, Input, ValidationSummary } from 'react-ocean-forms';
 
 function Example() {
   // Submit callback, here you'd make your api calls
-  const handleSubmit = values => {
+  const handleSubmit = (values) => {
     console.log('onSubmit, values: ' + JSON.stringify(values));
   };
 
@@ -176,7 +176,7 @@ function Example() {
   };
 
   // Form wide validation function
-  const handleValidate = values => {
+  const handleValidate = (values) => {
     if (values.demoInput === 'bad') {
       return {
         demoInput: 'Invalid input!',

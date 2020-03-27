@@ -8,7 +8,7 @@ Showcase of the form button
 import { Form, Input, FormButton } from 'react-ocean-forms';
 
 function asyncValidator(value) {
-  return new Promise(function(resolve) {
+  return new Promise(function (resolve) {
     setTimeout(() => {
       if (value === '') {
         resolve('Invalid input');

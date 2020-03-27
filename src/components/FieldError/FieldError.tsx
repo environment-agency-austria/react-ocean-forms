@@ -19,7 +19,7 @@ import { IFieldErrorProps } from './FieldError.types';
  * Component for displaying bootstrap
  * form feedbacks if there are any errors
  */
-export const FieldError: React.FC<IFieldErrorProps> = props => {
+export const FieldError: React.FC<IFieldErrorProps> = (props) => {
   const { id, invalid, error } = props;
 
   const { stringFormatter } = useFormContext();
@@ -34,7 +34,7 @@ export const FieldError: React.FC<IFieldErrorProps> = props => {
 
   return (
     <>
-      {errorArray.map(item => {
+      {errorArray.map((item) => {
         const errorString = stringFormatter(item.message_id, item.params);
 
         return <span key={`${id}_${item.message_id}`}>{errorString}</span>;

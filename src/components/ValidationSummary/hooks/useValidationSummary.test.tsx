@@ -32,7 +32,7 @@ describe('useValidationSummary', () => {
 
   const setup = ({ disableFocusOnSubmit = false }: Partial<ISetupArgs> = {}): ISetupResult => {
     (useFormContext as jest.Mock).mockReturnValue({
-      stringFormatter: jest.fn().mockImplementation(str => str),
+      stringFormatter: jest.fn().mockImplementation((str) => str),
     });
 
     let handleEvent: TFormEventListener;
@@ -160,7 +160,7 @@ describe('useValidationSummary', () => {
       ];
       const { handleEvent, result } = setup();
 
-      mockFields.forEach(field =>
+      mockFields.forEach((field) =>
         triggerValidationEvent(handleEvent, field.fieldId, field.label, field.error)
       );
 
@@ -177,7 +177,7 @@ describe('useValidationSummary', () => {
       ];
       const { handleEvent, result } = setup();
 
-      mockFields.forEach(field =>
+      mockFields.forEach((field) =>
         triggerValidationEvent(handleEvent, field.fieldId, field.label, field.error)
       );
 

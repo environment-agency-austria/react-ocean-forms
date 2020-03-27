@@ -19,7 +19,7 @@ import { IFormButtonProps } from './FormButton.types';
  * be disabled when the form is busy or disabled. You can also pass
  * submitArgs to the onSubmit handler this way.
  */
-export const FormButton: React.FC<IFormButtonProps> = props => {
+export const FormButton: React.FC<IFormButtonProps> = (props) => {
   const {
     disabled = false,
     type = 'submit',

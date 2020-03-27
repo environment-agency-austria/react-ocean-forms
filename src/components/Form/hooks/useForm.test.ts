@@ -141,7 +141,7 @@ describe('useForm', () => {
       [unitSubField2.name, unitSubField2.state],
     ]);
 
-    const forEachFieldState = jest.fn().mockImplementation(cb => {
+    const forEachFieldState = jest.fn().mockImplementation((cb) => {
       mockFields.forEach(cb);
     });
     const { result } = setup({ fieldStatesOverride: { forEachFieldState } });
@@ -200,10 +200,9 @@ describe('useForm', () => {
 
     const unitFieldName = 'unitField';
 
-    const setupSubmit = async ({
-      props,
-      customField,
-    }: Partial<ISetupSubmitArgs> = {}): Promise<ISetupSubmitResult> => {
+    const setupSubmit = async ({ props, customField }: Partial<ISetupSubmitArgs> = {}): Promise<
+      ISetupSubmitResult
+    > => {
       const unitField = createMockField(unitFieldName, 'Unit field');
       const unitGroup = createMockField('unitGroup', 'Unit group', true);
       const unitSubField = createMockField(`${unitGroup.name}.subField`, 'Sub field');
@@ -218,7 +217,7 @@ describe('useForm', () => {
         mockFields.set(customField.name, customField.state);
       }
 
-      const forEachFieldState = jest.fn().mockImplementation(cb => {
+      const forEachFieldState = jest.fn().mockImplementation((cb) => {
         mockFields.forEach(cb);
       });
 
@@ -245,7 +244,7 @@ describe('useForm', () => {
       it('should call all the validation functions', async () => {
         const { mockFields } = await setupSubmit();
 
-        mockFields.forEach(item =>
+        mockFields.forEach((item) =>
           expect(item.validate).toHaveBeenLastCalledWith({
             checkAsync: true,
             immediateAsync: true,
@@ -467,14 +466,14 @@ describe('useForm', () => {
         [unitSubField.name, unitSubField.state],
       ]);
 
-      const forEachFieldState = jest.fn().mockImplementation(cb => {
+      const forEachFieldState = jest.fn().mockImplementation((cb) => {
         mockFields.forEach(cb);
       });
 
       const { result } = setup({ fieldStatesOverride: { forEachFieldState } });
 
       simulateResetEvent(result.current);
-      mockFields.forEach(item => expect(item.reset).toHaveBeenCalled());
+      mockFields.forEach((item) => expect(item.reset).toHaveBeenCalled());
     });
 
     it('should call the onReset prop', () => {

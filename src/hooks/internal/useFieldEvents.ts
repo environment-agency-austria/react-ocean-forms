@@ -32,7 +32,7 @@ export function useFieldEvents(): IUseFieldEventsResult {
    * @param args Event args
    */
   const notifyListeners = useCallback((name: string, event: string, args?: unknown): void => {
-    eventListeners.current.forEach(callback => {
+    eventListeners.current.forEach((callback) => {
       callback(name, event, args);
     });
   }, []);

@@ -87,10 +87,10 @@ export async function runAsyncValidators<TFieldValue = unknown>(
   formContext: IFormContext
 ): Promise<IBasicValidationState> {
   const validationResults = await Promise.all(
-    validators.map(async validator => validator(value, formContext))
+    validators.map(async (validator) => validator(value, formContext))
   );
   const parsedErrors = validationResults
-    .map(result => parseValidationError(result))
+    .map((result) => parseValidationError(result))
     .filter(isIFieldErrorObject);
 
   if (parsedErrors.length === 0) {

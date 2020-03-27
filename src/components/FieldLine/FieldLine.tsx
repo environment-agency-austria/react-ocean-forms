@@ -32,7 +32,7 @@ function createRequiredMarker(isRequired: boolean): React.ReactNode {
  * Component for displaying bootstrap
  * form groups with any children
  */
-export const FieldLine: React.FC<IFieldLineProps> = props => {
+export const FieldLine: React.FC<IFieldLineProps> = (props) => {
   const { field, meta, label, children } = props;
 
   const groupClass = meta.valid ? 'field-group' : 'field-group is-invalid';

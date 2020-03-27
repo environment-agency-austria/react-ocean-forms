@@ -92,42 +92,49 @@ describe('<Form />', () => {
 
   describe('html form event handling', () => {
     describe('onSubmit', () => {
-      it('should call event.preventDefault', () => {
+      it('should call event.preventDefault and event.stopPropagation', () => {
         const { form } = setup();
         const mockSubmitEvent = {
           preventDefault: jest.fn(),
+          stopPropagation: jest.fn(),
         };
 
         form.simulate('submit', mockSubmitEvent);
         expect(mockSubmitEvent.preventDefault).toHaveBeenCalled();
+        expect(mockSubmitEvent.stopPropagation).toHaveBeenCalled();
       });
 
-      it('should call formContext.submit', () => {
+      it('should call formContext.submit and event.stopPropagation', () => {
         const { form, formContext } = setup();
         const mockSubmitEvent = {
           preventDefault: jest.fn(),
+          stopPropagation: jest.fn(),
         };
 
         form.simulate('submit', mockSubmitEvent);
         expect(formContext.submit).toHaveBeenCalled();
+        expect(mockSubmitEvent.stopPropagation).toHaveBeenCalled();
       });
     });
 
     describe('onReset', () => {
-      it('should call event.preventDefault', () => {
+      it('should call event.preventDefault and event.stopPropagation', () => {
         const { form } = setup();
         const mockSubmitEvent = {
           preventDefault: jest.fn(),
+          stopPropagation: jest.fn(),
         };
 
         form.simulate('reset', mockSubmitEvent);
         expect(mockSubmitEvent.preventDefault).toHaveBeenCalled();
+        expect(mockSubmitEvent.stopPropagation).toHaveBeenCalled();
       });
 
       it('should call formContext.reset', () => {
         const { form, formContext } = setup();
         const mockSubmitEvent = {
           preventDefault: jest.fn(),
+          stopPropagation: jest.fn(),
         };
 
         form.simulate('reset', mockSubmitEvent);
