@@ -644,6 +644,7 @@ describe('<Form />', () => {
         const { form } = setup();
         const mockSubmitEvent = {
           preventDefault: jest.fn(),
+          stopPropagation: jest.fn(),
         };
 
         form.simulate('submit', mockSubmitEvent);
@@ -676,4 +677,18 @@ describe('<Form />', () => {
       expect(onResetHandler).toHaveBeenCalled();
     });
   });
+
+  describe('html form reset event handling', () => {
+    it('should call event.preventDefault', () => {
+      const { form } = setup();
+      const mockResetEvent = {
+        preventDefault: jest.fn(),
+        stopPropagation: jest.fn(),
+      };
+
+      form.simulate('reset', mockResetEvent);
+      expect(mockResetEvent.preventDefault).toHaveBeenCalled();
+    });
+  });
+
 });
