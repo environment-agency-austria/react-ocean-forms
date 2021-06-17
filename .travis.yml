@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "8"
+  - "lts/*"
 cache:
   yarn: true
 
@@ -12,7 +12,6 @@ jobs:
     - script: jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
       name: "Produce coverage"
     - stage: Build
-      node_js: "8"
       name: "Rollup build"
       script: "yarn build"
       deploy:
