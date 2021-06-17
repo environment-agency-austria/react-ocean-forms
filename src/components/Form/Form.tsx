@@ -54,6 +54,8 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
         getValues: this.getValues,
 
         submit: this.submit,
+        
+        reset: this.reset,
 
         busy: false,
       },

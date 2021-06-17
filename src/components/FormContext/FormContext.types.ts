@@ -111,6 +111,12 @@ export interface IBaseFormContext<TFieldValues = IFieldValues> {
    * @param submitArgs Optional submit args
    */
   submit(submitArgs?: unknown): Promise<void>;
+
+
+  /**
+   * Reset the form
+   */
+  reset(): void;
 }
 
 /**
