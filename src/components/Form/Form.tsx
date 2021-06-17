@@ -54,7 +54,7 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
         getValues: this.getValues,
 
         submit: this.submit,
-        
+
         reset: this.reset,
 
         busy: false,
@@ -137,7 +137,7 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
    */
   private handleSubmit = (event: React.FormEvent): void => {
     event.preventDefault();
-    event.stopPropagation();
+    if(event.stopPropagation) event.stopPropagation();
     void this.submit();
   }
 
@@ -268,7 +268,7 @@ extends React.Component<IFormProps<TFieldValues, TSubmitArgs>, IFormState<TField
    */
   private handleReset = (event: React.FormEvent): void => {
     event.preventDefault();
-    event.stopPropagation();
+    if(event.stopPropagation) event.stopPropagation();
     this.reset();
   }
 

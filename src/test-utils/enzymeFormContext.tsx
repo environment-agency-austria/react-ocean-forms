@@ -36,6 +36,7 @@ export const createMockFormContext = (registerCallback?: Function): IFormContext
 
   stringFormatter: jest.fn().mockImplementation(stringFormatter),
   submit: jest.fn(),
+  reset: jest.fn(),
 
   busy: false,
   disabled: false,

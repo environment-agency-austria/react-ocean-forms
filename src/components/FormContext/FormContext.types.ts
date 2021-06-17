@@ -112,7 +112,6 @@ export interface IBaseFormContext<TFieldValues = IFieldValues> {
    */
   submit(submitArgs?: unknown): Promise<void>;
 
-
   /**
    * Reset the form
    */

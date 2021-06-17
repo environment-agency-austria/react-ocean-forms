@@ -32,6 +32,7 @@ exports[`<Form /> should render without error 1`] = `
       "plaintext": false,
       "registerField": [Function],
       "registerListener": [Function],
+      "reset": [Function],
       "stringFormatter": [Function],
       "submit": [Function],
       "unregisterField": [Function],
